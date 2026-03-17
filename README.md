@@ -1,1 +1,188 @@
-# CBC-Grade-11-Maths
+# CBC Grade 11 Mathematics digital textbook Project
+
+This repository contains the source files for the CBC Grade 11 Mathematics book, developed using [PreTeXt](https://pretextbook.org) and will incoorporate [STACK](https://stack-assessment.org/) exercises for student's personalised learning. PreTeXt is a powerful tool for creating high-quality educational materials, including textbooks, in multiple formats.
+
+## Project Overview
+
+This initiative is part of a larger project focused on developing digital Open Educational Resources (OERs) for Kenyan secondary schools. The main goal is to create a comprehensive and accessible digital mathematics textbook for Grade 11 students, fully aligned with the Competency-Based Curriculum (CBC).
+
+The initial version of the textbook will be developed by a team of 8 interns, who will design the content and assessment materials from scratch. Digital STACK questions, created separately, will be integrated into the subsections of the book to help students test and reinforce their understanding of key concepts.
+
+The review process, covering both the textbook and the exercises, will provide an opportunity for broader contributions from teachers, students, and other education stakeholders. Development will remain continuous, incorporating feedback and suggestions to ensure the resource becomes increasingly responsive to the needs of teachers, learners, and CBC requirements, while also meeting international standards.
+
+Furthermore, the textbook will be designed to be easily adaptable to different contexts, making it suitable for adoption by other countries seeking similar resources. 
+
+The book will be available in multiple formats, including web, PDF, and print. The web version of the book will offer the digital assessments that will help students have a more engaging personalised learning experience from the immediate feedback STACK questions provides.
+
+## Building and Viewing the Book
+
+### Prerequisites
+- Python 3.x with PreTeXt CLI installed (`pip install pretext>=2.34`)
+- All dependencies from `requirements.txt` installed (`pip install -r requirements.txt`)
+
+### Quick Start: Automated Build Workflow
+
+**Windows-only:** For the easiest build and preview experience, use the automated batch script:
+
+```bash
+.\build-and-view.bat
+```
+
+This single command will:
+1. Build the PreTeXt book
+2. Deploy the custom STACK JavaScript integration file
+3. Launch the book in your browser
+
+#### Issue with long file paths on Windows
+
+By default, Windows has a maximum **path length of 260 characters (MAX_PATH).**
+When the total path exceeds 260 characters, Windows can’t access the file → “undefined control sequence” or missing image.
+
+While building a PreTeXt project on Windows using MiKTeX , the build produced errors related to missing files / undefined control sequences when accessing image assets and generated files.
+
+The **build eventually succeeded, but some assets were not processed correctly.**
+
+This occurred even after a fresh MiKTeX installation.
+
+##### Fix / Workaround
+
+Enable long path support in Windows Registry:
+
+**Press Win + R**
+
+Run:
+
+**regedit**
+
+Navigate to:
+
+HKEY_LOCAL_MACHINE
+  → SYSTEM
+    → CurrentControlSet
+      → Control
+        → FileSystem
+
+Set:
+
+LongPathsEnabled = 1
+
+<img width="1920" height="1180" alt="Image" src="https://github.com/user-attachments/assets/876494b1-ca64-4873-be14-b06208459c24" />
+
+**Restart Windows**
+
+After enabling this, the PreTeXt build completed correctly and assets were resolved.
+
+
+### Manual Build Process
+
+If you need more control over the build process:
+
+1. **Build the book:**
+   ```bash
+   pretext build web
+   ```
+
+2. **Copy custom STACK integration file (required for STACK questions to render properly):**
+   ```bash
+   copy /Y "assets\pretext\js\pretext-stack\stackapicalls.js" "output\web\_static\pretext\js\pretext-stack\stackapicalls.js"
+   ```
+
+3. **View the book in browser:**
+   ```bash
+   pretext view web
+   ```
+
+#### Important Notes
+- The custom `stackapicalls.js` file in the `assets` directory is essential for multi-line LaTeX in STACK questions to render correctly
+- This file must be copied to the output folder after each build
+- The automated script handles this automatically
+
+
+
+
+### Command‑line utilities
+
+A lightweight command‑line interface bundles the various helper scripts into a single entry point.  Invoke it with ``python -m utils.cli`` and pass one of the subcommands listed below.  Add ``--help`` after the command to see specific options.
+
+```
+$ python -m utils.cli --help
+usage: python -m utils.cli [-h]
+                            {pull-plans,validate-paths,add-objectives,add-resources,audit-pdfs,namespace,generate-syllabus,generate-lo,syllabus-tables,audit-questions,add-labels,all} ...
+
+Utility commands for the project
+```
+
+**Available commands:**
+
+- `pull-plans`   download lesson plans from Drive
+- `validate-paths` verify & annotate CSV rows with file existence
+- `add-objectives` insert objectives blocks into PTX files
+- `add-resources` insert/upgrade resource boxes for lesson plans
+- `audit-pdfs`   report lesson‑plan PDFs not referenced by any source
+- `namespace`  add `xmlns:xi` attribute to subsection/subsubsection tags
+- `generate-syllabus` create `syllabus-alignment.ptx` from spreadsheet data
+- `generate-lo`   create `lo-coverage-table.ptx` from CSV/outcome data
+- `syllabus-tables` generate both syllabus and LO coverage tables
+- `audit-questions` run the STACK/image/pdf audit routines (see below)
+- `add-labels`   add xml IDs to all elements that don't have them. These labels will be used
+for the generation of permalinks (and review links) so that these don't change across compilations of the textbook (see below)
+- `all`    execute the typical workflow in order
+
+The CLI makes it easy to script routines or run multiple helpers in the right sequence without remembering individual filenames.  See the tests under `tests/test_cli.py` for examples of argument parsing.
+
+#### Quality Assurance
+
+Run `python -m utils.cli audit-questions` to get a breakdown of potentially problematic STACK questions and images.
+In particular:
+
+- Exercises referencing STACK questions that don't exist (causing a broken question)
+- STACK questions without deployed variants (causing a broken question)
+- Images referenced in the textbook source that don't exist (causing a broken image)
+
+#### Permalinks
+
+We've added review links that appear when hovering the mouse to the left of a element such as a paragraph or exercise.
+These are auto-generated based on ids that these elements have. The ids are, by default, also autogenerated,
+and include a sequential number (e.g. 5th paragraph within a section would get a `-5` at the end). This means
+that inserting or removing a paragraph before that paragraph would break the link to that paragraph (and all
+following elements too).
+
+## Contributing to the project
+
+To contribute to or work on this project, you can use any of the options  below:
+
+1. **Clone the Repository**  
+    Contributions are welcome! If you'd like to contribute and you are an experienced github user:
+- Fork this repository.
+- Make your changes in a feature branch.
+- Submit a pull request for review.
+
+2. **Issues tab**  
+    You can use the issues tab in github to describe the changes/additions/corrections wou would like to be made in the book. Significant contributions that will lead to improvement of the content, form of the activities or improvement of the exercises will be acknowledged within the book.
+
+3. **Review links in the Book**  
+    Use the provided links in the PreTeXt book to leave comments that will lead to improvement of the book.
+
+## License
+
+This project is licensed under the [Creative commons attribution non-commercial share-alike license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+## Contact
+
+For questions or feedback, please contact the project maintainer at [contact@innodems.org].
+
+
+# Enablers of the project
+
+This project was initially supported by a grant from the US Embassy in Nairobi. The initial support enabled hiring of 11 interns who were trained in authoring the textbook in PreTeXt by [Prof Oscar Levin](https://math.oscarlevin.com/) and trained in STACK authoring by the INNODEMS team. Other enablers of this project are:
+1. **INNODEMS**  
+   [INNODEMS](https://innodems.org/) is the organization that supports the interns and coordinates the development of the textbook project locally in Kenya. 
+
+2. **IDEMS**   
+     [IDEMS](https://www.idems.international/) has provided expartise in the integration of PreTeXt and STACK and will provide the technical support for the piloting phase of the textbooks.
+
+4. **SAMI**   
+        [SAMI](https://samicharity.co.uk/home) is a UK NGO that leads the fundraising drive to support the development and piloting of the ktextbooks.  
+
+## Support the project
+    You can support the textbook project through contributing to the development of the books or by donating to INNODEMS to help keep the vision of the project alive.
