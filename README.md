@@ -98,38 +98,6 @@ If you need more control over the build process:
 - The automated script handles this automatically
 
 
-
-
-### Command‑line utilities
-
-A lightweight command‑line interface bundles the various helper scripts into a single entry point.  Invoke it with ``python -m utils.cli`` and pass one of the subcommands listed below.  Add ``--help`` after the command to see specific options.
-
-```
-$ python -m utils.cli --help
-usage: python -m utils.cli [-h]
-                            {pull-plans,validate-paths,add-objectives,add-resources,audit-pdfs,namespace,generate-syllabus,generate-lo,syllabus-tables,audit-questions,add-labels,all} ...
-
-Utility commands for the project
-```
-
-**Available commands:**
-
-- `pull-plans`   download lesson plans from Drive
-- `validate-paths` verify & annotate CSV rows with file existence
-- `add-objectives` insert objectives blocks into PTX files
-- `add-resources` insert/upgrade resource boxes for lesson plans
-- `audit-pdfs`   report lesson‑plan PDFs not referenced by any source
-- `namespace`  add `xmlns:xi` attribute to subsection/subsubsection tags
-- `generate-syllabus` create `syllabus-alignment.ptx` from spreadsheet data
-- `generate-lo`   create `lo-coverage-table.ptx` from CSV/outcome data
-- `syllabus-tables` generate both syllabus and LO coverage tables
-- `audit-questions` run the STACK/image/pdf audit routines (see below)
-- `add-labels`   add xml IDs to all elements that don't have them. These labels will be used
-for the generation of permalinks (and review links) so that these don't change across compilations of the textbook (see below)
-- `all`    execute the typical workflow in order
-
-The CLI makes it easy to script routines or run multiple helpers in the right sequence without remembering individual filenames.  See the tests under `tests/test_cli.py` for examples of argument parsing.
-
 #### Quality Assurance
 
 Run `python -m utils.cli audit-questions` to get a breakdown of potentially problematic STACK questions and images.
@@ -167,6 +135,12 @@ To contribute to or work on this project, you can use any of the options  below:
 
 This project is licensed under the [Creative commons attribution non-commercial share-alike license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
+The project contains material adapted from other open source works.
+
+- `assets/PREALG`: This folder contains images from [Open STAX Elementary Algebra 2e](https://github.com/openstax/osbooks-prealgebra-bundle/tree/7fcdabf0364f3b308c0190557dfc961b579b374c), used under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.en)
+- `assets/PRECALC`: This folder contains images from [Open STAX Precalculus 2e](https://github.com/openstax/osbooks-college-algebra-bundle/tree/e10e6b91143fe884c7c60dc0ad82ef23e1be0aa5), used under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.en)
+- `assets/STAT`: This folder contains images from [Open STAX Statistics](https://github.com/openstax/osbooks-statistics/tree/ee0efc177a01145d28d9429fc309e331fab9c566), used under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.en)
+
 ## Contact
 
 For questions or feedback, please contact the project maintainer at [contact@innodems.org].
@@ -185,4 +159,5 @@ This project was initially supported by a grant from the US Embassy in Nairobi. 
         [SAMI](https://samicharity.co.uk/home) is a UK NGO that leads the fundraising drive to support the development and piloting of the ktextbooks.  
 
 ## Support the project
-    You can support the textbook project through contributing to the development of the books or by donating to INNODEMS to help keep the vision of the project alive.
+
+You can support the textbook project through contributing to the development of the books or by donating to INNODEMS to help keep the vision of the project alive.
