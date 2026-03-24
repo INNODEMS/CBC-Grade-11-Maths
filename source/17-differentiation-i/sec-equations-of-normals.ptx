@@ -43,36 +43,320 @@
 
     <!-- [LP] Add guidance on activity -->
 
-    <!-- <axiom component="lesson-plan">
-            <title>Problem-Solving and Discovery</title>
-            <dl>
+    <axiom component="lesson-plan">
+        <title>Problem-Solving and Discovery</title>
+        <dl>
+            <li>
+                <title>Suggested Time</title>
+                <p>
+                    10 minutes
+                </p>
+            </li>
+            <li>
+                <title>Objective</title>
+                <p>
+                    To build physical intution for normals to a curve
+                </p>
+            </li>
+        </dl>
+        <p>
+            Here is guidance for each part:
+            <ol marker="(a)">
                 <li>
-                    <title>Suggested Time</title>
                     <p>
-                        XX minutes
+                        Use a physical demonstration if possible. Try to lead learners towards the idea that the angle made with the vertical (the normal) should be the same on both sides.
                     </p>
                 </li>
                 <li>
-                    <title>Objective</title>
                     <p>
-                        XXX
+                        Try and get learners to apply the principle from (a), by reflecting over a normal. 
                     </p>
                 </li>
                 <li>
-                    <title>Teacher's Role</title>
                     <p>
-                        XXX
+                        Connect the bounces to the normal. Outline how, if we zoom in on <m>y = x^2</m>, the curve is approximately flat (with slope <m>\frac{dy}{dx} = 2x</m>).
                     </p>
                 </li>
-            </dl>
-        </axiom> -->
+                <li>
+                    <p>
+                        Learners should construct normals (the black lines) at all the contact points, building off the example. Their lines should all converge at <m>(0, 0.25)</m>, but do not worry if they don't.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Guide learners towards the idea that reflecting across the normal applies to all incoming balls, not just the vertical balls
+                    </p>
+                </li>
+            </ol>
+        </p>
+        <p>
+            If time permits, show Learners <xref ref="parabola-focus"/> in the hint (this is also the answer to (d)). Ask them to speculate about why the lines all converge, and ask them to explain why this shape is useful for creating fire (answer: it concentrates energy from the sun).
+        </p>
+        <p>
+            Very advanced students can be guided into proving that all lines meet at <m>(0, 0.25)</m>. You might need to help them by reminding them that <m>\frac{dy}{dx} = \tan \theta</m>, where <m>\theta</m> is the angle between a tangent and the positive horizontal, and provide the identity <m>\tan 2\theta = \frac{2\tan \theta}{1-\tan^2 \theta}</m>.
+        </p>
+    </axiom>
 
-    <!-- Add Activity -->
-
-    <!-- <activity>
+    <activity>
         <statement>
+            <p> In <xref ref="wall-reflection"/>, a soccer ball is kicked into a flat wall. 
+            <figure xml:id="wall-reflection">
+                <caption>A ball hit into a horizontal wall</caption>
+                <image>
+                    <latex-image>
+                        \begin{tikzpicture}[>=Stealth]
+                            \draw[very thick, red!70!black] (-5,0) -- (5,0);
+                            \draw[very thick, -&gt;, green!55!black] (-4,2.5) -- (0,0);
+                            \draw[black, fill=gray!40] (-4,2.5) circle (0.3cm);
+                            \draw[black, dashed] (0,0) -- (0,2.5);
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+            <ol marker="(a)">
+                <li>
+                    <p xml:id="flat-q">
+                        What path do you think it will take after hitting the wall? Try drawing your suggestion, and compare with a partner. How might the dashed line help?
+                    </p>
+                </li>
+                <li>
+                    <p xml:id="curved-single">
+                        What if the ball is bounced into a curved wall, like the parabola <m>y = x^2</m> shown in <xref ref="parabola-reflection"/>? Draw the path you think it will take.
+                        <figure xml:id="parabola-reflection">
+                            <caption>A ball hit into a curved wall</caption>
+                            <image>
+                                <latex-image>
+                                    \begin{tikzpicture}[
+                                        x=1.4cm,y=1.4cm,
+                                        >=Stealth,
+                                        line cap=round,line join=round,
+                                        axis/.style={->,thick},
+                                        curve/.style={very thick,red!70!black},
+                                        inRay/.style={->,thick,green!55!black},
+                                        normal/.style={black},
+                                        refRay/.style={->,thick,violet!80!black},
+                                        hit/.style={fill=black,draw=none}
+                                    ]
+                                        % Window
+                                        \def\xmin{-1.2}
+                                        \def\xmax{ 1.2}
+                                        \def\ymin{-0.2}
+                                        \def\ymax{ 2.2}
+
+                                        % Optional light grid
+                                        \draw[step=0.25,gray!20] (\xmin,\ymin) grid (\xmax,\ymax);
+
+                                        % Axes
+                                        \draw[axis] (\xmin,0) -- (\xmax,0) node[right] {$x$};
+                                        \draw[axis] (0,\ymin) -- (0,\ymax) node[above] {$y$};
+
+                                        % ticks (every 0.5) and labels
+                                        \foreach \x in {-1, 1}{
+                                            \draw (\x,0.06) -- (\x,-0.06);              % x tick
+                                            \node[below,scale=0.6, black] at (\x,-0.05) {$\x$};    % x label
+                                        }
+                                        \foreach \y in {1, 2}{
+                                            \draw (0.06,\y) -- (-0.06,\y);              % y tick
+                                            \node[left,scale=0.6, black] at (-0.05,\y) {$\y$};     % y label
+                                        }
+
+                                        % Parabola y = x^2
+                                        \draw[curve,domain=\xmin:\xmax,samples=300] plot (\x,{(\x)^2}) ;
+
+                                        % Vertical incoming rays every 0.5
+                                        \foreach \a in {-1}{
+                                            \pgfmathsetmacro{\ya}{\a*\a}
+                                            \draw[inRay] (\a,\ymax) -- (\a,\ya);
+                                            \fill[hit] (\a,\ya) circle (1.0pt);
+                                        }
+
+                                        % Normals + reflected rays for a != 0
+                                        % Normal at (a,a^2): y-a^2 = -(1/(2a))(x-a)
+                                        % Reflection slope: m_r = a - 1/(4a)
+                                        \foreach \a in {-1}{
+                                            \pgfmathsetmacro{\ya}{\a*\a}
+                                            \pgfmathsetmacro{\dxn}{(0.3)/sqrt(1/\ya + 4)}
+                                            \pgfmathsetmacro{\xL}{\a-\dxn}
+                                            \pgfmathsetmacro{\xR}{\a+\dxn}
+                                            \pgfmathsetmacro{\yL}{\ya + \dxn/(2*\a)}
+                                            \pgfmathsetmacro{\yR}{\ya - \dxn/(2*\a)}
+                                            \draw[normal] (\xL,\yL) -- (\xR,\yR);
+                                        }
+
+                                    \end{tikzpicture}
+                                </latex-image>
+                            </image>
+                        </figure>
+                    </p>
+                </li>
+                <li>
+                    <p xml:id="curved-facts">
+                        What facts about the curved wall are useful in helping you find the path? What might the dashed black line represent?
+                    </p>
+                </li>
+                <li>
+                    <p xml:id="curved-many">
+                        Try drawing the paths for all the balls in <xref ref="parabola-many-reflection"/>. What do you notice?
+                        <figure xml:id="parabola-many-reflection">
+                            <caption>Many balls hitting a curved wall</caption>
+                            <image>
+                                <latex-image>
+                                    \begin{tikzpicture}[
+                                        x=1.4cm,y=1.4cm,
+                                        >=Stealth,
+                                        line cap=round,line join=round,
+                                        axis/.style={->,thick},
+                                        curve/.style={very thick,red!70!black},
+                                        inRay/.style={->,thick,green!55!black},
+                                        normal/.style={black},
+                                        refRay/.style={->,thick,violet!80!black},
+                                        hit/.style={fill=black,draw=none}
+                                    ]
+                                        % Window
+                                        \def\xmin{-1.2}
+                                        \def\xmax{ 1.2}
+                                        \def\ymin{-0.2}
+                                        \def\ymax{ 2.2}
+
+                                        % Optional light grid
+                                        \draw[step=0.25,gray!20] (\xmin,\ymin) grid (\xmax,\ymax);
+
+                                        % Axes
+                                        \draw[axis] (\xmin,0) -- (\xmax,0) node[right] {$x$};
+                                        \draw[axis] (0,\ymin) -- (0,\ymax) node[above] {$y$};
+
+                                        % ticks (every 0.5) and labels
+                                        \foreach \x in {-1, 1}{
+                                            \draw (\x,0.06) -- (\x,-0.06);              % x tick
+                                            \node[below,scale=0.6, black] at (\x,-0.05) {$\x$};    % x label
+                                        }
+                                        \foreach \y in {1, 2}{
+                                            \draw (0.06,\y) -- (-0.06,\y);              % y tick
+                                            \node[left,scale=0.6, black] at (-0.05,\y) {$\y$};     % y label
+                                        }
+
+                                        % Parabola y = x^2
+                                        \draw[curve,domain=\xmin:\xmax,samples=300] plot (\x,{(\x)^2}) ;
+
+                                        % Normals + reflected rays for a != 0
+                                        % Normal at (a,a^2): y-a^2 = -(1/(2a))(x-a)
+                                        % Reflection slope: m_r = a - 1/(4a)
+                                        \foreach \a in {-1,-0.75, -0.5, -0.25, 0.25, 0.5, 0.75, 1}{
+                                            \pgfmathsetmacro{\ya}{\a*\a}
+                                            \draw[inRay] (\a,\ymax) -- (\a,\ya);
+                                            \fill[hit] (\a,\ya) circle (1.0pt);
+
+                                            \pgfmathsetmacro{\dxn}{(0.3)/sqrt(1/\ya + 4)}
+                                            \pgfmathsetmacro{\xL}{\a-\dxn}
+                                            \pgfmathsetmacro{\xR}{\a+\dxn}
+                                            \pgfmathsetmacro{\yL}{\ya + \dxn/(2*\a)}
+                                            \pgfmathsetmacro{\yR}{\ya - \dxn/(2*\a)}
+                                            \draw[normal] (\xL,\yL) -- (\xR,\yR);
+
+                                            % Reflected ray direction (forced upward)
+                                            %\pgfmathsetmacro{\mr}{\a - 1/(4*\a)}
+                                            %\pgfmathsetmacro{\ang}{atan(\mr)}
+                                            %\pgfmathsetmacro{\angIn}{(\a &gt; 0) ? \ang+180 : \ang}
+                                            %\pgfmathsetmacro{\len}{sqrt(\a*\a*\a*\a + 0.5*\a*\a + 1/16) + 0.2}
+                                            %\draw[refRay] (\a,\ya) -- ++(\angIn:\len);
+
+                                            \draw[black, fill=gray!40] (\a, \ymax) circle (0.08);
+                                        }
+
+                                    \end{tikzpicture}
+                                </latex-image>
+                            </image>
+                        </figure>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Where would balls that didn't arrive vertically go? How would you find their reflection?
+                    </p>
+                </li>
+            </ol>
+        </p>
         </statement>
-    </activity> -->
+        <solution>
+            <p>
+                We've drawn the bounces of all these balls in <xref ref="parabola-focus"/>. Where do they all intersect? And why do they all intersect!
+            </p>
+            <figure xml:id="parabola-focus">
+                <caption>The bounce paths of all the balls</caption>
+                                            <image>
+                                <latex-image>
+                                    \begin{tikzpicture}[
+                                        x=1.4cm,y=1.4cm,
+                                        >=Stealth,
+                                        line cap=round,line join=round,
+                                        axis/.style={->,thick},
+                                        curve/.style={very thick,red!70!black},
+                                        inRay/.style={thick,green!55!black},
+                                        normal/.style={black},
+                                        refRay/.style={thick,violet!80!black},
+                                        hit/.style={fill=black,draw=none}
+                                    ]
+                                        % Window
+                                        \def\xmin{-1.2}
+                                        \def\xmax{ 1.2}
+                                        \def\ymin{-0.2}
+                                        \def\ymax{ 2.2}
+
+                                        % Optional light grid
+                                        \draw[step=0.25,gray!20] (\xmin,\ymin) grid (\xmax,\ymax);
+
+                                        % Axes
+                                        \draw[axis] (\xmin,0) -- (\xmax,0) node[right] {$x$};
+                                        \draw[axis] (0,\ymin) -- (0,\ymax) node[above] {$y$};
+
+                                        % ticks (every 0.5) and labels
+                                        \foreach \x in {-1, 1}{
+                                            \draw (\x,0.06) -- (\x,-0.06);              % x tick
+                                            \node[below,scale=0.6, black] at (\x,-0.05) {$\x$};    % x label
+                                        }
+                                        \foreach \y in {1, 2}{
+                                            \draw (0.06,\y) -- (-0.06,\y);              % y tick
+                                            \node[left,scale=0.6, black] at (-0.05,\y) {$\y$};     % y label
+                                        }
+
+                                        % Parabola y = x^2
+                                        \draw[curve,domain=\xmin:\xmax,samples=300] plot (\x,{(\x)^2}) ;
+
+                                        % Normals + reflected rays for a != 0
+                                        % Normal at (a,a^2): y-a^2 = -(1/(2a))(x-a)
+                                        % Reflection slope: m_r = a - 1/(4a)
+                                        \foreach \a in {-1,-0.75, -0.5, -0.25, 0.25, 0.5, 0.75, 1}{
+                                            \pgfmathsetmacro{\ya}{\a*\a}
+                                            \draw[inRay] (\a,\ymax) -- (\a,\ya);
+                                            \fill[hit] (\a,\ya) circle (1.0pt);
+
+                                            \pgfmathsetmacro{\dxn}{(0.3)/sqrt(1/\ya + 4)}
+                                            \pgfmathsetmacro{\xL}{\a-\dxn}
+                                            \pgfmathsetmacro{\xR}{\a+\dxn}
+                                            \pgfmathsetmacro{\yL}{\ya + \dxn/(2*\a)}
+                                            \pgfmathsetmacro{\yR}{\ya - \dxn/(2*\a)}
+                                            \draw[normal] (\xL,\yL) -- (\xR,\yR);
+
+                                            % Reflected ray direction (forced upward)
+                                            \pgfmathsetmacro{\mr}{\a - 1/(4*\a)}
+                                            \pgfmathsetmacro{\ang}{atan(\mr)}
+                                            \pgfmathsetmacro{\angIn}{(\a &gt; 0) ? \ang+180 : \ang}
+                                            \pgfmathsetmacro{\len}{sqrt(\a*\a*\a*\a + 0.5*\a*\a + 1/16) + 0.2}
+                                            \draw[refRay] (\a,\ya) -- ++(\angIn:\len);
+
+                                            \draw[black, fill=gray!40] (\a, \ymax) circle (0.08);
+                                        }
+
+                                    \end{tikzpicture}
+                                </latex-image>
+                            </image>
+            </figure>
+
+            <note>
+                <p> The point of intersection is called the <term>focus</term> of a parabola, and it is used in lenses and mirrors to create an image. You could even start a fire by placing metal in a parabolic shape around some kindling! </p>
+            </note>
+        </solution>
+    </activity>
 
     <!-- [LP] Add guidance on structured lesson plan-->
 
