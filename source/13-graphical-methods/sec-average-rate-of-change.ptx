@@ -41,8 +41,6 @@
         </introduction>
     </objectives>
 
-    <!-- [LP] Add guidance on activity -->
-
     <axiom component="lesson-plan">
             <title>Problem-Solving and Discovery</title>
             <dl>
@@ -192,18 +190,27 @@
                 </li>
             </ul>
         </p>
-        <image xml:id="img-secant-illustration-avg" width="40%">
+        <image xml:id="img-secant-illustration-avg" width="65%">
             <latex-image label="Secant Line Illustration">
-                \begin{tikzpicture}[scale=0.8]
-                    \draw[-&gt;] (-0.5,0) -- (5,0) node[right] {$x$};
-                    \draw[-&gt;] (0,-0.5) -- (0,5) node[above] {$y$};
-                    \draw[thick, blue, domain=0.5:4] plot (\x, {0.2*\x*\x + 1});
-                    % Secant
-                    \coordinate (A) at (1, 1.2);
-                    \coordinate (B) at (3.5, 3.45);
-                    \draw[red, dashed] (0.5, 0.75) -- (4, 3.9) node[right] {Secant line};
-                    \filldraw (A) circle (1.5pt) node[below right] {$(x_1, y_1)$};
-                    \filldraw (B) circle (1.5pt) node[above left] {$(x_2, y_2)$};
+                \begin{tikzpicture}
+                \begin{axis}[
+                    axis lines=center,
+                    xlabel={$x$},
+                    ylabel={$y$},
+                    xmin=-0.5, xmax=5,
+                    ymin=-0.5, ymax=5,
+                    tick label style={font=\footnotesize},
+                    grid=both,
+                    grid style={line width=0.3pt, draw=gray!30},
+                    axis equal image,
+                ]
+                    \addplot[thick, blue, domain=0.5:4, samples=60, smooth] {0.2*x^2 + 1};
+                    \addplot[red, dashed, domain=0.5:4, samples=2] {0.7*x + 0.5};
+                    \node[right, font=\small] at (axis cs:4,3.3) {Secant line};
+                    \addplot[only marks, mark=*, mark size=1.5pt, black] coordinates {(1,1.2) (3.5,3.45)};
+                    \node[below right, font=\small] at (axis cs:1,1.2) {$(x_1, y_1)$};
+                    \node[above left, font=\small] at (axis cs:3.5,3.45) {$(x_2, y_2)$};
+                \end{axis}
                 \end{tikzpicture}
             </latex-image>
         </image>
@@ -243,46 +250,29 @@
                 Now, calculate the gradient:
                 <me>\text{Gradient} = \frac{15 - 3}{3 - 1} = \frac{12}{2} = 6</me>
             </p>
-            <image width="40%">
+            <image width="65%">
                 <latex-image label="QuadraticSecant Line">
-                    \begin{tikzpicture}[x=1cm, y=0.25cm]
-
-                       % Grid
-                        \draw[help lines, color=gray!40,
-                            xstep=1, ystep=2]
-                            (-0.5,-1) grid (4.5,16);
-
-
-                        % Axes
-                        \draw[->] (-0.5,0) -- (4.5,0) node[right] {$x$};
-                        \draw[->] (0,-1) -- (0,16.5) node[above] {$y$};
-
-                        % Quadratic curve
-                        \draw[thick, blue, domain=0:3.4, smooth]
-                            plot (\x, {\x*\x + 2*\x});
-
-                        % Secant line
-                        \draw[red, dashed] (1,3) -- (3,15);
-
-                        % Points
-                        \filldraw (1,3) circle (2pt)
-                            node[left] {$(1,3)$};
-
-                        \filldraw (3,15) circle (2pt)
-                            node[right] {$(3,15)$};
-
-                        % Delta x
-                        \draw[thick, black, dashed]
-                            (1,3) -- (3,3);
-
-                        \node at (2,1.5) {$\Delta x = 2$};
-
-                        % Delta y
-                        \draw[thick, black, dashed]
-                            (3,3) -- (3,15);
-
-                        \node at (3.8,9) {$\Delta y = 12$};
-
+                    \begin{tikzpicture}
+                    \begin{axis}[
+                        axis lines=center,
+                        xlabel={$x$},
+                        ylabel={$y$},
+                        xmin=0, xmax=4,
+                        ymin=-2, ymax=16,
+                        tick label style={font=\footnotesize},
+                        grid=both,
+                        grid style={line width=0.3pt, draw=gray!30},
+                    ]
+                        \addplot[thick, blue, domain=0:3.4, samples=80, smooth] {x^2 + 2*x};
+                        \addplot[red, dashed, domain=0.5:3.5, samples=2] {6*x - 3};
+                        \addplot[only marks, mark=*, mark size=2pt, black] coordinates {(1,3) (3,15)};
+                        \node[left, font=\small] at (axis cs:1,3) {$(1,3)$};
+                        \node[right, font=\small] at (axis cs:3,15) {$(3,15)$};
+                        \draw[thick, black, dashed] (axis cs:1,3) -- (axis cs:3,3)
+                            node[midway, below, font=\small] {$\Delta x = 2$};
+                        \draw[thick, black, dashed] (axis cs:3,3) -- (axis cs:3,15)
+                            node[midway, right, font=\small] {$\Delta y = 12$};
+                    \end{axis}
                     \end{tikzpicture}
                 </latex-image>
             </image>
@@ -295,7 +285,7 @@
     <example>
         <statement>
             <p>
-                Find the average rate of change for the function <m>y = x^3 - 4x</m> on the interval <m>[-1, 2]</m>.
+                Find the average rate of change for the function <m>y = x^3 - 4x</m> from <m>x = -1</m> to <m>x = 2</m>.
             </p>
         </statement>
         <solution>
@@ -322,19 +312,30 @@
                 Calculate the average rate of change:
                 <me>\text{Rate} = \frac{0 - 3}{2 - (-1)} = \frac{-3}{3} = -1</me>
             </p>
-            <image xml:id="img-example-cubic-avg" width="50%">
+            <image xml:id="img-example-cubic-avg" width="65%">
                 <latex-image label="Cubic_Function_Secant Line">
-                    \begin{tikzpicture}[scale=0.8]
-                        \draw[help lines, color=gray!30, step=1] (-2,-4) grid (3,4);
-                        \draw[-&gt;] (-2,0) -- (3,0) node[right] {$x$};
-                        \draw[-&gt;] (0,-4) -- (0,4) node[above] {$y$};
-                        \draw[thick, blue, domain=-2.1:2.3] plot (\x, {\x*\x*\x - 4*\x});
-                        \draw[red, dashed] (-1.5, 4.5) -- (2.5, -1.5);
-                        \filldraw (-1,3) circle (2pt) node[above left] {$(-1, 3)$};
-                        \filldraw (2,0) circle (2pt) node[below left] {$(2, 0)$};
-                        % Gradient triangle
-                        \draw[thick, black, dashed] (-1,3) -- (2,3) node[midway, above] {$\Delta x = 3$};
-                        \draw[thick, black, dashed] (2,3) -- (2,0) node[midway, right] {$\Delta y = -3$};
+                    \begin{tikzpicture}
+                    \begin{axis}[
+                        axis lines=center,
+                        xlabel={$x$},
+                        ylabel={$y$},
+                        xmin=-2, xmax=3,
+                        ymin=-4, ymax=4,
+                        tick label style={font=\footnotesize},
+                        grid=both,
+                        grid style={line width=0.3pt, draw=gray!30},
+                        axis equal image,
+                    ]
+                        \addplot[thick, blue, domain=-2.1:2.3, samples=60, smooth] {x^3 - 4*x};
+                        \addplot[red, dashed, domain=-1.5:2.5, samples=2] {-x + 2};
+                        \addplot[only marks, mark=*, mark size=2pt, black] coordinates {(-1,3) (2,0)};
+                        \node[above left, font=\small] at (axis cs:-1,3) {$(-1,3)$};
+                        \node[below left, font=\small] at (axis cs:2,0) {$(2,0)$};
+                        \draw[thick, black, dashed] (axis cs:-1,3) -- (axis cs:2,3)
+                            node[midway, above, font=\small] {$\Delta x = 3$};
+                        \draw[thick, black, dashed] (axis cs:2,3) -- (axis cs:2,0)
+                            node[midway, right, font=\small] {$\Delta y = -3$};
+                    \end{axis}
                     \end{tikzpicture}
                 </latex-image>
             </image>
@@ -370,18 +371,28 @@
             <p>
                 Average growth rate = <m>\frac{7.5 - 5.4}{5 - 2} = \frac{2.1}{3} = 0.7</m> thousand people per year.
             </p>
-            <image xml:id="img-example-pop-avg" width="50%">
+            <image xml:id="img-example-pop-avg" width="65%">
                 <latex-image label="Population Growth with Secant Line">
-                    \begin{tikzpicture}[scale=0.6]
-                        \draw[help lines, color=gray!30, step=1] (0,4) grid (6,9);
-                        \draw[-&gt;] (0,4) -- (6,4) node[right] {$t$};
-                        \draw[-&gt;] (0,4) -- (0,9) node[above] {$P$};
-                        \draw[thick, blue, domain=0:6] plot (\x, {5 + 0.1*\x*\x});
-                        \draw[red, dashed] (1, 4.7) -- (6, 8.2);
-                        \filldraw (2,5.4) circle (3pt);
-                        \filldraw (5,7.5) circle (3pt);
-                        \draw[thick, black, dashed] (2,5.4) -- (5,5.4) node[midway, below] {$\Delta t = 3$};
-                        \draw[thick, black, dashed] (5,5.4) -- (5,7.5) node[midway, right] {$\Delta P = 2.1$};
+                    \begin{tikzpicture}
+                    \begin{axis}[
+                        axis x line=bottom,
+                        axis y line=left,
+                        xlabel={$t$},
+                        ylabel={$P$},
+                        xmin=0, xmax=6,
+                        ymin=4, ymax=9,
+                        tick label style={font=\footnotesize},
+                        grid=both,
+                        grid style={line width=0.3pt, draw=gray!30},
+                    ]
+                        \addplot[thick, blue, domain=0:6, samples=80, smooth] {5 + 0.1*x^2};
+                        \addplot[red, dashed, domain=1:6, samples=2] {4 + 0.7*x};
+                        \addplot[only marks, mark=*, mark size=2.5pt, black] coordinates {(2,5.4) (5,7.5)};
+                        \draw[thick, black, dashed] (axis cs:2,5.4) -- (axis cs:5,5.4)
+                            node[midway, below, font=\small] {$\Delta t = 3$};
+                        \draw[thick, black, dashed] (axis cs:5,5.4) -- (axis cs:5,7.5)
+                            node[midway, right, font=\small] {$\Delta P = 2.1$};
+                    \end{axis}
                     \end{tikzpicture}
                 </latex-image>
             </image>
@@ -415,19 +426,27 @@
                 <p>
                     Average rate of change = <m>\frac{7 - (-5)}{2 - 0} = \frac{12}{2} = 6</m>.
                 </p>
-                <image xml:id="img-ex-secant-quad-avg" width="50%">
+                <image xml:id="img-ex-secant-quad-avg" width="65%">
                     <latex-image label="Quadratic_Secant Line">
-                        \begin{tikzpicture}[scale=0.5]
-                            \draw[help lines, color=gray!30, step=1] (-1,-6) grid (4,10);
-                            \draw[-&gt;] (-1,0) -- (4,0) node[right] {$x$};
-                            \draw[-&gt;] (0,-6) -- (0,10) node[above] {$y$};
-                            \draw[thick, blue, domain=-0.5:2.2] plot (\x, {3*\x*\x - 5});
-                            \draw[red, dashed] (-0.5, -8) -- (2.5, 10);
-                            \filldraw (0,-5) circle (2pt);
-                            \filldraw (2,7) circle (2pt);
-                            % Gradient triangle from (0,-5) to (2,7)
-                            \draw[thick, black, dashed] (0,-5) -- (2,-5) node[midway, below] {$\Delta x = 2$};
-                            \draw[thick, black, dashed] (2,-5) -- (2,7) node[midway, right] {$\Delta y = 12$};
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                            axis lines=center,
+                            xlabel={$x$},
+                            ylabel={$y$},
+                            xmin=-1, xmax=4,
+                            ymin=-6, ymax=10,
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.3pt, draw=gray!30},
+                        ]
+                            \addplot[thick, blue, domain=-0.5:2.2, samples=80, smooth] {3*x^2 - 5};
+                            \addplot[red, dashed, domain=-0.3:2.3, samples=2] {6*x - 5};
+                            \addplot[only marks, mark=*, mark size=2pt, black] coordinates {(0,-5) (2,7)};
+                            \draw[thick, black, dashed] (axis cs:0,-5) -- (axis cs:2,-5)
+                                node[midway, below, font=\small] {$\Delta x = 2$};
+                            \draw[thick, black, dashed] (axis cs:2,-5) -- (axis cs:2,7)
+                                node[midway, right, font=\small] {$\Delta y = 12$};
+                        \end{axis}
                         \end{tikzpicture}
                     </latex-image>
                 </image>
@@ -483,6 +502,252 @@
                 </p>
             </answer>
         </exercise>
+
+        <exercise>
+            <statement>
+                <p>Find the average rate of change of <m>f(x) = x^2 - 2x</m> on the interval <m>[1, 4]</m>.</p>
+            </statement>
+            <answer>
+                <p><m>3</m></p>
+            </answer>
+            <solution>
+                <p>
+                    <md>
+                        <mrow>\text{AROC} \amp= \frac{f(4) - f(1)}{4 - 1} = \frac{(16-8)-(1-2)}{3} = \frac{8-(-1)}{3} = \frac{9}{3} = 3</mrow>
+                    </md>
+                </p>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    A stone is dropped from a cliff and falls freely. Its distance below the cliff top (in metres) after <m>t</m> seconds is <m>s(t) = 5t^2</m>.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Find the average speed over <m>2 \le t \le 4</m>.</p></li>
+                    <li><p>Find the average speed over <m>3 \le t \le 5</m>.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li><p>30 m/s</p></li>
+                    <li><p>40 m/s</p></li>
+                </ol>
+            </answer>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            <md>
+                                <mrow>\frac{s(4)-s(2)}{4-2} = \frac{80-20}{2} = 30 \text{ m/s}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>
+                                <mrow>\frac{s(5)-s(3)}{5-3} = \frac{125-45}{2} = 40 \text{ m/s}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The temperature in Nairobi on a certain day (in °C) is modelled by
+                    <m>T(h) = -h^2 + 6h + 14</m>, where <m>h</m> is hours after 6 am.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Find the average rate of change of temperature from <m>h = 1</m> to <m>h = 4</m>.</p></li>
+                    <li><p>Give the units and interpret the answer in context.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li><p><m>1</m> °C per hour</p></li>
+                    <li><p>The temperature rose, on average, by 1°C per hour between 7 am and 10 am.</p></li>
+                </ol>
+            </answer>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            <md>
+                                <mrow>T(4) \amp= -16+24+14 = 22, \quad T(1) = -1+6+14 = 19</mrow>
+                                <mrow>\text{AROC} \amp= \frac{T(4)-T(1)}{4-1} = \frac{22-19}{3} = 1 \text{ °C/h}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>The units are degrees Celsius per hour. The temperature was rising at an average rate of 1°C per hour between 7 am and 10 am.</p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    For <m>f(x) = x^2</m>, calculate the average rate of change over <m>[2,\ 2+h]</m> for each value of <m>h</m> in the table. Describe the pattern you observe as <m>h</m> gets smaller.
+                </p>
+                <p>
+                    <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                        <row header="yes">
+                            <cell><m>h</m></cell>
+                            <cell><m>f(2+h)</m></cell>
+                            <cell>AROC <m>= \dfrac{f(2+h)-f(2)}{h}</m></cell>
+                        </row>
+                        <row><cell><m>1</m></cell><cell></cell><cell></cell></row>
+                        <row><cell><m>0.5</m></cell><cell></cell><cell></cell></row>
+                        <row><cell><m>0.1</m></cell><cell></cell><cell></cell></row>
+                        <row><cell><m>0.01</m></cell><cell></cell><cell></cell></row>
+                    </tabular>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                        <row header="yes">
+                            <cell><m>h</m></cell><cell><m>f(2+h)</m></cell><cell>AROC</cell>
+                        </row>
+                        <row><cell>1</cell><cell>9</cell><cell>5</cell></row>
+                        <row><cell>0.5</cell><cell>6.25</cell><cell>4.5</cell></row>
+                        <row><cell>0.1</cell><cell>4.41</cell><cell>4.1</cell></row>
+                        <row><cell>0.01</cell><cell>4.0401</cell><cell>4.01</cell></row>
+                    </tabular>
+                </p>
+                <p>The AROC approaches <m>4</m> as <m>h \to 0</m>.</p>
+            </answer>
+            <solution>
+                <p>
+                    Expanding: <m>f(2+h) = (2+h)^2 = 4 + 4h + h^2</m>, so
+                    <md>
+                        <mrow>\text{AROC} = \frac{f(2+h)-f(2)}{h} = \frac{4h+h^2}{h} = 4+h.</mrow>
+                    </md>
+                </p>
+                <p>
+                    <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                        <row header="yes">
+                            <cell><m>h</m></cell><cell><m>f(2+h)</m></cell><cell>AROC <m>= 4+h</m></cell>
+                        </row>
+                        <row><cell>1</cell><cell>9</cell><cell>5</cell></row>
+                        <row><cell>0.5</cell><cell>6.25</cell><cell>4.5</cell></row>
+                        <row><cell>0.1</cell><cell>4.41</cell><cell>4.1</cell></row>
+                        <row><cell>0.01</cell><cell>4.0401</cell><cell>4.01</cell></row>
+                    </tabular>
+                </p>
+                <p>
+                    As <m>h \to 0</m>, AROC <m>\to 4</m>. This limiting value is the <em>instantaneous</em> rate of change of <m>f(x)=x^2</m> at <m>x=2</m>.
+                </p>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    A matatu departs Nairobi. Its distance from the city centre (km) after <m>t</m> hours is <m>d(t) = 4t^2 - t</m>.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Find the average speed between <m>t = 1</m> h and <m>t = 3</m> h.</p></li>
+                    <li><p>Find the average speed between <m>t = 2</m> h and <m>t = 2.5</m> h.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li><p>15 km/h</p></li>
+                    <li><p>17 km/h</p></li>
+                </ol>
+            </answer>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p> Calculating distance, 
+                            <md>
+                                <mrow>d(3) \amp = 36-3 = 33 </mrow>
+                                <mrow>d(1) \amp = 4-1 = 3</mrow>
+                                <mrow>\text{Average speed} \amp= \frac{33-3}{3-1} </mrow>
+                                <mrow> \amp = \frac{30}{2} = 15 \text{ km/h}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>
+                                <mrow>d(2.5) \amp= 4(6.25)-2.5 = 22.5</mrow>
+                                <mrow>d(2) \amp = 16-2 = 14</mrow>
+                                <mrow>\text{Average speed} \amp= \frac{22.5-14}{2.5-2} </mrow>
+                                <mrow> \amp = \frac{8.5}{0.5} = 17 \text{ km/h}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The function <m>f(x) = -x^2 + 4x</m> models the height (in metres) of a thrown ball above the ground at time <m>x</m> seconds.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Find the average rate of change on <m>[1, 3]</m>.</p></li>
+                    <li><p>Find the average rate of change on <m>[3, 5]</m>.</p></li>
+                    <li><p>What does the sign of each answer tell you about the ball's motion?</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li><p><m>0</m> (same height at <m>x=1</m> and <m>x=3</m>)</p></li>
+                    <li><p><m>-4</m> m/s</p></li>
+                    <li><p>Zero means the ball returned to the same height; negative means it is falling on average.</p></li>
+                </ol>
+            </answer>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            <m>f(1)=3</m> and <m>f(3)=-9+12=3</m>, so AROC <m>= \dfrac{3-3}{2} = 0</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>
+                                <mrow>f(5) = -25+20 = -5, \quad f(3) = 3</mrow>
+                                <mrow>\text{AROC} = \frac{-5-3}{5-3} = \frac{-8}{2} = -4 \text{ m/s}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>A positive AROC means the ball is rising on average; zero means it returns to the same height; negative means it is falling on average over the interval.</p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    For <m>f(x) = x^2 + 3x</m>, find the value of <m>x</m> at which the average rate of change over the interval <m>[x,\ x+1]</m> equals <m>7</m>.
+                </p>
+            </statement>
+            <answer>
+                <p><m>x = 1.5</m></p>
+            </answer>
+            <solution>
+                <p>
+                    <md>
+                        <mrow>\text{AROC} \amp= \frac{f(x+1)-f(x)}{1}</mrow>
+                        <mrow>\amp= (x+1)^2+3(x+1) - x^2-3x</mrow>
+                        <mrow>\amp= x^2+2x+1+3x+3 - x^2-3x = 2x+4</mrow>
+                    </md>
+                    Setting <m>2x+4 = 7</m> gives <m>x = 1.5</m>.
+                </p>
+            </solution>
+        </exercise>
     </exercises>
 
     <!-- [LP] Add information on how to differentiate  -->
@@ -501,7 +766,7 @@
                 <row>
                     <cell>Struggling Learners (Support)</cell>
                     <cell>
-                        Provide a step-by-step checklist: find $y_1$, find $y_2$, calculate $\Delta y$, calculate $\Delta x$, divide.
+                        Provide a step-by-step checklist: find <m>y_1</m>, find <m>y_2</m>, calculate <m>\Delta y</m>, calculate <m>\Delta x</m>, divide.
                     </cell>
                     <cell></cell>
                 </row>
@@ -515,7 +780,7 @@
                 <row>
                     <cell>Advanced Learners (Challenge)</cell>
                     <cell>
-                        Investigate functions where the average rate of change is zero over certain intervals (e.g., $y = x^2$ on $[-2, 2]$).
+                        Investigate functions where the average rate of change is zero over certain intervals (e.g., <m>y = x^2</m> on <m>[-2, 2]</m>).
                     </cell>
                     <cell></cell>
                 </row>

@@ -41,6 +41,8 @@
         </introduction>
     </objectives>
 
+    <!-- [LP] Add guidance on structured lesson plan-->
+
     <axiom component="lesson-plan">
         <title>Problem-Solving and Discovery</title>
         <dl>
@@ -77,25 +79,28 @@
             <p>
                 The data collected was plotted on a graph to show how the temperature changed throughout the day and night.
             </p>
-            <image width="70%">
+            <image width="80%">
                 <latex-image label="temperature-graph">
                     \begin{tikzpicture}
-                        \draw[help lines, color=gray!30, step=1] (0,0) grid (12,6);
-                        \draw[->] (0,0) -- (12.5,0) node[right] {Time (hours)};
-                        \draw[->] (0,0) -- (0,6.5) node[above] {Temp ($^\circ$C)};
-                        \foreach \x in {0,4,8,12,16,20,24}
-                            \draw (\x/2, 2pt) -- (\x/2, -2pt) node[below] {\x:00};
-                        \foreach \y in {0,10,20,30}
-                            \draw (2pt, \y/5) -- (-2pt, \y/5) node[left] {\y};
-                        
-                        \draw[blue, thick, smooth] plot coordinates {(0, 3) (2, 2.4) (4, 3.6) (6, 5) (8, 5.6) (10, 4.4) (12, 3.2)};
-                        \filldraw[blue] (0, 3) circle (1.5pt);
-                        \filldraw[blue] (2, 2.4) circle (1.5pt);
-                        \filldraw[blue] (4, 3.6) circle (1.5pt);
-                        \filldraw[blue] (6, 5) circle (1.5pt);
-                        \filldraw[blue] (8, 5.6) circle (1.5pt);
-                        \filldraw[blue] (10, 4.4) circle (1.5pt);
-                        \filldraw[blue] (12, 3.2) circle (1.5pt);
+                    \begin{axis}[
+                        axis x line=bottom, axis y line=left,
+                        xlabel={Time (h)},
+                        ylabel={Temp ($^\circ$C)},
+                        xmin=0, xmax=25,
+                        ymin=0, ymax=32,
+                        xtick={0,4,8,12,16,20,24},
+                        xticklabels={{0:00},{4:00},{8:00},{12:00},{16:00},{20:00},{24:00}},
+                        x tick label style={rotate=45, anchor=east, font=\small},
+                        ytick={0,10,20,30},
+                        tick label style={font=\footnotesize},
+                        grid=both,
+                        grid style={line width=0.3pt, draw=gray!30},
+                    ]
+                        \addplot[blue, thick, smooth] coordinates {
+                            (0,15) (4,12) (8,18) (12,25) (16,28) (20,22) (24,16)};
+                        \addplot[only marks, mark=*, mark size=1.5pt, blue] coordinates {
+                            (0,15) (4,12) (8,18) (12,25) (16,28) (20,22) (24,16)};
+                    \end{axis}
                     \end{tikzpicture}
                 </latex-image>
             </image>
@@ -201,32 +206,28 @@
                 </li>
             </ul>
         </p>
-        <image width="40%">
+        <image width="65%">
             <latex-image label="graphical-empirical-data">
                 \begin{tikzpicture}
-                    \draw[help lines, color=gray!30, step=1] (0,0) grid (5,5);
-                    \draw[->] (0,0) -- (5.5,0) node[right] {Independent Variable};
-                    \draw[->] (0,0) -- (0,5.5) node[above] {Dependent Variable};
-                    \foreach \x in {0,1,2,3,4,5}
-                        \draw (\x/2, 2pt) -- (\x/2, -2pt) node[below] {\x};
-                    \foreach \y in {0,1,2,3,4,5}
-                        \draw (2pt, \y/2) -- (-2pt, \y/2) node[left] {\y};
-                    
-                    % Example of a linear trend
-                    \filldraw[red] (0.5, 1) circle (1.5pt);
-                    \filldraw[red] (1.0, 2) circle (1.5pt);
-                    \filldraw[red] (1.5, 3) circle (1.5pt);
-                    \filldraw[red] (2.0, 4) circle (1.5pt);
-                    \filldraw[red] (2.5, 5) circle (1.5pt);
-                    \draw[red, thick] (0.25, 0.75) -- (2.75, 5.25);
-                    
-                    % Example of a non-linear trend
-                    \filldraw[blue] (3.0, 1) circle (1.5pt);
-                    \filldraw[blue] (3.5, 1.8) circle (1.5pt);
-                    \filldraw[blue] (4.0, 3) circle (1.5pt);
-                    \filldraw[blue] (4.5, 4.8) circle (1.5pt);
-                    \filldraw[blue] (5.0, 7) circle (1.5pt);
-                    \draw[blue, thick] plot coordinates {(3.0, 1) (3.25, 1.4) (3.75, 2.4) (4.25, 3.6) (4.75, 5.8) (5.25, 8)};
+                \begin{axis}[
+                    axis x line=bottom, axis y line=left,
+                    xlabel={Independent Variable},
+                    ylabel={Dependent Variable},
+                    xmin=0, xmax=5.5, ymin=0, ymax=8,
+                    xtick={0,1,2,3,4,5},
+                    ytick={0,1,2,3,4,5},
+                    tick label style={font=\footnotesize},
+                    grid=both,
+                    grid style={line width=0.3pt, draw=gray!30},
+                ]
+                    \addplot[red, thick, domain=0.25:2.75, samples=2] {2*x};
+                    \addplot[only marks, mark=*, mark size=1.5pt, red] coordinates {
+                        (0.5,1) (1.0,2) (1.5,3) (2.0,4) (2.5,5)};
+                    \addplot[blue, thick, smooth] coordinates {
+                        (3.0,1) (3.25,1.4) (3.75,2.4) (4.25,3.6) (4.75,5.8) (5.25,8)};
+                    \addplot[only marks, mark=*, mark size=1.5pt, blue] coordinates {
+                        (3.0,1) (3.5,1.8) (4.0,3) (4.5,4.8) (5.0,7)};
+                \end{axis}
                 \end{tikzpicture}
             </latex-image>
         </image>
@@ -276,23 +277,25 @@
                         </p>
                     </li>
                     <li>
-                        <image xml:id="img-tree-growth" width="50%">
+                        <image xml:id="img-tree-growth" width="65%">
                             <latex-image label="tree-growth-graph">
                                 \begin{tikzpicture}
-                                    \draw[help lines, color=gray!30, step=1] (0,0) grid (6,7);
-                                    \draw[->] (0,0) -- (6.5,0) node[right] {Diameter (in)};
-                                    \draw[->] (0,0) -- (0,7.5) node[above] {Age (yr)};
-                                    \foreach \x in {2,4,6,8,10}
-                                        \draw (\x/2, 2pt) -- (\x/2, -2pt) node[below] {\x};
-                                    \foreach \y in {0,20,40,60}
-                                        \draw (2pt, \y/10) -- (-2pt, \y/10) node[left] {\y};
-                                    
-                                    \filldraw[red] (1, 1.2) circle (2pt);
-                                    \filldraw[red] (2, 2.5) circle (2pt);
-                                    \filldraw[red] (3, 3.7) circle (2pt);
-                                    \filldraw[red] (4, 5.0) circle (2pt);
-                                    \filldraw[red] (5, 6.3) circle (2pt);
-                                    \draw[red, thick, dashed] (0,0) -- (5.5, 6.93);
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Diameter (in)},
+                                    ylabel={Age (yr)},
+                                    xmin=0, xmax=11,
+                                    ymin=0, ymax=70,
+                                    xtick={0,2,4,6,8,10},
+                                    ytick={0,20,40,60},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, red] coordinates {
+                                        (2,12) (4,25) (6,37) (8,50) (10,63)};
+                                    \addplot[red, thick, dashed, domain=0:11, samples=2] {6.3*x};
+                                \end{axis}
                                 \end{tikzpicture}
                             </latex-image>
                         </image>
@@ -312,26 +315,24 @@
             <p>
                 The scatter plot below shows the relationship between the number of hours students spent studying for a mathematics exam and their final scores.
             </p>
-            <image xml:id="img-scatter-study-ex" width="50%">
+            <image xml:id="img-scatter-study-ex" width="65%">
                 <latex-image>
                     \begin{tikzpicture}
-                        \draw[help lines, color=gray!30, step=1] (0,0) grid (5,5);
-                        \draw[->] (0,0) -- (5.5,0) node[right] {Hours};
-                        \draw[->] (0,0) -- (0,5.5) node[above] {Score (\%)};
-                        \foreach \x in {0,2,4,6,8,10}
-                            \draw (\x/2, 2pt) -- (\x/2, -2pt) node[below] {\x};
-                        \foreach \y in {0,20,40,60,80,100}
-                            \draw (2pt, \y/20) -- (-2pt, \y/20) node[left] {\y};
-                        
-                        \filldraw[blue] (0.5, 1.5) circle (1.5pt);
-                        \filldraw[blue] (1.0, 2.25) circle (1.5pt);
-                        \filldraw[blue] (1.5, 2.0) circle (1.5pt);
-                        \filldraw[blue] (2.0, 2.75) circle (1.5pt);
-                        \filldraw[blue] (2.5, 3.5) circle (1.5pt);
-                        \filldraw[blue] (3.0, 3.25) circle (1.5pt);
-                        \filldraw[blue] (3.5, 4.25) circle (1.5pt);
-                        \filldraw[blue] (4.0, 4.0) circle (1.5pt);
-                        \filldraw[blue] (4.5, 4.75) circle (1.5pt);
+                    \begin{axis}[
+                        axis x line=bottom, axis y line=left,
+                        xlabel={Hours},
+                        ylabel={Score (\%)},
+                        xmin=0, xmax=10,
+                        ymin=0, ymax=105,
+                        xtick={0,2,4,6,8,10},
+                        ytick={0,20,40,60,80,100},
+                        tick label style={font=\footnotesize},
+                        grid=both,
+                        grid style={line width=0.3pt, draw=gray!30},
+                    ]
+                        \addplot[only marks, mark=*, mark size=1.5pt, blue] coordinates {
+                            (1,30) (2,45) (3,40) (4,55) (5,70) (6,65) (7,85) (8,80) (9,95)};
+                    \end{axis}
                     \end{tikzpicture}
                 </latex-image>
             </image>
@@ -449,13 +450,21 @@
                 <p>
                     A science experiment measures the temperature of a cooling liquid over time.
                 </p>
-                <image width="40%">
+                <image width="65%">
                     <latex-image label="cooling-graph">
                         \begin{tikzpicture}
-                            \draw[help lines, color=gray!30, step=1] (0,0) grid (5,5);
-                            \draw[->] (0,0) -- (5.5,0) node[right] {Time (min)};
-                            \draw[->] (0,0) -- (0,5.5) node[above] {Temp ($^\circ$C)};
-                            \draw[blue, thick, smooth, domain=0:5] plot (\x, {5*exp(-\x/2)});
+                        \begin{axis}[
+                            axis x line=bottom, axis y line=left,
+                            xlabel={Time (min)},
+                            ylabel={Temp ($^\circ$C)},
+                            xmin=0, xmax=5,
+                            ymin=0, ymax=5,
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.3pt, draw=gray!30},
+                        ]
+                            \addplot[blue, thick, smooth, domain=0:5, samples=60] {5*exp(-x/2)};
+                        \end{axis}
                         \end{tikzpicture}
                     </latex-image>
                 </image>
@@ -483,6 +492,270 @@
             </statement>
             <answer>
                 <p>The number of new members doubles each month. This is an exponential pattern.</p>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    <xref ref="nairobi-rain"/> shows the long-term average monthly rainfall (in mm) for Nairobi, Kenya.
+                </p>
+                <table xml:id="nairobi-rain">
+                    <title>Nairobi Average Monthly Rainfall</title>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Month</cell>
+                        <cell>Jan</cell><cell>Feb</cell><cell>Mar</cell>
+                        <cell>Apr</cell><cell>May</cell><cell>Jun</cell>
+                    </row>
+                    <row>
+                        <cell>Rainfall (mm)</cell>
+                        <cell>38</cell><cell>64</cell><cell>126</cell>
+                        <cell>211</cell><cell>158</cell><cell>46</cell>
+                    </row>
+                    <row>
+                        <cell>Month</cell>
+                        <cell>Jul</cell><cell>Aug</cell><cell>Sep</cell>
+                        <cell>Oct</cell><cell>Nov</cell><cell>Dec</cell>
+                    </row>
+                    <row>
+                        <cell>Rainfall (mm)</cell>
+                        <cell>15</cell><cell>23</cell><cell>31</cell>
+                        <cell>61</cell><cell>150</cell><cell>86</cell>
+                    </row>
+                </tabular>
+                </table>
+                <p> Source: <url href="https://www.meteo.go.ke/">Kenya Meteorological Department</url></p>
+                <ol marker="(a)">
+                    <li><p>Plot the monthly rainfall data on a graph, with months on the horizontal axis and rainfall (mm) on the vertical axis.</p></li>
+                    <li><p>Identify the two months with the highest rainfall.</p></li>
+                    <li><p>Kenya has two rainy seasons each year. Use your graph to describe the timing and relative intensity of each season.</p></li>
+                    <li><p>During which months is Nairobi driest?</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="75%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Month},
+                                    ylabel={Rainfall (mm)},
+                                    xmin=0.5, xmax=12.5,
+                                    ymin=0, ymax=230,
+                                    xtick={1,2,3,4,5,6,7,8,9,10,11,12},
+                                    xticklabels={Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec},
+                                    x tick label style={rotate=45, anchor=east, font=\scriptsize},
+                                    ytick={0,50,100,150,200},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick] coordinates {
+                                        (1,38)(2,64)(3,126)(4,211)(5,158)(6,46)
+                                        (7,15)(8,23)(9,31)(10,61)(11,150)(12,86)};
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (1,38)(2,64)(3,126)(4,211)(5,158)(6,46)
+                                        (7,15)(8,23)(9,31)(10,61)(11,150)(12,86)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li><p>April (211 mm) and November (150 mm).</p></li>
+                    <li><p>The <em>long rains</em> (March–May, peak April) are heavier and more prolonged. The <em>short rains</em> (October–December, peak November) are shorter and less intense.</p></li>
+                    <li><p>June–September, with July the driest at 15 mm.</p></li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table below shows Kenya's estimated population at five-year intervals.
+                </p>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Year</cell>
+                        <cell>2000</cell><cell>2005</cell><cell>2010</cell><cell>2015</cell><cell>2020</cell>
+                    </row>
+                    <row>
+                        <cell>Population (millions)</cell>
+                        <cell>31</cell><cell>36</cell><cell>41</cell><cell>49</cell><cell>54</cell>
+                    </row>
+                </tabular>
+                <p>
+                    Source: <url href="https://data.worldbank.org/indicator/SP.POP.TOTL?locations=KE">World Bank, Kenya population data</url>.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Plot the data as a scatter graph with year on the horizontal axis and population on the vertical axis.</p></li>
+                    <li><p>Describe the overall trend.</p></li>
+                    <li><p>Is the rate of population growth constant? Justify your answer using the data.</p></li>
+                    <li><p>Use the graph to estimate Kenya's population in 2012.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="65%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Year},
+                                    ylabel={Population (millions)},
+                                    xmin=1998, xmax=2022,
+                                    ymin=28, ymax=58,
+                                    xtick={2000,2005,2010,2015,2020},
+                                    x tick label style={rotate=45, anchor=east, font=\small},
+                                    ytick={30,35,40,45,50,55},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=3pt, red] coordinates {
+                                        (2000,31) (2005,36) (2010,41) (2015,49) (2020,54)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li><p>Strong positive trend — Kenya's population increases steadily over time.</p></li>
+                    <li>
+                        <p>
+                            The increases per 5-year period are: 5, 5, 8, 5 million. The increase from 2010 to 2015 is larger, so the growth rate is not perfectly constant — it is slightly accelerating, suggesting a non-linear (close to exponential) trend over a longer scale.
+                        </p>
+                    </li>
+                    <li><p>Approximately 43–44 million (reading between the 2010 and 2015 points).</p></li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table below shows how average temperature varies with altitude at several locations across Kenya, from the lowland coast to the highlands near Mount Kenya.
+                </p>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Altitude (m)</cell>
+                        <cell>500</cell><cell>1000</cell><cell>1500</cell><cell>2000</cell><cell>2500</cell><cell>3000</cell>
+                    </row>
+                    <row>
+                        <cell>Avg. Temperature (°C)</cell>
+                        <cell>27</cell><cell>24</cell><cell>20</cell><cell>17</cell><cell>13</cell><cell>10</cell>
+                    </row>
+                </tabular>
+                <ol marker="(a)">
+                    <li><p>Plot the data with altitude on the horizontal axis and temperature on the vertical axis.</p></li>
+                    <li><p>Describe the relationship between altitude and temperature.</p></li>
+                    <li><p>Is the relationship approximately linear? Justify with calculations.</p></li>
+                    <li><p>Nairobi sits at about 1700 m above sea level. Use your graph to estimate Nairobi's average temperature.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="65%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Altitude (m)},
+                                    ylabel={Temp ($^\circ$C)},
+                                    xmin=0, xmax=3200,
+                                    ymin=8, ymax=30,
+                                    xtick={500,1000,1500,2000,2500,3000},
+                                    ytick={10,13,17,20,24,27},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick] coordinates {
+                                        (500,27)(1000,24)(1500,20)(2000,17)(2500,13)(3000,10)};
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (500,27)(1000,24)(1500,20)(2000,17)(2500,13)(3000,10)};
+                                    \draw[dashed, red] (axis cs:1700,8) -- (axis cs:1700,18.8) -- (axis cs:0,18.8);
+                                    \node[below, red, font=\small] at (axis cs:1700,8) {$1700$ m};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li><p>Strong <em>negative</em> relationship — as altitude increases, the average temperature decreases.</p></li>
+                    <li>
+                        <p>
+                            Temperature drop per 500 m: <m>27-24=3</m>, <m>24-20=4</m>, <m>20-17=3</m>, <m>17-13=4</m>, <m>13-10=3</m>. The drop is approximately 3–4 °C per 500 m (consistent with the standard atmospheric lapse rate of about 6–7 °C per 1000 m). The relationship is approximately linear.
+                        </p>
+                    </li>
+                    <li><p>Reading from the graph at 1700 m (between 1500 and 2000 m), the estimated temperature is approximately 18–19 °C — consistent with Nairobi's well-known mild climate.</p></li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table shows the estimated number of mobile phone subscribers in Kenya at two-year intervals.
+                </p>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Year</cell>
+                        <cell>2004</cell><cell>2006</cell><cell>2008</cell><cell>2010</cell><cell>2012</cell>
+                    </row>
+                    <row>
+                        <cell>Subscribers (millions)</cell>
+                        <cell>3.4</cell><cell>7.3</cell><cell>16.3</cell><cell>24.4</cell><cell>29.2</cell>
+                    </row>
+                </tabular>
+                <p>
+                    Source: <url href="https://www.ca.go.ke/">Communications Authority of Kenya</url> annual reports.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Plot the data with year on the horizontal axis and number of subscribers on the vertical axis.</p></li>
+                    <li><p>Calculate the increase in subscribers in each 2-year period. Is the growth linear?</p></li>
+                    <li><p>Describe the shape of the graph and suggest a reason why growth was fastest between 2006 and 2010.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="65%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Year},
+                                    ylabel={Subscribers (millions)},
+                                    xmin=2003, xmax=2013,
+                                    ymin=0, ymax=32,
+                                    xtick={2004,2006,2008,2010,2012},
+                                    x tick label style={rotate=45, anchor=east, font=\small},
+                                    ytick={0,5,10,15,20,25,30},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick] coordinates {
+                                        (2004,3.4)(2006,7.3)(2008,16.3)(2010,24.4)(2012,29.2)};
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (2004,3.4)(2006,7.3)(2008,16.3)(2010,24.4)(2012,29.2)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li>
+                        <p>
+                            Increases per 2-year period: <m>3.9</m>, <m>9.0</m>, <m>8.1</m>, <m>4.8</m> million. Growth is <em>not</em> linear — the increase per period is not constant. The graph is steepest (fastest growth) between 2006 and 2010.
+                        </p>
+                    </li>
+                    <li>
+                        <p>The graph is non-linear (roughly S-shaped), rising steeply in the middle and flattening toward 2012. The rapid growth between 2006 and 2010 coincided with the launch of M-Pesa in 2007, which made mobile phones essential for everyday financial transactions, and with falling handset prices increasing affordability across Kenya.</p>
+                    </li>
+                </ol>
             </answer>
         </exercise>
     </exercises>
