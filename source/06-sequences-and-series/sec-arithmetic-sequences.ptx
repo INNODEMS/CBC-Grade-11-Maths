@@ -47,76 +47,138 @@
 
     <!-- [LP] Add guidance on activity -->
 
-    <!-- <axiom component="lesson-plan">
-            <title>Problem-Solving and Discovery</title>
-            <dl>
-                <li>
-                    <title>Suggested Time</title>
-                    <p>
-                        XX minutes
-                    </p>
-                </li>
-                <li>
-                    <title>Objective</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-                <li>
-                    <title>Teacher's Role</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-            </dl>
-        </axiom> -->
+    <axiom component="lesson-plan">
+        <title>Problem-Solving and Discovery</title>
+        <dl>
+            <li>
+                <title>Suggested Time</title>
+                <p>
+                    10 minutes
+                </p>
+            </li>
+            <li>
+                <title>Objective</title>
+                <p>
+                    Provide a visual introduction to arithmetic sequences, and allow learners to discover the concept of a common difference and the formula for the nth term through problem-solving.
+                </p>
+            </li>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Encourage learners to visually create Step 5 and test out their formula on the diagrams. For advanced learners, invite them to create their own arithmetic progressions. 
+                </p>
+            </li>
+        </dl>
+    </axiom>
 
-    <!-- Add Activity -->
-     <activity>
-        <statement>
-            <p>
-                <alert>Group Exploration: Finding the Pattern</alert>
-            </p>
-            <p>
-                Consider the sequence: <m>3, 7, 11, 15, \dots</m>
-            </p>
-            <p>
-                <ol>
-                    <li>
-                        <p>Find the next three terms of the sequence.</p>
-                    </li>
-                    <li>
-                        <p>Discuss with your group: How is each term related to the one before it?</p>
-                    </li>
-                    <li>
-                        <p>Share your findings with other groups.</p>
-                    </li>
-                </ol>
-            </p>
-            <p>
-                <alert>Challenge:</alert> Without listing all the terms, how could you find the <m>20^{\text{th}}</m> term? Can you write a general rule for the <m>n^{\text{th}}</m> term?
-            </p>
-        </statement>
-        <solution component="lesson-plan">
-            <p>
-                The next term is obtained by adding <m>4</m> to the preceding term. This constant value <m>4</m> is called the <term>common difference</term> (<m>d</m>). It is the difference between any two consecutive terms:
-                <md>
-                    <mrow>d = 7 - 3 = 11 - 7 = 4</mrow>
-                </md>
-            </p>
-        </solution>
+    <activity>
+        <introduction>
+        <p>
+            The following pattern grows by adding tiles to three arms simultaneously.
+        </p>
+        <figure xml:id="fig-arith-t-pattern">
+            <caption>A growing T-shape pattern — Steps 1 to 4.</caption>
+            <image width="90%">
+                <latex-image>
+                \begin{tikzpicture}[scale=0.4]
+                % Step 1 (4 tiles) — olive (odd): cx=1, arm=1
+                \foreach \dx in {-1,0,1} {
+                    \filldraw[fill=olive!70, draw=black] ({1+\dx},0) rectangle ++(1,1);
+                }
+                \filldraw[fill=olive!70, draw=black] (1,1) rectangle ++(1,1);
+                % Step 2 (7 tiles) — orange (even): cx=6, arm=2
+                \foreach \dx in {-2,...,2} {
+                    \filldraw[fill=orange!70, draw=black] ({6+\dx},0) rectangle ++(1,1);
+                }
+                \foreach \dy in {1,2} {
+                    \filldraw[fill=orange!70, draw=black] (6,\dy) rectangle ++(1,1);
+                }
+                % Step 3 (10 tiles) — olive: cx=13, arm=3
+                \foreach \dx in {-3,...,3} {
+                    \filldraw[fill=olive!70, draw=black] ({13+\dx},0) rectangle ++(1,1);
+                }
+                \foreach \dy in {1,2,3} {
+                    \filldraw[fill=olive!70, draw=black] (13,\dy) rectangle ++(1,1);
+                }
+                % Step 4 (13 tiles) — orange: cx=22, arm=4
+                \foreach \dx in {-4,...,4} {
+                    \filldraw[fill=orange!70, draw=black] ({22+\dx},0) rectangle ++(1,1);
+                }
+                \foreach \dy in {1,...,4} {
+                    \filldraw[fill=orange!70, draw=black] (22,\dy) rectangle ++(1,1);
+                }
+                \node[below] at (1.5,-0.2) {\small Step 1};
+                \node[below] at (6.5,-0.2) {\small Step 2};
+                \node[below] at (13.5,-0.2) {\small Step 3};
+                \node[below] at (22.5,-0.2) {\small Step 4};
+                \end{tikzpicture}
+                </latex-image>
+            </image>
+            </figure>
+        </introduction>
+        <task>
+            <statement>
+                <p>
+                    Count the number of tiles at each step and write down the number of tiles at Steps 1 to 4.
+                    How many tiles are added at each step? Is this a constant amount?
+                </p>
+            </statement>
+            <solution component="lesson-plan">
+                <p>
+                    At each step, one tile is added to each of the three arms (left, right, and up):
+                    <md>
+                        <mrow>\text{Step 1} \amp =\; 1 + 3(1) = 4</mrow>
+                        <mrow>\text{Step 2} \amp =\; 1 + 3(2) = 7</mrow>
+                        <mrow>\text{Step 3} \amp =\; 1 + 3(3) = 10</mrow>
+                        <mrow>\text{Step 4} \amp =\; 1 + 3(4) = 13</mrow>
+                    </md>
+                    Each step adds 3 tiles (one per arm), so the common difference is <m>d = 7 - 4 = 3</m>.
+                </p>
+            </solution>
+        </task>
+        <task>
+            <statement>
+                <p>
+                    Write a formula for <m>a_n</m>, the number of tiles at Step <m>n</m>.
+                </p>
+            </statement>
+            <solution component="lesson-plan">
+                <p>
+                    We have <m>a_1 = 4</m>, and for each new step we add <m>d = 3</m> tiles, so we have:
+                    <md>
+                        <mrow>a_n \amp =\; 4 + (n-1)(3)</mrow>
+                        <mrow> \amp =\; 4 + 3n - 3</mrow>
+                        <mrow> \amp =\; 3n + 1</mrow>
+                    </md>
+                    Note that we only add <m>n-1</m> lots of 3 because on Step 2 we are only one addition from Step 1, not two.
+                </p>
+                <p> This formula can also be seen directly: 1 centre tile plus 3 arms of length <m>n</m> gives <m>3n + 1</m>.</p>
+            </solution>
+        </task>
+        <task>
+            <statement>
+                <p>
+                    How many tiles are needed at Step 10?
+                </p>
+            </statement>
+            <solution component="lesson-plan">
+                <p>
+                    <md>
+                        <mrow>a_{10} = 3(10) + 1 = 31</mrow>
+                    </md>
+                </p>
+            </solution>
+        </task>
      </activity>
 
-    <!-- [LP] Add guidance on structured lesson plan-->
-
-    <!-- <axiom component="lesson-plan">
+    <axiom component="lesson-plan">
         <title>Structured Instruction</title>
         <p>
             <dl>
             <li>
                 <title>Suggested Time</title>
                 <p>
-                    XX minutes
+                    5 minutes
                 </p>
             </li>
             <li>
@@ -125,19 +187,15 @@
                     To formalize the concepts and properties learners discovered in the anchor task.
                 </p>
             </li>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Name and formalize the concept of an arithmetic sequence, and derive the formula for the <m>n^{\text{th}}</m> term. Connect it to the visual pattern in the anchor task, and emphasise how the common difference <m>d</m> is the amount added at each step.
+                </p>
+            </li>
             </dl>
         </p>
-        <paragraphs>
-            <title>Key Takeaways &amp; Teacher Connection</title>
-            <ol>
-                <li>
-                    <p>
-                        <alert>Connecting to Learner Work:</alert> XXXX
-                    </p>
-                </li>
-            </ol>
-        </paragraphs>
-    </axiom> -->
+    </axiom>
 
     <!-- Add insight / key takeaway directly related to activity / learner experience -->
 
@@ -629,120 +687,7 @@
                 </solution>
             </task>
         </exercise>
-
-        <exercise>
-            <introduction>
-                <p>
-                    The following pattern grows by adding tiles to three arms simultaneously.
-                </p>
-                <figure xml:id="fig-arith-t-pattern">
-                    <caption>A growing T-shape pattern — Steps 1 to 4.</caption>
-                    <image width="90%">
-                        <latex-image>
-                        \begin{tikzpicture}[scale=0.4]
-                        % Step 1 (4 tiles) — olive (odd): cx=1, arm=1
-                        \foreach \dx in {-1,0,1} {
-                            \filldraw[fill=olive!70, draw=black] ({1+\dx},0) rectangle ++(1,1);
-                        }
-                        \filldraw[fill=olive!70, draw=black] (1,1) rectangle ++(1,1);
-                        % Step 2 (7 tiles) — orange (even): cx=6, arm=2
-                        \foreach \dx in {-2,...,2} {
-                            \filldraw[fill=orange!70, draw=black] ({6+\dx},0) rectangle ++(1,1);
-                        }
-                        \foreach \dy in {1,2} {
-                            \filldraw[fill=orange!70, draw=black] (6,\dy) rectangle ++(1,1);
-                        }
-                        % Step 3 (10 tiles) — olive: cx=13, arm=3
-                        \foreach \dx in {-3,...,3} {
-                            \filldraw[fill=olive!70, draw=black] ({13+\dx},0) rectangle ++(1,1);
-                        }
-                        \foreach \dy in {1,2,3} {
-                            \filldraw[fill=olive!70, draw=black] (13,\dy) rectangle ++(1,1);
-                        }
-                        % Step 4 (13 tiles) — orange: cx=22, arm=4
-                        \foreach \dx in {-4,...,4} {
-                            \filldraw[fill=orange!70, draw=black] ({22+\dx},0) rectangle ++(1,1);
-                        }
-                        \foreach \dy in {1,...,4} {
-                            \filldraw[fill=orange!70, draw=black] (22,\dy) rectangle ++(1,1);
-                        }
-                        \node[below] at (1.5,-0.2) {\small Step 1};
-                        \node[below] at (6.5,-0.2) {\small Step 2};
-                        \node[below] at (13.5,-0.2) {\small Step 3};
-                        \node[below] at (22.5,-0.2) {\small Step 4};
-                        \end{tikzpicture}
-                        </latex-image>
-                    </image>
-                </figure>
-            </introduction>
-            <task>
-                <statement>
-                    <p>
-                        Count the number of tiles at each step and write down the first four terms of the sequence.
-                        What is the common difference <m>d</m>?
-                    </p>
-                </statement>
-                <answer>
-                    <p>
-                        The sequence is <m>4, 7, 10, 13, \ldots</m> with common difference <m>d = 3</m>.
-                    </p>
-                </answer>
-                <solution>
-                    <p>
-                        At each step, one tile is added to each of the three arms (left, right, and up):
-                        <md>
-                            <mrow>\text{Step 1} \amp =\; 1 + 3(1) = 4</mrow>
-                            <mrow>\text{Step 2} \amp =\; 1 + 3(2) = 7</mrow>
-                            <mrow>\text{Step 3} \amp =\; 1 + 3(3) = 10</mrow>
-                            <mrow>\text{Step 4} \amp =\; 1 + 3(4) = 13</mrow>
-                        </md>
-                        Each step adds 3 tiles (one per arm), so <m>d = 7 - 4 = 3</m>.
-                    </p>
-                </solution>
-            </task>
-            <task>
-                <statement>
-                    <p>
-                        Write a formula for <m>a_n</m>, the number of tiles at Step <m>n</m>.
-                    </p>
-                </statement>
-                <answer>
-                    <p>
-                        <m>a_n = 3n + 1</m>
-                    </p>
-                </answer>
-                <solution>
-                    <p>
-                        Using <m>a_n = a_1 + (n-1)d</m> with <m>a_1 = 4</m> and <m>d = 3</m>:
-                        <md>
-                            <mrow>a_n \amp =\; 4 + (n-1)(3)</mrow>
-                            <mrow> \amp =\; 4 + 3n - 3</mrow>
-                            <mrow> \amp =\; 3n + 1</mrow>
-                        </md>
-                        This can also be seen directly: 1 centre tile plus 3 arms of length <m>n</m> gives <m>3n + 1</m>.
-                    </p>
-                </solution>
-            </task>
-            <task>
-                <statement>
-                    <p>
-                        How many tiles are needed at Step 10?
-                    </p>
-                </statement>
-                <answer>
-                    <p>
-                        <m>31</m> tiles.
-                    </p>
-                </answer>
-                <solution>
-                    <p>
-                        <md>
-                            <mrow>a_{10} = 3(10) + 1 = 31</mrow>
-                        </md>
-                    </p>
-                </solution>
-            </task>
-        </exercise>
+           
         <exercise>
             <title> Primes in Arithmetic Sequences</title>
             <task>
