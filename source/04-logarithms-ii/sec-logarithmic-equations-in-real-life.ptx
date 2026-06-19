@@ -44,102 +44,307 @@
         </introduction>
     </objectives>
 
-    <!-- [LP] Add guidance on activity -->
 
-    <!-- <axiom component="lesson-plan">
+    <axiom component="lesson-plan">
             <title>Problem-Solving and Discovery</title>
             <dl>
                 <li>
                     <title>Suggested Time</title>
                     <p>
-                        XX minutes
+                        10 minutes
                     </p>
                 </li>
                 <li>
                     <title>Objective</title>
                     <p>
-                        XXX
+                        To show how logarithmic equations can be applied to solve real-life problems, and to encourage students to think critically about the applications of logarithms in various contexts.
                     </p>
                 </li>
                 <li>
                     <title>Teacher's Role</title>
                     <p>
-                        XXX
+                        Let Learners explore different guessing methods, and only introduce the efficient method of halving the possibilities after they have had a chance to experiment. Guide them towards the connection between halving and powers of 2, and then to logarithms.
                     </p>
                 </li>
             </dl>
-        </axiom> -->
+        </axiom> 
 
-    <!-- Add Activity -->
+    <activity xml:id="act-number-guessing-log2">
+        <introduction>
+            <p>
+                <term>Work in pairs.</term> One person secretly picks a whole number from 1 to 64. The other person tries to find it by asking yes/no questions.
+            </p>
+        </introduction>
+        <task>
+            <statement>
+                <p>
+                    Play the game. Person A picks a number from 1 to 64 and keeps it secret. Person B asks yes/no questions to find it. Count how many questions Person B needs. Play twice and swap roles.
+                </p>
+            </statement>
+            <solution component="lesson-plan">
+                <p>
+                    Allow free play before guiding students. They may use many different strategies at first — this is fine. The goal is to get them curious about efficiency.
+                </p>
+            </solution>
+        </task>
+        <task>
+            <statement>
+                <p>
+                    Share your question counts with the class. What was the fewest questions anyone used? Do you think it is always possible to guarantee finding the number in 6 questions or fewer?
+                </p>
+            </statement>
+            <note component="lesson-plan">
+                <p>
+                    Expect a range of answers (often 6–15). The point of sharing is to spark curiosity: why do some students need fewer questions? Accept all answers here without resolving the question — the next tasks build towards it.
+                </p>
+            </note>
+        </task>
+        <task>
+            <statement>
+                <p>
+                    Consider this opening question: <q>Is the number greater than 32?</q> No matter whether the answer is yes or no, how many numbers are left as possibilities?
+                </p>
+            </statement>
+            <solution component="lesson-plan">
+                <p>
+                    If yes: numbers 33–64 remain (32 possibilities). If no: numbers 1–32 remain (32 possibilities). Either way, exactly half the numbers are eliminated. Ask students: what question should come next?
+                </p>
+            </solution>
+            <note component="lesson-plan">
+                <p>
+                    Compare with a question like <q>Is it odd?</q> — that also splits into 32 each time, but subsequent questions are harder to plan. Guide students towards questions of the form <q>Is it greater than <m>k</m>?</q> as a reliable strategy.
+                </p>
+            </note>
+        </task>
+        <task>
+            <statement>
+                <p>
+                    Suppose you always ask a question that cuts the remaining possibilities exactly in half. Complete this table:
+                </p>
+                <tabular halign="center" top="minor" left="minor" right="minor" bottom="minor">
+                    <row header="yes">
+                        <cell>Questions asked</cell>
+                        <cell>Numbers still possible</cell>
+                    </row>
+                    <row><cell>0</cell><cell>64</cell></row>
+                    <row><cell>1</cell><cell>32</cell></row>
+                    <row><cell>2</cell><cell></cell></row>
+                    <row><cell>3</cell><cell></cell></row>
+                    <row><cell>4</cell><cell></cell></row>
+                    <row><cell>5</cell><cell></cell></row>
+                    <row><cell>6</cell><cell></cell></row>
+                </tabular>
+            </statement>
+            <solution component="lesson-plan">
+                <tabular halign="center" top="minor" left="minor" right="minor" bottom="minor">
+                    <row header="yes">
+                        <cell>Questions asked</cell>
+                        <cell>Numbers still possible</cell>
+                    </row>
+                    <row><cell>0</cell><cell>64</cell></row>
+                    <row><cell>1</cell><cell>32</cell></row>
+                    <row><cell>2</cell><cell>16</cell></row>
+                    <row><cell>3</cell><cell>8</cell></row>
+                    <row><cell>4</cell><cell>4</cell></row>
+                    <row><cell>5</cell><cell>2</cell></row>
+                    <row><cell>6</cell><cell>1</cell></row>
+                </tabular>
+                <p>
+                    After 6 questions, exactly 1 number remains — the answer is known with certainty.
+                </p>
+            </solution>
+        </task>
+        <task>
+            <statement>
+                <p>
+                    Write the number of remaining possibilities after <m>k</m> questions as a power of 2. What is the connection between 64 and the number 6?
+                </p>
+            </statement>
+            <solution component="lesson-plan">
+                <p>
+                    After <m>k</m> questions, <m>64 \div 2^k</m> numbers remain. When <m>k = 6</m>, this is <m>64 \div 2^6 = 1</m>. The connection is <m>64 = 2^6</m>, so 6 questions suffice.
+                </p>
+            </solution>
+        </task>
+        <task>
+            <statement>
+                <p>
+                    Using your pattern, complete this table for different starting ranges, then express the result using a logarithm:
+                </p>
+                <tabular halign="center" top="minor" left="minor" right="minor" bottom="minor">
+                    <row header="yes">
+                        <cell>Range of numbers</cell>
+                        <cell>Minimum questions guaranteed</cell>
+                    </row>
+                    <row><cell>1 to 2</cell><cell></cell></row>
+                    <row><cell>1 to 4</cell><cell></cell></row>
+                    <row><cell>1 to 8</cell><cell></cell></row>
+                    <row><cell>1 to 16</cell><cell></cell></row>
+                    <row><cell>1 to 32</cell><cell></cell></row>
+                    <row><cell>1 to 64</cell><cell>6</cell></row>
+                </tabular>
+                <p>
+                    For a range of 1 to <m>n</m>, write a formula for the minimum number of questions needed (assume <m>n</m> is a power of 2).
+                </p>
+            </statement>
+            <solution component="lesson-plan">
+                <p>
+                    The answers are 1, 2, 3, 4, 5, 6. For a range of 1 to <m>n = 2^k</m>, the minimum number of questions is <m>k = \log_2 n</m>.
+                </p>
+            </solution>
+            <note component="lesson-plan">
+                <p>
+                    If students struggle to see the logarithm, ask: <q>If <m>2^k = n</m>, how do you solve for <m>k</m>?</q> This connects directly to the definition of logarithm from earlier in the chapter.
+                </p>
+            </note>
+        </task>
+        <task>
+            <statement>
+                <p>
+                    A friend picks a number from 1 to 1000. What is the minimum number of yes/no questions you need to guarantee finding it? Use the change of base formula <m>\log_2 x = \dfrac{\log_{10} x}{\log_{10} 2}</m> and a calculator.
+                </p>
+            </statement>
+            <solution component="lesson-plan">
+                <p>
+                    <m>\log_2 1000 = \dfrac{\log_{10} 1000}{\log_{10} 2} = \dfrac{3}{\log_{10} 2} \approx 9.97</m>. Since we need a whole number of questions, we round up to 10. Students can verify: <m>2^{10} = 1024 \geq 1000</m>, while <m>2^9 = 512 \lt 1000</m>.
+                </p>
+            </solution>
+        </task>
+    </activity>
 
-    <!-- <activity>
-        <statement>
-        </statement>
-    </activity> -->
 
-    <!-- [LP] Add guidance on structured lesson plan-->
-
-    <!-- <axiom component="lesson-plan">
+    <axiom component="lesson-plan">
         <title>Structured Instruction</title>
         <p>
             <dl>
             <li>
                 <title>Suggested Time</title>
                 <p>
-                    XX minutes
+                    2 minutes
                 </p>
             </li>
             <li>
                 <title>Objective</title>
                 <p>
-                    To formalize the concepts and properties learners discovered in the anchor task.
+                    To remind Learners of general strategies for solving logarithmic equations, and to provide a clear example of how to apply these strategies in a real-life context.
                 </p>
             </li>
             </dl>
         </p>
-        <paragraphs>
-            <title>Key Takeaways &amp; Teacher Connection</title>
-            <ol>
-                <li>
-                    <p>
-                        <alert>Connecting to Learner Work:</alert> XXXX
-                    </p>
-                </li>
-            </ol>
-        </paragraphs>
-    </axiom> -->
+    </axiom>
 
-    <!-- Add insight / key takeaway directly related to activity / learner experience -->
+    <insight>
+        <p>
+            Logarithmic equations are powerful tools that can help us understand and solve a wide range of real-life problems, from population growth to sound intensity. By applying logarithmic properties and calculations, we can make sense of complex phenomena and make informed decisions based on data.
+        </p>
+        <p>
+            Make sure you double check the units in your calculations, and that your final answer is reasonable given the context of the problem. Logarithmic equations can sometimes yield very large or very small numbers, so it's important to interpret your results in a meaningful way.
+        </p>
+    </insight> 
 
-    <!-- <insight>
-    </insight> -->
-
-    <!-- Add further instruction (not in a block) to develop ideas as needed -->
 
     <xi:include href="../lesson-plan-templates/example-intro.ptx" />
 
-    <!-- Add at least 3 examples -->
-
-    <!-- <example>
+    <example>
         <statement>
+         <p>
+              The Richter scale is defined by:
+         </p>
+         <p>
+            <m> M = \log_{10}\left(\frac{I}{I_0}\right)</m>
+         </p>
+         <p>
+            where:
+         </p>
+        <p>
+            <ul>
+                <li><m>M</m> is the magnitude of the earthquake on the Richter scale.</li>
+                <li><m>I</m> is the intensity of the earthquake.</li>
+                <li><m>I_0</m> is the reference intensity, (the smallest intensity that can be detected by seismographs).</li>
+            </ul>
+        </p>
+        <p> 
+            In <m>2010</m>, Haiti experienced an earthquake whose intensity was <m>10^7</m> times the reference intensity <m>I_0</m>. 
+        </p>
+        <p>
+            Determine the magnitude of the earthquake on the Richter scale.
+        </p>
         </statement>
         <solution>
+            <p>
+                We are told <m>\frac{I}{I_0} = 10^7</m>. Substituting the given values into the formula:
+            </p>
+            <p>
+                <md>
+                    <mrow>M \amp= \log_{10}\left(10^7\right)</mrow>
+                    <intertext>By the power law, <m>\log_{10}(10^n)= n \log_{10}(10) = n </m>, so:</intertext>
+                    <mrow>M \amp= 7</mrow>
+                </md>
+            </p>
+            <p>
+                Therefore, the magnitude of the earthquake on the Richter scale is <m>7</m>.
+            </p>
         </solution>
     </example>
 
     <example>
         <statement>
+            <p>
+                The intensity of a sound is measured in decibels (dB) and is given by the formula:
+            </p>
+            <p>
+                <md>I = 10 \times \log_{10}\left(\frac{P}{P_0}\right)</md>
+            </p>
+            <p>
+                Where <m>I</m> is the intensity in decibels, <m>P</m> is the power of the sound, and <m>P_0</m> is the reference power (the threshold of hearing). If a sound has a power of <m>1</m> watt and the reference power is <m>10^{-12}</m> watts, what is the intensity of the sound in decibels?
+            </p>
         </statement>
         <solution>
+            <p>
+                Substituting <m>P = 1</m> and <m>P_0 = 10^{-12}</m>:
+            </p>
+            <md>
+                <mrow>I \amp= 10 \times \log_{10}\!\left(\frac{1}{10^{-12}}\right)</mrow>
+                <mrow>\amp= 10 \times \log_{10}(10^{12})</mrow>
+                <mrow>\amp= 10 \times 12</mrow>
+                <mrow>\amp= 120</mrow>
+            </md>
+            <p>
+                Therefore, the intensity of the sound is <m>120</m> decibels.
+            </p>
         </solution>
     </example>
 
     <example>
         <statement>
+            <p>
+                A radioactive substance decays at a rate proportional to its current amount, with the amount <m>P(t)</m> of substance in grams at time <m>t</m> years give by:
+                <md>
+                    P(t) = P_0 \times 2^{-\frac{t}{5}}
+                </md>
+                where <m>P_0</m> is the initial mass (in grams).
+            </p>
+            <p>
+                How long will it take for a sample of <m>100</m> grams to decay to <m>25</m> grams?
+            </p>
         </statement>
         <solution>
+            <p> Substituting <m>P_0 = 100</m> and <m>P(t) = 25</m>:
+            </p>
+            <md>
+                <mrow>25 \amp= 100 \times 2^{-\frac{t}{5}}</mrow>
+                <intertext>Divide both sides by 100:</intertext>
+                <mrow>0.25 \amp= 2^{-\frac{t}{5}}</mrow>
+                <intertext>Take <m>\log_2</m> of both sides. Since <m>\log_2(0.25) = \log_2(1/4) = -2</m>:</intertext>
+                <mrow>-2 \amp= -\frac{t}{5}</mrow>
+                <intertext>Multiply both sides by 5:</intertext>
+                <mrow>t \amp= 10</mrow>
+            </md>
+            <p>
+                Therefore, it will take <m>10</m> years for the sample to decay to <m>25</m> grams.
+            </p>
         </solution>
-    </example> -->
+    </example>
 
     <xi:include href="../lesson-plan-templates/assessment-intro.ptx" />
 
@@ -151,16 +356,131 @@
 
     <!-- Add static exercises -->
 
-    <!-- <exercises>
+    <exercises>
+        <exercise>
+            <statement>
+                <p>
+                    A population of rabbits doubles every <m>4</m> months, starting with <m>50</m> rabbits. After how many months will the population reach <m>3200</m>? Use logarithms to solve.
+                </p>
+            </statement>
+            <solution>
+                <p>
+                    The growth model is <m>P(t) = 50 \times 2^{t/4}</m>. Setting <m>P(t) = 3200</m>:
+                </p>
+                <md>
+                    <mrow>3200 \amp= 50 \times 2^{t/4}</mrow>
+                    <intertext>Divide both sides by 50:</intertext>
+                    <mrow>64 \amp= 2^{t/4}</mrow>
+                    <intertext>Take <m>\log_2</m> of both sides:</intertext>
+                    <mrow>\log_2(64) \amp= \frac{t}{4}</mrow>
+                    <mrow>6 \amp= \frac{t}{4}</mrow>
+                    <intertext>Multiply both sides by 4:</intertext>
+                    <mrow>t \amp= 24</mrow>
+                </md>
+                <p>
+                    Therefore, the population will reach <m>3200</m> after <m>24</m> months (2 years).
+                </p>
+            </solution>             
+        </exercise> 
+        <exercise>
+            <introduction>   
+                <p>
+                    The pH of a solution is given by the formula:
+                </p>
+                <p>
+                    <md>\text{pH} = -\log_{10}([H^+])</md>
+                </p>
+                <p>
+                    Where <m>[H^+]</m> is the concentration of hydrogen ions in moles per liter
+                </p>
+            </introduction>  
+            <task>
+                <statement>
+                    <p>
+                        Is this formula equivalent to <md>\text{pH} = \log_{10}\left(\frac{1}{[H^+]}\right)</md>
+                        Why or why not?
+                    </p>
+                </statement>
+                <solution>
+                    <p>
+                        Yes, the two formulas are equivalent. This is because of quotient law: 
+                        <md>\log_b\left(\frac{1}{x}\right) = \log_b\left(x^{-1}\right) = -\log_b(x)</md>
+                    </p>
+                </solution>
+            </task> 
+            <task>
+                <statement>
+                    <p>
+                        If a solution has a pH of <m>3</m>, what is the concentration of hydrogen ions in the solution?
+                    </p>
+                </statement>
+                <solution>
+                    <p>
+                        Substitute <m>pH = 3</m> into the formula and solve for <m>[H^+]</m>:
+                    </p>
+                    <md>
+                        <mrow>3 \amp= -\log_{10}([H^+])</mrow>
+                        <mrow>\log_{10}([H^+]) \amp= -3</mrow>
+                        <intertext>Rewrite in exponential form:</intertext>
+                        <mrow>[H^+] \amp= 10^{-3} = 0.001</mrow>
+                    </md>
+                    <p>
+                        Therefore, the concentration of hydrogen ions is <m>0.001</m> moles per liter.
+                    </p>
+                </solution> 
+            </task>
+        </exercise>
         <exercise>
             <statement>   
-
+                <p>
+                    A sound has an intensity of <m>I = 80</m> decibels. The relation between intensity and power is given by <md>I = 10 \times \log_{10}(P/P_0)</md> Where <m>P</m> is the power of the sound and <m>P_0</m> is the reference power. If the reference power is <m>10^{-12}</m> watts, what is the power of the sound in watts?
+                </p>
             </statement>   
             <solution>
+                <p>
+                    Substitute <m>I = 80</m> and <m>P_0 = 10^{-12}</m> into <m>I = 10 \times \log_{10}(P/P_0)</m> and solve for <m>P</m>:
+                </p>
+                <md>
+                    <mrow>80 \amp= 10 \times \log_{10}\!\left(\frac{P}{10^{-12}}\right)</mrow>
+                    <intertext>Divide both sides by 10:</intertext>
+                    <mrow>8 \amp= \log_{10}\!\left(\frac{P}{10^{-12}}\right)</mrow>
+                    <intertext>Rewrite in exponential form:</intertext>
+                    <mrow>\frac{P}{10^{-12}} \amp= 10^{8}</mrow>
+                    <intertext>Multiply both sides by <m>10^{-12}</m>:</intertext>
+                    <mrow>P \amp= 10^{8} \times 10^{-12} = 10^{-4} = 0.0001</mrow>
+                </md>
+                <p>
+                    Therefore, the power of the sound is <m>0.0001</m> watts.
+                </p>
+            </solution> 
+        </exercise>
+        <exercise>
+            <statement>
+            <p>
+                A bacterium population doubles every <m>3</m> hours, with the population size given at time <m>t</m> hours by <md>P(t) = 100 \times 2^{t/3}</md> The initial population is <m>100</m>. How many hours will it take for the population to reach <m>3200</m>? Use logarithms to solve.
+            </p>
+            </statement>
+            <solution>
+                <p>
+                    Setting <m>P(t) = 3200</m>:
+                </p>
+                <md>
+                    <mrow>3200 \amp= 100 \times 2^{t/3}</mrow>
+                    <intertext>Divide both sides by 100:</intertext>
+                    <mrow>32 \amp= 2^{t/3}</mrow>
+                    <intertext>Take <m>\log_2</m> of both sides:</intertext>
+                    <mrow>\log_2(32) \amp= \frac{t}{3}</mrow>
+                    <mrow>5 \amp= \frac{t}{3}</mrow>
+                    <intertext>Multiply both sides by 3:</intertext>
+                    <mrow>t \amp= 15</mrow>
+                </md>
+                <p>
+                    Therefore, the population will reach <m>3200</m> after <m>15</m> hours.
+                </p>
+            </solution>
+        </exercise>
 
-            </solution>             
-        </exercise>        
-    </exercises> -->
+    </exercises>
 
     <!-- [LP] Add information on how to differentiate  -->
 
