@@ -41,6 +41,8 @@
         </introduction>
     </objectives>
 
+    <!-- [LP] Add guidance on structured lesson plan-->
+
     <axiom component="lesson-plan">
         <title>Problem-Solving and Discovery</title>
         <dl>
@@ -180,6 +182,9 @@
             A line of best fit allows us to model the relationship between two variables and make predictions.
         </p>
         <p>
+            When constructing a line of best fit manually, <term> the Mean-Coordinate Method</term> which is finding the mean of the x-coordinates and the mean of the y-coordinates removes visual guesswork by ensuring that the line passes directly through the statistical center of the dataset.
+        </p>
+        <p>
             The line does not need to pass through every point. Instead, it represents the overall pattern of the data:
         </p>
         <p>
@@ -239,29 +244,34 @@
         <p>
             <ol>
                 <li><p>Plot the data points on a scatter plot.</p></li>
-                <li><p>Use a ruler to draw a straight line that passes through the middle of the points, ensuring that there are roughly equal numbers of points above and below the line.</p></li>
+                <li><p>Use a ruler to draw a straight line that passes through the mean coordinate i.e., the point <m>(\bar{x}, \bar{y})</m>.</p>
+                <p>
+                     To compute <m>\bar{x}</m>, sum all values in the x column and divide by the total number of data points.
+                </p>
+                <p>
+                        To compute <m>\bar{y}</m>, sum all values in the y column and divide by the total number of data points.
+                </p></li>
             </ol>
         </p>
-        <image width="50%">
+        <image width="65%">
             <latex-image label="fig-line-of-best-fit">
             \begin{tikzpicture}
-                \draw[help lines, color=gray!30, step=1] (0,0) grid (6,6);
-                \draw[->] (0,0) -- (6.5,0) node[right] {x};
-                \draw[->] (0,0) -- (0,6.5) node[above] {y};
-                \foreach \x in {0,1,...,5}
-                \draw (\x, 2pt) -- (\x, -2pt) node[below] {\x};
-                \foreach \y in {0,1,...,5}
-                \draw (2pt, \y) -- (-2pt, \y) node[left] {\y};
-                
-                \filldraw[blue] (1, 1.2) circle (2pt);
-                \filldraw[blue] (2, 2.8) circle (2pt);
-                \filldraw[blue] (2.5, 2.1) circle (2pt);
-                \filldraw[blue] (3, 3.6) circle (2pt);
-                \filldraw[blue] (4, 3.9) circle (2pt);
-                \filldraw[blue] (4.5, 5.2) circle (2pt);
-                \filldraw[blue] (5, 5.1) circle (2pt);
-                
-                \draw[red, thick] (0.5, 1) -- (5.5, 6);
+            \begin{axis}[
+                axis x line=bottom, axis y line=left,
+                xlabel={$x$},
+                ylabel={$y$},
+                xmin=0, xmax=6,
+                ymin=0, ymax=6,
+                xtick={0,1,2,3,4,5},
+                ytick={0,1,2,3,4,5},
+                tick label style={font=\footnotesize},
+                grid=both,
+                grid style={line width=0.3pt, draw=gray!30},
+            ]
+                \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                    (1,1.2) (2,2.8) (2.5,2.1) (3,3.6) (4,3.9) (4.5,5.2) (5,5.1)};
+                \addplot[red, thick, domain=0.5:5.5, samples=2] {x + 0.5};
+            \end{axis}
             \end{tikzpicture}
             </latex-image>
         </image>
@@ -292,24 +302,25 @@
                     <li><p>Use a ruler to draw a straight line that passes through the middle of the points. In this case, we can draw a line that passes exactly through (5, 12), (15, 30), and (25, 48).</p></li>
                 </ol>
             </p>
-            <image width="50%">
+            <image width="65%">
                 <latex-image label="fig-line-of-best-fit-example">
                     \begin{tikzpicture}
-                        \draw[help lines, color=gray!30, step=1] (0,0) grid (6,6);
-                        \draw[->] (0,0) -- (6.5,0) node[right] {Fertilizer (g)};
-                        \draw[->] (0,0) -- (0,6.5) node[above] {Height (cm)};
-                        \foreach \x in {0,5,10,15,20,25}
-                            \draw (\x/5, 2pt) -- (\x/5, -2pt) node[below] {\x};
-                        \foreach \y in {0,10,20,30,40,50}
-                            \draw (2pt, \y/10) -- (-2pt, \y/10) node[left] {\y};
-                        
-                        \filldraw[blue] (1, 1.2) circle (2pt);
-                        \filldraw[blue] (2, 2.2) circle (2pt);
-                        \filldraw[blue] (3, 3.0) circle (2pt);
-                        \filldraw[blue] (4, 4.1) circle (2pt);
-                        \filldraw[blue] (5, 4.8) circle (2pt);
-                        
-                        \draw[red, thick] (0, 0.3) -- (6, 5.7);
+                    \begin{axis}[
+                        axis x line=bottom, axis y line=left,
+                        xlabel={Fertilizer (g)},
+                        ylabel={Height (cm)},
+                        xmin=0, xmax=30,
+                        ymin=0, ymax=55,
+                        xtick={0,5,10,15,20,25},
+                        ytick={0,10,20,30,40,50},
+                        tick label style={font=\footnotesize},
+                        grid=both,
+                        grid style={line width=0.3pt, draw=gray!30},
+                    ]
+                        \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                            (5,12) (10,22) (15,30) (20,41) (25,48)};
+                        \addplot[red, thick, domain=0:28, samples=2] {1.8*x + 3};
+                    \end{axis}
                     \end{tikzpicture}
                 </latex-image>
             </image>
@@ -328,24 +339,25 @@
             <p>
                 Find the equation of the line of best fit drawn for this data.
             </p>
-            <image width="50%">
+            <image width="65%">
                 <latex-image label="fig-line-of-best-fit-study-hours">
                     \begin{tikzpicture}
-                        \draw[help lines, color=gray!30, step=1] (0,0) grid (6,10);
-                        \draw[->] (0,0) -- (6.5,0) node[right] {Study Hours};
-                        \draw[->] (0,0) -- (0,10.5) node[above] {Test Score};
-                        \foreach \x in {0,2,4,6,8,10,12}
-                            \draw (\x/2, 2pt) -- (\x/2, -2pt) node[below] {\x};
-                        \foreach \y in {0,10,20,30,40,50,60,70,80,90,100}
-                            \draw (2pt, \y/10) -- (-2pt, \y/10) node[left] {\y};
-                        
-                        \filldraw[blue] (1, 4.5) circle (2pt);
-                        \filldraw[blue] (2, 5.5) circle (2pt);
-                        \filldraw[blue] (3, 6.8) circle (2pt);
-                        \filldraw[blue] (4, 7.5) circle (2pt);
-                        \filldraw[blue] (5, 8.8) circle (2pt);
-                        
-                        \draw[red, thick] (0, 3.5) -- (6, 9.5);
+                    \begin{axis}[
+                        axis x line=bottom, axis y line=left,
+                        xlabel={Study Hours},
+                        ylabel={Test Score},
+                        xmin=0, xmax=12,
+                        ymin=0, ymax=100,
+                        xtick={0,2,4,6,8,10,12},
+                        ytick={0,20,40,60,80,100},
+                        tick label style={font=\footnotesize},
+                        grid=both,
+                        grid style={line width=0.3pt, draw=gray!30},
+                    ]
+                        \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                            (2,45) (4,55) (6,68) (8,75) (10,88)};
+                        \addplot[red, thick, domain=0:11, samples=2] {5*x + 35};
+                    \end{axis}
                     \end{tikzpicture}
                 </latex-image>
             </image>
@@ -404,25 +416,25 @@
                         <p>
                             Plot the points and draw the line <m>y = -2.5x + 23</m>. Note that this line passes exactly through <m>(2, 18)</m>, <m>(4, 13)</m>, and <m>(6, 8)</m>.
                         </p>
-                        <image width="50%">
+                        <image width="65%">
                             <latex-image label="fig-line-of-best-fit-car-value">
                                 \begin{tikzpicture}
-                                    \draw[help lines, color=gray!30, step=1] (0,0) grid (8,6);
-                                    \draw[->] (0,0) -- (8.5,0) node[right] {Age (years)};
-                                    \draw[->] (0,0) -- (0,6.5) node[above] {Value (000 KSh)};
-                                    \foreach \x in {0,1,...,8}
-                                        \draw (\x, 2pt) -- (\x, -2pt) node[below] {\x};
-                                    \foreach \y in {0,5,10,15,20,25}
-                                        \draw (2pt, \y/4) -- (-2pt, \y/4) node[left] {\y};
-                                    
-                                    \filldraw[blue] (1, 5) circle (2pt);
-                                    \filldraw[blue] (2, 4.5) circle (2pt);
-                                    \filldraw[blue] (3, 3.75) circle (2pt);
-                                    \filldraw[blue] (4, 3.25) circle (2pt);
-                                    \filldraw[blue] (5, 2.5) circle (2pt);
-                                    \filldraw[blue] (6, 2) circle (2pt);
-                                    
-                                    \draw[red, thick] (0, 5.75) -- (8, 0.75);
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Age (years)},
+                                    ylabel={Value (000 KSh)},
+                                    xmin=0, xmax=8,
+                                    ymin=0, ymax=26,
+                                    xtick={0,1,2,3,4,5,6,7,8},
+                                    ytick={0,5,10,15,20,25},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (1,20) (2,18) (3,15) (4,13) (5,10) (6,8)};
+                                    \addplot[red, thick, domain=0:8, samples=2] {-2.5*x + 23};
+                                \end{axis}
                                 \end{tikzpicture}
                             </latex-image>
                         </image>
@@ -480,24 +492,25 @@
                             <p>
                                 The line should have a negative slope, passing through through the points <m>(1, 80)</m>, <m>(5, 68)</m>, and <m>(9, 56)</m>.
                             </p>
-                            <image width="50%">
+                            <image width="65%">
                                 <latex-image label="heart-rate-exercisising">
                                     \begin{tikzpicture}
-                                        \draw[help lines, color=gray!30, step=1] (0,0) grid (10,10);
-                                        \draw[->] (0,0) -- (10.5,0) node[right] {Exercise (h)};
-                                        \draw[->] (0,0) -- (0,10.5) node[above] {Heart Rate (bpm)};
-                                        \foreach \x in {0,1,2,3,4,5,6,7,8,9,10}
-                                            \draw (\x, 2pt) -- (\x, -2pt) node[below] {\x};
-                                        \foreach \y/\pos in {50/0,60/2,70/4,80/6,90/8,100/10}
-                                            \draw (2pt, \pos) -- (-2pt, \pos) node[left] {\y};
-                                        
-                                        \filldraw[blue] (1, 6) circle (2pt); % (1, 80)
-                                        \filldraw[blue] (3, 5) circle (2pt); % (3, 75)
-                                        \filldraw[blue] (5, 3.6) circle (2pt); % (5, 68)
-                                        \filldraw[blue] (7, 2.6) circle (2pt); % (7, 63)
-                                        \filldraw[blue] (9, 1.2) circle (2pt); % (9, 56)
-                                        
-                                        \draw[red, thick] (0, 6.6) -- (10, 0.6);
+                                    \begin{axis}[
+                                        axis x line=bottom, axis y line=left,
+                                        xlabel={Exercise (h)},
+                                        ylabel={Heart Rate (bpm)},
+                                        xmin=0, xmax=10,
+                                        ymin=50, ymax=90,
+                                        xtick={0,1,2,3,4,5,6,7,8,9,10},
+                                        ytick={50,60,70,80,90},
+                                        tick label style={font=\footnotesize},
+                                        grid=both,
+                                        grid style={line width=0.3pt, draw=gray!30},
+                                    ]
+                                        \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                            (1,80) (3,75) (5,68) (7,63) (9,56)};
+                                        \addplot[red, thick, domain=0:10, samples=2] {-3*x + 83};
+                                    \end{axis}
                                     \end{tikzpicture}
                                 </latex-image>
                             </image>
@@ -607,24 +620,25 @@
                 <p>
                     <ol>
                         <li>
-                            <image width="50%">
+                            <image width="65%">
                                 <latex-image label="gaming-sleeping-hours">
                                     \begin{tikzpicture}
-                                        \draw[help lines, color=gray!30, step=1] (0,0) grid (6,5);
-                                        \draw[->] (0,0) -- (6.5,0) node[right] {Gaming Hours};
-                                        \draw[->] (0,0) -- (0,5.5) node[above] {Sleeping Hours};
-                                        \foreach \x in {0,1,...,6}
-                                            \draw (\x, 2pt) -- (\x, -2pt) node[below] {\x};
-                                        \foreach \y in {0,2,...,10}
-                                            \draw (2pt, \y/2) -- (-2pt, \y/2) node[left] {\y};
-                                        
-                                        \filldraw[blue] (1, 4) circle (2pt); % (1, 8)
-                                        \filldraw[blue] (2, 3.5) circle (2pt); % (2, 7)
-                                        \filldraw[blue] (3, 3.0) circle (2pt); % (3, 6)
-                                        \filldraw[blue] (4, 2.5) circle (2pt); % (4, 5)
-                                        \filldraw[blue] (5, 2.0) circle (2pt); % (5, 4)
-                                        
-                                        \draw[red, thick] (0.5, 4.5) -- (5.5, 1.5); % y = -0.75x + 8.75 in local coords
+                                    \begin{axis}[
+                                        axis x line=bottom, axis y line=left,
+                                        xlabel={Gaming Hours},
+                                        ylabel={Sleeping Hours},
+                                        xmin=0, xmax=6,
+                                        ymin=0, ymax=10,
+                                        xtick={0,1,2,3,4,5,6},
+                                        ytick={0,2,4,6,8,10},
+                                        tick label style={font=\footnotesize},
+                                        grid=both,
+                                        grid style={line width=0.3pt, draw=gray!30},
+                                    ]
+                                        \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                            (1,8) (2,7) (3,6) (4,5) (5,4)};
+                                        \addplot[red, thick, domain=0:6, samples=2] {-x + 9};
+                                    \end{axis}
                                     \end{tikzpicture}
                                 </latex-image>
                             </image>
@@ -634,6 +648,456 @@
                 </p>
             </answer>
         </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table shows the altitude (in metres above sea level) and the air temperature (in °C) at several weather stations on the slopes of Mount Kenya.
+                </p>
+                <tabular bottom="minor" top="minor" left="minor" right="minor">
+                    <row><cell>Altitude (m)</cell><cell>1000</cell><cell>2000</cell><cell>3000</cell><cell>4000</cell><cell>5000</cell></row>
+                    <row><cell>Temperature (°C)</cell><cell>15</cell><cell>9</cell><cell>3</cell><cell><m>-3</m></cell><cell><m>-9</m></cell></row>
+                </tabular>
+                <ol>
+                    <li><p>Plot the data and draw a line of best fit.</p></li>
+                    <li><p>Find the equation of the line of best fit.</p></li>
+                    <li><p>The summit of Batian Peak is at 5199 m. Use your equation to predict the temperature there. Is this interpolation or extrapolation?</p></li>
+                </ol>
+            </statement>
+            <solution>
+                <ol>
+                    <li><p>The points lie very close to a straight line with negative gradient.</p></li>
+                    <li>
+                        <p>
+                            The line passes through <m>(1000, 15)</m> and <m>(5000, -9)</m>.
+                            <md>m = \frac{-9 - 15}{5000 - 1000} = \frac{-24}{4000} = -0.006</md>
+                            Using <m>(1000, 15)</m>: <m>15 = -0.006(1000) + c \implies c = 21</m>.
+                        </p>
+                        <p>Equation: <m>T = -0.006A + 21</m>, where <m>A</m> is altitude in metres.</p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>T = -0.006(5199) + 21 = -31.2 + 21 = -10.2 \text{ °C}</md>
+                            This is <term>extrapolation</term> — 5199 m is just beyond the observed range. The prediction is reasonably reliable since we are not far outside the data range.
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    A market trader records the number of customers visiting her stall each day and her daily revenue (KSh).
+                </p>
+                <tabular bottom="minor" top="minor" left="minor" right="minor">
+                    <row><cell>Customers</cell><cell>20</cell><cell>30</cell><cell>40</cell><cell>50</cell><cell>60</cell></row>
+                    <row><cell>Revenue (KSh)</cell><cell>1800</cell><cell>2700</cell><cell>3800</cell><cell>4900</cell><cell>5800</cell></row>
+                </tabular>
+                <ol>
+                    <li><p>Plot the data and draw a line of best fit.</p></li>
+                    <li><p>The line passes through <m>(20,\ 1800)</m> and <m>(60,\ 5800)</m>. Find its equation.</p></li>
+                    <li><p>Use the equation to predict the revenue when 80 customers visit. Comment on the reliability of this prediction.</p></li>
+                </ol>
+            </statement>
+            <solution>
+                <ol>
+                    <li><p>The scatter plot shows a positive linear trend.</p></li>
+                    <li>
+                        <p>
+                            <md>m = \frac{5800 - 1800}{60 - 20} = \frac{4000}{40} = 100</md>
+                            <md>1800 = 100(20) + c \implies c = -200</md>
+                            Equation: <m>R = 100C - 200</m>, where <m>C</m> is the number of customers.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>R = 100(80) - 200 = \text{KSh } 7800</md>
+                            This is <term>extrapolation</term> (80 customers is outside the observed range of 20–60). The prediction may be unreliable — the stall may not have enough stock to serve 80 customers.
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    A class of students sat a mathematics test. Their scores and study hours are shown below.
+                </p>
+                <tabular bottom="minor" top="minor" left="minor" right="minor">
+                    <row><cell>Study Hours</cell><cell>1</cell><cell>2</cell><cell>3</cell><cell>4</cell><cell>5</cell><cell>1</cell></row>
+                    <row><cell>Score (%)</cell><cell>42</cell><cell>55</cell><cell>63</cell><cell>72</cell><cell>81</cell><cell>96</cell></row>
+                </tabular>
+                <ol>
+                    <li><p>Plot all six data points.</p></li>
+                    <li><p>Identify which point is an outlier and suggest a reason for it.</p></li>
+                    <li><p>Draw a line of best fit for the remaining five points. Does the outlier lie above or below your line?</p></li>
+                </ol>
+            </statement>
+            <solution>
+                <ol>
+                    <li><p>Students should plot the six points and notice five follow a clear upward trend.</p></li>
+                    <li><p>The point <m>(1, 96)</m> is the outlier — a student who studied only 1 hour but scored 96%. A possible reason is that this student already knew the material well before the revision period.</p></li>
+                    <li><p>The line of best fit through the other five points rises steeply from lower-left to upper-right. The outlier at <m>(1, 96)</m> lies well <alert>above</alert> the line.</p></li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    A second-hand car dealer records the age and resale value of five cars of the same model.
+                </p>
+                <tabular bottom="minor" top="minor" left="minor" right="minor">
+                    <row><cell>Age (years)</cell><cell>1</cell><cell>2</cell><cell>3</cell><cell>4</cell><cell>5</cell></row>
+                    <row><cell>Value (KSh 000)</cell><cell>850</cell><cell>720</cell><cell>600</cell><cell>470</cell><cell>320</cell></row>
+                </tabular>
+                <ol>
+                    <li><p>Plot the data and describe the correlation.</p></li>
+                    <li><p>The line of best fit passes through <m>(1,\ 850)</m> and <m>(5,\ 320)</m>. Find its equation.</p></li>
+                    <li><p>Estimate the value of a car of this model that is 3.5 years old.</p></li>
+                    <li><p>A car of this model is advertised at KSh 600,000. According to the model, how old is it likely to be?</p></li>
+                </ol>
+            </statement>
+            <solution>
+                <ol>
+                    <li><p>The correlation is <term>negative</term>: as a car gets older, its resale value decreases.</p></li>
+                    <li>
+                        <p>
+                            <md>m = \frac{320 - 850}{5 - 1} = \frac{-530}{4} = -132.5</md>
+                            <md>850 = -132.5(1) + c \implies c = 982.5</md>
+                            Equation: <m>V = -132.5A + 982.5</m>, where <m>V</m> is value in KSh 000 and <m>A</m> is age in years.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>V = -132.5(3.5) + 982.5 = -463.75 + 982.5 \approx 519 \text{ (KSh 000)}</md>
+                            Estimated value: approximately KSh 519,000.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Set <m>V = 600</m>:
+                            <md>600 = -132.5A + 982.5 \implies 132.5A = 382.5 \implies A \approx 2.9 \text{ years}</md>
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table below shows the daily maximum temperature <m>T</m> (°C) and the number of cold drinks <m>D</m> sold at a kiosk.
+                </p>
+                <tabular bottom="minor" top="minor" left="minor" right="minor">
+                    <row><cell><m>T</m> (°C)</cell><cell>22</cell><cell>25</cell><cell>28</cell><cell>31</cell><cell>34</cell><cell>37</cell></row>
+                    <row><cell>Drinks sold</cell><cell>30</cell><cell>42</cell><cell>55</cell><cell>68</cell><cell>80</cell><cell>95</cell></row>
+                </tabular>
+                <ol>
+                    <li><p>Plot the data and draw a line of best fit.</p></li>
+                    <li><p>The line passes through <m>(22,\ 30)</m> and <m>(37,\ 95)</m>. Find the equation of the line.</p></li>
+                    <li><p>What does the gradient represent in this context?</p></li>
+                    <li><p>On a day when the temperature reaches 40°C, predict the number of cold drinks sold. Comment on the reliability of this estimate.</p></li>
+                </ol>
+            </statement>
+            <solution>
+                <ol>
+                    <li><p>The scatter plot shows a clear positive trend.</p></li>
+                    <li>
+                        <p>
+                            <md>m = \frac{95 - 30}{37 - 22} = \frac{65}{15} \approx 4.3</md>
+                            <md>30 = 4.3(22) + c \implies c \approx -64.7</md>
+                            Equation: approximately <m>D = 4.3T - 64.7</m> (accept equivalent equations using different points on the line).
+                        </p>
+                    </li>
+                    <li><p>The gradient means that for each 1°C rise in temperature, approximately 4 more cold drinks are sold per day.</p></li>
+                    <li>
+                        <p>
+                            <md>D = 4.3(40) - 64.7 = 172 - 64.7 \approx 107 \text{ drinks}</md>
+                            This is <term>extrapolation</term> (40°C is beyond the observed range). The estimate may be unreliable if, for example, the kiosk runs out of stock or a maximum demand is reached.
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    In 1973, the statistician Francis Anscombe created four datasets to demonstrate an important warning about statistics.<fn>Anscombe, F. J. (1973). Graphs in statistical analysis. <em>The American Statistician</em>, <em>27</em>(1), 17–21.</fn>
+                    The four datasets, known as <term>Anscombe's Quartet</term>, each contain 11 data points.
+                    Despite looking very different when plotted, they all share the same basic statistical summaries:
+                    the mean of <m>x</m> is 9, the mean of <m>y</m> is approximately 7.5, and they all have the same line of best fit.
+                </p>
+                <p>
+                    Datasets I, II, and III share the same <m>x</m>-values.
+                </p>
+                <tabular bottom="minor" top="minor" left="minor" right="minor">
+                    <row>
+                        <cell></cell><cell><m>x</m></cell>
+                        <cell>4</cell><cell>5</cell><cell>6</cell><cell>7</cell><cell>8</cell><cell>9</cell>
+                        <cell>10</cell><cell>11</cell><cell>12</cell><cell>13</cell><cell>14</cell>
+                    </row>
+                    <row>
+                        <cell>I</cell><cell><m>y</m></cell>
+                        <cell>4.26</cell><cell>5.68</cell><cell>7.24</cell><cell>4.82</cell><cell>6.95</cell><cell>8.81</cell>
+                        <cell>8.04</cell><cell>8.33</cell><cell>10.84</cell><cell>7.58</cell><cell>9.96</cell>
+                    </row>
+                    <row>
+                        <cell>II</cell><cell><m>y</m></cell>
+                        <cell>3.10</cell><cell>4.74</cell><cell>6.13</cell><cell>7.26</cell><cell>8.14</cell><cell>8.77</cell>
+                        <cell>9.14</cell><cell>9.26</cell><cell>9.13</cell><cell>8.74</cell><cell>8.10</cell>
+                    </row>
+                    <row>
+                        <cell>III</cell><cell><m>y</m></cell>
+                        <cell>5.39</cell><cell>5.73</cell><cell>6.08</cell><cell>6.42</cell><cell>6.77</cell><cell>7.11</cell>
+                        <cell>7.46</cell><cell>7.81</cell><cell>8.15</cell><cell>12.74</cell><cell>8.84</cell>
+                    </row>
+                </tabular>
+                <p>
+                    Dataset IV has a different structure.
+                </p>
+                <tabular bottom="minor" top="minor" left="minor" right="minor">
+                    <row>
+                        <cell>IV</cell><cell><m>x</m></cell>
+                        <cell>8</cell><cell>8</cell><cell>8</cell><cell>8</cell><cell>8</cell><cell>8</cell>
+                        <cell>8</cell><cell>8</cell><cell>8</cell><cell>8</cell><cell>19</cell>
+                    </row>
+                    <row>
+                        <cell></cell><cell><m>y</m></cell>
+                        <cell>6.58</cell><cell>5.76</cell><cell>7.71</cell><cell>8.84</cell><cell>8.47</cell><cell>7.04</cell>
+                        <cell>5.25</cell><cell>12.50</cell><cell>5.56</cell><cell>7.91</cell><cell>6.89</cell>
+                    </row>
+                </tabular>
+                <p>
+                    The four scatter plots are shown below.
+                    Draw a line of best fit on each one.
+                </p>
+                <sidebyside widths="48% 48%" margins="auto">
+                    <figure xml:id="fig-anscombe-quartet-I">
+                        <caption>Dataset I</caption>
+                        <image>
+                            <latex-image label="anscombe-I">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={$x$}, ylabel={$y$},
+                                    xmin=0, xmax=20, ymin=0, ymax=14,
+                                    xtick={0,4,8,12,16,20},
+                                    ytick={0,2,4,6,8,10,12,14},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (4,4.26)(5,5.68)(6,7.24)(7,4.82)(8,6.95)(9,8.81)
+                                        (10,8.04)(11,8.33)(12,10.84)(13,7.58)(14,9.96)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                    <figure xml:id="fig-anscombe-quartet-II">
+                        <caption>Dataset II</caption>
+                        <image>
+                            <latex-image label="anscombe-II">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={$x$}, ylabel={$y$},
+                                    xmin=0, xmax=20, ymin=0, ymax=14,
+                                    xtick={0,4,8,12,16,20},
+                                    ytick={0,2,4,6,8,10,12,14},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (4,3.10)(5,4.74)(6,6.13)(7,7.26)(8,8.14)(9,8.77)
+                                        (10,9.14)(11,9.26)(12,9.13)(13,8.74)(14,8.10)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                </sidebyside>
+                <sidebyside widths="48% 48%" margins="auto">
+                    <figure xml:id="fig-anscombe-quartet-III">
+                        <caption>Dataset III</caption>
+                        <image>
+                            <latex-image label="anscombe-III">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={$x$}, ylabel={$y$},
+                                    xmin=0, xmax=20, ymin=0, ymax=14,
+                                    xtick={0,4,8,12,16,20},
+                                    ytick={0,2,4,6,8,10,12,14},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (4,5.39)(5,5.73)(6,6.08)(7,6.42)(8,6.77)(9,7.11)
+                                        (10,7.46)(11,7.81)(12,8.15)(13,12.74)(14,8.84)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                    <figure xml:id="fig-anscombe-quartet-IV">
+                        <caption>Dataset IV</caption>
+                        <image>
+                            <latex-image label="anscombe-IV">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={$x$}, ylabel={$y$},
+                                    xmin=0, xmax=22, ymin=0, ymax=14,
+                                    xtick={0,4,8,12,16,20},
+                                    ytick={0,2,4,6,8,10,12,14},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (8,6.58)(8,5.76)(8,7.71)(8,8.84)(8,8.47)(8,7.04)
+                                        (8,5.25)(19,12.50)(8,5.56)(8,7.91)(8,6.89)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                </sidebyside>
+                <ol>
+                    <li><p>What equation do you get for each of your four lines of best fit?</p></li>
+                    <li><p>Even though the four lines have the same equation, the scatter plots look very different. Describe what you notice about each dataset.</p></li>
+                    <li><p>What does Anscombe's Quartet teach us about using a line of best fit without first drawing a scatter plot?</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <p>
+                    The line of best fit for all four datasets is approximately <m>y = 0.5x + 3</m>.
+                </p>
+                <sidebyside widths="48% 48%" margins="auto">
+                    <figure xml:id="fig-anscombe-quartet-ans-I">
+                        <caption>Dataset I: linear scatter — the line fits well.</caption>
+                        <image>
+                            <latex-image label="anscombe-ans-I">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={$x$}, ylabel={$y$},
+                                    xmin=0, xmax=20, ymin=0, ymax=14,
+                                    xtick={0,4,8,12,16,20},
+                                    ytick={0,2,4,6,8,10,12,14},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (4,4.26)(5,5.68)(6,7.24)(7,4.82)(8,6.95)(9,8.81)
+                                        (10,8.04)(11,8.33)(12,10.84)(13,7.58)(14,9.96)};
+                                    \addplot[red, thick, domain=0:20, samples=2] {0.5*x + 3};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                    <figure xml:id="fig-anscombe-quartet-ans-II">
+                        <caption>Dataset II: a curved pattern — a straight line is not the right model.</caption>
+                        <image>
+                            <latex-image label="anscombe-ans-II">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={$x$}, ylabel={$y$},
+                                    xmin=0, xmax=20, ymin=0, ymax=14,
+                                    xtick={0,4,8,12,16,20},
+                                    ytick={0,2,4,6,8,10,12,14},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (4,3.10)(5,4.74)(6,6.13)(7,7.26)(8,8.14)(9,8.77)
+                                        (10,9.14)(11,9.26)(12,9.13)(13,8.74)(14,8.10)};
+                                    \addplot[red, thick, domain=0:20, samples=2] {0.5*x + 3};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                </sidebyside>
+                <sidebyside widths="48% 48%" margins="auto">
+                    <figure xml:id="fig-anscombe-quartet-ans-III">
+                        <caption>Dataset III: near-perfect line but one outlier at <m>(13,\ 12.74)</m> pulls the line away.</caption>
+                        <image>
+                            <latex-image label="anscombe-ans-III">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={$x$}, ylabel={$y$},
+                                    xmin=0, xmax=20, ymin=0, ymax=14,
+                                    xtick={0,4,8,12,16,20},
+                                    ytick={0,2,4,6,8,10,12,14},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (4,5.39)(5,5.73)(6,6.08)(7,6.42)(8,6.77)(9,7.11)
+                                        (10,7.46)(11,7.81)(12,8.15)(13,12.74)(14,8.84)};
+                                    \addplot[red, thick, domain=0:20, samples=2] {0.5*x + 3};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                    <figure xml:id="fig-anscombe-quartet-ans-IV">
+                        <caption>Dataset IV: the single point <m>(19,\ 12.5)</m> alone determines the slope.</caption>
+                        <image>
+                            <latex-image label="anscombe-ans-IV">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={$x$}, ylabel={$y$},
+                                    xmin=0, xmax=22, ymin=0, ymax=14,
+                                    xtick={0,4,8,12,16,20},
+                                    ytick={0,2,4,6,8,10,12,14},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (8,6.58)(8,5.76)(8,7.71)(8,8.84)(8,8.47)(8,7.04)
+                                        (8,5.25)(19,12.50)(8,5.56)(8,7.91)(8,6.89)};
+                                    \addplot[red, thick, domain=0:22, samples=2] {0.5*x + 3};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                </sidebyside>
+                <ol>
+                    <li><p>All four lines are approximately <m>y = 0.5x + 3</m>.</p></li>
+                    <li>
+                        <p>
+                            <ul>
+                                <li><p><alert>Dataset I:</alert> A typical linear scatter. The line of best fit is a reasonable model.</p></li>
+                                <li><p><alert>Dataset II:</alert> The data follows a smooth curve (a parabola). The relationship is not linear, so a straight line is a poor model — even though the equation matches.</p></li>
+                                <li><p><alert>Dataset III:</alert> Ten points lie almost exactly on a line, but a single outlier at <m>(13, 12.74)</m> pulls the line away from the other ten. If the outlier is removed, the remaining data follow a much steeper line.</p></li>
+                                <li><p><alert>Dataset IV:</alert> Ten of the eleven points all have <m>x = 8</m>, forming a vertical cluster. The single distant point at <m>(19, 12.5)</m> is a <term>leverage point</term> — it alone determines the slope of the line.</p></li>
+                            </ul>
+                        </p>
+                    </li>
+                    <li><p>Anscombe's Quartet shows that the same line of best fit — and the same statistical summaries — can describe very different datasets. <alert>Always draw a scatter plot before using or interpreting a line of best fit.</alert> The equation alone does not tell you whether a linear model is appropriate.</p></li>
+                </ol>
+            </answer>
+        </exercise>
+
     </exercises>
 
     <axiom component="lesson-plan">
