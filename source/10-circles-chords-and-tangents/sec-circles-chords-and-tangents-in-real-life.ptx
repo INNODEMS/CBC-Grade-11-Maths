@@ -19,7 +19,7 @@
                     </p>
                 </li>
                 <li>
-                    <title>Specific Learning Outcomes</title> 
+                    <title>Specific Learning Outcomes</title>
                     <p>
                         Apply angles chords and tangents to real life situations
                     </p>
@@ -41,161 +41,1990 @@
         </introduction>
     </objectives>
 
-    <!-- [LP] Add guidance on activity -->
+    <axiom component="lesson-plan">
+        <title>Problem-Solving and Discovery</title>
+        <dl>
+            <li>
+                <title>Suggested Time</title>
+                <p>
+                    12 minutes
+                </p>
+            </li>
+            <li>
+                <title>Objective</title>
+                <p>
+                    Learners discover the size of the circle that fits in the gap between three mutually tangent circles of equal radius, building intuition for Descartes' circle theorem.
+                </p>
+            </li>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Provide each group with three identical circular objects (e.g. 50 shilling coins, all of the same denomination) and a piece of paper. 
+                </p>
+            </li>
+        </dl>
+    </axiom>
 
-    <!-- <axiom component="lesson-plan">
-            <title>Problem-Solving and Discovery</title>
-            <dl>
-                <li>
-                    <title>Suggested Time</title>
-                    <p>
-                        XX minutes
-                    </p>
-                </li>
-                <li>
-                    <title>Objective</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-                <li>
-                    <title>Teacher's Role</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-            </dl>
-        </axiom> -->
-
-    <!-- Add Activity -->
-
-    <!-- <activity>
+    <activity>
+        <title>Three Sodas and the Gap Circle</title>
         <statement>
+            <p>
+                Three soda bottles, each with a circular base of radius 4 cm, are placed on a flat surface so that each bottle touches the other two.
+            </p>
+            <figure xml:id="fig-bottle-caps">
+                <caption>Three equally size bottle caps</caption>
+                <image>
+                    <latex-image>
+                        \begin{tikzpicture}[scale=0.5]
+                            \tkzDefPoint(2,3){A}
+                            \begin{scope}[shift=(A)]
+                            \tkzDefPoint(60:5){B}
+                            \tkzDefPoint(0:5){C}
+                            \end{scope}
+
+                            \tkzDefMidPoint(A,B)\tkzGetPoint{MAB}
+                            \tkzDefMidPoint(B,C)\tkzGetPoint{MBC}
+                            \tkzDefMidPoint(C,A)\tkzGetPoint{MCA}
+
+                            \tkzDrawCircles[thick](A,MAB B,MBC C,MCA)
+                            \tkzDrawPoints(A,B,C)
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+            <ol marker="(a)">
+                <li>
+                    <p>
+                        Trace the base of each bottle onto paper (or use three equal coins). Arrange the three circles so each touches the other two.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        A packing company wants to know what size circular padding to put in the gap between the three bottles to keep them from knocking against each other during transport. Draw the largest circle that fits in the gap between the three bottles.
+                    </p>
+                    <solution component="lesson-plan">
+                        <p>
+                            Here we have drawn the largest circle that fits in the gap.
+                        </p>
+                            <figure xml:id="fig-bottle-caps-soln">
+                                <caption>Three equally size bottle caps</caption>
+                                <image>
+                                    <latex-image>
+                                        \begin{tikzpicture}[scale=0.5]
+                                            \pgfmathsetmacro{\d}{8} % diameter of the three circles
+                                            \tkzDefPoint(2,3){A} % Setup equilateral ABC
+                                            \begin{scope}[shift=(A)]
+                                            \tkzDefPoint(60:\d){B}
+                                            \tkzDefPoint(0:\d){C}
+                                            \end{scope}
+
+                                            \tkzDefMidPoint(A,B)\tkzGetPoint{MAB}
+                                            \tkzDefMidPoint(B,C)\tkzGetPoint{MBC}
+                                            \tkzDefMidPoint(C,A)\tkzGetPoint{MCA}
+                                            \tkzDefTriangleCenter[circum](A,B,C)\tkzGetPoint{O}
+                                            \tkzInterLC[near](O,A)(A,MAB)\tkzGetFirstPoint{D}
+
+                                            \tkzDrawCircles[thick](A,MAB B,MBC C,MCA)
+                                            \tkzDrawCircle[thick, teal](O,D)
+                                            \tkzDrawPoints(A,B,C)
+                                        \end{tikzpicture}
+                                    </latex-image>
+                                </image>
+                            </figure>
+                    </solution>
+                </li>
+                <li>
+                    <p>
+                        Measure the radius of your gap circle, and then try and compute a formula for the radius of the gap circle in terms of the radius of the bottles.
+                    </p>
+                    <solution component="lesson-plan">
+                        <p>
+                            As shown in <xref ref="fig-bottle-caps-soln-formula"/>, we first recognise that the centre of the gap circle is the circumcentre and the orthocentre of the triangle formed by the centres of the three bottles.
+                        </p>
+                        <figure xml:id="fig-bottle-caps-soln-formula">
+                            <caption>Three equally size bottle caps</caption>
+                            <image>
+                                <latex-image>
+                                    \begin{tikzpicture}[scale=0.5]
+                                        \pgfmathsetmacro{\d}{8} % diameter of the three circles
+                                        \tkzDefPoint(2,3){A} % Setup equilateral ABC
+                                        \begin{scope}[shift=(A)]
+                                        \tkzDefPoint(60:\d){B}
+                                        \tkzDefPoint(0:\d){C}
+                                        \end{scope}
+
+                                        \tkzDefMidPoint(A,B)\tkzGetPoint{MAB}
+                                        \tkzDefMidPoint(B,C)\tkzGetPoint{MBC}
+                                        \tkzDefMidPoint(C,A)\tkzGetPoint{MCA}
+                                        \tkzDefTriangleCenter[circum](A,B,C)\tkzGetPoint{O}
+                                        \tkzInterLC[near](O,A)(A,MAB)\tkzGetFirstPoint{D}
+
+                                        \tkzDrawCircles[thick](A,MAB B,MBC C,MCA)
+                                        \tkzDrawCircle[thick, teal](O,D)
+                                        \tkzDrawPoints(A,B,C,O,D)
+                                        \tkzLabelPoints(A,B,C)
+                                        \tkzLabelPoint[right, xshift=10pt](O){$O$}
+                                        \tkzLabelPoint[above](MAB){$X$}
+                                        \tkzDrawPolygon[thick](A,B,C)
+
+                                        \tkzDrawSegments[teal](O,D)
+                                        \tkzDrawSegments(D,A MAB,O)
+                                        \tkzMarkRightAngle(O,MAB,A)
+
+                                        \tkzMarkAngle[size=0.8](O,A,B)
+                                        \tkzFillAngle[opacity=0.5, color=red!50, size=0.8](O,A,B)
+                                        \tkzLabelAngle[pos=2](O,A,B){$30^\circ$}
+                                        \tkzLabelSegment[pos=0.5, below right](O,D){$r$}
+                                        \tkzLabelSegment[pos=0.5, sloped, below](D,A){$4$}
+                                        \tkzLabelSegment[pos=0.5, sloped, above](MAB,A){$4$}
+                                    \end{tikzpicture}
+                                </latex-image>
+                            </image>
+                        </figure>
+                        <p>
+                            We thus have <m>\angle XAC = \angle BAC / 2 = 30^\circ</m>, and <m>OX</m> perpendicular to <m>AB</m>. <m>AX = 4</m> since it is a bottle cap radius, and if we let <m>OD = r</m> be the radius of the gap circle, then <m>AO = 4 + r</m>. By the right triangle <m>OXD</m>:
+                            <md>
+                                <mrow> \cos 30^\circ \amp = \frac{4}{4+r} </mrow>
+                                <mrow> 4+r \amp = 4 \times \frac{2}{\sqrt{3}} </mrow>
+                                <mrow>r \amp = \frac{8}{\sqrt{3}} - 4 </mrow>
+                                <mrow> \amp = \frac{8\sqrt{3}}{3} - 4 </mrow>
+                                <mrow> \amp \approx 0.619 \text{ cm} </mrow>
+                            </md>
+                            If we had started with bottles of radius <m>R</m>, we would have found the gap circle radius to be <md>r = \frac{8\sqrt{3}}{3}R - R </md>
+                        </p>
+                    </solution>
+                </li>
+                <li>
+                    <p>
+                        What would happen to the gap circle if the three bottles were larger? Would the ratio between the gap radius and the bottle radius change? Why or why not?
+                    </p>
+                    <solution component="lesson-plan">
+                        <p>
+                            Divide the formula by <m>R</m> gives:
+                            <md>
+                                <mrow> \frac{r}{R} \amp = \frac{2\sqrt{3}}{3} - 1 </mrow>
+                            </md>
+                            This is independent of the bottle radius, so the ratio between the gap radius and the bottle radius does not change. The gap circle scales in size with the bottles.
+                        </p>
+                    </solution>
+                </li>
+            </ol>
         </statement>
-    </activity> -->
+    </activity>
 
-    <!-- [LP] Add guidance on structured lesson plan-->
-
-    <!-- <axiom component="lesson-plan">
+    <axiom component="lesson-plan">
         <title>Structured Instruction</title>
         <p>
             <dl>
             <li>
                 <title>Suggested Time</title>
                 <p>
-                    XX minutes
+                    5 minutes
                 </p>
             </li>
             <li>
                 <title>Objective</title>
                 <p>
-                    To formalize the concepts and properties learners discovered in the anchor task.
+                    Provide general guidance for solving circle geometry problems in real life.
+                </p>
+            </li>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Tie these tips in to the activity problem.
                 </p>
             </li>
             </dl>
         </p>
-        <paragraphs>
-            <title>Key Takeaways &amp; Teacher Connection</title>
-            <ol>
+    </axiom>
+
+    <insight>
+        <p>
+            When working with circle geometry problems in real life, it's really important to:
+            <ul>
                 <li>
                     <p>
-                        <alert>Connecting to Learner Work:</alert> XXXX
+                        Draw a clear diagram, labelling all known and unknown lengths and angles.
                     </p>
                 </li>
-            </ol>
-        </paragraphs>
-    </axiom> -->
-
-    <!-- Add insight / key takeaway directly related to activity / learner experience -->
+                <li>
+                    <p>
+                        Avoid making assumptions about the diagram that aren't justified by the problem statement. Don't make a triangle equilateral unless you are told it is.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Add construction points / lines / circles to your diagram if they help.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Make sure you give your answer in the correct units.
+                    </p>
+                </li>
+            </ul>
+        </p>
+    </insight>
 
     <!-- <insight>
+        <title>Descartes' Circle Theorem</title>
+        <p>
+            If four circles are mutually tangent (each touching the other three) and have radii <m>r_1, r_2, r_3, r_4</m>, then
+            <md>
+                <mrow>\frac{1}{r_4} = \frac{1}{r_1} + \frac{1}{r_2} + \frac{1}{r_3} + 2\sqrt{\frac{1}{r_1 r_2} + \frac{1}{r_2 r_3} + \frac{1}{r_3 r_1}}</mrow>
+            </md>
+        </p>
+        <p>
+            For the three equal bottles with <m>r_1 = r_2 = r_3 = 4</m> cm:
+            <md>
+                <mrow>\frac{1}{r_4} \amp = \frac{3}{4} + 2\sqrt{\frac{3}{16}}</mrow>
+                <mrow>\amp = \frac{3}{4} + \frac{\sqrt{3}}{2} \approx 1.616</mrow>
+            </md>
+            so <m>r_4 \approx 0.619</m> cm — about <m>\frac{r}{3 + 2\sqrt{3}}</m> for any equal radius <m>r</m>.
+        </p>
+        <p>
+            Descartes discovered this result in 1643; it was later rediscovered several times and is the key to understanding chains of tangent circles such as the Pappus chain.
+        </p>
     </insight> -->
 
-    <!-- Add further instruction (not in a block) to develop ideas as needed -->
-
-    <xi:include href="../lesson-plan-templates/example-intro.ptx" />
-
-    <!-- Add at least 3 examples -->
-
-    <!-- <example>
-        <statement>
-        </statement>
-        <solution>
-        </solution>
-    </example>
-
-    <example>
-        <statement>
-        </statement>
-        <solution>
-        </solution>
-    </example>
-
-    <example>
-        <statement>
-        </statement>
-        <solution>
-        </solution>
-    </example> -->
-
-    <xi:include href="../lesson-plan-templates/assessment-intro.ptx" />
-
-    <!-- If STACK questions are included, uncomment this: -->
-
-    <!-- <xi:include href="../lesson-plan-templates/checkpoint.ptx" /> -->
-
-    <!-- Add STACK exercises if made -->
-
-    <!-- Add static exercises -->
-
-    <!-- <exercises>
-        <exercise>
-            <statement>   
-
-            </statement>   
-            <solution>
-
-            </solution>             
-        </exercise>        
-    </exercises> -->
-
-    <!-- [LP] Add information on how to differentiate  -->
-
-    <!-- <axiom component="lesson-plan">
-        <title>Differentiation</title>
-
-        <table>
-            <title>Differentiation</title>
-            <tabular halign="left">
-                <row header="yes" bottom="minor">
-                    <cell>Learner Group</cell>
-                    <cell>Strategy &amp; Learning Experience</cell>
-                    <cell></cell>
+    <paragraphs>
+        <title>Summary: The Triangle's Circles and Centres</title>
+        <p>
+            The problems in this chapter rely on a small family of special circles and centres of a triangle. The two tables below collect their definitions, how each is constructed, and the formula for its radius, for quick reference.
+        </p>
+        <table xml:id="tab-triangle-circles">
+            <title>The three circles associated with a triangle</title>
+            <tabular halign="left" top="minor" bottom="minor" left="minor" right="minor">
+                <col width="10%" halign="left"/>
+                <col width="32%" halign="left"/>
+                <col width="30%" halign="left"/>
+                <col width="28%" halign="left"/>
+                <row header="yes" bottom="medium">
+                    <cell>Circle</cell>
+                    <cell>Touches / passes through</cell>
+                    <cell>Centre</cell>
+                    <cell>Radius</cell>
+                </row>
+                <row bottom="minor">
+                    <cell>Inscribed circle (<term>incircle</term>)</cell>
+                    <cell>Tangent to all three sides; lies inside the triangle.</cell>
+                    <cell>Incentre <m>I</m> — the three internal angle bisectors.</cell>
+                    <cell><md>r = \dfrac{\Delta}{s}</md></cell>
+                </row>
+                <row bottom="minor">
+                    <cell>Circumscribed circle (<term>circumcircle</term>)</cell>
+                    <cell>Passes through all three vertices.</cell>
+                    <cell>Circumcentre <m>O</m> — the perpendicular bisectors of the sides.</cell>
+                    <cell><md>R = \dfrac{abc}{4\,\Delta}</md></cell>
                 </row>
                 <row>
-                    <cell>Struggling Learners (Support)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>On-Level Learners (Core)</cell>
-                    <cell>
-                        <line>The core lesson activities as described above.</line>
-                    </cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>Advanced Learners (Challenge)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
+                    <cell>Escribed circle (<term>excircle</term>), opposite <m>A</m></cell>
+                    <cell>Tangent to side <m>BC</m> and to the extensions of <m>AB</m> and <m>AC</m>; lies outside the triangle.</cell>
+                    <cell>Excentre <m>J_a</m> — the internal bisector at <m>A</m> and the external bisectors at <m>B</m> and <m>C</m>.</cell>
+                    <cell><md>r_a = \dfrac{\Delta}{s - a}</md></cell>
                 </row>
             </tabular>
         </table>
-    </axiom> -->
+        <p>
+            Here <m>a = BC</m>, <m>b = CA</m>, <m>c = AB</m>, and <m>s = \tfrac{1}{2}(a + b + c)</m> is the semi-perimeter, and <m>\Delta</m> is the area of the triangle. The radius is the perpendicular distance from the centre to a side (incircle and excircle) or the distance from the centre to a vertex (circumcircle). There is one excircle opposite each of the three vertices.
+        </p>
+        <table xml:id="tab-triangle-centres">
+            <title>Comparing the centres of a triangle</title>
+            <tabular halign="left" top="minor" bottom="minor" left="minor" right="minor">
+                <col width="16%" halign="left"/>
+                <col width="24%" halign="left"/>
+                <col width="30%" halign="left"/>
+                <col width="30%" halign="left"/>
+                <row header="yes" bottom="medium">
+                    <cell>Centre</cell>
+                    <cell>Meeting point of</cell>
+                    <cell>Where it lies</cell>
+                    <cell>Key property</cell>
+                </row>
+                <row bottom="minor">
+                    <cell>Incentre <m>I</m></cell>
+                    <cell>the three internal angle bisectors</cell>
+                    <cell>always inside the triangle</cell>
+                    <cell>equidistant from the three sides; centre of the incircle</cell>
+                </row>
+                <row bottom="minor">
+                    <cell>Centroid <m>G</m></cell>
+                    <cell>the three medians</cell>
+                    <cell>always inside the triangle</cell>
+                    <cell>divides each median in the ratio <m>2:1</m> from the vertex; the triangle's balance point</cell>
+                </row>
+                <row bottom="minor">
+                    <cell>Circumcentre <m>O</m></cell>
+                    <cell>the perpendicular bisectors of the sides</cell>
+                    <cell><line>acute: inside,</line>
+                        <line>right-angled: midpoint of the hypotenuse,</line>
+                        <line>obtuse: outside</line>
+                    </cell>
+                    <cell>equidistant from the three vertices; centre of the circumcircle</cell>
+                </row>
+                <row>
+                    <cell>Orthocentre <m>H</m></cell>
+                    <cell>the three altitudes</cell>
+                    <cell><line>acute: inside,</line>
+                        <line>right-angled: at the right-angle vertex,</line>
+                        <line>obtuse: outside</line>
+                    </cell>
+                    <cell>lies on the Euler line together with <m>G</m> and <m>O</m></cell>
+                </row>
+            </tabular>
+        </table>
+        <p>
+            The centroid <m>G</m>, circumcentre <m>O</m>, and orthocentre <m>H</m> always lie on one straight line — the <term>Euler line</term> — with <m>HG = 2\,GO</m>. The incentre lies on this line only when the triangle is isosceles (or equilateral).
+        </p>
+    </paragraphs>
+
+    <xi:include href="../lesson-plan-templates/example-intro.ptx" />
+
+    <example xml:id="ex-rl-shanga-dish">
+        <title>Chinese Dish at Shanga</title>
+        <statement>
+            <p>
+                Archaeologists at Shanga on Pate Island, on Kenya's coast, discovered a fragment of the rim of a circular Chinese ceramic dish dating to the 15th century. To find the dish's original radius, a student lays a straight ruler across the fragment. The ruler crosses the rim at two points, forming a chord of length 24 cm, and the greatest distance from the ruler to the rim is 4 cm.
+            </p>
+            <figure xml:id="fig-shanga-dish">
+                <caption>A fragment of a circular Chinese ceramic dish <url href="https://www.artzip.org/investigation-chinese-ceramics-discovered-kenya-major-conclusions">(Source)</url></caption>
+                <image source="images/celadon-dish-fragment-1.jpg" width="50%">
+                    <shortdescription>A fragment of a circular Chinese ceramic dish</shortdescription>
+                </image>
+            </figure>
+            <ol marker="(a)">
+                <li>
+                    <p>
+                        Explain why the perpendicular from the midpoint of the chord passes through the centre of the dish.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Find the original radius of the dish, using the theory from this chapter.
+                    </p>
+                </li>
+            </ol>
+        </statement>
+        <solution>
+            <ol marker="(a)">
+                <li>
+                    <p>
+                    In <xref ref="perpendicular"/>, we have connected the midpoint <m>M</m> of <m>AB</m> to the centre <m>O</m> of the circle.
+                    <figure xml:id="perpendicular" width="80%">
+                        <caption>Proof that the perpendicular from the midpoint of the chord passes through the centre of the circle</caption>
+                        <image>
+                            <latex-image>
+                                \begin{tikzpicture}[scale=0.65]
+                                    \pgfmathsetmacro{\d}{6} % diameter of the chord
+                                    \pgfmathsetmacro{\h}{1} % height of the chord
+                                    \tkzDefPoint(0,0){A}
+                                    \tkzDefShiftPoint[A](0,\d){B}
+                                    \tkzDefShiftPoint[A](-\h, \d/2){C}
+                                    \tkzDefMidPoint(A,B)\tkzGetPoint{M}
+
+                                    \tkzDefTriangleCenter[circum](A,B,C)\tkzGetPoint{O}
+                                    \tkzInterLC[common = C](C,O)(O,C)\tkzGetFirstPoint{D}
+                                    
+                                    \tkzDrawCircle[thick](O,C)
+                                    \tkzDrawPoints(A,B,C,M,D,O)
+                                    \tkzLabelPoints[below right](M,D,O)
+                                    \tkzLabelPoints[left](A,B,C)
+                                    \tkzMarkSegments[mark=||](A,M M,B)
+                                    \tkzDrawSegment[thick, red](C, M)
+                                    \tkzDrawSegment[thick, purple!50!black](A,B)
+                                    \tkzDrawSegments[thick](D,M O,B O,A)
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure> 
+                    We will prove the perpendicular to <m>AB</m> at <m>M</m> goes through <m>O</m> by showing that <m>\angle BMO = 90^\circ</m>. We will show that <m>\Delta OMB \cong \Delta OMA</m> since:
+                    <ul>
+                        <li>
+                            <p>
+                                <m>OB = OA</m> (radii of the same circle)
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <m>MB = MA </m> (as <m>M</m> is the midpoint of <m>AB</m>)
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <m>OM</m> is common to both triangles.
+                            </p>
+                        </li>
+                    </ul> 
+                    Thus by the <m>SSS</m> (side-side-side) test, <m>\Delta OMB \cong \Delta OMA</m>, so <m>\angle BMO = \angle AMO</m>. But <m>AB</m> is a chord, so <m>\angle AMO + \angle BMO = 180^\circ</m>, and therefore <m>\angle BMO = 90^\circ</m>. Thus the perpendicular from the midpoint of the chord passes through the centre of the dish.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        We can represent the circle fragment as shown below, where the chord is horizontal and the perpendicular from its midpoint is vertical.
+                    </p>
+                    <figure xml:id="circle-fragment" width="80%">
+                        <caption>A Diagram representing the circle fragment</caption>
+                        <image>
+                            <latex-image>
+                                \begin{tikzpicture}[scale=0.75]
+                                    \pgfmathsetmacro{\d}{6} % diameter of the chord
+                                    \pgfmathsetmacro{\h}{1} % height of the chord
+                                    \tkzDefPoint(0,0){A}
+                                    \tkzDefShiftPoint[A](0,\d){B}
+                                    \tkzDefShiftPoint[A](-\h, \d/2){C}
+                                    \tkzDefMidPoint(A,B)\tkzGetPoint{M}
+
+                                    \tkzDefTriangleCenter[circum](A,B,C)\tkzGetPoint{O}
+                                    \tkzInterLC[common = C](C,O)(O,C)\tkzGetFirstPoint{D}
+                                    
+                                    \tkzDrawCircle[thick](O,C)
+                                    \tkzDrawPoints(A,B,C,M,D,O)
+                                    \tkzLabelPoints[below right](M,O,D)
+                                    \tkzLabelPoints[left](A,B,C)
+                                    \tkzDrawSegment[thick, red](C, M)
+                                    \tkzDrawSegment[thick, purple!50!black](A,B)
+                                    \tkzDrawSegment[thick](D,M)
+                                    \tkzLabelSegments[right](A,M M,B){$12$ cm}
+                                    \tkzLabelSegments[above](M,C){$4$ cm}
+                                    \tkzLabelSegments[above](D,M){$2R - 4$ cm}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                    <p>
+                        Since <m>CD</m> is a diameter, we have <m>MD = CD - CM = 2R - 4</m>. By the intersecting chords theorem:
+                        <md>
+                            <mrow>AM \times MB \amp = CM \times MD </mrow>
+                            <mrow>12 \times 12 \amp = 4 \times (2R - 4)</mrow>
+                            <mrow>144 \amp = 8R - 16</mrow>
+                            <mrow>8R \amp = 160</mrow>
+                            <mrow>R \amp = 20 \text{ cm}</mrow>
+                        </md>
+                        The original dish had a radius of 20 cm.
+                    </p>
+                </li>
+            </ol>
+        </solution>
+    </example>
+
+    <example xml:id="ex-rl-bomas-arena">
+        <title>The Arena at Bomas</title>
+        <statement>
+            <p>
+                A spectator <m>B</m> sits around the edge of the circular performance arena at Bomas of Kenya in Nairobi. A straight road runs tangent to the arena at the entrance gate <m>T</m>. During a performance, a dance troupe walks in a straight line across the arena from the entrance gate <m>T</m> to the exit gate <m>A</m> on the far side. At the entrance, the procession path makes an angle of <m>48^\circ</m> with the road.
+            </p>
+            <figure xml:id="fig-bomas-arena">
+                <caption>The arena, the tangent road at <m>T</m>, the chord <m>TA</m> at <m>48^\circ</m> to the road, and a spectator at <m>B</m> on the major arc.</caption>
+                <image width="80%">
+                    <latex-image>
+                        \begin{tikzpicture}[scale=0.4]
+                            %% --- SET ---
+                            \pgfmathsetmacro{\R}{5}
+                            \tkzDefPoint(0,0){T}
+                            \tkzDefPoint(0,\R){O}
+                            \tkzDefPoint(-\R,0){Lt}
+                            \tkzDefPoint(\R,0){Rt}
+                            \tkzDefPoint(8,0){Xref}
+
+                            %% --- CALCULATE ---
+                            \tkzDefPointBy[rotation=center T angle 48](Xref)\tkzGetPoint{Pdir}
+                            \tkzInterLC[common=T](Pdir,T)(O,T)\tkzGetFirstPoint{A}
+                            \tkzDefPointBy[rotation=center O angle -135](T)\tkzGetPoint{B}
+
+                            %% --- DRAW ---
+                            \tkzDrawCircle[thick, purple](O,T)
+                            \tkzDrawLine[add=0 and 0.8, thick, brown!70!black](T,Rt)
+                            \tkzDrawLine[add=0.8 and 0, thick, black](Lt,T)
+                            \tkzDrawSegments[tkz arrows, very thick, brown](Rt,T T,A)
+                            \tkzDrawSegments(B,T B,A)
+                            \tkzDrawPoints[size=3pt](T,A,B,O)
+
+                            %% --- MARK ---
+                            \tkzMarkAngle[size=1.1](Rt,T,A)
+                            \tkzFillAngle[opacity=0.4, color=teal!50, size=1.1](Rt,T,A)
+                            \tkzMarkAngle[size=0.8](T,B,A)
+                            \tkzFillAngle[opacity=0.4, color=orange!60, size=0.8](T,B,A)
+
+                            %% --- LABEL ---
+                            \tkzLabelCircle[above](O,A)(90){Arena}
+                            \tkzLabelPoint[below right](T){$T$}
+                            \tkzLabelPoint[right](A){$A$}
+                            \tkzLabelPoint[above left](B){$B$}
+                            \tkzLabelPoint[below right](O){$O$}
+                            \tkzLabelAngle[pos=1.9](Rt,T,A){$48^\circ$}
+                            \tkzLabelAngle[pos=1.2](T,B,A){$\theta$}
+                            \tkzLabelSegment[below, pos=0.15](Lt,Rt){Road}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+            <ol marker="(a)">
+                <li>
+                    <p>
+                        The spectator at <m>B</m> watches the dancers cross. Through what angle must she turn her head to look from the entrance gate to the exit gate?
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Her friend is sitting at a different seat, also on the major arc. Show that he turns his head through exactly the same angle, wherever on the major arc he sits.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        A drummer sits on the <em>minor</em> arc <m>TA</m>, between the two gates. Through what angle does he turn his head to look from one gate to the other?
+                    </p>
+                </li>
+            </ol>
+        </statement>
+        <solution>
+            <ol marker="(a)">
+                <li>
+                    <p>
+                        By the alternate segment theorem, the angle between a tangent and a chord equals the inscribed angle in the alternate segment. Thus <m>\angle TBA = 48^\circ</m>, the spectator must turn her head through <m>48^\circ</m>.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Any spectator on the major arc subtends the same chord <m>TA</m> from the same side. By the theorem of angles in the same segment, all such inscribed angles are equal. Every spectator on the major arc therefore turns through exactly <m>48^\circ</m> — there is no "best seat" for watching the crossing!
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        The drummer's seat <m>D</m> is on the minor arc, so <m>TBAD</m> is a cyclic quadrilateral with <m>B</m> on the major arc and <m>D</m> on the minor arc. Opposite angles of a cyclic quadrilateral are supplementary, so
+                        <md>
+                            <mrow>\angle TDA = 180^\circ - \angle TBA = 180^\circ - 48^\circ = 132^\circ</mrow>
+                        </md>
+                        The drummer must turn through <m>132^\circ</m> — much further, because he is close to the action.
+                    </p>
+                </li>
+            </ol>
+        </solution>
+    </example>
+
+    <example xml:id="ex-rl-posho-belt">
+        <title>The Posho Mill Belt</title>
+        <statement>
+            <p>
+                A diesel posho mill at a rural market centre is driven by a flat belt connecting the engine pulley (radius <m>r = 6</m> cm) to the mill pulley (radius <m>R = 21</m> cm). The centres of the two pulleys are <m>d = 30</m> cm apart. The belt runs as an <em>open</em> (uncrossed) loop, following the two direct common tangents between the circles.
+            </p>
+            <figure xml:id="fig-posho-belt">
+                <caption>The open belt follows the two direct common tangents. The right triangle <m>O_1 F O_2</m> (right-angled at <m>F</m>) has hypotenuse <m>d</m>, legs <m>R - r</m> and <m>L</m>, and the belt meets each radius at right angles.</caption>
+                <image width="90%">
+                    <latex-image>
+                        \begin{tikzpicture}[scale=0.15]
+                            %% --- SET ---
+                            \pgfmathsetmacro{\Rr}{21}
+                            \pgfmathsetmacro{\rr}{6}
+                            \pgfmathsetmacro{\dd}{30}
+                            \pgfmathsetmacro{\ang}{acos((\Rr-\rr)/\dd)}
+                            \tkzDefPoint(0,0){O1}
+                            \tkzDefPoint(\dd,0){O2}
+                            \tkzDefPoint(\Rr,0){B0}
+                            \tkzDefShiftPoint[O2](\rr,0){S0}
+
+                            %% --- CALCULATE ---
+                            \tkzDefPointBy[rotation=center O1 angle \ang](B0)\tkzGetPoint{P1u}
+                            \tkzDefPointBy[rotation=center O1 angle -\ang](B0)\tkzGetPoint{P1l}
+                            \tkzDefPointBy[rotation=center O2 angle \ang](S0)\tkzGetPoint{P2u}
+                            \tkzDefPointBy[rotation=center O2 angle -\ang](S0)\tkzGetPoint{P2l}
+
+                            %% --- DRAW ---
+                            \tkzDrawCircle[thick](O1,B0)
+                            \tkzDrawCircle[thick](O2,S0)
+                            \tkzDrawSegment[thick, blue](P1u,P2u)
+                            \tkzDrawSegment[thick, blue](P1l,P2l)
+                            \tkzDrawSegment[gray](O1,O2)
+                            \tkzDrawSegment[gray](O1,P1u)
+                            \tkzDrawSegment[gray](O2,P2u)
+                            \tkzDrawPoints[size=2pt](O1,O2,P1u,P2u,P1l,P2l)
+                            \tkzDrawArc[color=red, thick](O1,P1u)(P1l)
+                            \tkzDrawArc[color=red, thick](O2,P2l)(P2u)
+
+                            %% --- MARK ---
+                            \tkzMarkRightAngle[size=1](O1,P1u,P2u)
+
+                            %% --- LABEL ---
+                            \tkzLabelPoint[below](O1){$O_A$}
+                            \tkzLabelPoint[below](O2){$O_B$}
+                            \tkzLabelSegment[below, pos=0.5](O1,O2){$30$}
+                            \tkzLabelSegment[above left](O1,P1u){$21$}
+                            \tkzLabelSegment[right](O2,P2u){$6$}
+                            \tkzLabelSegment[above, sloped, pos=0.5](P1u,P2u){$L$}
+                            \tkzLabelSegment[below, sloped, pos=0.5](P1l,P2l){$L$}
+                            \tkzLabelPoint[above](P1u){$P_A$}
+                            \tkzLabelPoint[above](P2u){$P_B$}
+                            \tkzLabelPoint[below](P1l){$Q_A$}
+                            \tkzLabelPoint[below](P2l){$Q_B$}
+                            \tkzLabelArc[left=2pt](O1,P1u,P1l){$a$}
+                            \tkzLabelArc[right=2pt](O2,P2l,P2u){$b$}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+            <ol marker="(a)">
+                <li>
+                    <p>
+                        Show that each straight section of belt has length <md>L = \sqrt{d^2 - (R - r)^2}</md> Thus calculate <m>L</m>.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Find the total belt length, including the two arcs. (The tangent makes angle <m>\varphi = \sin^{-1}\left(\dfrac{R-r}{d}\right)</m> with the line of centres; the belt wraps through <m>\pi + 2\varphi</m> radians around the large pulley and <m>\pi - 2\varphi</m> radians around the small pulley.)
+                    </p>
+                </li>
+            </ol>
+        </statement>
+        <solution>
+            <ol marker="(a)">
+                <li>
+                    <p>
+                        Draw a perpendicular from the centre of the small pulley <m>O_B</m> to the tangent line, <m>O_AP_A</m> meeting it at <m>F</m>.
+                    </p>
+                    <figure xml:id="fig-posho-belt-soln1">
+                        <caption>The right triangle <m>O_1 F O_2</m> (right-angled at <m>F</m>) has hypotenuse <m>d</m>, legs <m>R - r</m> and <m>L</m>, and the belt meets each radius at right angles.</caption>
+                        <image width="90%">
+                            <latex-image>
+                                \begin{tikzpicture}[scale=0.15]
+                                    %% --- SET ---
+                                    \pgfmathsetmacro{\Rr}{21}
+                                    \pgfmathsetmacro{\rr}{6}
+                                    \pgfmathsetmacro{\dd}{30}
+                                    \pgfmathsetmacro{\ang}{acos((\Rr-\rr)/\dd)}
+                                    \tkzDefPoint(0,0){O1}
+                                    \tkzDefPoint(\dd,0){O2}
+                                    \tkzDefPoint(\Rr,0){B0}
+                                    \tkzDefShiftPoint[O2](\rr,0){S0}
+
+                                    %% --- CALCULATE ---
+                                    \tkzDefPointBy[rotation=center O1 angle \ang](B0)\tkzGetPoint{P1u}
+                                    \tkzDefPointBy[rotation=center O1 angle -\ang](B0)\tkzGetPoint{P1l}
+                                    \tkzDefPointBy[rotation=center O2 angle \ang](S0)\tkzGetPoint{P2u}
+                                    \tkzDefPointBy[rotation=center O2 angle -\ang](S0)\tkzGetPoint{P2l}
+                                    \tkzDefPointBy[projection=onto O1--P1u](O2)\tkzGetPoint{F}
+
+                                    %% --- DRAW ---
+                                    \tkzDrawCircle[thick](O1,B0)
+                                    \tkzDrawCircle[thick](O2,S0)
+                                    \tkzDrawSegment[thick, blue](P1u,P2u)
+                                    \tkzDrawSegment[thick, blue](P1l,P2l)
+                                    \tkzDrawSegment[gray](O1,O2)
+                                    \tkzDrawSegment[gray](O1,P1u)
+                                    \tkzDrawSegment[gray](O2,P2u)
+                                    \tkzDrawSegment[gray](O2,F)
+                                    \tkzDrawPoints[size=2pt](O1,O2,P1u,P2u,P1l,P2l,F)
+                                    \tkzDrawArc[color=red, thick](O1,P1u)(P1l)
+                                    \tkzDrawArc[color=red, thick](O2,P2l)(P2u)
+
+                                    %% --- MARK ---
+                                    \tkzMarkRightAngle[size=1](O1,P1u,P2u)
+                                    \tkzMarkRightAngle[size=1](O1,F,O2)
+
+                                    %% --- LABEL ---
+                                    \tkzLabelPoint[below](O1){$O_A$}
+                                    \tkzLabelPoint[below](O2){$O_B$}
+                                    \tkzLabelPoint[above](F){$F$}
+                                    \tkzLabelSegment[below, pos=0.5](O1,O2){$30$}
+                                    \tkzLabelSegment[above left](O1,P1u){$21$}
+                                    \tkzLabelSegment[right](O2,P2u){$6$}
+                                    \tkzLabelSegment[above, sloped, pos=0.5](P1u,P2u){$L$}
+                                    \tkzLabelSegment[below, sloped, pos=0.5](P1l,P2l){$L$}
+                                    \tkzLabelSegment[right](O1,F){$15$}
+                                    \tkzLabelPoint[above](P1u){$P_A$}
+                                    \tkzLabelPoint[above](P2u){$P_B$}
+                                    \tkzLabelPoint[below](P1l){$Q_A$}
+                                    \tkzLabelPoint[below](P2l){$Q_B$}
+                                    \tkzLabelArc[left=2pt](O1,P1u,P1l){$a$}
+                                    \tkzLabelArc[right=2pt](O2,P2l,P2u){$b$}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                        
+                    <p> The right triangle <m>\triangle O_A F O_B</m> formed has:
+                        <ul>
+                            <li><p>hypotenuse <m>O_A O_B = d = 30</m> cm,</p></li>
+                            <li><p>one leg <m>= R - r = 15</m> cm (the difference of radii),</p></li>
+                            <li><p>other leg <m>= L</m> (the length of the straight section of belt).</p></li>
+                        </ul>
+                        By Pythagoras:
+                        <md>
+                            <mrow>L \amp = \sqrt{d^2 - (R - r)^2}</mrow>
+                            <mrow>\amp = \sqrt{900 - 225}</mrow>
+                            <mrow>\amp = \sqrt{675} \approx 25.98 \text{ cm}</mrow>
+                        </md>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Drawing on key angles, and replicating the construction for <m>F</m> on the lower half (producing <m>G</m>)
+                    </p>
+                    <figure xml:id="fig-posho-belt-soln2">
+                        <caption>The right triangle <m>O_1 F O_2</m> (right-angled at <m>F</m>) has hypotenuse <m>d</m>, legs <m>R - r</m> and <m>L</m>, and the belt meets each radius at right angles.</caption>
+                        <image width="90%">
+                            <latex-image>
+                                \begin{tikzpicture}[scale=0.15]
+                                    %% --- SET ---
+                                    \pgfmathsetmacro{\Rr}{21}
+                                    \pgfmathsetmacro{\rr}{6}
+                                    \pgfmathsetmacro{\dd}{30}
+                                    \pgfmathsetmacro{\ang}{acos((\Rr-\rr)/\dd)}
+                                    \tkzDefPoint(0,0){O1}
+                                    \tkzDefPoint(\dd,0){O2}
+                                    \tkzDefPoint(\Rr,0){B0}
+                                    \tkzDefShiftPoint[O2](\rr,0){S0}
+
+                                    %% --- CALCULATE ---
+                                    \tkzDefPointBy[rotation=center O1 angle \ang](B0)\tkzGetPoint{P1u}
+                                    \tkzDefPointBy[rotation=center O1 angle -\ang](B0)\tkzGetPoint{P1l}
+                                    \tkzDefPointBy[rotation=center O2 angle \ang](S0)\tkzGetPoint{P2u}
+                                    \tkzDefPointBy[rotation=center O2 angle -\ang](S0)\tkzGetPoint{P2l}
+                                    \tkzDefPointBy[projection=onto O1--P1u](O2)\tkzGetPoint{F}
+                                    \tkzDefPointBy[projection=onto O1--P1l](O2)\tkzGetPoint{G}
+
+                                    %% --- DRAW ---
+                                    \tkzDrawCircle[thick](O1,B0)
+                                    \tkzDrawCircle[thick](O2,S0)
+                                    \tkzDrawSegment[thick, blue](P1u,P2u)
+                                    \tkzDrawSegment[thick, blue](P1l,P2l)
+                                    \tkzDrawSegment[gray](O1,O2)
+                                    \tkzDrawSegments[gray](O1,P1u O1,P1l O2,P2u O2,P2l)
+                                    \tkzDrawSegments[gray](O2,F O2,G)
+                                    \tkzDrawPoints[size=2pt](O1,O2,P1u,P2u,P1l,P2l,F,G)
+                                    \tkzDrawArc[color=red, thick](O1,P1u)(P1l)
+                                    \tkzDrawArc[color=red, thick](O2,P2l)(P2u)
+
+                                    %% --- MARK ---
+                                    \tkzMarkRightAngle[size=1](O1,P1u,P2u)
+                                    \tkzMarkRightAngle[size=1](O1,F,O2)
+                                    \tkzMarkRightAngle[size=1](P2u,O2,F)
+                                    \tkzMarkRightAngle[size=1](G,O2,P2l)
+                                    \tkzMarkRightAngle[size=1](O2,G,O1)
+                                    \tkzMarkAngle[size=5](O1,O2,G)
+                                    \tkzMarkAngle[size=5](F,O2,O1)
+                                    \tkzMarkAngle[size=4](O2,O1,F)
+                                    \tkzMarkAngle[size=3](P2l,O2,P2u)
+                                    \tkzMarkAngle[size=3](F,O1,G)
+                                    \tkzFillAngle[opacity=0.4, color=orange!60, size=3](F,O1,G)
+                                    \tkzFillAngle[opacity=0.4, color=teal!50, size=3](P2l,O2,P2u)
+                                    \tkzFillAngle[opacity=0.4, color=blue!50, size=4](O2,O1,F)
+                                    \tkzFillAngle[opacity=0.4, color=red!40, size=5](F,O2,O1)
+                                    \tkzFillAngle[opacity=0.4, color=red!40, size=5](O1,O2,G)
+
+                                    %% --- LABEL ---
+                                    \tkzLabelPoint[above](F){$F$}
+                                    \tkzLabelPoint[below](G){$G$}
+                                    \tkzLabelSegment[above, sloped, pos=0.5](P1u,P2u){$L$}
+                                    \tkzLabelSegment[below, sloped, pos=0.5](P1l,P2l){$L$}
+                                    \tkzLabelSegment[below, pos=0.5](O1,O2){$30$ cm}
+                                    \tkzLabelSegment[left](O1,F){$15$ cm}
+                                    \tkzLabelPoint[above](P1u){$P_A$}
+                                    \tkzLabelPoint[above](P2u){$P_B$}
+                                    \tkzLabelPoint[below](P1l){$Q_A$}
+                                    \tkzLabelPoint[below](P2l){$Q_B$}
+                                    \tkzLabelAngle[pos=7.5](F,O2,O1){$30^\circ$}
+                                    \tkzLabelAngle[pos=7.5](O1,O2,G){$30^\circ$}
+                                    \tkzLabelAngle[pos=4, xshift=10pt, yshift=10pt](O2,O1,F){$60^\circ$}
+                                    \tkzLabelAngle[pos=5, yshift=-10pt](P2l,O2,P2u){$120^\circ$}
+                                    \tkzLabelAngle[pos=5, xshift=-5pt](F,O1,G){$240^\circ$}
+                                    \tkzLabelArc[left=2pt](O1,P1u,P1l){$a$}
+                                    \tkzLabelArc[right=2pt](O2,P2l,P2u){$b$}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                    <p>
+                        First, we find the red angle <m>\angle O_AO_BF</m>. By right angled trigonometry, 
+                        <md>
+                            \sin \angle O_AO_BF = \frac{R - r}{d} = \frac{15}{30} = \frac{1}{2}
+                        </md>
+                        Hence <m>\angle O_AO_BF = 30^\circ</m>. Since <m>O_A F O_B</m> is a right triangle, the other non-right angle <m>\angle O_B O_A F = 60^\circ</m>. Symmetrically, the angle <m>\angle O_B O_A G = 30^\circ</m>, and <m>\angle O_B O_A G = 60^\circ</m>.
+                    </p>
+                    <p>
+                        Thus the belt wraps through <m>360^\circ - 60^\circ - 60^\circ = 240^\circ</m> around the large pulley. Using the formula for arc length:
+                        <md>
+                            a = \frac{240}{360} \times 2 \times \pi \times 21 = 28 \pi
+                        </md>
+                    </p>
+                    <p>
+                        Around the small pulley, we also include the two right angles at the tangent points, so the belt wraps through <m>360^\circ - 2\times 30^\circ - 2\times 60^\circ = 120^\circ</m> around the small pulley. Thus:
+                        <md>
+                            b = \frac{120}{360} \times 2 \times \pi \times 6 = 4 \pi
+                        </md>
+                    </p>
+                    <p>
+                        Combining this with the result for <m>L</m> from (a), we have:
+                        <md>
+                            <mrow>\text{Total Belt Length} \amp = 2L + a + b </mrow>
+                            <mrow> \amp = \sqrt{675} + 28 \pi + 4 \pi </mrow>
+                            <mrow> \amp = 15\sqrt{3} + 32\pi \approx 126.5 \text{ cm}</mrow>
+                        </md>
+                    </p>
+                </li>
+            </ol>
+        </solution>
+    </example>
+
+    <example xml:id="ex-rl-conversion-kick">
+        <title>The Conversion Kick</title>
+        <statement>
+            <p>
+                In rugby sevens, after scoring a try the kicker must kick for goal from a line perpendicular to the try line through the point where the try was scored. The two goal posts <m>A</m> and <m>B</m> are 5.6 m apart on the try line. The try was scored 10 m outside the nearer post. The kicker stands at point <m>K</m>, somewhere along the perpendicular line from the try line.
+            </p>
+            <figure xml:id="conversion-kick">
+                <image>
+                    <latex-image>
+                        \begin{tikzpicture}[scale=0.3]
+                            \tkzDefPoint(0,0){T}
+                            \tkzDefPoint(10,0){A}
+                            \tkzDefPoint(15.6,0){B}
+                            \tkzDefPoint(0,9){K}
+
+                            \tkzDrawSegments[thin, add=0.5 and 2.2](T,A T,K)
+                            \tkzDrawSegments[thick](A,B K,T)
+                            \tkzDrawSegments(A,K B,K)
+                            \tkzDrawPoints(T,A,B,K)
+                            \tkzDrawPoints[size=5](A,B)
+                            \tkzLabelPoints[below left](T)
+                            \tkzLabelPoints[left](K)
+                            \tkzLabelPoints[below](A,B)
+
+                            \tkzMarkRightAngle[size=0.8](A,T,K)
+                            \tkzFillAngle[blue!30, size=4, opacity=0.5](A,K,B)
+                            \tkzLabelAngle[pos=5](A,K,B){$\theta$}
+                            \tkzLabelSegment[below](A,B){5.6 m}
+                            \tkzLabelSegment[below](T,A){10 m}
+                            \tkzLabelSegment[left](T,K){$x$ m}
+                            \tkzLabelSegment[below, pos=1.5](T,B){Try Line}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+            <ol marker="(a)">
+                <li>
+                    <p>
+                        Explain why the maximum viewing angle <m>\theta = \angle AKB</m> is achieved when the circumcircle through <m>A</m>, <m>K</m>, and <m>B</m> is tangent to the perpendicular <m>KT</m> to the try line.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Use the tangent-secant theorem to find the optimal distance <m>x</m> from the try line to maximise <m>\theta</m>.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Find the maximum viewing angle <m>\theta</m>.
+                    </p>
+                </li>
+            </ol>
+        </statement>
+        <solution>
+            <ol marker="(a)">
+                <li>
+                    <p>
+                        Construct the circumcircle through <m>A</m>, <m>K</m>, and <m>B</m>, and let its centre be <m>O</m>. We have <m>\angle AOB = 2 \theta</m>, as angles at the centre are twice angles at the circumference subtending the same chord.
+                    </p>
+                    <figure xml:id="conversion-kick-soln">
+                        <image>
+                            <latex-image>
+                                \begin{tikzpicture}[scale=0.3]
+                                    \tkzDefPoint(0,0){T}
+                                    \tkzDefPoint(10,0){A}
+                                    \tkzDefPoint(15.6,0){B}
+                                    \tkzDefPoint(0,9){K}
+
+                                    \tkzDrawSegments[thin, add=0.5 and 2.2](T,A T,K)
+                                    \tkzDrawSegments[thick](A,B K,T)
+                                    \tkzDrawSegments(A,K B,K)
+                                    \tkzDrawPoints(T,A,B,K)
+                                    \tkzDrawPoints[size=5](A,B)
+                                    \tkzLabelPoints[below left](T)
+                                    \tkzLabelPoints[left](K)
+                                    \tkzLabelPoints[below](A,B)
+                                    \tkzDefTriangleCenter[circum](K,A,B) \tkzGetPoint{O}
+
+                                    \tkzDrawCircle[dashed, thick](O,K)
+                                    \tkzDrawSegments(A,O O,B O,K)
+                                    \tkzLabelSegment[above, sloped](O,K){$R$}
+
+                                    \tkzMarkRightAngle[size=0.8](A,T,K)
+                                    \tkzFillAngle[blue!30, size=4, opacity=0.5](A,K,B)
+                                    \tkzLabelAngle[pos=5](A,K,B){$\theta$}
+
+                                    \tkzMarkAngle[size=3](A,O,B)
+                                    \tkzFillAngle[blue!30, size=3, opacity=0.5](A,O,B)
+                                    \tkzLabelAngle[pos=4](A,O,B){$2\theta$}
+                                    \tkzLabelPoints[above](O)
+                                    \tkzLabelSegment[below](A,B){5.6 m}
+                                    \tkzLabelSegment[below](T,A){10 m}
+                                    \tkzLabelSegment[left](T,K){$x$ m}
+                                    \tkzLabelSegment[below, pos=1.5](T,B){Try Line}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                    <p>
+                        As <m>A</m> and <m>B</m> are fixed, this angle depends only on the radius of the circumcircle, with a smaller radius giving a larger angle. The distance <m>R</m> from the centre <m>O</m> to <m>K</m> is minimised when <m>KO</m> is pendicular to <m>KT</m>, i.e. when the circumcircle is tangent to the perpendicular <m>KT</m>.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        When the circumcircle is tangent to the try line at <m>T</m>, the tangent-secant theorem applies from the external point <m>T</m>:
+                        <ul>
+                            <li><p><m>TK</m> is the tangent from <m>T</m> to the circumcircle (length <m>x</m>),</p></li>
+                            <li><p><m>TB</m> is a secant from <m>T</m>, with <m>TA = 10</m> m, <m>TB = 15.6</m> m.</p></li>
+                        </ul>
+                        <figure xml:id="conversion-kick-soln-tangent">
+                            <image>
+                                <latex-image>
+                                    \begin{tikzpicture}[scale=0.3]
+                                        \tkzDefPoint(0,0){T}
+                                        \tkzDefPoint(10,0){A}
+                                        \tkzDefPoint(15.6,0){B}
+                                        \tkzDefPoint(0,12.5){K}
+                                        \tkzDefPoint(0,12.6){X}
+
+                                        \tkzDrawSegments[thin, add=0.5 and 2.2](T,A T,K)
+                                        \tkzDrawSegments[thick](A,B K,T)
+                                        \tkzDrawSegments(A,K B,K)
+                                        \tkzDrawPoints(T,A,B,K)
+                                        \tkzDrawPoints[size=5](A,B)
+                                        \tkzLabelPoints[below left](T)
+                                        \tkzLabelPoints[left](K)
+                                        \tkzLabelPoints[below](A,B)
+                                        \tkzDefTriangleCenter[circum](K,A,B) \tkzGetPoint{O}
+
+                                        \tkzDrawCircle[dashed, thick](O,K)
+                                        \tkzDrawSegments(A,O O,B O,K)
+                                        \tkzLabelSegment[above, sloped](O,K){$R$}
+
+                                        \tkzMarkRightAngle[size=0.8](O,K,X)
+                                        \tkzMarkRightAngle[size=0.8](A,T,K)
+                                        \tkzFillAngle[blue!30, size=4, opacity=0.5](A,K,B)
+                                        \tkzLabelAngle[pos=5](A,K,B){$\theta$}
+
+                                        \tkzMarkAngle[size=3](A,O,B)
+                                        \tkzFillAngle[blue!30, size=3, opacity=0.5](A,O,B)
+                                        \tkzLabelAngle[pos=4](A,O,B){$2\theta$}
+                                        \tkzLabelSegment[below](A,B){5.6 m}
+                                        \tkzLabelSegment[below](T,A){10 m}
+                                        \tkzLabelSegment[left](T,K){$x$ m}
+                                        \tkzLabelSegment[below, pos=1.5](T,B){Try Line}
+                                    \end{tikzpicture}
+                                </latex-image>
+                            </image>
+                        </figure>
+                        By the tangent-secant theorem:
+                        <md>
+                            <mrow>x^2 \amp = TA \times TB = 10 \times 15.6 = 156</mrow>
+                            <mrow>x \amp = \sqrt{156} \approx 12.5 \text{ m}</mrow>
+                        </md>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        With <m>x \approx 12.5</m> m, <m>TA = 10</m> m, and <m>TB = 15.6</m> m (all from the foot <m>T</m>):
+                        <md>
+                            <mrow>\angle AKT \amp = \tan^{-1}\left(\frac{10}{12.5}\right) \approx 38.7^\circ</mrow>
+                            <mrow>\angle BKT \amp = \tan^{-1}\left(\frac{15.6}{12.5}\right) \approx 51.3^\circ</mrow>
+                            <mrow>\theta \amp = \angle AKB = 51.3^\circ - 38.7^\circ \approx 12.6^\circ</mrow>
+                        </md>
+                        The kicker maximises the angle of the goal posts at about <m>12.5</m> m from the try line.
+                    </p>
+                </li>
+            </ol>
+        </solution>
+    </example>
+
+    <xi:include href="../lesson-plan-templates/assessment-intro.ptx" />
+
+    <exercises>
+
+        <exercise xml:id="ex-rl-basketball">
+            <title>Passing the Basketball</title>
+            <statement>
+                <p>
+                    In a basketball game the three-point arc is modelled as a circle whose centre is at the hoop. The <em>inbound line</em> runs up the side of the court, tangent to the arc at the corner where Wanjiku (<m>W</m>) is standing. She can pass directly to Amina (<m>A</m>), who is standing on the arc, or relay to Baraka (<m>B</m>, also on the arc), who then passes to Amina. Wanjiku's direct pass to Amina makes an angle of <m>35°</m> with the inbound line.
+                </p>
+                <figure xml:id="fig-basketball">
+                    <caption>The inbound line is tangent to the three-point arc at the corner <m>W</m>; the direct pass <m>WA</m> makes <m>35°</m> with it, and Baraka stands at <m>B</m> on the arc.</caption>
+                    <image width="80%">
+                        <latex-image>
+                            \begin{tikzpicture}[scale=0.5]
+                                %% --- SET ---
+                                \tkzDefPoint(0,0){W}
+                                \tkzDefPoint(4,0){hoop}
+                                \tkzDefPoint(4,0.2){hoop2}
+                                \tkzDefPoint(8,0){r}
+                                \tkzDefPoint(0,5){up}
+                                \tkzDefPoint(5,0){Href}
+                                %% --- CALCULATE ---
+                                \tkzDefPointBy[rotation=center W angle 55](Href)\tkzGetPoint{Pdir}
+                                \tkzInterLC[near](W,Pdir)(hoop,W)\tkzGetSecondPoint{A}
+                                \tkzDefPointBy[rotation=center hoop angle 55](r)\tkzGetPoint{B}
+                                %% --- DRAW ---
+                                \tkzDrawLine[add=0.3 and 0.5, thin](W,r)
+                                \tkzDrawLine[add=0 and 0.45, thin](W,up)
+                                \tkzDrawArc[thick, red](hoop,r)(W)
+                                \tkzDrawSegments[thick, blue](W,A W,B A,B)
+                                \tkzDrawPoints[size=2.5pt](W,A,B)
+                                \tkzDrawPoint[size=2pt](hoop)
+                                \tkzDrawCircle[thin](hoop2, hoop)
+                                %% --- MARK ---
+                                \tkzMarkAngle[size=1.1](A,W,up)
+                                \tkzFillAngle[opacity=0.3, color=teal!50, size=1.1](A,W,up)
+                                \tkzMarkAngle[size=0.9](A,B,W)
+                                \tkzFillAngle[opacity=0.3, color=orange!60, size=0.9](A,B,W)
+                                %% --- LABEL ---
+                                \tkzLabelPoint[below left](W){$W$}
+                                \tkzLabelPoint[above left](A){$A$}
+                                \tkzLabelPoint[above right](B){$B$}
+                                \tkzLabelPoint[below](hoop){hoop}
+                                \tkzLabelPoint[left, font=\small](up){inbound line}
+                                \tkzLabelAngle[pos=1.6](A,W,up){$35^\circ$}
+                                \tkzLabelAngle[pos=1.35](A,B,W){$\theta$}
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+                <ol marker="(a)">
+                    <li>
+                        <p>Baraka catches the relay pass and turns to pass to Amina. Through what angle <m>\theta</m> does he pivot?</p>
+                    </li>
+                    <li>
+                        <p>Would your answer to (b) change if Baraka stood at a different point on the arc? Explain.</p>
+                    </li>
+                </ol>
+            </statement>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p><m>\theta = 35°</m>. By the <em>alternate segment theorem</em>, the angle between the tangent and the chord <m>WA</m> equals the inscribed angle <m>\angle WBA</m> that <m>WA</m> subtends in the alternate segment.</p>
+                    </li>
+                    <li>
+                        <p>No. By the theorem of angles in the same segment, every point on the major arc subtends the chord <m>WA</m> at the same angle, <m>35°</m>, so Baraka pivots through <m>35°</m> wherever he stands on the arc.</p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise xml:id="ex-rl-lake-road">
+            <title>Driving Past the Lake</title>
+            <statement>
+                <p>
+                    A town at point <m>P</m> must be connected by road to a town at <m>T</m>, which is 56 km away in a straight line. A circular lake of radius 9 km lies in the way: its centre <m>O</m> lies on the direct road, 41 km from <m>P</m> and 15 km from <m>T</m>. The shortest road must be tangent to the lake and follow the lake shore between the two tangent points.
+                </p>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            On a scale diagram (1 cm : 5 km), mark points <m>P</m>, <m>O</m>, and <m>T</m>. Using ruler and compasses only, construct the tangents from <m>P</m> and from <m>T</m> to the circle.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Calculate the length of each tangent segment.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Find the arc length along the lake shore between the two tangent points.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            How long is the shortest road that avoids the lake?
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            On a scale drawing: <m>P</m> is 8.2 cm from <m>O</m>, <m>T</m> is 3 cm from <m>O</m>. Construct the tangent from <m>P</m> by finding the midpoint <m>M</m> of <m>PO</m> and drawing a circle centred at <m>M</m> with radius <m>MO</m>; the intersections with the lake circle are the tangent points. Repeat for <m>T</m>.
+                        </p>
+                        <p>
+                            Your diagram should look like this:
+                        </p>
+                        <figure xml:id="fig-lake-road">
+                            <caption>The shortest road from <m>P</m> to <m>T</m> runs along the tangents to the lake and the arc between the two tangent points (highlighted). Each tangent meets the radius at a right angle.</caption>
+                            <image width="80%">
+                                <latex-image>
+                                    \begin{tikzpicture}[scale=0.13]
+                                        %% --- SET ---
+                                        \pgfmathsetmacro{\rr}{9}
+                                        \tkzDefPoint(0,0){O}
+                                        \tkzDefPoint(-41,0){P}
+                                        \tkzDefPoint(15,0){T}
+                                        \pgfmathsetmacro{\angP}{acos(\rr/41)}
+                                        \pgfmathsetmacro{\angT}{acos(\rr/15)}
+                                        \tkzDefShiftPoint[O](-\rr,0){CtoP}
+                                        \tkzDefShiftPoint[O](\rr,0){CtoT}
+                                        %% --- CALCULATE (tangent points by rotation: upper side) ---
+                                        \tkzDefPointBy[rotation=center O angle -\angP](CtoP)\tkzGetPoint{HP}
+                                        \tkzDefPointBy[rotation=center O angle \angT](CtoT)\tkzGetPoint{HT}
+                                        %% --- DRAW ---
+                                        \tkzDrawCircle[thick, fill=blue!30, opacity=0.8](O,CtoT)
+                                        \tkzDrawSegments[thick](P,HP T,HT)
+                                        \tkzDrawSegments[densely dashed, gray](O,HP O,HT)
+                                        \tkzDrawSegment[gray](P,T)
+                                        \tkzDrawArc[thick, red](O,HT)(HP)
+                                        \tkzDrawPoints[size=2pt](O,P,T,HP,HT)
+                                        %% --- MARK ---
+                                        \tkzMarkRightAngle[size=1](O,HP,P)
+                                        \tkzMarkRightAngle[size=1](O,HT,T)
+                                        %% --- LABEL ---
+                                        \tkzLabelPoint[below](P){$P$}
+                                        \tkzLabelPoint[below](O){$O$}
+                                        \tkzLabelPoint[above](HP){$A$}
+                                        \tkzLabelPoint[above](HT){$B$}
+                                        \tkzLabelPoint[below right](T){$T$}
+                                        \tkzLabelSegment[left, pos=0.5](O,HP){$9$}
+                                        \tkzLabelSegment[below, pos=0.5](O,P){$41$}
+                                        \tkzLabelSegment[below, pos=0.5](O,T){$15$}
+                                    \end{tikzpicture}
+                                </latex-image>
+                            </image>
+                        </figure>
+                    </li>
+                    <li>
+                        <p>
+                            In each case the tangent is perpendicular to the radius at the contact point. Using Pythagoras:
+                            <md>
+                                <mrow>PA \amp = \sqrt{OP^2 - r^2} = \sqrt{41^2 - 9^2} = 40 \text{ km}</mrow>
+                                <mrow>TB \amp = \sqrt{OT^2 - r^2} = \sqrt{15^2 - 9^2} = 12 \text{ km}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Let <m>\alpha</m> be the angle at <m>P</m> in the right triangle formed by <m>O</m>, <m>P</m>, and the tangent point, and <m>\beta</m> the corresponding angle at <m>T</m>:
+                            <md>
+                                <mrow>\alpha \amp = \sin^{-1}\left(\frac{9}{41}\right) \approx 12.7^\circ</mrow>
+                                <mrow>\beta \amp = \sin^{-1}\left(\frac{9}{15}\right) \approx 36.9^\circ</mrow>
+                            </md>
+                            <m>\angle AOP = 90^\circ - \alpha</m> and <m>\angle BOT = 90^\circ - \beta</m>, and since <m>\angle POT = 180^\circ</m> we have:
+                            <md>
+                                <mrow>180^\circ \amp = 90^\circ - \alpha + \angle AOB +  90^\circ - \beta </mrow>
+                                <mrow>\angle AOB \amp = \alpha + \beta \approx 49.6^\circ </mrow>
+                            </md>
+                            Thus finding the arc length <m>AB</m>:
+                            <md>
+                                <mrow>AB \amp =  \frac{\alpha + \beta}{360^\circ} \times 2\pi r </mrow>
+                                <mrow> \amp = \frac{49.6^\circ}{360^\circ} \times 2\pi \times 9 </mrow>
+                                <mrow>\amp \approx 7.78 \text{ km}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Total route length is <md>PA + AB + TB \approx 40 + 7.78 + 12 = 59.78 \text{ km}</md>
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise xml:id="ex-rl-mount-kenya">
+            <title>The View from Mount Kenya</title>
+            <statement>
+                <p>
+                    Model the Earth as a sphere (in cross-section, a circle) with radius <m>R = 6,400</m> km. Your line of sight to the horizon is a tangent to the Earth at the horizon point. Suppose you are standing on the summit of Mount Kenya, at height <m>h = 5.2</m> km above the Earth's surface.
+                </p>
+                <figure xml:id="fig-mount-kenya">
+                    <caption>The observer at <m>P</m> stands a height <m>h</m> above the surface point <m>S</m>. The line of sight to the horizon <m>H</m> is tangent to the Earth, so <m>\angle OHP = 90^\circ</m>. (Not to scale: <m>h</m> is exaggerated.)</caption>
+                    <image width="55%">
+                        <latex-image>
+                            \begin{tikzpicture}[scale=0.5]
+                                %% --- SET ---
+                                \pgfmathsetmacro{\Rd}{6}
+                                \pgfmathsetmacro{\hd}{2.2}
+                                \tkzDefPoint(0,0){O}
+                                \tkzDefPoint(0,\Rd){S}
+                                \tkzDefPoint(0,\Rd+\hd){P}
+                                \pgfmathsetmacro{\angH}{acos(\Rd/(\Rd+\hd))}
+                                %% --- CALCULATE (horizon point by rotation) ---
+                                \tkzDefPointBy[rotation=center O angle -\angH](S)\tkzGetPoint{H}
+                                %% --- DRAW ---
+                                \tkzDrawCircle[thick, green!50!black](O,S)
+                                \tkzDrawSegments(O,P P,H O,H)
+                                \tkzDrawPoints[size=2.5pt](O,P,H,S)
+                                %% --- MARK ---
+                                \tkzMarkRightAngle[size=0.5](O,H,P)
+                                %% --- LABEL ---
+                                \tkzLabelPoint[below left](O){$O$}
+                                \tkzLabelPoint[above](P){$P$}
+                                \tkzLabelPoint[above right](H){$H$}
+                                \tkzLabelPoint[above left](S){$S$}
+                                \tkzLabelSegment[pos=0.5, above](O,H){$R$}
+                                \tkzLabelSegment[pos=0.5, left](S,P){$h$}
+                                \tkzLabelSegment[pos=0.55, above right](P,H){line of sight}
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Find the distance to the horizon from the summit of Mount Kenya (<m>PH</m>), and the distance along the Earth's surface from the base of the summit to the horizon (<m>SH</m>).
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The base of Mount Kilimanjaro (height 5.9 km) is approximately 323 km from the base of Mount Kenya, and yet their summits are mutually visible. Explain why this is possible despite your answer in (a).
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Let <m>P</m> be the observer, <m>O</m> the centre of the Earth, and <m>H</m> the horizon point. Then <m>OH = R = 6\,400</m> km, <m>OP = R + h = 6\,405.2</m> km, and <m>\angle OHP = 90^\circ</m>. By Pythagoras:
+                            <md>
+                                <mrow>PH \amp = \sqrt{OP^2 - OH^2}</mrow>
+                                <mrow> \amp = \sqrt{(R + h)^2 - R^2} </mrow>
+                                <mrow>\amp = \sqrt{2Rh + h^2}</mrow>
+                                <mrow>\amp = \sqrt{2 \times 6400 \times 5.2 + 5.2^2}</mrow>
+                                <mrow>\amp \approx 258 \text{ km}</mrow>
+                            </md>
+                            To find the arc length <m>SH</m>, we first find the angle <m>\angle POH</m>:
+                            <md>
+                                <mrow>\angle POH \amp = \cos^{-1}\left(\frac{OH}{OP}\right) = \cos^{-1}\left(\frac{6400}{6405.2}\right) = 2.309^\circ </mrow>
+                            </md>
+                            Thus the arc length <m>SH</m> is:
+                            <md>
+                                <mrow>SH \amp = \frac{\angle POH}{360^\circ} \times 2\pi R = \frac{2.309^\circ}{360^\circ} \times 2\pi \times 6400 \approx 258.1 \text{ km}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            This is possible because the line of sight does not follow the surface of the Earth, as both summits are above the surface, so it can be longer than the distance to the horizon from either mountain.
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise xml:id="ex-rl-boda-boda-chain">
+            <title>The Boda Boda Chain</title>
+            <statement>
+                <p>
+                    On a boda boda motorcycle, the engine sprocket has radius <m>r = 3</m> cm and the rear-wheel sprocket has radius <m>R = 9</m> cm; their centres are <m>d = 48</m> cm apart. The chain follows the direct common tangents between the two sprockets.
+                </p>
+                <figure xml:id="fig-boda-boda-chain">
+                    <caption>The chain follows the two direct common tangents between the sprockets. The right triangle <m>O_1 F O_2</m> (right-angled at <m>F</m>) has hypotenuse <m>d</m> and legs <m>R - r</m> and <m>L</m>.</caption>
+                    <image width="90%">
+                        <latex-image>
+                            \begin{tikzpicture}[scale=0.15]
+                                %% --- SET ---
+                                \pgfmathsetmacro{\Rr}{9}
+                                \pgfmathsetmacro{\rr}{3}
+                                \pgfmathsetmacro{\dd}{48}
+                                \pgfmathsetmacro{\ang}{acos((\Rr-\rr)/\dd)}
+                                \tkzDefPoint(0,0){O1}
+                                \tkzDefPoint(\dd,0){O2}
+                                \tkzDefPoint(\Rr,0){B0}
+                                \tkzDefShiftPoint[O2](\rr,0){S0}
+                                %% --- CALCULATE ---
+                                \tkzDefPointBy[rotation=center O1 angle \ang](B0)\tkzGetPoint{P1u}
+                                \tkzDefPointBy[rotation=center O1 angle -\ang](B0)\tkzGetPoint{P1l}
+                                \tkzDefPointBy[rotation=center O2 angle \ang](S0)\tkzGetPoint{P2u}
+                                \tkzDefPointBy[rotation=center O2 angle -\ang](S0)\tkzGetPoint{P2l}
+                                \tkzDefPointBy[projection=onto O1--P1u](O2)\tkzGetPoint{F}
+                                %% --- DRAW ---
+                                \tkzDrawCircle[thick](O1,B0)
+                                \tkzDrawCircle[thick](O2,S0)
+                                \tkzDrawSegment[thick, blue](P1u,P2u)
+                                \tkzDrawSegment[thick, blue](P1l,P2l)
+                                \tkzDrawSegment[gray](O1,O2)
+                                \tkzDrawSegment[densely dashed, gray](O1,P1u)
+                                \tkzDrawSegment[densely dashed, gray](O2,P2u)
+                                \tkzDrawSegment[densely dashed, gray](O2,F)
+                                \tkzDrawPoints[size=2pt](O1,O2,P1u,P2u,P1l,P2l,F)
+                                %% --- MARK ---
+                                \tkzMarkRightAngle[size=1](O1,P1u,P2u)
+                                \tkzMarkRightAngle[size=1](O1,F,O2)
+                                \tkzFillAngle[opacity=0.5, color=red!40, size=7](F,O2,O1)
+                                %% --- LABEL ---
+                                \tkzLabelPoint[below left](O1){$O_1$}
+                                \tkzLabelPoint[below right](O2){$O_2$}
+                                \tkzLabelPoint[above left](F){$F$}
+                                \tkzLabelSegment[below, pos=0.5](O1,O2){$d$}
+                                \tkzLabelSegment[left, pos=0.3](O1,P1u){$R$}
+                                \tkzLabelSegment[right, pos=0.5](O2,P2u){$r$}
+                                \tkzLabelSegment[above, sloped, pos=0.5](P1u,P2u){$L$}
+                                \tkzLabelAngle[pos=9](F,O2,O1){$\varphi$}
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Using the formula <m>L = \sqrt{d^2 - (R - r)^2}</m> (see <xref ref="length-of-direct-tangent"/>), find the length of each straight run of chain.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The wrap angle on each sprocket depends on <m>\varphi = \sin^{-1}\left(\dfrac{R - r}{d}\right)</m>. Find <m>\varphi</m>, and hence find the arc length of chain on each sprocket.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Find the total chain length.
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            <m>L = \sqrt{48^2 - 6^2} = \sqrt{2268} \approx 47.6</m> cm.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <m>\varphi = \sin^{-1}\left(\dfrac{6}{48}\right) \approx 7.2^\circ\approx 0.1253</m> rad. Large sprocket arc: <m>9(\pi + 2\varphi) \approx 30.5</m> cm. Small sprocket arc: <m>3(\pi - 2\varphi) \approx 8.7</m> cm.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Total <m>\approx 2(47.6) + 30.5 + 8.7 \approx 134.4</m> cm.
+                        </p>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise xml:id="ex-rl-jua-kali-belt">
+            <title>The Jua Kali Crossed Belt</title>
+            <statement>
+                <p>
+                    In a jua kali workshop in Gikomba, an old lathe is driven by a <em>crossed</em> belt so that the two shafts rotate in opposite directions. The pulleys have radii <m>r = 5</m> cm and <m>R = 10</m> cm, and their centres are <m>d = 30</m> cm apart. The crossed belt follows the transverse common tangents.
+                </p>
+                <figure xml:id="fig-jua-kali-belt">
+                    <caption>The crossed belt follows the two transverse common tangents, which cross at <m>E</m> between the pulleys (making the shafts turn in opposite directions).</caption>
+                    <image width="90%" label="img-jua-kali-belt">
+                        <latex-image>
+                            \begin{tikzpicture}[scale=0.25]
+                                %% --- SET ---
+                                \pgfmathsetmacro{\Rr}{10}
+                                \pgfmathsetmacro{\rr}{5}
+                                \pgfmathsetmacro{\dd}{30}
+                                \pgfmathsetmacro{\ang}{acos((\Rr+\rr)/\dd)}
+                                \pgfmathsetmacro{\angu}{180+\ang}
+                                \pgfmathsetmacro{\angd}{180-\ang}
+                                \tkzDefPoint(0,0){O1}
+                                \tkzDefPoint(\dd,0){O2}
+                                \tkzDefPoint(\Rr,0){B0}
+                                \tkzDefShiftPoint[O2](\rr,0){S0}
+                                %% --- CALCULATE ---
+                                \tkzDefPointBy[rotation=center O1 angle \ang](B0)\tkzGetPoint{P1u}
+                                \tkzDefPointBy[rotation=center O1 angle -\ang](B0)\tkzGetPoint{P1l}
+                                \tkzDefPointBy[rotation=center O2 angle \angu](S0)\tkzGetPoint{P2u}
+                                \tkzDefPointBy[rotation=center O2 angle \angd](S0)\tkzGetPoint{P2l}
+                                \tkzInterLL(P1u,P2u)(P1l,P2l)\tkzGetPoint{E}
+                                %% --- DRAW ---
+                                \tkzDrawCircle[thick](O1,B0)
+                                \tkzDrawCircle[thick](O2,S0)
+                                \tkzDrawSegment[thick, blue](P1u,P2u)
+                                \tkzDrawSegment[thick, blue](P1l,P2l)
+                                \tkzDrawSegment[gray](O1,O2)
+                                \tkzDrawSegment[densely dashed, gray](O1,P1u)
+                                \tkzDrawSegment[densely dashed, gray](O2,P2u)
+                                \tkzDrawPoints[size=2pt](O1,O2,P1u,P2u,P1l,P2l,E)
+                                %% --- MARK ---
+                                \tkzMarkRightAngle[size=0.8](O1,P1u,P2u)
+                                \tkzMarkRightAngle[size=0.8](O2,P2u,E)
+                                \tkzMarkAngle[size=4](P1u,E,O1)
+                                \tkzFillAngle[opacity=0.5, color=red!40, size=4](P1u,E,O1)
+                                %% --- LABEL ---
+                                \tkzLabelPoint[below left](O1){$O_1$}
+                                \tkzLabelPoint[below right](O2){$O_2$}
+                                \tkzLabelPoint[below](E){$E$}
+                                \tkzLabelSegment[below](O1,O2){$d$}
+                                \tkzLabelSegment[above left, pos=0.45](O1,P1u){$R$}
+                                \tkzLabelSegment[below right, pos=0.45](O2,P2u){$r$}
+                                \tkzLabelSegment[above](P1u,P2u){$L$}
+                                \tkzLabelAngle[pos=5](P1u,E,O1){$\varphi$}
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Show that the straight sections of a crossed belt have length <md>L = \sqrt{d^2 - (R + r)^2}</md> and calculate <m>L</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            For a crossed belt, the wrap angle on <em>both</em> pulleys is <m>180^\circ + 2\varphi</m> where <md>\varphi = \sin^{-1}\left(\dfrac{R + r}{d}\right)</md> Find the total belt length.
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            For a crossed belt, the two tangent lines cross between the circles. Drawing the right triangle formed by the line of centres, the sum of the radii, and the tangent line: the hypotenuse is <m>d = 30</m> cm and one leg is <m>R + r = 15</m> cm, giving
+                            <md>
+                                <mrow>L \amp = \sqrt{d^2 - (R + r)^2} = \sqrt{900 - 225} = \sqrt{675} = 15\sqrt{3} \approx 26.0 \text{ cm}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>
+                                <mrow>\varphi \amp = \sin^{-1}\left(\frac{15}{30}\right) = \sin^{-1}(0.5) = 30^\circ</mrow>
+                            </md>
+                            Wrap angle on each pulley: <m>180^\circ + 2 \times 30^\circ = 240^\circ</m>.
+                        </p>
+                        <p>
+                            Large pulley arc: <md>a = \frac{240^\circ}{360^\circ} \times 10 \times \pi \times 10 \approx 41.9 \text{ cm}</md>
+                            Small pulley arc: <md>b = \frac{240^\circ}{360^\circ} \times 10 \times \pi \times 5 \approx 20.9 \text{ cm}</md>
+                        </p>
+                        <p>
+                            Total belt length:
+                            <md>
+                                <mrow>2L + a + b \approx 2(26.0) + 41.9 + 20.9 \approx 114.8 \text{ cm}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise xml:id="ex-rl-round-table">
+            <title>The Round Table from the Triangular Offcut</title>
+            <statement>
+                <p>
+                    A fundi in Kibuye market, Kisumu, has a triangular offcut of mvule timber with sides 1.3 m, 1.4 m, and 1.5 m. He wants to cut the largest possible circular table top from it.
+                </p>
+                <figure xml:id="fig-round-table">
+                    <caption>The largest table top is the <em>incircle</em>, tangent to all three sides. Its centre <m>I</m> (the incentre) is where the three angle bisectors meet; <m>r</m> is the inradius.</caption>
+                    <image width="55%">
+                        <latex-image>
+                            \begin{tikzpicture}[scale=4]
+                                %% --- SET ---
+                                \tkzDefPoint(0,0){A}
+                                \tkzDefPoint(1.4,0){B}
+                                \tkzDefPoint(1.5,0){cA}
+                                \tkzDefShiftPoint[B](1.3,0){cB}
+                                \tkzInterCC(A,cA)(B,cB)\tkzGetPoints{C}{Cx}
+                                %% --- CALCULATE ---
+                                \tkzDefTriangleCenter[in](A,B,C)\tkzGetPoint{I}
+                                \tkzDefPointBy[projection=onto A--B](I)\tkzGetPoint{Hc}
+                                \tkzInterLL(A,I)(B,C)\tkzGetPoint{Da}
+                                \tkzInterLL(B,I)(A,C)\tkzGetPoint{Db}
+                                \tkzInterLL(C,I)(A,B)\tkzGetPoint{Dc}
+                                %% --- DRAW ---
+                                \tkzDrawPolygon[thick](A,B,C)
+                                \tkzDrawCircle[thick, teal](I,Hc)
+                                \tkzDrawSegment[teal](I,Hc)
+                                \tkzDrawPoints[size=1.5pt](A,B,C,I)
+                                %% --- MARK ---
+                                \tkzMarkRightAngle[size=0.05](I,Hc,A)
+                                %% --- LABEL ---
+                                \tkzLabelPoint[below left](A){$A$}
+                                \tkzLabelPoint[below right](B){$B$}
+                                \tkzLabelPoint[above](C){$C$}
+                                \tkzLabelPoint[above right](I){$I$}
+                                \tkzLabelSegment[below](A,B){$1.4$}
+                                \tkzLabelSegment[above right](B,C){$1.3$}
+                                \tkzLabelSegment[above left](A,C){$1.5$}
+                                \tkzLabelSegment[right, pos=0.5](I,Hc){$r$}
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Explain why the largest circle that fits inside the triangle is the <em>incircle</em>, and describe how the fundi could locate its centre using a string-and-chalk angle-bisector construction.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Using Heron's formula, find the area of the triangle and hence the radius of the table top.
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            The incircle is the largest circle that fits inside the triangle: it is tangent to all three sides, so it is as large as possible without crossing any edge. The incentre (its centre) lies at the intersection of the three angle bisectors — the fundi can snap chalk lines bisecting each corner angle; where they meet is the centre.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Semi-perimeter: <m>s = (1.3 + 1.4 + 1.5)/2 = 2.1</m> m.
+                        </p>
+                        <p>
+                            Area by Heron's formula: <md>\Delta = \sqrt{2.1 \times 0.8 \times 0.7 \times 0.6} = \sqrt{0.7056} = 0.84 \text{ m}^2</md>
+                        </p>
+                        <p>
+                            Inradius: <md>r = 0.84/2.1 = 0.4</md>
+                            The table top has a radius of 40 cm.
+                        </p>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise xml:id="ex-rl-signal-mast">
+            <title>One Mast for Three Markets</title>
+            <statement>
+                <p>
+                    A telecommunications company wants to place a single signal mast so that it is exactly the same distance from three market centres. The three markets form a triangle with sides 13 km, 14 km, and 15 km.
+                </p>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Which triangle centre is the correct location for the mast?
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Calculate the common distance from the mast to each market.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            For what type of triangle would the signal mast fall <em>outside</em> the triangle? Would that placement still make sense practically?
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            The set of points equidistant from two towns lies on the perpendicular bisector of the segment between them. The point equidistant from all three towns is the intersection of the three perpendicular bisectors — the circumcentre.
+                        </p>
+                        <figure xml:id="fig-signal-mast">
+                            <caption>The mast sits at the <em>circumcentre</em> <m>O</m>, where the three perpendicular bisectors of the sides meet. Every vertex is the circumradius <m>R</m> away from <m>O</m>.</caption>
+                            <image width="60%">
+                                <latex-image>
+                                    \begin{tikzpicture}[scale=0.4]
+                                        %% --- SET ---
+                                        \tkzDefPoint(0,0){A}
+                                        \tkzDefPoint(14,0){B}
+                                        \tkzDefPoint(15,0){cA}
+                                        \tkzDefShiftPoint[B](13,0){cB}
+                                        \tkzInterCC(A,cA)(B,cB)\tkzGetPoints{C}{Cx}
+                                        %% --- CALCULATE ---
+                                        \tkzDefTriangleCenter[circum](A,B,C)\tkzGetPoint{O}
+                                        \tkzDefMidPoint(A,B)\tkzGetPoint{MAB}
+                                        \tkzDefMidPoint(B,C)\tkzGetPoint{MBC}
+                                        \tkzDefMidPoint(C,A)\tkzGetPoint{MCA}
+                                        %% --- DRAW ---
+                                        \tkzDrawCircle[thick, blue](O,A)
+                                        \tkzDrawPolygon[thick](A,B,C)
+                                        \tkzDrawSegments[densely dashed, gray](O,MAB O,MBC O,MCA)
+                                        \tkzDrawSegment[blue](O,A)
+                                        \tkzDrawPoints[size=1.5pt](A,B,C,O,MAB,MBC,MCA)
+                                        %% --- MARK ---
+                                        \tkzMarkRightAngle[size=0.5](O,MAB,A)
+                                        \tkzMarkRightAngle[size=0.5](O,MBC,B)
+                                        \tkzMarkRightAngle[size=0.5](O,MCA,C)
+                                        %% --- LABEL ---
+                                        \tkzLabelPoint[below left](A){$A$}
+                                        \tkzLabelPoint[below right](B){$B$}
+                                        \tkzLabelPoint[above](C){$C$}
+                                        \tkzLabelPoint[below right](O){$O$}
+                                        \tkzLabelSegment[below](A,B){$14$}
+                                        \tkzLabelSegment[above right](B,C){$13$}
+                                        \tkzLabelSegment[above left](A,C){$15$}
+                                        \tkzLabelSegment[pos=0.5, below right](O,A){$R$}
+                                    \end{tikzpicture}
+                                </latex-image>
+                            </image>
+                        </figure>
+                    </li>
+                    <li>
+                        <p>
+                            Using <m>R = \frac{abc}{4\Delta}</m> for the circumradius of a triangle, we first find the area using Heron's formula. Note that <m>s = \frac{13+14+15}{2} = 21</m>
+                            <md>
+                                <mrow> \Delta \amp = \sqrt{s(s-a)(s-b)(s-c)} </mrow>
+                                <mrow> \amp = \sqrt{21 \times 8 \times 7 \times 6} </mrow>
+                                <mrow> \amp = \sqrt{7056} = 84 </mrow>
+                            </md>
+                            Thus we have
+                            <md>
+                                <mrow>R = \frac{13 \times 14 \times 15}{4 \times 84} = \frac{2730}{336} = 8.125 \text{ km}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            For an obtuse triangle, the circumcentre lies outside the triangle. This would mean the mast must be placed outside the triangle formed by the three markets, which would still be practical. 
+                        </p>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise xml:id="ex-rl-euler">
+            <title>Euler's Triangle Formula</title>
+            <statement>
+                <p>
+                    Euler proved that in any triangle, the distance <m>d</m> between the incentre and the circumcentre satisfies
+                    <md>
+                        <mrow>d^2 = R(R - 2r)</mrow>
+                    </md>
+                    where <m>R</m> is the circumradius and <m>r</m> is the inradius.
+                </p>
+                <figure xml:id="fig-euler-bridge">
+                    <caption>The incircle (centre <m>I</m>) and circumcircle (centre <m>O</m>) of the 13–14–15 triangle. The two centres are surprisingly close: <m>d = IO</m> is given by Euler's formula.</caption>
+                    <image width="55%">
+                        <latex-image>
+                            \begin{tikzpicture}[scale=0.4]
+                                %% --- SET ---
+                                \tkzDefPoint(0,0){A}
+                                \tkzDefPoint(14,0){B}
+                                \tkzDefPoint(15,0){cA}
+                                \tkzDefShiftPoint[B](13,0){cB}
+                                \tkzInterCC(A,cA)(B,cB)\tkzGetPoints{C}{Cx}
+                                %% --- CALCULATE ---
+                                \tkzDefTriangleCenter[circum](A,B,C)\tkzGetPoint{O}
+                                \tkzDefTriangleCenter[in](A,B,C)\tkzGetPoint{I}
+                                \tkzDefPointBy[projection=onto A--B](I)\tkzGetPoint{Hc}
+                                %% --- DRAW ---
+                                \tkzDrawCircle[thick, blue](O,A)
+                                \tkzDrawCircle[thick, teal](I,Hc)
+                                \tkzDrawPolygon[thick](A,B,C)
+                                \tkzDrawSegment[very thick, red](I,O)
+                                \tkzDrawPoints[size=2.5pt](A,B,C)
+                                \tkzDrawPoints[size=2.5pt, red](O,I)
+                                \tkzDrawSegment[blue](C,O)
+                                \tkzDrawSegment[teal](I,Hc)
+                                \tkzMarkRightAngle[size=0.5](I,Hc,A)
+                                %% --- LABEL ---
+                                \tkzLabelPoint[below left](A){$A$}
+                                \tkzLabelPoint[below right](B){$B$}
+                                \tkzLabelPoint[above](C){$C$}
+                                \tkzLabelPoint[below left](O){$O$}
+                                \tkzLabelPoint[below right](I){$I$}
+                                \tkzLabelSegment[pos=0.5, above](I,O){$d$}
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            In <xref ref="ex-rl-round-table"/> and <xref ref="ex-rl-signal-mast"/>, you found the inradius and circumradius of the 13-14-15 triangle.
+                        </p>
+                        <p>
+                            Using your calculation for the inradius <m>r</m> from <xref ref="ex-rl-round-table"/> (scaled up by 10 to get the correct units) and the circumradius <m>R</m> from <xref ref="ex-rl-signal-mast"/>, calculate the distance <m>d</m> between the incentre and circumcentre of the triangle using Euler's formula.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Since <m>d^2 \geq 0</m>, deduce <em>Euler's inequality</em>: <m>R \geq 2r</m> for every triangle. When does equality hold?
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Using the formula,
+                            <md>
+                                <mrow>d^2 \amp = R(R - 2r) = 8.125(8.125 - 8) = 8.125 \times 0.125 \approx 1.016</mrow>
+                                <mrow>d \amp \approx 1.008 \text{ km}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Since <m>d^2 = R(R - 2r) \geq 0</m>, and <m>R \gt 0</m>, we need <m>R - 2r \geq 0</m>, i.e., <m>R \geq 2r</m>. Equality <m>d = 0</m> means the incentre and circumcentre coincide, which happens only for an equilateral triangle.
+                        </p>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <title>The Circular Tree</title>
+            <statement>
+                <p>
+                    A circular tree is created by placing a circle with diameter 1 cm on the ground, then taking circles with half the diameter of the previous circle on top, as shown below.
+                </p>
+                <figure xml:id="fig-circular-tree">
+                    <image>
+                        <latex-image>
+                            \begin{tikzpicture}[scale=2]
+                                \foreach \i in {0, 1,..., 4} {
+                                    \tkzDefPoint(0,{4 - 3/(2^(\i))}){O\i}
+                                    \pgfmathsetmacro{\r}{1/(2^(\i))}
+                                    \pgfmathsetmacro{\di}{2^(\i)}
+                                    \tkzDefCircle[R](O\i,\r) \tkzGetPoint{cA}
+                                    \tkzDrawCircle[thick](O\i,cA)
+                                    \tkzDefShiftPoint[O\i](1.5,-\r){T\i}
+                                    \tkzDefShiftPoint[O\i](1.5,\r){T2\i}
+                                    {
+                                        \ifnum \i > 0
+                                            \draw [decorate,decoration={brace,mirror, amplitude=8pt},xshift=-4pt] (T\i) -- (T2\i) node [black,midway, xshift=25pt]{\footnotesize $1/\pgfmathprintnumber{\di}$ cm};
+                                        \else
+                                            \draw [decorate,decoration={brace,mirror, amplitude=8pt},xshift=-4pt] (T\i) -- (T2\i) node [black,midway, xshift=25pt]{\footnotesize $1$ cm};
+                                        \fi
+                                    }
+                                }
+                                \tkzDefPoint(0,4){T}
+                                \tkzDefPoint(-sqrt(2), 0){A}
+                                \tkzDefPoint(sqrt(2), 0){B}
+                                \tkzDefPoint(0,0){O}
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Draw the direct tangents between the bottom two circles. What do you notice about their position relative to the other circles?
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Prove the relationship you observed in part (a).
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <xref ref="length-of-direct-tangent"/> stated that the length of the direct tangent between two circles with radii <m>r</m> and <m>R</m> and distance between their centres <m>d</m> is given by <md>L = \sqrt{d^2 - (R - r)^2}</md>. Can you simplify this formula in the case when the two circles touch? (Hint: What is the relationship between <m>r</m>, <m>R</m>, and <m>d</m> in this case?)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Using the simplified formula from part (c), find the length of the direct tangent between the bottom two circles.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Find a general formula for the length of the direct tangent between circle number <m>i</m> and <m>i+1</m>, where <m>i = 1</m> is the bottom circle.
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Constructing the direct tangents between the bottom two circles, we can see that they are also tangent to the next circle above them. In fact, the direct tangents between any two circles in the tree are also tangent to all the circles above them.
+                        </p>
+                            <figure xml:id="fig-circular-tree-soln-2">
+                                <image>
+                                    <latex-image>
+                                    \begin{tikzpicture}[scale=2]
+                                    \foreach \i in {0, 1,..., 4} {
+                                        \tkzDefPoint(0,{4 - 3/(2^(\i))}){O\i}
+                                        \pgfmathsetmacro{\r}{1/(2^(\i))}
+                                        \pgfmathsetmacro{\di}{2^(\i)}
+                                        \tkzDefCircle[R](O\i,\r) \tkzGetPoint{cA}
+                                        \tkzDrawCircle[thick](O\i,cA)
+                                        \tkzDefShiftPoint[O\i](1.5,-\r){T\i}
+                                        \tkzDefShiftPoint[O\i](1.5,\r){T2\i}
+                                        {
+                                            \ifnum \i > 0
+                                                \draw [decorate,decoration={brace,mirror, amplitude=8pt},xshift=-4pt] (T\i) -- (T2\i) node [black,midway, xshift=25pt]{\footnotesize $1/\pgfmathprintnumber{\di}$ cm};
+                                            \else
+                                                \draw [decorate,decoration={brace,mirror, amplitude=8pt},xshift=-4pt] (T\i) -- (T2\i) node [black,midway, xshift=25pt]{\footnotesize $1$ cm};
+                                            \fi
+                                        }
+                                    }
+                                    \tkzDefPoint(0,4){T}
+                                    \tkzDefPoint(-sqrt(2), 0){A}
+                                    \tkzDefPoint(sqrt(2), 0){B}
+                                    \tkzDefPoint(0,0){O}
+                                    \tkzDrawSegment[red](A,T)
+                                    \tkzDrawSegment[blue](B,T)
+                                    \end{tikzpicture}
+                                    </latex-image>
+                                </image>
+                            </figure>
+                    </li>
+                    <li>
+                        <p>
+                            As noticed in part (a), the direct common tangents of two neighbouring circles seem to touch every circle further up the tree. To prove it, set up coordinates with the centres of all the circles on one vertical axis, and number the circles from the bottom so that circle <m>i</m> has radius <m>r_i = \dfrac{1}{2^{i}}</m> (circle <m>1</m> is the bottom circle, of diameter <m>1</m>). Since each circle touches the one above it, the distance between the centres of circles <m>i</m> and <m>i+1</m> is
+                            <me>r_i + r_{i+1} = \frac{1}{2^{i}} + \frac{1}{2^{i+1}} = \frac{3}{2^{i+1}}.</me>
+                        </p>
+                        <p>
+                            Placing the centre of circle <m>1</m> at height <m>y_1 = r_1 = \tfrac12</m> and adding these gaps gives
+                            <me>y_i = \frac12 + \sum_{k=1}^{i-1}\frac{3}{2^{k+1}} = 2 - \frac{3}{2^{i}}.</me>
+                            Consider the single point <m>V</m> at height <m>2</m> on the axis. The distance from <m>V</m> down to the centre <m>O_i</m> of circle <m>i</m> is
+                            <me>VO_i = 2 - y_i = \frac{3}{2^{i}} = 3\,r_i,</me>
+                            so for <em>every</em> circle in the tree the distance from <m>V</m> to its centre is exactly three times its radius.
+                        </p>
+                        <p>
+                            Draw the two lines through <m>V</m> that are tangent to circle <m>1</m>, and let <m>\alpha</m> be the angle each makes with the axis. From the right triangle formed by <m>V</m>, the centre <m>O_1</m> and the point of contact,
+                            <me>\sin\alpha = \frac{r_1}{VO_1} = \frac{1}{3}.</me>
+                            For any other circle <m>i</m>, the perpendicular distance from its centre to each of these lines is
+                            <me>VO_i\,\sin\alpha = 3r_i \cdot \frac13 = r_i,</me>
+                            which is exactly its radius. A line whose distance from the centre of a circle equals that circle's radius is tangent to the circle, so <em>both lines are tangent to every circle in the tree.</em>
+                        </p>
+                        <p>
+                            Finally, the two direct common tangents of circles <m>i</m> and <m>i+1</m> meet at the centre of the enlargement that maps one circle to the other. The enlargement centred at <m>V</m> with scale factor <m>\tfrac12</m> carries each circle exactly onto the next, so that centre is <m>V</m>. The two lines through <m>V</m> touching circles <m>i</m> and <m>i+1</m> are therefore precisely their direct common tangents — and we have just shown that these same two lines touch every other circle as well. Hence the direct common tangents between any two neighbouring circles are tangent to all the circles above them.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            When the two circles touch, we have <m>d = R + r</m>, as the line connecting the two centres passes through the point of contact, and is perpendicular to the common tangent. Substituting this into the formula for the length of the direct tangent, we get:
+                            <md>
+                                <mrow>L = \sqrt{(R + r)^2 - (R - r)^2} = \sqrt{4Rr} = 2\sqrt{Rr}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            In the case of the bottom two circles, we have <m>R = 1/2</m> and <m>r = 1/4</m>, so the length of the direct tangent is:
+                            <md>
+                                <mrow>L \amp = 2 \sqrt{\frac{1}{2} \cdot \frac{1}{4}} </mrow>
+                                <mrow> \amp = 2 \sqrt{\frac{1}{8}} </mrow>
+                                <mrow> \amp = \frac{\sqrt{2}}{2} \text{ cm}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            We have <m>r_i = \dfrac{1}{2^{i}}</m> for <m>i \geq 1</m>. Using the simplified formula for the length of the direct tangent, we get:
+                            <md>
+                                <mrow> L_i \amp = \sqrt{4r_i r_{i+1}} </mrow>
+                                <mrow> \amp = \sqrt{\frac{1}{2^{i}} \cdot \frac{4}{2^{i+1}}} </mrow>
+                                <mrow> \amp = \sqrt{\frac{2}{2^{2i}}} </mrow>
+                                <mrow> \amp = \frac{\sqrt{2}}{2^{i}} \text{ cm}</mrow>
+                            </md>
+                            When <m>i = 1</m>, <m>L_1 = \dfrac{\sqrt{2}}{2} \text{ cm}</m>, agreeing with our previous calculation.
+                        </p>
+                    </li>
+                </ol>
+                <p>
+
+                </p>
+            </solution>
+        </exercise>
+
+        <exercise xml:id="ex-rl-pappus-chain">
+            <title>The Pappus Chain</title>
+            <statement>
+                <p>
+                    Draw a semicircle of radius 12 cm on a diameter <m>AC</m>. Place <m>B</m> two-thirds of the way from <m>A</m> to <m>C</m>, and draw semicircles on <m>AB</m> and <m>BC</m>. The crescent-shaped region between the two semicircles black is called an <em>arbelos</em> (Greek for shoemaker's knife). Now inscribe a chain of circles in the crescent, each one tangent to both semicircles and to the previous circle in the chain — this is the <em>Pappus chain</em>, studied by Pappus of Alexandria in the 4th century CE.
+                </p>
+                <figure xml:id="fig-pappus-chain-2">
+                <caption>The arbelos with <m>AB/AC = 2/3</m> and the first five circles of the Pappus chain.</caption>
+                <image width="75%">
+                    <latex-image>
+                        \begin{tikzpicture}[scale=0.3]
+                            %% --- arbelos: A=(0,0), C=(24,0) so AC=24; AB/AC=2/3 => AB=16 ---
+                            \tkzDefPoint(0,0){A}
+                            \tkzDefPoint(24,0){C}
+                            \tkzDefPoint(16,0){B}
+                            \tkzDefPoint(12,0){Obig}   %% centre of semicircle on AC
+                            \tkzDefPoint(8,0){Oin}     %% centre of semicircle on AB
+                            \tkzDefPoint(20,0){Obc}    %% centre of semicircle on BC (chain circle 0)
+                            %% --- inversion circle: centre A (the cusp), radius sqrt(96) ---
+                            %% chosen so the semicircles invert to the lines x=4 and x=6,
+                            %% and chain circle n inverts to the unit circle centred (5,2n).
+                            \tkzDefPoint(9.797958971,0){Q}
+                            %% --- DRAW the three semicircles + base ---
+                            \tkzDrawArc[thick](Obig,C)(A)
+                            \tkzDrawArc[thick](Oin,B)(A)
+                            \tkzDrawArc[thick, red](Obc,C)(B)
+                            \tkzDrawSegment[thick](A,C)
+                            %% --- BUILD the chain by inversion ---
+                            %% In the inverted picture, circle n is the unit circle centred (5,2n),
+                            %% tangent to the lines x=4 and x=6. Invert three of its points
+                            %% (left, right, top) back, then fit the circle through them.
+                            \foreach \n/\col in {1/teal, 2/orange!80!black, 3/violet, 4/blue, 5/purple, 6/red, 7/teal, 8/orange!80!black, 9/violet, 10/blue, 11/purple, 12/red} {
+                                \pgfmathsetmacro{\yy}{2*\n}
+                                \pgfmathsetmacro{\yt}{2*\n+1}
+                                \tkzDefPoint(4,\yy){L}     %% on line x=4 (image of AC-semicircle)
+                                \tkzDefPoint(6,\yy){R}     %% on line x=6 (image of AB-semicircle)
+                                \tkzDefPoint(5,\yt){T}     %% top of inverted circle
+                                \tkzDefPointBy[inversion = center A through Q](L)\tkzGetPoint{Lp}
+                                \tkzDefPointBy[inversion = center A through Q](R)\tkzGetPoint{Rp}
+                                \tkzDefPointBy[inversion = center A through Q](T)\tkzGetPoint{Tp}
+                                \tkzDefCircle[circum](Lp,Rp,Tp)\tkzGetPoint{K}
+                                \tkzDrawCircle[thick, \col](K,Lp)
+                                %% foot on AC + height line
+                                \tkzDefPointBy[projection = onto A--C](K)\tkzGetPoint{F}
+                                \tkzDrawPoint[size=1pt](K)
+                            }
+                            \tkzDefMidPoint(Obig,Oin)\tkzGetPoint{OE}        %% ellipse centre
+                            \tkzCalcLength(A,OE)\tkzGetLength{ea}            %% semi-major  
+                            \tkzCalcLength(OE,Obig)\tkzGetLength{ec}         %% linear ecc. 
+                            \pgfmathsetmacro{\eb}{sqrt((\ea)^2-(\ec)^2)}     %% semi-minor 
+                            % \tkzDrawEllipse[thick, dashed, purple!20](OE, \ea, \ec, 0) %% Not available in this tkz-euclide version
+                            \begin{scope}[shift={(OE)}]
+                            \draw[dashed, purple!20]
+                                plot[domain=0:180, samples=120, smooth, variable=\t]({\ea*cos(\t)}, {\eb*sin(\t)});
+                            \end{scope}
+                            %% --- LABEL ---
+                            \tkzDrawPoints[size=1.5pt](A,B,C,Obc)
+                            \tkzLabelPoint[below left](A){$A$}
+                            \tkzLabelPoint[below](B){$B$}
+                            \tkzLabelPoint[below right](C){$C$}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            On a large, accurate diagram (or a printed figure provided by your teacher), construct or measure the first two circles of the chain.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            For each circle you measured, calculate the ratio: height of the centre above <m>AC</m>, divided by the diameter of that circle. What do you notice?
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Pappus of Alexandria, who lived around 300 CE, proved that the centre of the <m>n</m>th circle in the chain is exactly <m>n</m> diameters above the line <m>AC</m>. State this as a formula relating the height <m>h_n</m>, the radius <m>r_n</m>, and <m>n</m>. (Note that the red semicircle on <m>BC</m> is the 0th circle in the chain, so <m>n=1</m> refers to the teal circle.)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Pappus proved this theorem in the 4th century CE using many pages of classical Euclidean geometry. A technique called <em>circle inversion</em>, developed about 1500 years later, reduces the same proof to a single transformation. What does this suggest about the value of developing new mathematical tools?
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Construct by finding circles tangent to both semicircles and to the diameter (or the previous chain circle). Accurate construction requires care; measurements will be approximate.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            For each circle, the ratio height/<m>(2r_n)</m> should be very close to <m>n</m> (the circle's number in the chain). All groups should find approximately the same ratios: 1 for the first circle, 2 for the second, and so on.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The formula is <md>h_n = n \times 2r_n = 2n r_n</md> i.e. the centre of the <m>n</m>th circle is at height <m>2n r_n</m> above <m>AC</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Sometimes the right mathematical language and techniques, like circle inversion, can transform a very hard problem into an easy one. Progress in mathematics often comes not from working harder, but from finding the right viewpoint.
+                        </p>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+    </exercises>
 
     <xi:include href="../lesson-plan-templates/assessment-methods.ptx" />
 
