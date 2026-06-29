@@ -25,7 +25,7 @@ const FONT_SCALE = 1.2;
 const FS = (px) => Math.round(px * FONT_SCALE);
 
 const FONT = {
-    point: FS(13),    // draggable point labels (Ax, Ay)
+    point: FS(11),    // draggable point labels (Ax, Ay)
     title: FS(13),    // "Original dissection" / "Rearrangement"
     matrix: FS(12),   // the A = (...) readout
     measure: FS(10),  // a / b / c / d bracket labels
@@ -55,7 +55,7 @@ const board = JXG.JSXGraph.initBoard('jsx-det', {
 // ---------------------------------------------------------------------
 const INK = '#111111';      // primary stroke / fill colour
 const LX = 0.9;             // x-origin of the left diagram
-const RX = 9.8;             // x-origin of the right diagram
+const RX = 10.2;             // x-origin of the right diagram
 const TICK = 0.13;          // half-length of a measure-line end tick
 const ANIM_DURATION = 1800; // rearrangement animation, in ms
 
@@ -112,21 +112,21 @@ function hiddenPoint(xFn, yFn) {
 // Draggable matrix points.  Ax = (a, c), Ay = (b, d).
 // ---------------------------------------------------------------------
 const draggableAttr = {
-    size: 4,
+    size: 1,
     strokeColor: INK,
     fillColor: INK
 };
 
-const Ax = board.create('point', [LX + 3.3, 1.6], {
+const Ax = board.create('point', [LX + 3.7, 2.0], {
     ...draggableAttr,
     name: '\\(Ax\\)',
-    label: { offset: [8, -16] }
+    label: { offset: [5, -5] }
 });
 
-const Ay = board.create('point', [LX + 1.8, 3.1], {
+const Ay = board.create('point', [LX + 2.4, 3.4], {
     ...draggableAttr,
     name: '\\(Ay\\)',
-    label: { offset: [-24, 10] }
+    label: { offset: [-24, 12] }
 });
 
 // Matrix entries and the overall rectangle dimensions, derived from the
@@ -233,49 +233,24 @@ function measureLine(orientation, from, to, level, label, { reveal = false, font
     const labelY = horizontal ? () => level() : () => (from() + to()) / 2;
     const content = reveal ? () => (state.done ? label : '') : label;
 
-    // White mask behind the label so the measure line does not strike
-    // through the letter.  This replaces a CSS background on the text
-    // element (which, with MathJax, was not reliably centred): it is a
-    // real board rectangle centred on the label point, sized in pixels via
-    // board.unitX/unitY so it tracks the glyph at any board scale, and
-    // layered above the segments (7) but below the text (9).
-    const halfW = () => (fontSize * 0.32 + 4) / board.unitX;
-    const halfH = () => (fontSize * 0.5) / board.unitY;
-
-    const maskAttr = {
-        fillColor: '#ffffff',
-        fillOpacity: 1,
-        layer: 8,
-        fixed: true,
-        highlight: false,
-        borders: { strokeOpacity: 0, strokeWidth: 0 },
-        vertices: { visible: false }
-    };
-    if (reveal) {
-        maskAttr.visible = () => state.done;
-    }
-
-    board.create('polygon', [
-        [() => labelX() - halfW(), () => labelY() - halfH()],
-        [() => labelX() + halfW(), () => labelY() - halfH()],
-        [() => labelX() + halfW(), () => labelY() + halfH()],
-        [() => labelX() - halfW(), () => labelY() + halfH()]
-    ], maskAttr);
-
     board.create('text', [labelX, labelY, content], {
         anchorX: 'middle',
         anchorY: 'middle',
         fontSize,
-        layer: 9,
+        cssStyle: 'background-color: white; padding: 0 4px;',
         highlight: false
     });
 }
 
 function addOutlineMeasureLines(X) {
+    // Perpendicular offset of each bracket from the figure.  The side
+    // (c / d) brackets sit well clear so their labels don't jam against the
+    // coloured pieces or the corner point labels; the top bracket stays
+    // close so it does not run into the matrix readout above.
     const topY = () => H() + 0.34;
-    const bottomY = () => -0.34;
-    const leftX = () => X - 0.34;
-    const rightX = () => X + W() + 0.34;
+    const bottomY = () => -0.45;
+    const leftX = () => X - 0.7;
+    const rightX = () => X + W() + 0.7;
 
     measureLine('h', () => X, () => X + bVal(), topY, '\\(b\\)');
     measureLine('h', () => X + bVal(), () => X + W(), topY, '\\(a\\)');
@@ -317,7 +292,7 @@ function addDLabel(X) {
 }
 
 const fixedPointAttr = {
-    size: 3,
+    size: 1,
     fixed: true,
     strokeColor: INK,
     fillColor: INK
@@ -370,7 +345,7 @@ board.create('polygon', [MB1, MB2, MB3], blueStyle);
 board.create('point', [() => RX + aVal(), () => cVal()], {
     ...fixedPointAttr,
     name: '\\(Ax\\)',
-    label: { offset: [8, -16] }
+    label: { offset: [5, -5] }
 });
 
 board.create('point', [() => RX + bVal(), () => dVal()], {
@@ -388,15 +363,15 @@ board.create('polygon', [R.O, R.BR, R.T, R.TL], outlineStyle);
 addOutlineMeasureLines(LX);
 addOutlineMeasureLines(RX);
 
-measureLine('h', () => RX, () => RX + aVal(), () => H() + 0.6, '\\(a\\)', { reveal: true, fontSize: FONT.reveal });
-measureLine('v', () => H(), () => H() - dVal(), () => RX - 0.6, '\\(d\\)', { reveal: true, fontSize: FONT.reveal });
+measureLine('h', () => RX, () => RX + aVal(), () => H() + 1, '\\(a\\)', { reveal: true, fontSize: FONT.reveal });
+measureLine('v', () => H(), () => H() - dVal(), () => RX - 1.2, '\\(d\\)', { reveal: true, fontSize: FONT.reveal });
 
 // ---------------------------------------------------------------------
 // Matrix readout, titles and learner cue.
 // ---------------------------------------------------------------------
 board.create('text', [
     LX,
-    8.1,
+    9,
     () => '\\(A=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}=\\begin{pmatrix}'
         + fmt(aVal()) + '&' + fmt(bVal())
         + '\\\\'
@@ -408,12 +383,12 @@ board.create('text', [
     fontSize: FONT.matrix
 });
 
-board.create('text', [LX, 9.2, '\\(\\textbf{Original dissection}\\)'], {
+board.create('text', [LX, 7.8, '\\(\\textbf{Original dissection}\\)'], {
     anchorX: 'left',
     fontSize: FONT.title
 });
 
-board.create('text', [RX, 9.2, '\\(\\textbf{Rearrangement}\\)'], {
+board.create('text', [RX, 7.8, '\\(\\textbf{Rearrangement}\\)'], {
     anchorX: 'left',
     fontSize: FONT.title
 });
@@ -444,7 +419,7 @@ revealLabel(() => RX + bVal() / 2, () => dVal() + cVal() / 2, '\\(bc\\)', FONT.p
 revealLabel(() => RX + aVal() + bVal() / 2, () => cVal() / 2, '\\(bc\\)', FONT.pieceSmall);
 
 board.create('text', [
-    () => RX - ((RX-LX - W()) / 2),
+    () => 9.6,
     -2,
     () => revealText(
         '\\(\\text{Area}(D)=ad - bc='
