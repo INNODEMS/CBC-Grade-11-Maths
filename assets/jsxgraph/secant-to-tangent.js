@@ -1,5 +1,5 @@
 var board = JXG.JSXGraph.initBoard('secant-to-tangent', {
-    boundingbox: [-0.5, 4, 5, -0.5],
+    boundingbox: [-0.5, 4, 2.5, -0.5],
     keepAspectRatio: true,
     axis: true,
     grid: {majorStep: 1, minorStep: 0.25},
@@ -62,7 +62,7 @@ board.create('tangent', [P], {
 // Info box anchored to bottom-right of board with semi-opaque white background
 board.create('text', [
     function() { return board.getBoundingBox()[2] - 0.15; },
-    function() { return board.getBoundingBox()[3] + 0.2; },
+    function() { return board.getBoundingBox()[3] + 1.5; },
     function() {
         var x0 = P.X();
         var x1 = Q.X();

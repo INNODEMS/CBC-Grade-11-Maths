@@ -136,32 +136,19 @@
                 </li>
             </ol>
             <p>
-                The Sage cell below plots <m>s(t)</m> and <m>s'(t)</m> together. Use the slider to
-                choose a time <m>t_0</m> and observe the tangent to <m>s(t)</m> at that point and
-                the corresponding value on the <m>s'(t)</m> graph.
+                The interactive graph below plots <m>s(t)</m> and its derivative <m>s'(t)</m>
+                against the same time axis. Drag the time marker <m>t_0</m> along the <m>t</m>-axis:
+                the orange tangent to <m>s(t)</m> has slope equal to the stone's velocity, which is
+                exactly the height of the orange point on the <m>s'(t)</m> graph at that instant.
+                The green arrow shows the stone's direction of motion — watch it shrink to nothing
+                at <m>t = 2</m> (the top of the flight) and then reverse as the stone falls.
             </p>
-            <sage>
-                <input>
-@interact
-def kinematics_plot(t0=slider(0, 4, 0.1, default=1, label="t₀")):
-    t = var('t')
-    s = 20*t - 5*t^2
-    v = diff(s, t)
-
-    # Tangent line to s(t) at t0
-    slope = v.subs(t=t0)
-    tangent = slope*(t - t0) + s.subs(t=t0)
-
-    p = plot(s, (t, 0, 4), color='blue', legend_label='s(t) = 20t − 5t²', thickness=2)
-    p += plot(v, (t, 0, 4), color='red', legend_label="s'(t) = 20 − 10t", thickness=2)
-    p += plot(tangent, (t, t0-0.8, t0+0.8), color='orange', linestyle='dashed', thickness=1.5)
-    p += point((t0, s.subs(t=t0)), color='blue', size=40, zorder=5)
-    p += point((t0, slope), color='red', size=40, zorder=5)
-    p.axes_labels(['t (s)', 'm  or  m/s'])
-    p.show(figsize=[7,4])
-    print(f"At t = {t0:.1f}: position = {float(s.subs(t=t0)):.2f} m,  velocity = {float(slope):.2f} m/s")
-                </input>
-            </sage>
+            <interactive xml:id="interactive-kinematics-velocity" platform="jsxgraph" width="90%" aspect="1:1" source="jsxgraph/kinematics-velocity.js">
+                <slate xml:id="kinematics-velocity" surface="jsxboard" aspect="1:1"/>
+                <instructions>
+                    <p>Drag <m>t_0</m> along the <m>t</m>-axis. Blue is height <m>s(t)</m>; orange is velocity <m>s'(t)</m>. At the top of the flight the velocity is zero; after that it is negative — the stone is falling.</p>
+                </instructions>
+            </interactive>
         </statement>
         <solution component="lesson-plan">
             <p>
