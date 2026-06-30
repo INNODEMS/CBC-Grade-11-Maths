@@ -77,12 +77,12 @@ var D = board.create('point', [
 });
 
 // Dashed connector: P (height f(x)) to D (height f′(x)) — same x
-board.create('segment', [P, D], {strokeColor: '#999', strokeWidth: 1, dash: 2});
+board.create('segment', [P, D], {strokeColor: '#999', strokeWidth: 1, dash: 2, fixed: true, highlight: false});
 
 // --- Dynamic readout --------------------------------------------------------
 board.create('text', [
-    0,
-    6,
+    function () { return board.getBoundingBox()[2] - 0.15; },
+    function () { return board.getBoundingBox()[3] + 0.25; },
     function () {
         var x = P.X(), m = fp(x);
         return '<div style="background:rgba(255,255,255,0.85);padding:7px 11px;'
@@ -93,4 +93,4 @@ board.create('text', [
             + '<br><span style="color:#777;font-size:12px">drag P to trace y = f′(x)</span>'
             + '</div>';
     }
-], {useHTML: true, anchorX: 'middle', anchorY: 'middle', fixed: true});
+], {useHTML: true, anchorX: 'right', anchorY: 'bottom', fixed: true});
