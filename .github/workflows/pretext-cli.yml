@@ -29,15 +29,49 @@ jobs:
             #     tlmgr update --self
             #     tlmgr install tkz-euclide tikz-3dplot longdivision
 
-            # Reverting to previous tlmgr repository
+            # tlmgr can ONLY talk to a package repository from the SAME TeX Live
+            # release that is installed in the container, otherwise it aborts with
+            # "cross release updates are not supported". The oscarlevin/pretext:full
+            # tag is a moving target, so don't hard-code a year: detect the installed
+            # release and pick the matching repository automatically.
             - name: install tex dependencies
               run: |
-                REPO=https://texlive.info/historic/systems/texlive/2025/tlnet-final
-
+                set -x
+                # This image uses TinyTeX (installed under /root/.TinyTeX, with no
+                # year in the path), so detect the release from the tlmgr banner
+                # ("... version YYYY") and fall back to the package database.
+                TLYEAR="$(tlmgr --version 2>/dev/null | grep -oE 'version 20[0-9]{2}' | grep -oE '20[0-9]{2}' | head -n1)"
+                if [ -z "$TLYEAR" ]; then
+                    TLROOT="$(tlmgr --version 2>/dev/null | sed -n 's/^tlmgr using installation: *//p' | head -n1)"
+                    TLYEAR="$(sed -n 's/.*release\/\(20[0-9]\{2\}\).*/\1/p' "${TLROOT:-/root/.TinyTeX}/tlpkg/texlive.tlpdb" 2>/dev/null | head -n1)"
+                fi
+                echo "Detected TeX Live release: ${TLYEAR:-unknown}"
+                # Historic mirror for the *frozen* release. Use ftp.math.utah.edu,
+                # NOT texlive.info: texlive.info is now behind an anti-bot proxy
+                # (Anubis) that blocks tlmgr/curl from CI. Utah is a stable archive.
+                FINAL="https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${TLYEAR}/tlnet-final"
+                CURRENT="https://mirror.ctan.org/systems/texlive/tlnet"
+                # Prefer the frozen tlnet-final for the detected release (matches the
+                # container exactly, so no cross-release conflict). The container has
+                # no curl, so we don't probe the network -- we just try this repo and,
+                # if the install fails (e.g. the detected release is still the current
+                # one and has no frozen mirror yet), retry against the live CTAN tlnet.
+                if [ -n "$TLYEAR" ]; then REPO="$FINAL"; else REPO="$CURRENT"; fi
+                echo "Using tlmgr repository: $REPO"
                 tlmgr option repository "$REPO"
-                tlmgr update --self
-                tlmgr install tkz-euclide tikz-3dplot
-                  
+                tlmgr option repository || true
+                # Self-update can be a no-op; tolerate that.
+                tlmgr update --self || true
+                # The install MUST succeed or the tikz figures won't compile.
+                if ! tlmgr install tkz-euclide tikz-3dplot; then
+                    echo "Install from $REPO failed; retrying with $CURRENT"
+                    tlmgr option repository "$CURRENT"
+                    tlmgr update --self || true
+                    tlmgr install tkz-euclide tikz-3dplot
+                fi
+                # Confirm the required style files are actually findable now.
+                kpsewhich tikz-3dplot.sty tkz-euclide.sty
+
             - name: install local ptx files
               run: pretext --version
 
@@ -53,6 +87,20 @@ jobs:
                     echo "PreTeXt version is less than 2.5, using old build command"
                     pretext build
                 fi
+
+            # Surfaces the real LaTeX error if the build above fails. The saved
+            # GitHub log only showed "exit code 1"; this prints the tex logs so the
+            # underlying tkz-euclide / package error is visible in the run output.
+            - name: Show LaTeX logs on build failure
+              if: failure()
+              run: |
+                echo "=== Most recent .log files ==="
+                find . -name '*.log' -printf '%T@ %p\n' 2>/dev/null | sort -rn | head -n 20 | cut -d' ' -f2-
+                echo "=== Tails of recent .log files ==="
+                for f in $(find . -name '*.log' -printf '%T@ %p\n' 2>/dev/null | sort -rn | head -n 10 | cut -d' ' -f2-); do
+                    echo "----- $f -----"
+                    tail -n 80 "$f"
+                done
 
             - name: Copy custom stackapicalls.js
               run: |
