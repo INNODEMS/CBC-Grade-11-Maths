@@ -53,22 +53,29 @@ var T = board.create('point', [T_START, 0], {
     name: 't₀', size: 5, strokeColor: '#cc0000', fillColor: '#cc0000',
     label: {offset: [6, -16], color: '#cc0000', fontSize: 14}
 });
-function constrainT() {
-    var t = Math.max(TMIN, Math.min(TMAX, T.X()));
+// The blue height point is ALSO draggable — drag it along the position curve.
+var Ps = board.create('point', [T_START, s(T_START)],
+    {name: '', size: 5, strokeColor: '#0055bb', fillColor: '#0055bb'});
+
+// Single source of truth for the time. Dragging EITHER the red marker or the blue
+// point sets it, and both points (plus everything derived) snap to the new time.
+function setTime(t) {
+    t = Math.max(TMIN, Math.min(TMAX, t));
     T.coords.setCoordinates(JXG.COORDS_BY_USER, [t, 0]);
+    Ps.coords.setCoordinates(JXG.COORDS_BY_USER, [t, s(t)]);
 }
-T.on('drag', constrainT);
-constrainT();
+T.on('drag',  function () { setTime(T.X()); });
+Ps.on('drag', function () { setTime(Ps.X()); });
+setTime(T_START);
 
 // Shared vertical cursor linking the two graphs at the chosen time
 board.create('line', [
     function () { return [T.X(), board.getBoundingBox()[3]]; },
     function () { return [T.X(), board.getBoundingBox()[1]]; }
-], {strokeColor: '#bbb', strokeWidth: 1, dash: 2, straightFirst: false, straightLast: false});
+], {strokeColor: '#bbb', strokeWidth: 1, dash: 2, straightFirst: false, straightLast: false,
+    fixed: true, highlight: false});
 
-// Point on the position graph, and on the velocity graph
-var Ps = board.create('point', [function () { return T.X(); }, function () { return s(T.X()); }],
-    {name: '', size: 4, strokeColor: '#0055bb', fillColor: '#0055bb', fixed: true});
+// Orange velocity point (derived — follows the time)
 var Pv = board.create('point', [function () { return T.X(); }, function () { return v(T.X()); }],
     {name: '', size: 4, strokeColor: '#e8710a', fillColor: '#e8710a', fixed: true});
 

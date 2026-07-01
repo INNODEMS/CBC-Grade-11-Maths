@@ -1,4 +1,6 @@
 (function () {
+    JXG.Options.text.useMathJax = true;
+
     var board = JXG.JSXGraph.initBoard('jsxgraph-growing-square', {
         boundingbox: [-0.6, 7.8, 7.8, -1.6],
         axis: false,
@@ -10,7 +12,7 @@
 
     // ── Sliders ──────────────────────────────────────────────────────────────
     var sx = board.create('slider', [[0.2, 7.3], [5.0, 7.3], [0.5, 2.5, 4.5]], {
-        name: 'x',
+        name: '\\(x\\)',
         snapWidth: 0.05,
         label: { fontSize: 14, color: '#2255aa' },
         baseline: { strokeColor: '#aaa' },
@@ -20,7 +22,7 @@
     });
 
     var sdx = board.create('slider', [[0.2, 6.7], [5.0, 6.7], [0, 0.8, 2.0]], {
-        name: 'Δx',
+        name: '\\(\\Delta x\\)',
         snapWidth: 0.05,
         label: { fontSize: 14, color: '#cc6600' },
         baseline: { strokeColor: '#aaa' },
@@ -96,19 +98,19 @@
     board.create('text', [
         function () { return sx.Value() + sdx.Value() / 2; },
         function () { return sx.Value() / 2; },
-        function () { return sdx.Value() > 0.3 ? 'x·Δx' : ''; }
+        function () { return sdx.Value() > 0.3 ? '\\(x\\,\\Delta x\\)' : ''; }
     ], { fontSize: 13, color: '#7f3305', anchorX: 'middle', anchorY: 'middle', fixed: true });
 
     board.create('text', [
         function () { return sx.Value() / 2; },
         function () { return sx.Value() + sdx.Value() / 2; },
-        function () { return sdx.Value() > 0.3 ? 'x·Δx' : ''; }
+        function () { return sdx.Value() > 0.3 ? '\\(x\\,\\Delta x\\)' : ''; }
     ], { fontSize: 13, color: '#7f3305', anchorX: 'middle', anchorY: 'middle', fixed: true });
 
     board.create('text', [
         function () { return sx.Value() + sdx.Value() / 2; },
         function () { return sx.Value() + sdx.Value() / 2; },
-        function () { return sdx.Value() > 0.55 ? '(Δx)²' : ''; }
+        function () { return sdx.Value() > 0.55 ? '\\((\\Delta x)^2\\)' : ''; }
     ], { fontSize: 12, color: '#7f0000', anchorX: 'middle', anchorY: 'middle', fixed: true });
 
     // ── Dimension labels below squares ───────────────────────────────────────
@@ -116,13 +118,13 @@
     board.create('text', [
         function () { return sx.Value() / 2; },
         -0.55,
-        function () { return 'x = ' + sx.Value().toFixed(2); }
+        function () { return '\\(x = ' + sx.Value().toFixed(2) + '\\)'; }
     ], { fontSize: 13, color: '#2255aa', anchorX: 'middle', fixed: true });
 
     board.create('text', [
         function () { return sx.Value() + sdx.Value() / 2; },
         -0.55,
-        function () { return sdx.Value() > 0.05 ? 'Δx = ' + sdx.Value().toFixed(2) : ''; }
+        function () { return sdx.Value() > 0.05 ? '\\(\\Delta x = ' + sdx.Value().toFixed(2) + '\\)' : ''; }
     ], { fontSize: 13, color: '#cc6600', anchorX: 'middle', fixed: true });
 
     // ── Information panel ─────────────────────────────────────────────────────
@@ -130,18 +132,18 @@
     board.create('text', [0.15, 6.0, function () {
         var x = sx.Value(), dx = sdx.Value();
         var dA = 2 * x * dx + dx * dx;
-        return 'ΔA = (x+Δx)² \u2212 x² = 2x·Δx + (Δx)²  =  ' + dA.toFixed(3);
+        return '\\(\\Delta A = (x+\\Delta x)^2 - x^2 = 2x\\,\\Delta x + (\\Delta x)^2 = ' + dA.toFixed(3) + '\\)';
     }], { fontSize: 13, color: '#333', fixed: true });
 
     board.create('text', [0.15, 5.45, function () {
         var x = sx.Value(), dx = sdx.Value();
-        if (dx < 0.01) return 'Move the Δx slider to see ΔA/Δx';
+        if (dx < 0.01) return 'Move the \\(\\Delta x\\) slider to see \\(\\Delta A/\\Delta x\\)';
         var rate = (2 * x * dx + dx * dx) / dx;
-        return 'ΔA/Δx = 2x + Δx  =  ' + rate.toFixed(3);
+        return '\\(\\Delta A/\\Delta x = 2x + \\Delta x = ' + rate.toFixed(3) + '\\)';
     }], { fontSize: 13, color: '#333', fixed: true });
 
     board.create('text', [0.15, 4.90, function () {
         var x = sx.Value();
-        return 'As Δx \u2192 0:  dA/dx = 2x  =  ' + (2 * x).toFixed(2);
+        return 'As \\(\\Delta x \\to 0\\):  \\(dA/dx = 2x = ' + (2 * x).toFixed(2) + '\\)';
     }], { fontSize: 14, color: '#1a6b1a', fixed: true });
 })();
