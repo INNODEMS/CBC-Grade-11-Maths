@@ -19,8 +19,8 @@ const board = JXG.JSXGraph.initBoard('jsx-graphing-circles', {
 });
 
 // --- Controls ---------------------------------------------------------------
-const r = board.create('slider', [[-7.2, 7], [-2.5, 7], [0.5, 3, 7]], {
-    name: '\\(r\\)', snapWidth: 0.5, size: 4,
+const r = board.create('slider', [[-7.2, 7], [-2.5, 7], [0.1, 3, 7]], {
+    name: '\\(r\\)', snapWidth: 0.1, size: 4,
     fillColor: '#c62828', strokeColor: '#c62828',
     highline: { strokeColor: '#c62828' }, baseline: { strokeColor: '#aaa' }
 });
@@ -48,7 +48,7 @@ board.create('text', [
 const sgn = (v) => (v >= 0 ? '- ' : '+ ') + Math.abs(v).toFixed(1);
 board.create('text', [-7.6, -5.6, () => {
     const h = C.X(), k = C.Y(), rr = r.Value();
-    return '\\((x ' + sgn(h) + ')^2 + (y ' + sgn(k) + ')^2 = ' + (rr * rr).toFixed(2) + '\\)';
+    return '\\((x ' + sgn(h) + ')^2 + (y ' + sgn(k) + ')^2 = ' + rr.toFixed(1) + '^2 \\)';
 }], { fontSize: 15, anchorX: 'left', cssStyle: 'background:rgba(255,255,255,0.82);padding:2px 5px' });
 
 board.create('text', [-7.6, -6.7, () => {
