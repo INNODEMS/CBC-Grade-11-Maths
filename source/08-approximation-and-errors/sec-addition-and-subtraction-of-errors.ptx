@@ -2,6 +2,7 @@
 
 <section xml:id="sec-addition-and-subtraction-of-errors" xmlns:xi="http://www.w3.org/2001/XInclude">
     <title>Addition and Subtraction of Errors</title>
+    <!--  -->
     <objectives component="outcomes">
         <introduction>
             <p>
@@ -43,42 +44,98 @@
 
     <!-- [LP] Add guidance on activity -->
 
-    <!-- <axiom component="lesson-plan">
-            <title>Problem-Solving and Discovery</title>
-            <dl>
-                <li>
-                    <title>Suggested Time</title>
-                    <p>
-                        XX minutes
-                    </p>
-                </li>
-                <li>
-                    <title>Objective</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-                <li>
-                    <title>Teacher's Role</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-            </dl>
-        </axiom> -->
+    <axiom component="lesson-plan" xml:id="lesson-plan-textbook-discovery">
+        <title>Problem-Solving and Discovery: Error Propagation</title>
+        <ol marker="(a)">
+            <li>
+                <title>Suggested Time</title>
+                <p>
+                    40 minutes
+                </p>
+            </li>
+            <li>
+                <title>Objective</title>
+                <p>
+                    Students will discover how maximum and minimum bounds behave when adding or subtracting two measured values that contain a margin of error.
+                </p>
+            </li>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Have students use standard metric rulers where the smallest graduation is <m>1</m> mm (<m>0.1</m> cm), making the maximum error <m>\pm 0.05</m> cm. Let them systematically compute all combinations of sums and differences in their groups. Do not give away the subtraction pattern ahead of time; let them notice the surprising result on their own.
+                </p>
+            </li>
+        </ol>
+    </axiom>
 
     <activity>
         <statement>
             <p>
-                <term>Work in Groups to:</term>
+                <term>Work in Groups</term>
             </p>
+            <figure xml:id="fig-textbook-error-propagation">
+                <caption>Visualizing limits of accuracy and error limits in operations</caption>
+                <image xml:id="img-textbook-error-propagation">
+                    <description>
+                        A 2D vector diagram illustrating an English textbook with error margins. 
+                        Left side: The textbook showing length and width measurements with shaded outer and inner border zones representing the maximum and minimum measurement boundaries due to ruler precision. 
+                        Right side: Two visual calculation tracks. The addition track shows minimum bounds adding together and maximum bounds adding together. The subtraction track highlights the unique combination required for a maximum difference: Maximum Length minus Minimum Width.
+                    </description>
+                    <latex-image>
+                        \begin{tikzpicture}[scale=0.15, every node/.style={font=\sffamily\small}]
+                           
+                            \tikzset{
+                                bookActual/.style={fill=blue!10, draw=blue!60!black, line width=1.2pt},
+                                bookMax/.style={draw=red!60!black, dashed, line width=0.8pt, fill=red!5, opacity=0.3},
+                                bookMin/.style={draw=green!60!black, dotted, line width=1pt},
+                                bracket/.style={thick, decoration={brace, mirror, raise=2pt}, decorate}
+                            }
+                            \node[anchor=south] at (15, 33) {\textbf{Limits of Accuracy on a Textbook}};
+                            
+                            
+                            \draw[bookMax] (-1.5,-1.5) rectangle (26.5, 31.5);
+                            
+                            
+                            \draw[bookActual] (0,0) rectangle (25,30);
+                            \node[blue!40!black, font=\bfseries] at (12.5, 15) {English Textbook};
+                            
+                           
+                            \draw[bookMin] (1.5,1.5) rectangle (23.5, 28.5);
+
+                           
+                            \draw[->, line width=0.8pt] (-4, 0) -- node[left] {Actual Length} (-4, 30);
+                            \draw[red, dashed] (-1.5, 31.5) -- (2, 31.5) node[right, scale=0.75] {Maximum Length (+0.05 cm)};
+                            \draw[green!50!black, dotted, thick] (1.5, 28.5) -- (5, 28.5) node[right, scale=0.75] {Minimum Length (-0.05 cm)};
+
+                           
+                            \draw[->, line width=0.8pt] (0, -4) -- node[below] {Actual Width} (25, -4);
+                            
+                            \draw[rounded corners, draw=gray!40, fill=gray!2] (38, 16) rectangle (88, 32);
+                            \node[anchor=west] at (40, 29.5) {\textbf{Addition Rule:}};
+                            \node[anchor=west, scale=0.85] at (42, 26) {$\bullet$ \textbf{Maximum Sum} = Maximum Length + Maximum Width};
+                            \node[anchor=west, scale=0.85] at (42, 22) {$\bullet$ \textbf{Working Sum} = Working Length + Working Width};
+                            \node[anchor=west, scale=0.85] at (42, 18) {$\bullet$ \textbf{Minimum Sum} = Minimum Length + Minimum Width};
+                            
+
+                            
+                            \draw[rounded corners, draw=gray!40, fill=gray!2] (38, -3) rectangle (88, 13);
+                            \node[anchor=west] at (40, 10.5) {\textbf{Subtraction Rule:}};
+                            \node[anchor=west, scale=0.85] at (42, 7) {$\bullet$ \textbf{Maximum Difference} = Maximum Length $-$ \textcolor{red}{\textbf{Minimum}} Width};
+                            \node[anchor=west, scale=0.85] at (42, 1) {$\bullet$ \textbf{Working Difference} = Working Length $-$ Working Width};
+                            \node[anchor=west, scale=0.85] at (42, -3) {$\bullet$ \textbf{Minimum Difference} = Minimum Length $-$ \textcolor{red}{\textbf{Maximum}} Width};
+                            
+
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
             <p>
-                Measure the length and width of an English textbook and record in the table below.
+                Measure the working length and width of an English textbook and record in the table below.
             </p>
             <tabular top="medium" bottom="medium" left="medium" right="medium">
                 <row header="yes">
                     <cell>Side</cell>
-                    <cell>Measurent (cm)</cell>
+                    <cell>Measurement (cm)</cell>
                 </row>
                 <row>
                     <cell>Length</cell>
@@ -125,7 +182,7 @@
                         <tabular top="medium" bottom="medium" left="medium" right="medium">
                             <row header="yes">
                                 <cell>Side</cell>
-                                <cell>Actual Measurement</cell>
+                                <cell>Working Measurement</cell>
                                 <cell>maximum Measurement</cell>
                                 <cell>minimum Measurement</cell>
                             </row>
@@ -146,7 +203,7 @@
                 </ol>
             </p>
             <p>
-                <term>Additional Exploration: </term> In groups find;
+                <term>Additional Exploration:</term> In groups find:
             </p>
             <p>
                 <ol>
@@ -158,7 +215,7 @@
                             <ol marker="(i)">
                                 <li>
                                     <p>
-                                        Actual width
+                                        Working width
                                     </p>
                                 </li>
                                 <li>
@@ -182,7 +239,7 @@
                             <ol marker="(i)">
                                 <li>
                                     <p>
-                                        Actual width
+                                        Working width
                                     </p>
                                 </li>
                                 <li>
@@ -206,7 +263,7 @@
                             <ol marker="(i)">
                                 <li>
                                     <p>
-                                        Actual width
+                                        Working width
                                     </p>
                                 </li>
                                 <li>
@@ -225,7 +282,7 @@
                 </ol>
             </p>
             <p>
-                From the additional exploration above, what is?
+                From the additional exploration above, what are:
             </p>
             <p>
                 <ol marker="(a)">
@@ -241,11 +298,11 @@
                     </li>
                     <li>
                         <p>
-                            The actual sum (use the formula:)
+                            The working sum (use the formula:)
                         </p>
                         <p>
                             <md>
-                                <mrow> \text{actual sum} = \amp \; \text{actual length} + \text{actual width} </mrow>
+                                <mrow> \text{working sum} = \amp \; \text{working length} + \text{working width} </mrow>
                             </md>
                             
                         </p>
@@ -259,13 +316,13 @@
                 <ol>
                     <li>
                         <p>
-                            The difference between actual length and;
+                            The difference between working length and;
                         </p>
                         <p>
                             <ol marker="(i)">
                                 <li>
                                     <p>
-                                        Actual width
+                                        Working width
                                     </p>
                                 </li>
                                 <li>
@@ -289,7 +346,7 @@
                             <ol marker="(i)">
                                 <li>
                                     <p>
-                                        Actual width
+                                        Working width
                                     </p>
                                 </li>
                                 <li>
@@ -313,7 +370,7 @@
                             <ol marker="(i)">
                                 <li>
                                     <p>
-                                        Actual width
+                                        Working width
                                     </p>
                                 </li>
                                 <li>
@@ -332,7 +389,7 @@
                 </ol>
             </p>
             <p>
-                From the subtraction exploration above, what is?
+                From the subtraction exploration above, what are:
             </p>
             <p>
                 <ol marker="(a)">
@@ -348,11 +405,11 @@
                     </li>
                     <li>
                         <p>
-                            The actual difference (use the formula:)
+                            The working difference (use the formula:)
                         </p>
                         <p>
                             <md>
-                                <mrow> \text{actual difference} = \amp \; \text{actual length} - \text{actual width} </mrow>
+                                <mrow> \text{working difference} = \amp \; \text{working length} - \text{working width} </mrow>
                             </md>
                             
                         </p>
@@ -366,85 +423,95 @@
                 <ol marker="(a)">
                     <li>
                         <p>
-                            Absolute error in the addition of the length and width?
+                            The absolute error in the addition?
                         </p>
                     </li>
                     <li>
                         <p>
-                            The relative error in the addition of length and width?
+                            The relative error in the addition?
                         </p>
                     </li>
                     <li>
                         <p>
-                            The percentage error in the addition of length and width?
+                            The percentage error in the addition?
                         </p>
                     </li>
                     <li>
                         <p>
-                            The absolute error in the difference between length and width?
+                            The absolute error in the difference?
                         </p>
                     </li>
                     <li>
                         <p>
-                            The relative error in the difference between length and width?
+                            The relative error in the difference?
                         </p>
                     </li>
                     <li>
                         <p>
-                            The percentage error in the difference between length and width?
+                            The percentage error in the difference?
                         </p>
                     </li>
                 </ol>
             </p>
             <p>
-                <term>Discuss and share with other Groups</term>
+                <term>Discuss and share with other groups:</term>
             </p>
             <p>
-                The pattern you notice in the addition and subtraction of errors?
+                The pattern observed in the addition and subtraction of errors. What do you notice about the maximum and minimum sums and differences?
             </p>
         </statement>
     </activity>
 
     <!-- [LP] Add guidance on structured lesson plan-->
 
-    <!-- <axiom component="lesson-plan">
-        <title>Structured Instruction</title>
+    <axiom component="lesson-plan" xml:id="lesson-plan-textbook-structured-instruction">
+        <title>Structured Instruction: Formalizing Errors in Operations</title>
         <p>
-            <dl>
-            <li>
-                <title>Suggested Time</title>
-                <p>
-                    XX minutes
-                </p>
-            </li>
-            <li>
-                <title>Objective</title>
-                <p>
-                    To formalize the concepts and properties learners discovered in the anchor task.
-                </p>
-            </li>
-            </dl>
+            <ol marker="(a)">
+                <li>
+                    <title>Suggested Time</title>
+                    <p>
+                        15 minutes
+                    </p>
+                </li>
+                <li>
+                    <title>Objective</title>
+                    <p>
+                        To formalize the core rules of error analysis: absolute errors accumulate (add up) during both addition and subtraction.
+                    </p>
+                </li>
+            </ol>
         </p>
         <paragraphs>
             <title>Key Takeaways &amp; Teacher Connection</title>
-            <ol>
+            <ol marker="(i)">
                 <li>
                     <p>
-                        <alert>Connecting to Learner Work:</alert> XXXX
+                        <alert>Connecting to Learner Work:</alert> Review the subtraction exploration. Point out that to get the widest possible space between two numbers (the maximum difference), you must subtract the minimum value from the maximum value (<m>\text{Max} - \text{Min}</m>).
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <alert>The Pattern Concept:</alert> Explicitly formalize that whether you add or subtract measurements, their absolute errors always add together.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <alert>Relative and Percentage error Calculations:</alert> Remind students that relative error is always divided by the working value, and percentage error is simply the relative error multiplied by 100 %.
                     </p>
                 </li>
             </ol>
         </paragraphs>
-    </axiom> -->
+    </axiom>
 
     <insight>
         <p>
-            <term>Obseve and note that;</term>
+            <term>Observe and note that:</term>
         </p>
         <p>
             <md>
-                <mrow> \text{Absolute error}\; = \amp \; \text{Maximum} \; - \; \text{actual} </mrow>
-                <mrow> \text{Relative error} \; = \amp \; \frac{\text{Absolute}}{\text{Actual}} </mrow>
+                <mrow> \text{Absolute error}\; = \amp \; \text{Maximum value} \; - \; \text{Working value} </mrow>
+                <mrow> \text{Relative error} \; = \amp \; \frac{\text{Absolute error}}{\text{Working value}} </mrow>
                 <mrow> \text{Percentage error} \; = \amp \; \text{Relative error} \; \times 100 \% </mrow>
             </md>
             
@@ -471,10 +538,10 @@
             </p>
             <p>
                 <md>
-                    <mrow> \text{The maximum possible sum is} \; \amp \; 4.55 + 6.15 = 10.7 \;\text{cm} </mrow>
-                    <mrow> \text{The minimum possible sum is} \; \amp \; 4.45 + 6.05 = 10.5 \;\text{cm} </mrow>
-                    <mrow> \text{The working sum is} \; \amp \; 4.5 + 6.1 = 10.6 \;\text{cm} </mrow>
-                    <mrow> \text{Absolute error} \; \amp = \; \text{maximum sum} - \text{working sum} </mrow>
+                    <mrow> \text{The maximum sum} \; = \amp \; 4.55 + 6.15 = 10.7 \;\text{cm} </mrow>
+                    <mrow> \text{The minimum sum} \; =\amp \; 4.45 + 6.05 = 10.5 \;\text{cm} </mrow>
+                    <mrow> \text{The working sum} \; = \amp \; 4.5 + 6.1 = 10.6 \;\text{cm} </mrow>
+                    <mrow> \text{Absolute error} \; = \amp \; \text{maximum sum} - \text{working sum} </mrow>
                     <mrow> \amp = \; \left| 10.7 - 10.6 \right| </mrow>
                     <mrow> \amp = \; 0.1 \;\text{cm} </mrow>
                 </md>
@@ -496,12 +563,12 @@
             </p>
             <p>
                 <md>
-                    <mrow> \text{The maximum possible difference is} \; \amp \; 0.725 - 0.305 = 0.420 \;\text{g} </mrow>
-                    <mrow> \text{The minimum possible difference is} \; \amp \; 0.715 - 0.315 = 0.400 \;\text{g} </mrow>
-                    <mrow> \text{The working difference is} \; \amp \; 0.72 - 0.31 = 0.41 \;\text{g} </mrow>
-                    <mrow> \text{Absolute error} \; \amp = \; \text{maximum difference} - \text{working difference} </mrow>
-                    <mrow> \amp = \; \left| 0.42 - 0.41 \right| </mrow>
-                    <mrow> \amp = \; 0.01 \;\text{g} </mrow>
+                    <mrow> \text{The maximum difference} \; = \amp \; 0.725 - 0.305 = 0.420 \;\text{g} </mrow>
+                    <mrow> \text{The minimum difference} \; = \amp \; 0.715 - 0.315 = 0.400 \;\text{g} </mrow>
+                    <mrow> \text{The working difference} \; = \amp \; 0.72 - 0.31 = 0.41 \;\text{g} </mrow>
+                    <mrow> \text{Absolute error} \; = \amp \; \text{maximum difference} - \text{working difference} </mrow>
+                    <mrow> =\amp \; \left| 0.42 - 0.41 \right| </mrow>
+                    <mrow> =\amp \; 0.01 \;\text{g} </mrow>
                 </md>
             </p>
         </solution>
@@ -537,14 +604,14 @@
                             <md>
                                 <mrow> \text{The length lies within} \; \amp \; 5.3 \pm 0.05 \;\text{cm} </mrow>
                                 <mrow> \text{The width lies within} \; \amp \; 2.5 \pm 0.05 \;\text{cm} </mrow>
-                                <mrow> \text{The maximum perimeter is} \; \amp \; 2(5.35 + 2.55) \;\text{cm} </mrow>
-                                <mrow> \amp = \; 2(5.35 + 2.55) = 15.8 \;\text{cm} </mrow>
-                                <mrow> \text{The minimum perimeter is} \; \amp \; 2(5.25 + 2.45) \;\text{cm} </mrow>
-                                <mrow> \amp = \; 2(5.25 + 2.45) = 15.4 \;\text{cm} </mrow>
-                                <mrow> \text{The working perimeter is} \; \amp \; 2(5.3 + 2.5) \;\text{cm} </mrow>
-                                <mrow> \amp = \; 2(5.3 + 2.5) = 15.6 \;\text{cm} </mrow>
-                                <mrow> \text{Absolute error} \; \amp = \; \text{maximum perimeter} - \text{working perimeter} </mrow>
-                                <mrow> \amp = \; 0.2 \;\text{cm} </mrow>
+                                <mrow> \text{The maximum perimeter} \; =\amp \; 2(5.35 + 2.55) \;\text{cm} </mrow>
+                                <mrow> =\amp \; 2(5.35 + 2.55) = 15.8 \;\text{cm} </mrow>
+                                <mrow> \text{The minimum perimeter} \; = \amp \; 2(5.25 + 2.45) \;\text{cm} </mrow>
+                                <mrow> =\amp \; 2(5.25 + 2.45) = 15.4 \;\text{cm} </mrow>
+                                <mrow> \text{The working perimeter} \; = \amp \; 2(5.3 + 2.5) \;\text{cm} </mrow>
+                                <mrow> =\amp \; 2(5.3 + 2.5) = 15.6 \;\text{cm} </mrow>
+                                <mrow> \text{Absolute error} \; = \amp \; \text{maximum perimeter} - \text{working perimeter} </mrow>
+                                <mrow> =\amp \; 0.2 \;\text{cm} </mrow>
                             </md>
                         </p>
                     </li>
@@ -606,24 +673,24 @@
                         <li>
                             <p>
                                <md>
-                                    <mrow>\text{min} \;  =  \amp \; 11.170 \; \text{cm} </mrow>
-                                    <mrow>\text{max} \;  =  \amp \; 11.190 \; \text{cm} </mrow>
+                                    <mrow>\text{minimum sum} \;  =  \amp \; 11.170 \; \text{cm} </mrow>
+                                    <mrow>\text{maximum sum} \;  =  \amp \; 11.190 \; \text{cm} </mrow>
                                 </md>
                             </p>
                         </li>
                         <li>
                             <p>
                                 <md>
-                                    <mrow>\text{min} \;  =  \amp \; 12.140 \; \text{l}</mrow>
-                                    <mrow>\text{max} \;  =  \amp \; 12.160 \; \text{l}</mrow>
+                                    <mrow>\text{minimum sum} \;  =  \amp \; 12.140 \; \text{l}</mrow>
+                                    <mrow>\text{maximum sum} \;  =  \amp \; 12.160 \; \text{l}</mrow>
                                </md>
                             </p>
                         </li>
                         <li>
                             <p>
                                 <md>
-                                    <mrow>\text{min} \;  =  \amp \; 482.435 \; \text{m}</mrow>
-                                    <mrow>\text{max} \;  =  \amp \; 483.545 \; \text{m}</mrow>
+                                    <mrow>\text{minimum sum} \;  =  \amp \; 482.435 \; \text{m}</mrow>
+                                    <mrow>\text{maximum sum} \;  =  \amp \; 483.545 \; \text{m}</mrow>
                                </md>
                             </p>
                         </li>
@@ -640,8 +707,8 @@
             <answer>
                 <p>
                     <md>
-                        <mrow>\text{min} \;  =  \amp \; 0.10 \; \text{s}</mrow>
-                        <mrow>\text{max} \;  =  \amp \; 0.30 \; \text{s}</mrow>
+                        <mrow>\text{minimum difference} \;  =  \amp \; 0.10 \; \text{s}</mrow>
+                        <mrow>\text{maximum difference} \;  =  \amp \; 0.30 \; \text{s}</mrow>
                     </md>
                 </p>
             </answer>
@@ -655,7 +722,7 @@
             <answer>
                 <p>
                     <md>
-                        <mrow>\text{min} \;  =  \amp \; 74.75 \; \text{cm}</mrow>
+                        <mrow>\text{minimum perimeter} \;  =  \amp \; 74.75 \; \text{cm}</mrow>
                     </md>
                 </p>
             </answer>
@@ -663,13 +730,13 @@
         <exercise>
             <statement>
                 <p>
-                    Ten washers, each <m>3.7</m> mm in thickness, are piled one on top of the other. Find the maximum possible erroe in calculation of the height of the pile.
+                    Ten washers, each <m>3.7</m> mm in thickness, are piled one on top of the other. Find the maximum possible error in calculation of the height of the pile.
                 </p>
             </statement>
             <answer>
                 <p>
                     <md>
-                        <mrow>\text{max error} \;  =  \amp \; 0.5 \; \text{mm}</mrow>
+                        <mrow>\text{maximum error} \;  =  \amp \; 0.5 \; \text{mm}</mrow>
                     </md>
                 </p>
             </answer>
@@ -725,41 +792,37 @@
 
     <!-- [LP] Add information on how to differentiate  -->
 
-    <!-- <axiom component="lesson-plan">
+    <axiom component="lesson-plan" xml:id="lesson-plan-textbook-differentiation">
         <title>Differentiation</title>
 
         <table>
-            <title>Differentiation</title>
-            <tabular halign="left">
+            <title>Differentiation Strategies for Error Propagation</title>
+            <tabular halign="left" top="medium" bottom="medium" left="medium" right="medium">
                 <row header="yes" bottom="minor">
                     <cell>Learner Group</cell>
                     <cell>Strategy &amp; Learning Experience</cell>
-                    <cell></cell>
+                </row>
+                <row bottom="minor">
+                    <cell><alert>Struggling Learners (Support)</alert></cell>
+                    <cell>
+                        Use simpler whole-number measurements (e.g., Length = <m>20</m> cm, Width = <m>10</m> cm, with an error of <m>\pm 1</m> cm) to write out the addition and subtraction variations manually on cards before working with decimals.
+                    </cell>
+                </row>
+                <row bottom="minor">
+                    <cell><alert>On-Level Learners (Core)</alert></cell>
+                    <cell>
+                        Calculating combined sums and differences, and transitioning values into relative or percentage errors step-by-step.
+                    </cell>
                 </row>
                 <row>
-                    <cell>Struggling Learners (Support)</cell>
+                    <cell><alert>Advanced Learners (Challenge)</alert></cell>
                     <cell>
-                        XXXX
+                        Ask them to derive a general algebraic formula for the maximum percentage error.
                     </cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>On-Level Learners (Core)</cell>
-                    <cell>
-                        <line>The core lesson activities as described above.</line>
-                    </cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>Advanced Learners (Challenge)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
                 </row>
             </tabular>
         </table>
-    </axiom> -->
+    </axiom>
 
     <xi:include href="../lesson-plan-templates/assessment-methods.ptx" />
 
