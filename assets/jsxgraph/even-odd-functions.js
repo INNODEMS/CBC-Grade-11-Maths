@@ -1,105 +1,109 @@
-// Initialize the JSXGraph board
+// 1. Initialize the board
 const board = JXG.JSXGraph.initBoard('jsxgraph-even-odd', {
     boundingbox: [-7, 7, 7, -7],
     axis: true,
-    showNavigation: false,
-    showCopyright: false
+    showCopyright: false,
+    pan: { enabled: false },
+    zoom: { enabled: false }
 });
 
-// State variables for the current function
-let currentFuncIndex = 0;
-
-// Define the functions we will explore
+// 2. Example functions to explore
 const functions = [
-    { f: x => 0.5 * x * x, name: 'f(x) = 0.5x^2', type: 'even' },
-    { f: x => 0.25 * x * x * x, name: 'f(x) = 0.25x^3', type: 'odd' },
-    { f: x => 4 * Math.cos(x), name: 'f(x) = 4cos(x)', type: 'even' },
-    { f: x => 4 * Math.sin(x), name: 'f(x) = 4sin(x)', type: 'odd' }
+    {
+        label: 'f(x) = x\u00B2 \u2212 1  (Even Function)',
+        fn: (x) => x * x - 1,
+        xMin: -3.2, xMax: 3.2,
+        color: '#2563eb'
+    },
+    {
+        label: 'f(x) = x\u00B3 / 3  (Odd Function)',
+        fn: (x) => (x * x * x) / 3,
+        xMin: -2.6, xMax: 2.6,
+        color: '#dc2626'
+    }
 ];
 
-// 1. Plot the dynamic function graph
-let graph = board.create('functiongraph', [
-    function(x) { return functions[currentFuncIndex].f(x); },
-    -7, 7
-], { strokeWidth: 3, strokeColor: '#1f77b4' }); // Blue curve
+let currentIndex = 0;
+let sceneObjects = [];
 
-// 2. Add the interactive point P (Glider on the curve)
-let p = board.create('glider', [2, 2, graph], { 
-    name: 'P', 
-    size: 5, 
-    color: '#1f77b4', 
-    label: { offset: [10, 10], fontSize: 14 }
+function clearScene() {
+    board.removeObject(sceneObjects);
+    sceneObjects = [];
+}
+
+// 3. Build the entire scene fresh for a given function index
+function buildScene(index) {
+    clearScene();
+    currentIndex = index;
+    const f = functions[index];
+
+    // Curve must exist BEFORE the glider is created on it
+    const curve = board.create('functiongraph', [f.fn, f.xMin, f.xMax], {
+        strokeColor: f.color, strokeWidth: 3
+    });
+    sceneObjects.push(curve);
+
+    const label = board.create('text', [0, 6.6, f.label], {
+        fontSize: 16, anchorX: 'middle', cssClass: 'font-bold', color: f.color
+    });
+    sceneObjects.push(label);
+
+    // Glider point P, now correctly attached to the curve
+    const P = board.create('glider', [1.5, f.fn(1.5), curve], {
+        name: 'P', size: 5, color: '#0f172a'
+    });
+    sceneObjects.push(P);
+
+    // Mirror point Q(-x, f(-x))
+    const Q = board.create('point', [
+        () => -P.X(),
+        () => f.fn(-P.X())
+    ], { name: 'Q', size: 5, color: '#16a34a', fixed: true });
+    sceneObjects.push(Q);
+
+    const dashLine = board.create('segment', [P, Q], {
+        strokeColor: '#64748b', dash: 2, strokeWidth: 2
+    });
+    sceneObjects.push(dashLine);
+
+    // Live calculation panel (top-left)
+    const panelBg = board.create('polygon', [
+        [-6.8, 6.4], [-1.4, 6.4], [-1.4, 4.2], [-6.8, 4.2]
+    ], {
+        fillColor: '#f1f5f9', fillOpacity: 0.9,
+        borders: { strokeColor: '#94a3b8', strokeWidth: 1 },
+        vertices: { visible: false }
+    });
+    sceneObjects.push(panelBg);
+
+    const calcP = board.create('text', [-6.6, 6.0,
+        () => 'P: (x, f(x)) = (' + P.X().toFixed(2) + ', ' + P.Y().toFixed(2) + ')'
+    ], { fontSize: 13, color: '#1e3a8a' });
+    sceneObjects.push(calcP);
+
+    const calcQ = board.create('text', [-6.6, 5.5,
+        () => 'Q: (\u2212x, f(\u2212x)) = (' + Q.X().toFixed(2) + ', ' + Q.Y().toFixed(2) + ')'
+    ], { fontSize: 13, color: '#166534' });
+    sceneObjects.push(calcQ);
+
+    const calcVerdict = board.create('text', [-6.6, 4.6, () => {
+        const py = P.Y(), qy = Q.Y();
+        if (Math.abs(py - qy) < 0.01) return 'f(\u2212x) = f(x)  \u2192  EVEN';
+        if (Math.abs(py + qy) < 0.01) return 'f(\u2212x) = \u2212f(x)  \u2192  ODD';
+        return 'matches neither pattern';
+    }], { fontSize: 13, color: '#dc2626', cssClass: 'font-bold' });
+    sceneObjects.push(calcVerdict);
+
+    board.update();
+}
+
+// 4. Buttons at the bottom of the graph
+board.create('button', [-3, -6.3, 'Even Function', () => buildScene(0)], {
+    fixed: true, cssStyle: 'padding: 8px 12px; cursor: pointer;'
+});
+board.create('button', [1, -6.3, 'Odd Function', () => buildScene(1)], {
+    fixed: true, cssStyle: 'padding: 8px 12px; cursor: pointer;'
 });
 
-// 3. Add the symmetrical point Q based on P's x-coordinate
-let q = board.create('point', [
-    function() { return -p.X(); },
-    function() { return functions[currentFuncIndex].f(-p.X()); }
-], { 
-    name: 'Q', 
-    size: 5, 
-    color: '#d62728', // Red point
-    label: { offset: [10, 10], fontSize: 14 }
-});
-
-// 4. Create visual lines to show the geometric symmetry
-// Horizontal dashed line for even functions
-let evenLine = board.create('segment', [p, q], {
-    dash: 2,
-    strokeColor: 'gray',
-    visible: function() { return functions[currentFuncIndex].type === 'even'; }
-});
-
-// Line through origin for odd functions
-let oddLine = board.create('segment', [p, q], {
-    dash: 2,
-    strokeColor: 'gray',
-    visible: function() { return functions[currentFuncIndex].type === 'odd'; }
-});
-
-// Add a distinct point at the origin for rotational symmetry reference
-let origin = board.create('point', [0, 0], {
-    name: 'Origin', size: 3, color: 'black', fixed: true
-});
-
-// 5. Dynamic text to show real-time algebraic calculations
-let calcText = board.create('text', [-6.5, 6, function() {
-    let x = p.X().toFixed(2);
-    let fx = p.Y().toFixed(2);
-    let neg_x = (-p.X()).toFixed(2);
-    let f_neg_x = q.Y().toFixed(2);
-    let type = functions[currentFuncIndex].type;
-    
-    let str = `<div style="background: rgba(255,255,255,0.8); padding: 5px; border-radius: 5px;">`;
-    str += `<strong>${type.toUpperCase()} FUNCTION: ${functions[currentFuncIndex].name}</strong><br>`;
-    str += `Let x = ${x}<br>`;
-    str += `f(x) = ${fx}<br>`;
-    str += `f(-x) = f(${neg_x}) = ${f_neg_x}<br><br>`;
-    
-    if (type === 'even') {
-        str += `<strong>Notice: f(-x) = f(x)</strong><br>`;
-        str += `${f_neg_x} = ${fx}`;
-    } else {
-        str += `<strong>Notice: f(-x) = -f(x)</strong><br>`;
-        str += `${f_neg_x} = -(${fx})`;
-    }
-    str += `</div>`;
-    return str;
-}], {fontSize: 15, parse: false});
-
-// 6. Interactive buttons to switch functions
-board.create('button', [-5.5, -5.5, 'Even: 0.5x^2', function() { 
-    currentFuncIndex = 0; board.update(); 
-}], {fixed: true});
-
-board.create('button', [-2.5, -5.5, 'Odd: 0.25x^3', function() { 
-    currentFuncIndex = 1; board.update(); 
-}], {fixed: true});
-
-board.create('button', [0.5, -5.5, 'Even: 4cos(x)', function() { 
-    currentFuncIndex = 2; board.update(); 
-}], {fixed: true});
-
-board.create('button', [3.5, -5.5, 'Odd: 4sin(x)', function() { 
-    currentFuncIndex = 3; board.update(); 
-}], {fixed: true});
+// 5. Initial scene
+buildScene(0);
