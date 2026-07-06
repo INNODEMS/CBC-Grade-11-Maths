@@ -345,7 +345,7 @@
         <p>
             The central angle is now a perfectly flat straight line running through the center <m>O</m>, which measures exactly <m>180^\circ</m>. Since the angle at the edge must be half of the angle at the center, picking any boundary point <m>S</m> and connecting it to the diameter ends will always create a perfect right angle:
         </p>
-        <md>\angle RST = \frac{180^\circ}{2} = 90^\circ</md>
+        <me>\angle RST = \frac{180^\circ}{2} = 90^\circ</me>
     </insight>
     
 
@@ -535,58 +535,53 @@
                 <p>
                     Points <m>A</m>, <m>B</m>, <m>C</m>, and <m>D</m> lie on a circle in that order. The chords <m>AC</m> and <m>BD</m> intersect at point <m>E</m>. If the inscribed angle <m>\angle ABD = 42^\circ</m> and <m>\angle BEC = 85^\circ</m>, calculate the measure of <m>\angle ACD</m>.
                 </p>
-                <figure xml:id="intersecting-chords-angles-problem">
-    <caption></caption>
-    <image width="65%">
-        <latex-image>
-            \begin{tikzpicture}
-            % --- Centre and Points on the Circle ---
-            \tkzDefPoint(0,0){O}
-            \def\radius{3}
-            
-            % Positions for points A, B, C, D in order around the circle
-            \tkzDefPointOnCircle[R = center O angle 140 radius \radius]\tkzGetPoint{A}
-            \tkzDefPointOnCircle[R = center O angle 224 radius \radius]\tkzGetPoint{B}
-            \tkzDefPointOnCircle[R = center O angle 320 radius \radius]\tkzGetPoint{C}
-            \tkzDefPointOnCircle[R = center O angle 40  radius \radius]\tkzGetPoint{D}
+                <figure xml:id="fig-angles-same-segment">
+            <caption>Intersecting chords AC and BD inside a circle.</caption>
+            <image width="65%">
+                <latex-image>
+                    \begin{tikzpicture}[scale=1.5]
+                    % --- Define Coordinates on Circle ---
+                    \coordinate (O) at (0,0);
+                    \coordinate (A) at (140:2);
+                    \coordinate (B) at (50:2);
+                    \coordinate (C) at (-40:2);
+                    \coordinate (D) at (-110:2);
 
-            % --- Intersection Point E ---
-            % E is the intersection of chords AC and BD
-            \tkzInterLL(A,C)(B,D)\tkzGetPoint{E}
+                    % --- Find Intersection Point E of AC and BD ---
+                    \coordinate (E) at (intersection of A--C and B--D);
 
-            % Draw the main circle
-            \tkzDrawCircle[thick](O,A)
+                    % --- Draw Circle and Chords ---
+                    \draw[thick] (O) circle (2cm);
+                    \draw[thick] (A) -- (C);
+                    \draw[thick] (B) -- (D);
+                    
+                    % Draw optional dashed lines to fully show the inscribed angles
+                    \draw[thick, dashed, gray!70] (A) -- (B);
+                    \draw[thick, dashed, gray!70] (C) -- (D);
 
-            % --- Draw Chords and Extra Boundary Segment ---
-            \tkzDrawSegments(A,C B,D)
-            % Draw AD or CD explicitly if helpful to visualize subtended arcs
-            \tkzDrawSegments[dashed, color=gray](A,B C,D)
+                    % --- Annotate Angles ---
+                    % Angle ABD = 42 degrees
+                    \draw[shift={(B)}] (230:0.4) arc (230:190:0.4);
+                    \node at (0.9,1.4) {$42^{\circ}$};
 
-            % --- Mark Angles ---
-            % Inscribed angle ABD = 42 degrees
-            \tkzMarkAngle[size=0.5,color=blue](D,B,A)
-            % Intersecting angle BEC = 85 degrees
-            \tkzMarkAngle[size=0.4,color=red](B,E,C)
-            % Target angle ACD = x degrees
-            \tkzMarkAngle[size=0.5,color=teal](D,C,A)
+                    % Angle BEC = 85 degrees
+                    \draw[shift={(E)}] (-40:0.25) arc (-40:50:0.25);
+                    \node at ($(E)+(0.4,0.05)$) {$85^{\circ}$};
 
-            % --- Labels ---
-            \tkzLabelAngle[pos=0.8, color=blue](D,B,A){$42^{\circ}$}
-            \tkzLabelAngle[pos=0.7, color=red](B,E,C){$85^{\circ}$}
-            \tkzLabelAngle[pos=0.8, color=teal](D,C,A){$x$}
+                    % Angle ACD = 42 degrees (Target angle)
+                    \draw[shift={(C)}] (140:0.4) arc (140:192:0.4);
+                    \node at (1.2,-1.0) {$x^{\circ}$};
 
-            % --- Points and point labels ---
-            \tkzDrawPoints(A,B,C,D,E)
-            \tkzLabelPoints[above left](A)
-            \tkzLabelPoints[below left](B)
-            \tkzLabelPoints[below right](C)
-            \tkzLabelPoints[above right](D)
-            \tkzLabelPoints[above](E)
-
-            \end{tikzpicture}
-        </latex-image>
-    </image>
-</figure>
+                    % --- Label Points ---
+                    \fill (A) circle (1.5pt) node[above left] {$A$};
+                    \fill (B) circle (1.5pt) node[above right] {$B$};
+                    \fill (C) circle (1.5pt) node[below right] {$C$};
+                    \fill (D) circle (1.5pt) node[below left] {$D$};
+                    \fill (E) circle (1.5pt) node[below] {$E$};
+                    \end{tikzpicture}
+                </latex-image>
+            </image>
+        </figure>
             </statement>
             <solution>
                 <p>
