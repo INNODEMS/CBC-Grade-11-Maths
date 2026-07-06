@@ -1,45 +1,86 @@
 /*
-    Graphing empirical data — a scatter plot  (13.7)
-    ------------------------------------------------
-    Eight draggable data points. Move any point to change the scatter; the readout
-    reports the coordinates of the point you last moved and the number of points.
-    A faint marker shows the mean point (x̄, ȳ) so trends and outliers stand out.
+    Graphing empirical data — choosing the axes, then plotting  (13.7)
+    ------------------------------------------------------------------
+    Students are shown a table of the number of students in each class from
+    Grade 6 to Grade 11. Using native PreTeXt buttons they choose which variable
+    goes on the horizontal axis (independent) and which on the vertical axis
+    (dependent). When the choice is correct the scatter is plotted automatically on
+    the (initially blank, unlabelled) plane, the axes are labelled, and the overall
+    trend is described.
 
-    Draggable: the data points.  Derived: mean marker + readouts.
+    House-style split:
+      - The coordinate plane is the JSXGraph board (id="jsx-graphing-empirical-data").
+      - The data TABLE is fixed PreTeXt content beside the board.
+      - Selection controls are native PreTeXt buttons wired to
+        window.gedHoriz('grade'|'students') and window.gedVert('grade'|'students').
+      - A status line (selected variables + trend) is written to an html slate
+        with id="ged_status".
 */
 
-JXG.Options.text.useMathJax = true;
+(function () {
+    'use strict';
 
-const board = JXG.JSXGraph.initBoard('jsx-graphing-empirical-data', {
-    boundingbox: [-1.5, 11, 11, -1.8],
-    axis: true, grid: true,
-    showCopyright: false, showNavigation: false
-});
+    JXG.Options.text.useMathJax = true;
+    JXG.Options.text.fontSize = 15;
 
-const data = [[1, 2], [2, 3.5], [3, 3], [4, 5], [5, 5.2], [6, 7], [7, 6.4], [8, 8.5]];
-const pts = [];
-let selected = null;
-
-data.forEach((d, i) => {
-    const p = board.create('point', d, {
-        name: '', size: 4, strokeColor: '#1565c0', fillColor: '#1565c0', withLabel: false
+    const board = JXG.JSXGraph.initBoard('jsx-graphing-empirical-data', {
+        boundingbox: [-1.5, 56, 13, -8],
+        axis: true, grid: true,
+        showCopyright: false, showNavigation: false,
+        pan: { enabled: false }, zoom: { enabled: false }
     });
-    p.on('drag', () => { selected = p; });
-    pts.push(p);
-});
-selected = pts[0];
 
-// Mean point (derived) — a light cross
-const meanX = () => pts.reduce((s, p) => s + p.X(), 0) / pts.length;
-const meanY = () => pts.reduce((s, p) => s + p.Y(), 0) / pts.length;
-board.create('point', [meanX, meanY], {
-    name: '\\((\\bar x,\\ \\bar y)\\)', size: 5, face: 'x', strokeColor: '#c62828', strokeWidth: 3,
-    fixed: true, highlight: false, label: { offset: [10, 8], color: '#c62828' }
-});
+    // --- Fixed data: number of students per class ---------------------------
+    const grades = [6, 7, 8, 9, 10, 11];
+    const students = [30, 34, 37, 41, 44, 48];   // generally increasing
 
-// --- Readout (MathJax) ------------------------------------------------------
-board.create('text', [-1.2, -1.0, () => '\\(n = ' + pts.length + '\\text{ points}\\)'],
-    { fontSize: 14, anchorX: 'left', cssStyle: 'background:rgba(255,255,255,0.82);padding:1px 5px' });
-board.create('text', [4.2, -1.0, () =>
-    '\\(\\text{last moved: } (' + selected.X().toFixed(2) + ',\\ ' + selected.Y().toFixed(2) + ')\\)'],
-    { fontSize: 14, anchorX: 'left', cssStyle: 'background:rgba(255,255,255,0.82);padding:1px 5px' });
+    const LABELS = { grade: 'Grade level', students: 'Number of students' };
+
+    // --- Scatter points (hidden until the axes are chosen correctly) --------
+    const pts = grades.map((g, i) => board.create('point', [g, students[i]], {
+        name: '', size: 4, strokeColor: '#1565c0', fillColor: '#1565c0',
+        fixed: true, withLabel: false, visible: false, highlight: false
+    }));
+
+    // --- Axis labels (hidden until correct) ---------------------------------
+    const xLabel = board.create('text', [6.5, -5.5, () => LABELS.grade],
+        { anchorX: 'middle', fixed: true, visible: false, cssStyle: 'font-weight:bold' });
+    const yLabel = board.create('text', [-1.2, 54, () => LABELS.students],
+        { anchorX: 'left', fixed: true, visible: false, cssStyle: 'font-weight:bold' });
+
+    // --- Selection state ----------------------------------------------------
+    let horiz = null, vert = null;
+    const statusEl = () => document.getElementById('ged_status');
+    function setStatus(html) { const s = statusEl(); if (s) s.innerHTML = html; }
+
+    function refresh() {
+        const bothChosen = horiz && vert;
+        const correct = horiz === 'grade' && vert === 'students';
+        pts.forEach(p => p.setAttribute({ visible: correct }));
+        xLabel.setAttribute({ visible: correct });
+        yLabel.setAttribute({ visible: correct });
+        board.update();
+
+        if (!bothChosen) {
+            setStatus('Choose which variable goes on each axis using the buttons.' +
+                (horiz ? '<br>Horizontal: <b>' + LABELS[horiz] + '</b>' : '') +
+                (vert ? '<br>Vertical: <b>' + LABELS[vert] + '</b>' : ''));
+            return;
+        }
+        if (!correct) {
+            setStatus('Horizontal: <b>' + LABELS[horiz] + '</b> &nbsp; Vertical: <b>' + LABELS[vert] + '</b>' +
+                '<br><span style="color:#c62828">Not quite — the independent variable (grade level) goes on the ' +
+                'horizontal axis, and the dependent variable (number of students) on the vertical axis. Try again.</span>');
+            return;
+        }
+        setStatus('Independent variable (horizontal): <b>' + LABELS.grade + '</b>' +
+            '<br>Dependent variable (vertical): <b>' + LABELS.students + '</b>' +
+            '<br><span style="color:#2e7d32">The number of students generally increases with grade level.</span>');
+    }
+
+    // --- Control API for native PreTeXt buttons -----------------------------
+    window.gedHoriz = function (v) { horiz = v; refresh(); };
+    window.gedVert = function (v) { vert = v; refresh(); };
+
+    refresh();
+}());
