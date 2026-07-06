@@ -16,13 +16,13 @@ board.create('curve', [
 ], { strokeColor: '#2563eb', strokeWidth: 3, fillColor: '#bfdbfe', fillOpacity: 0.3 });
 board.create('text', [-4, 3, 'Domain'], { fontSize: 18, anchorX: 'middle', cssClass: 'font-bold' });
 
-// 3. Draw the Codomain (Right Set)
+// 3. Draw the Range (Right Set)
 board.create('curve', [
     (t) => 4 + 1 * Math.cos(t), 
     (t) => 2 * Math.sin(t), 
     0, 2 * Math.PI
 ], { strokeColor: '#16a34a', strokeWidth: 3, fillColor: '#bbf7d0', fillOpacity: 0.3 });
-board.create('text', [4, 3, 'Codomain'], { fontSize: 18, anchorX: 'middle', cssClass: 'font-bold' });
+board.create('text', [4, 3, 'Range'], { fontSize: 18, anchorX: 'middle', cssClass: 'font-bold' });
 
 // 4. Create Elements (Points) inside the sets
 const d1 = board.create('point', [-4, 1], { name: 'a', size: 5, color: '#1e3a8a', fixed: true });
