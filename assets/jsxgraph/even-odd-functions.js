@@ -1,109 +1,87 @@
-// 1. Initialize the board
-const board = JXG.JSXGraph.initBoard('jsxgraph-even-odd', {
-    boundingbox: [-7, 7, 7, -7],
-    axis: true,
-    showCopyright: false,
-    pan: { enabled: false },
-    zoom: { enabled: false }
-});
+/*
+    Even and Odd Functions — compare with a reflection and a rotation
+    The function rule is chosen by native PreTeXt buttons that call
+    window.eoSelect(i). Three graphs are drawn: the original, its reflection in the
+    y-axis  g(x)=f(-x), and its rotation about the origin  h(x)=-f(-x). The
+    reflection is highlighted when the function is even, the rotation when it is
+    odd. A readout names the function and its classification.
 
-// 2. Example functions to explore
-const functions = [
-    {
-        label: 'f(x) = x\u00B2 \u2212 1  (Even Function)',
-        fn: (x) => x * x - 1,
-        xMin: -3.2, xMax: 3.2,
-        color: '#2563eb'
-    },
-    {
-        label: 'f(x) = x\u00B3 / 3  (Odd Function)',
-        fn: (x) => (x * x * x) / 3,
-        xMin: -2.6, xMax: 2.6,
-        color: '#dc2626'
+    Expects: a surface="jsxboard" slate with id="jsx-even-odd-functions", and
+    native PreTeXt buttons wired to the global eoSelect(0..4).
+
+    NOTE: this replaces an earlier even-odd-functions.js that used a single
+    mirror-point design. See PROGRESS.md.
+*/
+
+(function () {
+    'use strict';
+
+    JXG.Options.text.useMathJax = true;
+    JXG.Options.text.fontSize = 15;
+
+    const board = JXG.JSXGraph.initBoard('jsx-even-odd-functions', {
+        boundingbox: [-7, 8, 7, -8],
+        axis: true,
+        grid: true,
+        showCopyright: false,
+        showNavigation: false,
+        pan: { enabled: false },
+        zoom: { enabled: false }
+    });
+
+    // --- Function list ------------------------------------------------------
+    const TYPES = [
+        { name: 'f(x) = x^2',     fn: (x) => x * x },
+        { name: 'f(x) = x^3',     fn: (x) => x * x * x / 2 },
+        { name: 'f(x) = |x|',     fn: (x) => Math.abs(x) },
+        { name: 'f(x) = 2x',      fn: (x) => 2 * x },
+        { name: 'f(x) = x^2 + x', fn: (x) => x * x + x }
+    ];
+    let current = 0;
+
+    // --- Classify by sampling -----------------------------------------------
+    function classify(f) {
+        let even = true, odd = true;
+        for (let x = -3; x <= 3; x += 0.25) {
+            if (Math.abs(f(-x) - f(x)) > 1e-6) even = false;
+            if (Math.abs(f(-x) + f(x)) > 1e-6) odd = false;
+        }
+        return even ? 'even' : (odd ? 'odd' : 'neither');
     }
-];
 
-let currentIndex = 0;
-let sceneObjects = [];
+    // --- Three graphs (created once; functions dispatch on `current`) -------
+    board.create('functiongraph', [(x) => TYPES[current].fn(x), -6, 6],
+        { strokeColor: '#1565c0', strokeWidth: 3 });
+    const refl = board.create('functiongraph', [(x) => TYPES[current].fn(-x), -6, 6],
+        { strokeColor: '#2e7d32', strokeWidth: 2, dash: 2 });   // reflection in y-axis
+    const rot = board.create('functiongraph', [(x) => -TYPES[current].fn(-x), -6, 6],
+        { strokeColor: '#8e24aa', strokeWidth: 2, dash: 2 });   // rotation about origin
 
-function clearScene() {
-    board.removeObject(sceneObjects);
-    sceneObjects = [];
-}
+    // --- Legend -------------------------------------------------------------
+    board.create('text', [-6.7, -6.4, '\\(\\color{#1565c0}{\\text{original } f(x)}\\)'], { anchorX: 'left', fixed: true });
+    board.create('text', [-6.7, -7.1, '\\(\\color{#2e7d32}{\\text{reflection } f(-x)}\\)'], { anchorX: 'left', fixed: true });
+    board.create('text', [-6.7, -7.8, '\\(\\color{#8e24aa}{\\text{rotation } -f(-x)}\\)'], { anchorX: 'left', fixed: true });
 
-// 3. Build the entire scene fresh for a given function index
-function buildScene(index) {
-    clearScene();
-    currentIndex = index;
-    const f = functions[index];
+    // --- Highlight the matching comparison graph ----------------------------
+    function applyHighlight() {
+        const kind = classify(TYPES[current].fn);
+        refl.setAttribute({ strokeWidth: kind === 'even' ? 5 : 2, strokeOpacity: kind === 'even' ? 1 : 0.6 });
+        rot.setAttribute({ strokeWidth: kind === 'odd' ? 5 : 2, strokeOpacity: kind === 'odd' ? 1 : 0.6 });
+        board.update();
+    }
 
-    // Curve must exist BEFORE the glider is created on it
-    const curve = board.create('functiongraph', [f.fn, f.xMin, f.xMax], {
-        strokeColor: f.color, strokeWidth: 3
-    });
-    sceneObjects.push(curve);
+    // --- Readout ------------------------------------------------------------
+    board.create('text', [6.7, 7.4, () => {
+        const kind = classify(TYPES[current].fn);
+        return '\\(' + TYPES[current].name.replace('f(x) = ', 'f(x)=') + '\\):  \\textbf{' + kind + '}';
+    }], { anchorX: 'right', fixed: true });
 
-    const label = board.create('text', [0, 6.6, f.label], {
-        fontSize: 16, anchorX: 'middle', cssClass: 'font-bold', color: f.color
-    });
-    sceneObjects.push(label);
+    // --- Control API for PreTeXt buttons ------------------------------------
+    window.eoSelect = function (i) {
+        if (i < 0 || i >= TYPES.length) return;
+        current = i;
+        applyHighlight();
+    };
 
-    // Glider point P, now correctly attached to the curve
-    const P = board.create('glider', [1.5, f.fn(1.5), curve], {
-        name: 'P', size: 5, color: '#0f172a'
-    });
-    sceneObjects.push(P);
-
-    // Mirror point Q(-x, f(-x))
-    const Q = board.create('point', [
-        () => -P.X(),
-        () => f.fn(-P.X())
-    ], { name: 'Q', size: 5, color: '#16a34a', fixed: true });
-    sceneObjects.push(Q);
-
-    const dashLine = board.create('segment', [P, Q], {
-        strokeColor: '#64748b', dash: 2, strokeWidth: 2
-    });
-    sceneObjects.push(dashLine);
-
-    // Live calculation panel (top-left)
-    const panelBg = board.create('polygon', [
-        [-6.8, 6.4], [-1.4, 6.4], [-1.4, 4.2], [-6.8, 4.2]
-    ], {
-        fillColor: '#f1f5f9', fillOpacity: 0.9,
-        borders: { strokeColor: '#94a3b8', strokeWidth: 1 },
-        vertices: { visible: false }
-    });
-    sceneObjects.push(panelBg);
-
-    const calcP = board.create('text', [-6.6, 6.0,
-        () => 'P: (x, f(x)) = (' + P.X().toFixed(2) + ', ' + P.Y().toFixed(2) + ')'
-    ], { fontSize: 13, color: '#1e3a8a' });
-    sceneObjects.push(calcP);
-
-    const calcQ = board.create('text', [-6.6, 5.5,
-        () => 'Q: (\u2212x, f(\u2212x)) = (' + Q.X().toFixed(2) + ', ' + Q.Y().toFixed(2) + ')'
-    ], { fontSize: 13, color: '#166534' });
-    sceneObjects.push(calcQ);
-
-    const calcVerdict = board.create('text', [-6.6, 4.6, () => {
-        const py = P.Y(), qy = Q.Y();
-        if (Math.abs(py - qy) < 0.01) return 'f(\u2212x) = f(x)  \u2192  EVEN';
-        if (Math.abs(py + qy) < 0.01) return 'f(\u2212x) = \u2212f(x)  \u2192  ODD';
-        return 'matches neither pattern';
-    }], { fontSize: 13, color: '#dc2626', cssClass: 'font-bold' });
-    sceneObjects.push(calcVerdict);
-
-    board.update();
-}
-
-// 4. Buttons at the bottom of the graph
-board.create('button', [-3, -6.3, 'Even Function', () => buildScene(0)], {
-    fixed: true, cssStyle: 'padding: 8px 12px; cursor: pointer;'
-});
-board.create('button', [1, -6.3, 'Odd Function', () => buildScene(1)], {
-    fixed: true, cssStyle: 'padding: 8px 12px; cursor: pointer;'
-});
-
-// 5. Initial scene
-buildScene(0);
+    applyHighlight();
+}());
