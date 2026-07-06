@@ -117,24 +117,90 @@
         <task>
             <statement>
                 <p>
-                    Now look at the following mappings written as pairs of numbers. Each pair is written as (input, output). Using the patterns you noticed in the real-world scenarios, describe how the inputs and outputs are connected in each case, and decide which of the mappings you think could represent a function and which could not.
+                    Now look at the diagrams below. Each diagram shows how items on the left connect to items on the right. Describe how the arrows are arranged and decide which diagrams show functions.
                 </p>
-                <p>
-                    <ol marker="(i)">
-                        <li>
-                            <p>(1, 2), (2, 4), (3, 6)</p>
-                        </li>
-                        <li>
-                            <p>(1, 5), (2, 5), (3, 5)</p>
-                        </li>
-                        <li>
-                            <p>(1, 2), (1, 4), (1, 6)</p>
-                        </li>
-                        <li>
-                            <p>(1, 2), (1, 3), (2, 3), (2, 4)</p>
-                        </li>
-                    </ol>
-                </p>
+
+                <sidebyside widths="48% 48%">
+                    <figure xml:id="fig-map-one-to-one-activity">
+                        <caption>Each item points to one different item</caption>
+                        <image width="100%" xml:id="img-map-one-to-one-activity">
+                            <latex-image>
+                                \begin{tikzpicture}[&gt;=stealth, scale=0.8]
+                                    \node at (0,4) {Left group};
+                                    \node at (5,4) {Right group};
+                                    \foreach \y/\a/\b in {3/1/2,2/2/4,1/3/6}
+                                    {
+                                        \node[circle,draw,minimum size=7mm] (L\a) at (0,\y) {$\a$};
+                                        \node[circle,draw,minimum size=7mm] (R\b) at (5,\y) {$\b$};
+                                        \draw[-&gt;,thick] (L\a) -- (R\b);
+                                    }
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+
+                    <figure xml:id="fig-map-many-to-one-activity">
+                        <caption>Many items point to the same item</caption>
+                        <image width="100%" xml:id="img-map-many-to-one-activity">
+                            <latex-image>
+                                \begin{tikzpicture}[&gt;=stealth, scale=0.8]
+                                    \node at (0,4) {Left group};
+                                    \node at (5,4) {Right group};
+                                    \foreach \y/\a in {3/1,2/2,1/3}
+                                    {
+                                        \node[circle,draw,minimum size=7mm] (L\a) at (0,\y) {$\a$};
+                                    }
+                                    \node[circle,draw,minimum size=7mm] (R5) at (5,2) {$5$};
+                                    \foreach \a in {1,2,3}
+                                    {
+                                        \draw[-&gt;,thick] (L\a) -- (R5);
+                                    }
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                </sidebyside>
+
+                <sidebyside widths="48% 48%">
+                    <figure xml:id="fig-map-one-to-many-activity">
+                        <caption>One item points to many items</caption>
+                        <image width="100%" xml:id="img-map-one-to-many-activity">
+                            <latex-image>
+                                \begin{tikzpicture}[&gt;=stealth, scale=0.8]
+                                    \node at (0,4) {Left group};
+                                    \node at (5,4) {Right group};
+                                    \node[circle,draw,minimum size=7mm] (L1) at (0,2) {$1$};
+                                    \foreach \y/\b in {3/2,2/4,1/6}
+                                    {
+                                        \node[circle,draw,minimum size=7mm] (R\b) at (5,\y) {$\b$};
+                                        \draw[-&gt;,thick] (L1) -- (R\b);
+                                    }
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+
+                    <figure xml:id="fig-map-many-to-many-activity">
+                        <caption>Many items point to many items</caption>
+                        <image width="100%" xml:id="img-map-many-to-many-activity">
+                            <latex-image>
+                                \begin{tikzpicture}[&gt;=stealth, scale=0.8]
+                                    \node at (0,4) {Left group};
+                                    \node at (5,4) {Right group};
+                                    \node[circle,draw,minimum size=7mm] (L1) at (0,2.7) {$1$};
+                                    \node[circle,draw,minimum size=7mm] (L2) at (0,1.3) {$2$};
+                                    \node[circle,draw,minimum size=7mm] (R2) at (5,3) {$2$};
+                                    \node[circle,draw,minimum size=7mm] (R3) at (5,2) {$3$};
+                                    \node[circle,draw,minimum size=7mm] (R4) at (5,1) {$4$};
+                                    \draw[-&gt;,thick] (L1) -- (R2);
+                                    \draw[-&gt;,thick] (L1) -- (R3);
+                                    \draw[-&gt;,thick] (L2) -- (R3);
+                                    \draw[-&gt;,thick] (L2) -- (R4);
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </figure>
+                </sidebyside>
             </statement>
         </task>
     </activity>
@@ -188,8 +254,9 @@
     <insight>
         <paragraphs xml:id="para-relation-concepts">
             <title>Types of Relations</title>
+
             <p>
-                Each mapping type is defined by whether a single input connects to one or more outputs, and whether multiple inputs share the same output. The table below summarises the four types, together with a real-world example and whether each type qualifies as a function.
+                The way inputs are connected to outputs determines the type of relation. Some relations connect each input to one output, while others connect one input to several outputs or allow different inputs to share the same output. The table below summarises the four main types of relations and shows whether each one is a function.
             </p>
 
             <table xml:id="table-relation-types">
@@ -197,40 +264,45 @@
                 <tabular halign="left" top="minor">
                     <row header="yes" bottom="medium">
                         <cell>Type</cell>
-                        <cell>What it means</cell>
-                        <cell>Real-world example</cell>
-                        <cell>Function?</cell>
+                        <cell>Description</cell>
+                        <cell>Example</cell>
+                        <cell>Function</cell>
                     </row>
+
                     <row bottom="minor">
                         <cell><term>One-to-One</term></cell>
-                        <cell>Each input maps to exactly one unique output; no output is shared</cell>
-                        <cell>A child and their biological father — one child has exactly one father</cell>
+                        <cell>Each input is connected to one different output.</cell>
+                        <cell>Each player wears one jersey number.</cell>
                         <cell>Yes</cell>
                     </row>
+
                     <row bottom="minor">
                         <cell><term>Many-to-One</term></cell>
-                        <cell>Several inputs map to the same single output</cell>
-                        <cell>Several children sharing the same biological mother</cell>
+                        <cell>Different inputs are connected to the same output.</cell>
+                        <cell>Several rivers flow into the same lake.</cell>
                         <cell>Yes</cell>
                     </row>
+
                     <row bottom="minor">
                         <cell><term>One-to-Many</term></cell>
-                        <cell>One input maps to more than one output</cell>
-                        <cell>A library borrower who checks out multiple books at once</cell>
+                        <cell>One input is connected to more than one output.</cell>
+                        <cell>One library member borrows several books.</cell>
                         <cell>No</cell>
                     </row>
+
                     <row bottom="minor">
                         <cell><term>Many-to-Many</term></cell>
-                        <cell>Multiple inputs each map to multiple outputs</cell>
-                        <cell>Students and school subjects — one student takes many subjects, and each subject has many students</cell>
+                        <cell>Several inputs are connected to several outputs.</cell>
+                        <cell>Farmers grow different crops and each crop is grown by many farmers.</cell>
                         <cell>No</cell>
                     </row>
                 </tabular>
             </table>
 
             <p>
-                One-to-one and many-to-one relations are both functions because every input still points to exactly one output. One-to-many and many-to-many relations are <alert>not</alert> functions because at least one input connects to more than one output.
+                A relation is a function when every input has only one output. This means that one-to-one and many-to-one relations are functions. One-to-many and many-to-many relations are <alert>not</alert> functions because at least one input is connected to more than one output.
             </p>
+
         </paragraphs>
     </insight>
 
@@ -249,12 +321,12 @@
                         <caption>Passes the Vertical Line Test — this is a function.</caption>
                         <image xml:id="img-vlt-pass">
                             <latex-image>
-                                \begin{tikzpicture}[>=stealth, scale=0.75]
+                                \begin{tikzpicture}[&gt;=stealth, scale=0.75]
                                     \draw[help lines, color=gray!30, dashed] (-2.5,-2.5) grid (2.5,2.5);
-                                    \draw[&lt;->, thick] (-2.5,0) -- (2.5,0) node[right] {$x$};
-                                    \draw[&lt;->, thick] (0,-2.5) -- (0,2.5) node[above] {$y$};
+                                    \draw[&lt;-&gt;, thick] (-2.5,0) -- (2.5,0) node[right] {$x$};
+                                    \draw[&lt;-&gt;, thick] (0,-2.5) -- (0,2.5) node[above] {$y$};
                                     \draw[ultra thick, blue, domain=-1.5:1.5, samples=50] plot (\x, {\x*\x});
-                                    \draw[thick, red, dashed, &lt;->] (0.8, -2.5) -- (0.8, 2.5);
+                                    \draw[thick, red, dashed, &lt;-&gt;] (0.8, -2.5) -- (0.8, 2.5);
                                     \filldraw[red] (0.8, 0.64) circle (3pt);
                                     \node[red, right] at (0.8, 0.64) {\small 1 point};
                                 \end{tikzpicture}
@@ -265,12 +337,12 @@
                         <caption>Fails the Vertical Line Test — this is not a function.</caption>
                         <image xml:id="img-vlt-fail">
                             <latex-image>
-                                \begin{tikzpicture}[>=stealth, scale=0.75]
+                                \begin{tikzpicture}[&gt;=stealth, scale=0.75]
                                     \draw[help lines, color=gray!30, dashed] (-2.5,-2.5) grid (2.5,2.5);
-                                    \draw[&lt;->, thick] (-2.5,0) -- (2.5,0) node[right] {$x$};
-                                    \draw[&lt;->, thick] (0,-2.5) -- (0,2.5) node[above] {$y$};
+                                    \draw[&lt;-&gt;, thick] (-2.5,0) -- (2.5,0) node[right] {$x$};
+                                    \draw[&lt;-&gt;, thick] (0,-2.5) -- (0,2.5) node[above] {$y$};
                                     \draw[ultra thick, blue] (0,0) circle (2cm);
-                                    \draw[thick, red, dashed, &lt;->] (1, -2.5) -- (1, 2.5);
+                                    \draw[thick, red, dashed, &lt;-&gt;] (1, -2.5) -- (1, 2.5);
                                     \filldraw[red] (1, 1.732) circle (3pt);
                                     \filldraw[red] (1, -1.732) circle (3pt);
                                     \node[red, right] at (1, 1.732) {\small 2 points};
@@ -291,12 +363,12 @@
                         <caption>Passes the Horizontal Line Test — this function is one-to-one.</caption>
                         <image xml:id="img-hlt-pass">
                             <latex-image>
-                                \begin{tikzpicture}[>=stealth, scale=0.75]
+                                \begin{tikzpicture}[&gt;=stealth, scale=0.75]
                                     \draw[help lines, color=gray!30, dashed] (-2.5,-2.5) grid (2.5,2.5);
-                                    \draw[&lt;->, thick] (-2.5,0) -- (2.5,0) node[right] {$x$};
-                                    \draw[&lt;->, thick] (0,-2.5) -- (0,2.5) node[above] {$y$};
+                                    \draw[&lt;-&gt;, thick] (-2.5,0) -- (2.5,0) node[right] {$x$};
+                                    \draw[&lt;-&gt;, thick] (0,-2.5) -- (0,2.5) node[above] {$y$};
                                     \draw[ultra thick, blue, domain=-1.4:1.4, samples=50] plot (\x, {\x*\x*\x});
-                                    \draw[thick, red, dashed, &lt;->] (-2.5, 0.8) -- (2.5, 0.8);
+                                    \draw[thick, red, dashed, &lt;-&gt;] (-2.5, 0.8) -- (2.5, 0.8);
                                     \filldraw[red] (0.928, 0.8) circle (3pt);
                                     \node[red, above right] at (0.928, 0.8) {\small 1 point};
                                 \end{tikzpicture}
@@ -307,12 +379,12 @@
                         <caption>Fails the Horizontal Line Test — this function is many-to-one.</caption>
                         <image xml:id="img-hlt-fail">
                             <latex-image>
-                                \begin{tikzpicture}[>=stealth, scale=0.75]
+                                \begin{tikzpicture}[&gt;=stealth, scale=0.75]
                                     \draw[help lines, color=gray!30, dashed] (-2.5,-0.5) grid (2.5,2.5);
-                                    \draw[&lt;->, thick] (-2.5,0) -- (2.5,0) node[right] {$x$};
-                                    \draw[&lt;->, thick] (0,-0.5) -- (0,2.5) node[above] {$y$};
+                                    \draw[&lt;-&gt;, thick] (-2.5,0) -- (2.5,0) node[right] {$x$};
+                                    \draw[&lt;-&gt;, thick] (0,-0.5) -- (0,2.5) node[above] {$y$};
                                     \draw[ultra thick, blue, domain=-1.55:1.55, samples=50] plot (\x, {\x*\x});
-                                    \draw[thick, red, dashed, &lt;->] (-2.5, 1.5) -- (2.5, 1.5);
+                                    \draw[thick, red, dashed, &lt;-&gt;] (-2.5, 1.5) -- (2.5, 1.5);
                                     \filldraw[red] (-1.225, 1.5) circle (3pt);
                                     \filldraw[red] (1.225, 1.5) circle (3pt);
                                     \node[red, above] at (0, 1.5) {\small 2 points};
@@ -329,71 +401,185 @@
     <xi:include href="../lesson-plan-templates/example-intro.ptx" />
 
     <!-- Add at least 3 examples -->
-   <example xml:id="ex-identifying-relations">
+    <!-- Replace ex-identifying-relations with this -->
+
+    <example xml:id="ex-identifying-relations">
         <statement>
-            <p>Determine the type of relation for each of the following mappings, and state whether the relation is a function.</p>
             <p>
-                <ol marker="(a)">
-                <li><p>(1, 2), (2, 4), (3, 6), (4, 8)</p></li>
-                <li><p>(1, 5), (2, 5), (3, 5)</p></li>
-                <li><p>(2, 1), (2, 3), (2, 5)</p></li>
-                <li><p>(1, 2), (1, 3), (2, 3), (2, 4)</p></li>
-            </ol>
+                Examine each mapping diagram below. Identify the type of relation shown, and determine whether the relation is a function.
             </p>
+
+            <sidebyside widths="48% 48%">
+                <figure xml:id="fig-ex-one-to-one">
+                    <caption>Diagram A</caption>
+                    <image width="100%" xml:id="img-ex-one-to-one">
+                        <latex-image>
+                            \begin{tikzpicture}[&gt;=stealth, scale=0.8]
+                                \node at (0,4) {Left group};
+                                \node at (5,4) {Right group};
+                                \foreach \y/\a/\b in {3/1/2,2/2/4,1/3/6}
+                                {
+                                    \node[circle,draw,minimum size=7mm] (L\a) at (0,\y) {$\a$};
+                                    \node[circle,draw,minimum size=7mm] (R\b) at (5,\y) {$\b$};
+                                    \draw[-&gt;,thick] (L\a) -- (R\b);
+                                }
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+
+                <figure xml:id="fig-ex-many-to-one">
+                    <caption>Diagram B</caption>
+                    <image width="100%" xml:id="img-ex-many-to-one">
+                        <latex-image>
+                            \begin{tikzpicture}[&gt;=stealth, scale=0.8]
+                                \node at (0,4) {Left group};
+                                \node at (5,4) {Right group};
+                                \foreach \y/\a in {3/1,2/2,1/3}
+                                {
+                                    \node[circle,draw,minimum size=7mm] (L\a) at (0,\y) {$\a$};
+                                }
+                                \node[circle,draw,minimum size=7mm] (R5) at (5,2) {$5$};
+                                \foreach \a in {1,2,3}
+                                {
+                                    \draw[-&gt;,thick] (L\a) -- (R5);
+                                }
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+            </sidebyside>
+
+            <sidebyside widths="48% 48%">
+                <figure xml:id="fig-ex-one-to-many">
+                    <caption>Diagram C</caption>
+                    <image width="100%" xml:id="img-ex-one-to-many">
+                        <latex-image>
+                            \begin{tikzpicture}[&gt;=stealth, scale=0.8]
+                                \node at (0,4) {Left group};
+                                \node at (5,4) {Right group};
+                                \node[circle,draw,minimum size=7mm] (L2) at (0,2) {$2$};
+                                \foreach \y/\b in {3/1,2/3,1/5}
+                                {
+                                    \node[circle,draw,minimum size=7mm] (R\b) at (5,\y) {$\b$};
+                                    \draw[-&gt;,thick] (L2) -- (R\b);
+                                }
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+
+                <figure xml:id="fig-ex-many-to-many">
+                    <caption>Diagram D</caption>
+                    <image width="100%" xml:id="img-ex-many-to-many">
+                        <latex-image>
+                            \begin{tikzpicture}[&gt;=stealth, scale=0.8]
+                                \node[circle,draw,minimum size=7mm] (L1) at (0,2.7) {$1$};
+                                \node[circle,draw,minimum size=7mm] (L2) at (0,1.3) {$2$};
+                                \node[circle,draw,minimum size=7mm] (R2) at (5,3) {$2$};
+                                \node[circle,draw,minimum size=7mm] (R3) at (5,2) {$3$};
+                                \node[circle,draw,minimum size=7mm] (R4) at (5,1) {$4$};
+                                \draw[-&gt;,thick] (L1) -- (R2);
+                                \draw[-&gt;,thick] (L1) -- (R3);
+                                \draw[-&gt;,thick] (L2) -- (R3);
+                                \draw[-&gt;,thick] (L2) -- (R4);
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+            </sidebyside>
         </statement>
+
         <solution>
             <p>
-            <ol marker="(a)">
-                <li>
-                    <p>Each input is paired with one unique output, and no output value is repeated. This is a <term>one-to-one relation</term> and it is therefore a function.</p>
-                </li>
-                <li>
-                    <p>The different inputs (1, 2, and 3) are all mapped to the same output value of 5. This is a <term>many-to-one relation</term> and it is therefore a function.</p>
-                </li>
-                <li>
-                    <p>A single input value (2) is connected to three different output values. This is a <term>one-to-many relation</term> and it is <alert>not</alert> a function.</p>
-                </li>
-                <li>
-                    <p>The input 1 is paired with multiple outputs, and the output 3 is mapped from multiple inputs. This is a <term>many-to-many relation</term> and it is <alert>not</alert> a function.</p>
-                </li>
-            </ol>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Diagram A shows a one-to-one relation: each element on the left maps to exactly one distinct element on the right. This satisfies the definition of a function.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Diagram B shows a many-to-one relation: several elements on the left map to the same single element on the right. Since every left-hand element still has exactly one output, this is a function.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Diagram C shows a one-to-many relation: a single element on the left maps to multiple elements on the right. Because this element has more than one output, this is not a function.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Diagram D shows a many-to-many relation: multiple elements on the left each map to multiple elements on the right. Since at least one left-hand element has more than one output, this is not a function.
+                        </p>
+                    </li>
+                </ol>
             </p>
         </solution>
     </example>
 
     <example xml:id="ex-vertical-line-test">
         <statement>
-            <p>Determine whether the graph of the circle defined by <m>x^2 + y^2 = 9</m> represents a function.</p>
-            <figure xml:id="fig-vlt-circle">
-                <caption>The Vertical Line Test on a circle.</caption>
-                <image width="50%" xml:id="img-vlt-circle">
+            <p>
+                Determine whether the graph of the function <m>f(x)=\dfrac{1}{x-2}</m> represents a function.
+            </p>
+
+            <figure xml:id="fig-vlt-rational">
+                <caption>Applying the Vertical Line Test to <m>f(x)=\dfrac{1}{x-2}</m>.</caption>
+                <image width="50%" xml:id="img-vlt-rational">
                     <latex-image>
-                        \begin{tikzpicture}[&gt;=stealth]
-                            \draw[help lines, color=gray!30, dashed] (-4,-4) grid (4,4);
-                            \draw[&lt;-&gt;, thick] (-4,0) -- (4,0) node[right] {$x$};
-                            \draw[&lt;-&gt;, thick] (0,-4) -- (0,4) node[above] {$y$};
-                            \draw[ultra thick, blue] (0,0) circle (3cm);
+                        \begin{tikzpicture}[&gt;=stealth, scale=0.75]
+                            \draw[help lines, color=gray!30, dashed] (-6,-4) grid (7,4);
+
+                            \draw[&lt;-&gt;, thick] (-6.5,0) -- (7.5,0) node[right] {$x$};
+                            \draw[&lt;-&gt;, thick] (0,-4.5) -- (0,4.5) node[above] {$y$};
+
+                            % Asymptotes
+                            \draw[dashed, gray] (2,-4.5) -- (2,4.5);
+                            \draw[dashed, gray] (-6.5,0) -- (7.5,0);
+
+                            % Function
+                            \draw[ultra thick, blue, domain=-6:1.85, samples=200]
+                                plot (\x,{1/(\x-2)});
+                            \draw[ultra thick, blue, domain=2.15:7, samples=200]
+                                plot (\x,{1/(\x-2)});
                         \end{tikzpicture}
                     </latex-image>
                 </image>
             </figure>
-            
         </statement>
-        <solution>
-            <p>As shown in <xref ref="fig-vlt-circle-soln"/>, if you draw a vertical line such as <m>x = 1.5</m>, it intersects the circle at two distinct points. Because the graph fails the vertical line test, the relation is <alert>not</alert> a function since one input maps to multiple outputs.</p>
 
-            <figure xml:id="fig-vlt-circle-soln">
-                <caption>The Vertical Line Test on a circle.</caption>
-                <image width="50%" xml:id="img-vlt-circle-soln">
+        <solution>
+            <p>
+                Draw a vertical line such as <m>x=1</m>. As shown in <xref ref="fig-vlt-rational-soln"/>, the line intersects the graph at only one point. In fact, every vertical line meets the graph at most once. Therefore, the graph passes the Vertical Line Test and represents a function.
+            </p>
+
+            <figure xml:id="fig-vlt-rational-soln">
+                <caption>Applying the Vertical Line Test to <m>f(x)=\dfrac{1}{x-2}</m>.</caption>
+                <image width="50%" xml:id="img-vlt-rational-soln">
                     <latex-image>
-                        \begin{tikzpicture}[&gt;=stealth]
-                            \draw[help lines, color=gray!30, dashed] (-4,-4) grid (4,4);
-                            \draw[&lt;-&gt;, thick] (-4,0) -- (4,0) node[right] {$x$};
-                            \draw[&lt;-&gt;, thick] (0,-4) -- (0,4) node[above] {$y$};
-                            \draw[ultra thick, blue] (0,0) circle (3cm);
-                            \draw[thick, red, dashed, &lt;-&gt;] (1.5, -4) -- (1.5, 4) node[above right] {$x=1.5$};
-                            \filldraw[red] (1.5, 2.598) circle (3pt) node[right] {Intersection 1};
-                            \filldraw[red] (1.5, -2.598) circle (3pt) node[right] {Intersection 2};
+                        \begin{tikzpicture}[&gt;=stealth, scale=0.75]
+                            \draw[help lines, color=gray!30, dashed] (-6,-4) grid (7,4);
+
+                            \draw[&lt;-&gt;, thick] (-6.5,0) -- (7.5,0) node[right] {$x$};
+                            \draw[&lt;-&gt;, thick] (0,-4.5) -- (0,4.5) node[above] {$y$};
+
+                            % Asymptotes
+                            \draw[dashed, gray] (2,-4.5) -- (2,4.5);
+                            \draw[dashed, gray] (-6.5,0) -- (7.5,0);
+
+                            % Function
+                            \draw[ultra thick, blue, domain=-6:1.85, samples=200]
+                                plot (\x,{1/(\x-2)});
+                            \draw[ultra thick, blue, domain=2.15:7, samples=200]
+                                plot (\x,{1/(\x-2)});
+
+                            % Vertical line
+                            \draw[red, thick, dashed, &lt;-&gt;] (1,-4.5) -- (1,4.5)
+                                node[above right] {$x=1$};
+
+                            % Intersection
+                            \filldraw[red] (1,-1) circle (2.5pt);
                         \end{tikzpicture}
                     </latex-image>
                 </image>
@@ -401,40 +587,45 @@
         </solution>
     </example>
 
+
     <example xml:id="ex-horizontal-line-test">
         <statement>
-            <p>Determine whether the function <m>f(x) = x^2</m> is one-to-one.</p>
+            <p>
+                Determine whether the function <m>f(x)=|x|</m> is one-to-one.
+            </p>
 
-            <figure xml:id="fig-hlt-parabola">
-                <caption>The Horizontal Line Test on a parabola.</caption>
-                <image width="50%" xml:id="img-hlt-parabola">
+            <figure xml:id="fig-hlt-absolute-value">
+                <caption>Applying the Horizontal Line Test to <m>f(x)=|x|</m>.</caption>
+                <image width="50%" xml:id="img-hlt-absolute-value">
                     <latex-image>
                         \begin{tikzpicture}[&gt;=stealth]
-                            \draw[help lines, color=gray!30, dashed] (-4,-1) grid (4,5);
-                            \draw[&lt;-&gt;, thick] (-4,0) -- (4,0) node[right] {$x$};
-                            \draw[&lt;-&gt;, thick] (0,-1) -- (0,5) node[above] {$y$};
-                            \draw[ultra thick, blue, domain=-2.2:2.2, samples=50] plot (\x, {\x*\x});
+                            \draw[help lines, color=gray!30, dashed] (-3,-1) grid (3,3);
+                            \draw[&lt;-&gt;, thick] (-3,0) -- (3,0) node[right] {$x$};
+                            \draw[&lt;-&gt;, thick] (0,-1) -- (0,3) node[above] {$y$};
+                            \draw[ultra thick, blue] (-2.5,2.5) -- (0,0) -- (2.5,2.5);
                         \end{tikzpicture}
                     </latex-image>
                 </image>
             </figure>
         </statement>
+
         <solution>
             <p>
-                While the graph of <m>f(x) = x^2</m> passes the vertical line test (meaning it is a function), a horizontal line such as <m>y = 4</m> intersects the parabola at two distinct points: <m>(-2, 4)</m> and <m>(2, 4)</m>. Because the graph fails the horizontal line test, the function is <alert>not</alert> one-to-one and is instead classified as many-to-one.
+                Draw a horizontal line such as <m>y=2</m>. As shown in <xref ref="fig-hlt-absolute-value-soln"/>, the line meets the graph at the points <m>(-2,2)</m> and <m>(2,2)</m>. Since one horizontal line cuts the graph at two points, the function fails the Horizontal Line Test. Therefore, <m>f(x)=|x|</m> is <alert>not</alert> one-to-one.
             </p>
-            <figure xml:id="fig-hlt-parabola-soln">
-                <caption>The Horizontal Line Test on a parabola.</caption>
-                <image width="50%" xml:id="img-hlt-parabola-soln">
+
+            <figure xml:id="fig-hlt-absolute-value-soln">
+                <caption>Applying the Horizontal Line Test to <m>f(x)=|x|</m>.</caption>
+                <image width="50%" xml:id="img-hlt-absolute-value-soln">
                     <latex-image>
                         \begin{tikzpicture}[&gt;=stealth]
-                            \draw[help lines, color=gray!30, dashed] (-4,-1) grid (4,5);
-                            \draw[&lt;-&gt;, thick] (-4,0) -- (4,0) node[right] {$x$};
-                            \draw[&lt;-&gt;, thick] (0,-1) -- (0,5) node[above] {$y$};
-                            \draw[ultra thick, blue, domain=-2.2:2.2, samples=50] plot (\x, {\x*\x});
-                            \draw[thick, red, dashed, &lt;-&gt;] (-4, 4) -- (4, 4) node[below left] {$y=4$};
-                            \filldraw[red] (-2, 4) circle (3pt) node[above left] {Intersection 1};
-                            \filldraw[red] (2, 4) circle (3pt) node[above right] {Intersection 2};
+                            \draw[help lines, color=gray!30, dashed] (-3,-1) grid (3,3);
+                            \draw[&lt;-&gt;, thick] (-3,0) -- (3,0) node[right] {$x$};
+                            \draw[&lt;-&gt;, thick] (0,-1) -- (0,3) node[above] {$y$};
+                            \draw[ultra thick, blue] (-2.5,2.5) -- (0,0) -- (2.5,2.5);
+                            \draw[thick, red, dashed, &lt;-&gt;] (-3,2) -- (3,2) node[below left] {$y=2$};
+                            \filldraw[red] (-2,2) circle (3pt);
+                            \filldraw[red] (2,2) circle (3pt);
                         \end{tikzpicture}
                     </latex-image>
                 </image>
@@ -452,94 +643,228 @@
 
     <!-- Add static exercises -->
 
-    <exercises xml:id="exercises-types-of-relations">
-        <exercise>
-            <statement>
-                <p>State whether the relation below is one-to-one, many-to-one, one-to-many, or many-to-many.</p>
-                <p>
-                    (1, 2), (2, 4), (3, 6)
-                </p>
-            </statement>
-            <answer>
-                <p>One-to-One</p>
-            </answer>
-        </exercise>
+    <!-- Replace exercises-types-of-relations with this -->
 
-        <exercise>
-            <statement>
-                <p>Classify the following relation.</p>
-                <p>
-                    (1, 5), (2, 5), (3, 5)
-                </p>
-            </statement>
-            <answer>
-                <p>Many-to-One</p>
-            </answer>
-        </exercise>
 
-        <exercise>
-            <statement>
-                <p>Determine the type of relation shown below.</p>
-                <p>
-                    (1, 2), (1, 4), (1, 6)
-                </p>
-            </statement>
-            <answer>
-                <p>One-to-Many</p>
-            </answer>
-        </exercise>
 
-        <exercise>
-            <statement>
-                <p>State the type of relation represented by the following mapping.</p>
-                <p>
-                    (1, 2), (1, 3), (2, 3), (2, 4)
-                </p>
-            </statement>
-            <answer>
-                <p>Many-to-Many</p>
-            </answer>
-        </exercise>
+<exercises xml:id="exercises-types-of-relations">
 
-        <exercise>
-            <statement>
-                <p>Which of the following relations are functions?</p>
-                <p>
-                    <ol marker="(a)">
-                    <li><p>(1, 2), (2, 3), (3, 4)</p></li>
-                    <li><p>(1, 2), (1, 3), (2, 4)</p></li>
-                </ol>
-                </p>
-            </statement>
-            <answer>
-                <p>
-                    <ol marker="(a)">
-                    <li><p>Function</p></li>
-                    <li><p>Not a function</p></li>
-                </ol>
-                </p>
-            </answer>
-        </exercise>
-        <exercise>
-            <statement>
-                <p>Explain why a circle fails the vertical line test.</p>
-            </statement>
-            <answer>
-                <p>Most vertical lines drawn through the domain of the circle will intersect the graph at exactly two points, meaning a single input (<m>x</m>-value) maps to two different outputs (<m>y</m>-values), so the circle does not represent a function.</p>
-            </answer>
-        </exercise>
+    <exercise>
+        <statement>
+            <p>
+                The diagram below shows how four football players were assigned jersey numbers before a match. Identify the type of relation and state whether it is a function.
+            </p>
+            <figure xml:id="fig-exercise-player-jersey">
+                <caption>Players and jersey numbers</caption>
+                <image width="55%" xml:id="img-exercise-player-jersey">
+                    <latex-image>
+                        \begin{tikzpicture}[&gt;=stealth,scale=0.85]
+                            \node at (0,4){Players};
+                            \node at (5,4){Jersey numbers};
 
-        <exercise>
-            <statement>
-                <p>Determine whether the function <m>f(x) = x^3</m> passes the horizontal line test.</p>
-            </statement>
-            <answer>
-                <p>Yes. Every horizontal line intersects the graph of <m>y = x^3</m> exactly once, which confirms that the function is one-to-one.</p>
-            </answer>
-        </exercise>
+                            \foreach \y/\a/\b in {3/Ali/7,2/Brian/10,1/Chris/15}
+                            {
+                                \node[draw,rounded corners] (L\a) at (0,\y){\a};
+                                \node[circle,draw] (R\b) at (5,\y){\b};
+                                \draw[-&gt;,thick] (L\a)--(R\b);
+                            }
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+        </statement>
+        <answer>
+            <p>
+                This is a one-to-one relation. It is a function because every player has exactly one jersey number.
+            </p>
+        </answer>
+    </exercise>
 
-    </exercises>
+    <exercise>
+        <statement>
+            <p>
+                A farmer labels one sack of maize for every harvest season. Several sacks may come from the same farm, but each sack belongs to only one season. Identify the type of relation between sacks and seasons. Is it a function
+            </p>
+        </statement>
+        <answer>
+            <p>
+                This is a many-to-one relation. It is a function because each sack is linked to only one harvest season.
+            </p>
+        </answer>
+    </exercise>
 
+    <exercise>
+        <statement>
+            <p>
+                A traveller buys one bus ticket that allows travel on three different buses during the day. Identify the type of relation between the ticket and the buses. Is it a function
+            </p>
+        </statement>
+        <answer>
+            <p>
+                This is a one-to-many relation. It is not a function because one ticket is linked to several buses.
+            </p>
+        </answer>
+    </exercise>
+
+    <exercise>
+        <statement>
+            <p>
+                The map below shows rivers flowing into lakes. Some rivers flow into one lake while another river branches into two lakes. Examine the diagram and decide whether it represents a function.
+            </p>
+            <figure xml:id="fig-exercise-rivers">
+                <caption>Rivers and lakes</caption>
+                <image width="55%" xml:id="img-exercise-rivers">
+                    <latex-image>
+                        \begin{tikzpicture}[&gt;=stealth,scale=0.85]
+                            \node at (0,4){Rivers};
+                            \node at (5,4){Lakes};
+
+                            \node[draw,rounded corners] (R1) at (0,3){River A};
+                            \node[draw,rounded corners] (R2) at (0,1.5){River B};
+
+                            \node[draw,ellipse] (L1) at (5,3){Lake X};
+                            \node[draw,ellipse] (L2) at (5,1.5){Lake Y};
+
+                            \draw[-&gt;,thick](R1)--(L1);
+                            \draw[-&gt;,thick](R2)--(L1);
+                            \draw[-&gt;,thick](R2)--(L2);
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+        </statement>
+        <answer>
+            <p>
+                It is not a function because River B is linked to two lakes.
+            </p>
+        </answer>
+    </exercise>
+
+    <exercise>
+        <statement>
+            <p>
+                The graph below shows the relation <m>y^2=x</m>. Decide whether it represents a function.
+            </p>
+
+            <figure xml:id="fig-exercise-sideways-parabola-vlt-quiz">
+                <caption>Testing the graph with a vertical line</caption>
+                <image width="55%" xml:id="img-exercise-sideways-parabola-vlt-quiz">
+                    <latex-image>
+                        \begin{tikzpicture}[&gt;=stealth,scale=0.75]
+                            \draw[help lines,color=gray!30,dashed] (-1,-3) grid (5,3);
+                            \draw[&lt;-&gt;] (-1,0)--(5,0) node[right]{$x$};
+                            \draw[&lt;-&gt;] (0,-3)--(0,3) node[above]{$y$};
+
+                            \draw[ultra thick,blue,domain=-2:2,samples=60,variable=\t]
+                                plot({\t*\t},{\t});
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+        </statement>
+        <answer>
+            <p>
+                It is not a function because one vertical line meets the graph at two points.
+            </p>
+
+            <figure xml:id="fig-exercise-sideways-parabola-vlt-answer">
+                <caption>Testing the graph with a vertical line</caption>
+                <image width="55%" xml:id="img-exercise-sideways-parabola-vlt-answer">
+                    <latex-image>
+                        \begin{tikzpicture}[&gt;=stealth,scale=0.75]
+                            \draw[help lines,color=gray!30,dashed] (-1,-3) grid (5,3);
+                            \draw[&lt;-&gt;] (-1,0)--(5,0) node[right]{$x$};
+                            \draw[&lt;-&gt;] (0,-3)--(0,3) node[above]{$y$};
+
+                            \draw[ultra thick,blue,domain=-2:2,samples=60,variable=\t]
+                                plot({\t*\t},{\t});
+
+                            \draw[red,dashed,&lt;-&gt;](2.5,-3)--(2.5,3);
+
+                            \filldraw[red](2.5,1.58)circle(3pt);
+                            \filldraw[red](2.5,-1.58)circle(3pt);
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+        </answer>
+    </exercise>
+
+    <exercise>
+        <statement>
+            <p>
+                The graph below shows <m>f(x)=x^3</m>. Use the horizontal line to decide whether the function is one-to-one.
+            </p>
+
+            <figure xml:id="fig-exercise-cubic-hlt-quiz">
+                <caption>Testing the graph with a horizontal line</caption>
+                <image width="55%" xml:id="img-exercise-cubic-hlt-quiz">
+                    <latex-image>
+                        \begin{tikzpicture}[&gt;=stealth,scale=0.75]
+                            \draw[help lines,color=gray!30,dashed] (-3,-3) grid (3,3);
+                            \draw[&lt;-&gt;] (-3,0)--(3,0) node[right]{$x$};
+                            \draw[&lt;-&gt;] (0,-3)--(0,3) node[above]{$y$};
+
+                            \draw[ultra thick,blue,domain=-1.45:1.45,samples=80]
+                                plot(\x,{\x*\x*\x});
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+        </statement>
+        <answer>
+            <p>
+                Yes. Every horizontal line meets the graph at only one point, so the function is one-to-one.
+            </p>
+            <figure xml:id="fig-exercise-cubic-hlt-answer">
+                <caption>Testing the graph with a horizontal line</caption>
+                <image width="55%" xml:id="img-exercise-cubic-hlt-answer">
+                    <latex-image>
+                        \begin{tikzpicture}[&gt;=stealth,scale=0.75]
+                            \draw[help lines,color=gray!30,dashed] (-3,-3) grid (3,3);
+                            \draw[&lt;-&gt;] (-3,0)--(3,0) node[right]{$x$};
+                            \draw[&lt;-&gt;] (0,-3)--(0,3) node[above]{$y$};
+
+                            \draw[ultra thick,blue,domain=-1.45:1.45,samples=80]
+                                plot(\x,{\x*\x*\x});
+
+                            \draw[red,dashed,&lt;-&gt;](-3,1)--(3,1);
+
+                            \filldraw[red](1,1)circle(3pt);
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+        </answer>
+    </exercise>
+
+    <exercise>
+        <statement>
+            <p>
+                Every country has one capital city, but a capital city belongs to only one country. Identify the type of relation and state whether it is a function.
+            </p>
+        </statement>
+        <answer>
+            <p>
+                This is a one-to-one relation. It is a function because each country is linked to one capital city.
+            </p>
+        </answer>
+    </exercise>
+
+    <exercise>
+        <statement>
+            <p>
+                A mobile phone number can receive messages from many different people. Identify the type of relation between senders and the phone number. Is it a function
+            </p>
+        </statement>
+        <answer>
+            <p>
+                This is a many-to-one relation. It is a function because each sender is linked to one phone number in this situation.
+            </p>
+        </answer>
+    </exercise>
+
+</exercises>
     <!-- [LP] Add information on how to differentiate  -->
 
     <axiom component="lesson-plan">
