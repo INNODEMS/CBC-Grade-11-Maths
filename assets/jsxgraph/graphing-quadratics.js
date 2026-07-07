@@ -16,12 +16,43 @@ const board = JXG.JSXGraph.initBoard('jsx-graphing-quadratics', {
 });
 
 // --- Sliders ----------------------------------------------------------------
-const a = board.create('slider', [[-8, 8], [-3.5, 8], [-4, 1, 4]], { name: '\\(a\\)', snapWidth: 0.1 });
-const b = board.create('slider', [[-8, 7], [-3.5, 7], [-8, -1, 8]], { name: '\\(b\\)', snapWidth: 0.1 });
-const c = board.create('slider', [[-8, 6], [-3.5, 6], [-8, -3, 8]], { name: '\\(c\\)', snapWidth: 0.1 });
+/*const a = board.create('slider', [[-8, 8], [-3.5, 8], [-4, 1, 4]], { name: '\\(a\\)', snapWidth: 0.1 });*/
+const a = board.create('slider', [[-8, 8], [-3.5, 8], [-4, 1, 4]], {
+    name: '\\(a\\)', snapWidth: 0.1,
+    baseline:  { strokeColor: '#B5D4F4', strokeWidth: 5 },
+    highline:  { strokeColor: '#185FA5', strokeWidth: 5 },
+    point1: { visible: false }, point2: { visible: false },
+    point3: { size: 7, fillColor: '#FFC107', strokeColor: '#0C447C', strokeWidth: 2,
+              highlightFillColor: '#FFD54F', highlightStrokeColor: '#185FA5' },
+    label:  { fontSize: 16, strokeColor: '#0C447C', cssStyle: 'font-weight:700;' }
+});
+/*const b = board.create('slider', [[-8, 7], [-3.5, 7], [-8, -1, 8]], { name: '\\(b\\)', snapWidth: 0.1 });*/
+/*const c = board.create('slider', [[-8, 6], [-3.5, 6], [-8, -3, 8]], { name: '\\(c\\)', snapWidth: 0.1 });*/
+// b → red family
+const b = board.create('slider', [[-8, 7], [-3.5, 7], [-8, -1, 8]], {
+    name: '\\(b\\)', snapWidth: 0.1,
+    baseline:  { strokeColor: '#F7C1C1', strokeWidth: 5 },
+    highline:  { strokeColor: '#A32D2D', strokeWidth: 5 },
+    point1: { visible: false }, point2: { visible: false },
+    point3: { size: 7, fillColor: '#FFC107', strokeColor: '#791F1F', strokeWidth: 2,
+              highlightFillColor: '#FFD54F', highlightStrokeColor: '#A32D2D' },
+    label:  { fontSize: 16, strokeColor: '#791F1F', cssStyle: 'font-weight:700;' }
+});
+
+// c → green family
+const c = board.create('slider', [[-8, 6], [-3.5, 6], [-8, -3, 8]], {
+    name: '\\(c\\)', snapWidth: 0.1,
+    baseline:  { strokeColor: '#C0DD97', strokeWidth: 5 },
+    highline:  { strokeColor: '#3B6D11', strokeWidth: 5 },
+    point1: { visible: false }, point2: { visible: false },
+    point3: { size: 7, fillColor: '#FFC107', strokeColor: '#27500A', strokeWidth: 2,
+              highlightFillColor: '#FFD54F', highlightStrokeColor: '#3B6D11' },
+    label:  { fontSize: 16, strokeColor: '#27500A', cssStyle: 'font-weight:700;' }
+});
+
 
 const f = (x) => a.Value() * x * x + b.Value() * x + c.Value();
-board.create('functiongraph', [f], { strokeColor: '#0055bb', strokeWidth: 2.5 });
+board.create('functiongraph', [f], { strokeColor: '#bb0041', strokeWidth: 2.5 });
 
 // --- Real roots (x-intercepts) ---------------------------------------------
 function roots() {
@@ -35,12 +66,12 @@ function roots() {
 }
 for (let i = 0; i < 2; i++) {
     board.create('point', [() => { const r = roots(); return r[i] === undefined ? NaN : r[i]; }, 0], {
-        name: '', size: 3, strokeColor: '#c62828', fillColor: '#c62828', fixed: true
+        name: '', size: 3, strokeColor: '#28c684', fillColor: '#5a28c6', fixed: true
     });
 }
 
 // --- y-intercept ------------------------------------------------------------
-board.create('point', [0, () => c.Value()], { name: '', size: 3, strokeColor: '#2e7d32', fillColor: '#2e7d32', fixed: true });
+board.create('point', [0, () => c.Value()], { name: '', size: 3, strokeColor: '#0630b9', fillColor: '#0630b9', fixed: true });
 
 // --- Vertex + axis of symmetry ---------------------------------------------
 const vx = () => (Math.abs(a.Value()) < 1e-6 ? NaN : -b.Value() / (2 * a.Value()));
