@@ -23,6 +23,21 @@ jobs:
             - name: install deps
               run: pip install -r requirements.txt
 
+            # Persist PreTeXt's generated figures between runs. Without this, every
+            # run recompiles all ~1300 tikz/latex-image figures from scratch, which
+            # is almost the entire "build deploy targets" time. PreTeXt's cache is
+            # content-addressed, so restore-keys lets us always restore the latest
+            # cache and regenerate ONLY the figures whose source actually changed.
+            - name: Cache generated figures
+              uses: actions/cache@v4
+              with:
+                path: |
+                  generated-assets
+                  .cache
+                key: ptx-generated-${{ hashFiles('source/**/*.ptx') }}
+                restore-keys: |
+                  ptx-generated-
+
             # - name: install tex dependencies
             #   run: |
             #     tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2025/tlnet-final
