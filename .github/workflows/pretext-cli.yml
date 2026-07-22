@@ -34,43 +34,88 @@ jobs:
             # "cross release updates are not supported". The oscarlevin/pretext:full
             # tag is a moving target, so don't hard-code a year: detect the installed
             # release and pick the matching repository automatically.
+            # - name: install tex dependencies
+            #   run: |
+            #     set -x
+            #     # This image uses TinyTeX (installed under /root/.TinyTeX, with no
+            #     # year in the path), so detect the release from the tlmgr banner
+            #     # ("... version YYYY") and fall back to the package database.
+            #     TLYEAR="$(tlmgr --version 2>/dev/null | grep -oE 'version 20[0-9]{2}' | grep -oE '20[0-9]{2}' | head -n1)"
+            #     if [ -z "$TLYEAR" ]; then
+            #         TLROOT="$(tlmgr --version 2>/dev/null | sed -n 's/^tlmgr using installation: *//p' | head -n1)"
+            #         TLYEAR="$(sed -n 's/.*release\/\(20[0-9]\{2\}\).*/\1/p' "${TLROOT:-/root/.TinyTeX}/tlpkg/texlive.tlpdb" 2>/dev/null | head -n1)"
+            #     fi
+            #     echo "Detected TeX Live release: ${TLYEAR:-unknown}"
+            #     # Historic mirror for the *frozen* release. Use ftp.math.utah.edu,
+            #     # NOT texlive.info: texlive.info is now behind an anti-bot proxy
+            #     # (Anubis) that blocks tlmgr/curl from CI. Utah is a stable archive.
+            #     FINAL="https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${TLYEAR}/tlnet-final"
+            #     CURRENT="https://mirror.ctan.org/systems/texlive/tlnet"
+            #     # Prefer the frozen tlnet-final for the detected release (matches the
+            #     # container exactly, so no cross-release conflict). The container has
+            #     # no curl, so we don't probe the network -- we just try this repo and,
+            #     # if the install fails (e.g. the detected release is still the current
+            #     # one and has no frozen mirror yet), retry against the live CTAN tlnet.
+            #     if [ -n "$TLYEAR" ]; then REPO="$FINAL"; else REPO="$CURRENT"; fi
+            #     echo "Using tlmgr repository: $REPO"
+            #     tlmgr option repository "$REPO"
+            #     tlmgr option repository || true
+            #     # Self-update can be a no-op; tolerate that.
+            #     tlmgr update --self || true
+            #     # The install MUST succeed or the tikz figures won't compile.
+            #     if ! tlmgr install tkz-euclide tikz-3dplot; then
+            #         echo "Install from $REPO failed; retrying with $CURRENT"
+            #         tlmgr option repository "$CURRENT"
+            #         tlmgr update --self || true
+            #         tlmgr install tkz-euclide tikz-3dplot
+            #     fi
+            #     # Confirm the required style files are actually findable now.
+            #     kpsewhich tikz-3dplot.sty tkz-euclide.sty
             - name: install tex dependencies
+              shell: bash
               run: |
-                set -x
-                # This image uses TinyTeX (installed under /root/.TinyTeX, with no
-                # year in the path), so detect the release from the tlmgr banner
-                # ("... version YYYY") and fall back to the package database.
-                TLYEAR="$(tlmgr --version 2>/dev/null | grep -oE 'version 20[0-9]{2}' | grep -oE '20[0-9]{2}' | head -n1)"
+                set -euxo pipefail
+
+                # Avoid tlmgr entirely when the packages are already installed.
+                missing_packages=()
+
+                kpsewhich tkz-euclide.sty >/dev/null 2>&1 ||
+                  missing_packages+=(tkz-euclide)
+
+                kpsewhich tikz-3dplot.sty >/dev/null 2>&1 ||
+                  missing_packages+=(tikz-3dplot)
+
+                if [ "${#missing_packages[@]}" -eq 0 ]; then
+                  echo "All required TeX packages are already installed."
+                  exit 0
+                fi
+
+                TLYEAR="$(
+                  tlmgr --version 2>/dev/null |
+                  sed -n 's/.*version \(20[0-9][0-9]\).*/\1/p' |
+                  head -n 1
+                )"
+
                 if [ -z "$TLYEAR" ]; then
-                    TLROOT="$(tlmgr --version 2>/dev/null | sed -n 's/^tlmgr using installation: *//p' | head -n1)"
-                    TLYEAR="$(sed -n 's/.*release\/\(20[0-9]\{2\}\).*/\1/p' "${TLROOT:-/root/.TinyTeX}/tlpkg/texlive.tlpdb" 2>/dev/null | head -n1)"
+                  echo "Could not determine the installed TeX Live release."
+                  tlmgr --version
+                  exit 1
                 fi
-                echo "Detected TeX Live release: ${TLYEAR:-unknown}"
-                # Historic mirror for the *frozen* release. Use ftp.math.utah.edu,
-                # NOT texlive.info: texlive.info is now behind an anti-bot proxy
-                # (Anubis) that blocks tlmgr/curl from CI. Utah is a stable archive.
-                FINAL="https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${TLYEAR}/tlnet-final"
-                CURRENT="https://mirror.ctan.org/systems/texlive/tlnet"
-                # Prefer the frozen tlnet-final for the detected release (matches the
-                # container exactly, so no cross-release conflict). The container has
-                # no curl, so we don't probe the network -- we just try this repo and,
-                # if the install fails (e.g. the detected release is still the current
-                # one and has no frozen mirror yet), retry against the live CTAN tlnet.
-                if [ -n "$TLYEAR" ]; then REPO="$FINAL"; else REPO="$CURRENT"; fi
-                echo "Using tlmgr repository: $REPO"
+
+                echo "Detected TeX Live release: $TLYEAR"
+                echo "Missing packages: ${missing_packages[*]}"
+
+                REPO="https://ftp.tug.org/historic/systems/texlive/${TLYEAR}/tlnet-final"
+
+                echo "Using matching frozen repository: $REPO"
                 tlmgr option repository "$REPO"
-                tlmgr option repository || true
-                # Self-update can be a no-op; tolerate that.
-                tlmgr update --self || true
-                # The install MUST succeed or the tikz figures won't compile.
-                if ! tlmgr install tkz-euclide tikz-3dplot; then
-                    echo "Install from $REPO failed; retrying with $CURRENT"
-                    tlmgr option repository "$CURRENT"
-                    tlmgr update --self || true
-                    tlmgr install tkz-euclide tikz-3dplot
-                fi
-                # Confirm the required style files are actually findable now.
-                kpsewhich tikz-3dplot.sty tkz-euclide.sty
+
+                # Do not run `tlmgr update --self` here. It is unnecessary merely to
+                # install packages from the matching frozen repository.
+                tlmgr install "${missing_packages[@]}"
+
+                kpsewhich tkz-euclide.sty
+                kpsewhich tikz-3dplot.sty
 
             - name: install local ptx files
               run: pretext --version
