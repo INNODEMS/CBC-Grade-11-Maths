@@ -71,12 +71,70 @@ jobs:
             #     fi
             #     # Confirm the required style files are actually findable now.
             #     kpsewhich tikz-3dplot.sty tkz-euclide.sty
-            - name: install tex dependencies
+            - name: Refresh TinyTeX and install TeX dependencies
               shell: bash
               run: |
                 set -euxo pipefail
 
-                # Avoid tlmgr entirely when the packages are already installed.
+                ARCH="$(uname -m)"
+                case "$ARCH" in
+                  x86_64|amd64)
+                    TINYTEX_ARCH="x86_64"
+                    TEX_BIN="x86_64-linux"
+                    ;;
+                  aarch64|arm64)
+                    TINYTEX_ARCH="arm64"
+                    TEX_BIN="aarch64-linux"
+                    ;;
+                  *)
+                    echo "Unsupported architecture: $ARCH"
+                    exit 1
+                    ;;
+                esac
+
+                TINYTEX_URL="https://github.com/rstudio/tinytex-releases/releases/download/daily/TinyTeX-linux-${TINYTEX_ARCH}.tar.xz"
+                TINYTEX_ARCHIVE="/tmp/TinyTeX.tar.xz"
+
+                echo "Downloading current TinyTeX from:"
+                echo "$TINYTEX_URL"
+
+                python - "$TINYTEX_URL" "$TINYTEX_ARCHIVE" <<'PY'
+                import sys
+                import urllib.request
+
+                url, destination = sys.argv[1:3]
+
+                request = urllib.request.Request(
+                    url,
+                    headers={"User-Agent": "GitHub-Actions-TinyTeX-Installer"},
+                )
+
+                with urllib.request.urlopen(request) as response:
+                    with open(destination, "wb") as output:
+                        while True:
+                            chunk = response.read(1024 * 1024)
+                            if not chunk:
+                                break
+                            output.write(chunk)
+                PY
+
+                # Remove the stale TinyTeX bundled in the container and install the
+                # freshly downloaded release in the same standard location.
+                rm -rf /root/.TinyTeX
+                tar -xJf "$TINYTEX_ARCHIVE" -C /root
+                rm -f "$TINYTEX_ARCHIVE"
+
+                export PATH="/root/.TinyTeX/bin/${TEX_BIN}:$PATH"
+                hash -r
+
+                echo "Using TeX binaries from:"
+                command -v tlmgr
+                command -v xelatex
+
+                tlmgr --version
+                tlmgr option repository https://mirror.ctan.org/systems/texlive/tlnet
+
+                # Install only packages that are not already present.
                 missing_packages=()
 
                 kpsewhich tkz-euclide.sty >/dev/null 2>&1 ||
@@ -85,37 +143,24 @@ jobs:
                 kpsewhich tikz-3dplot.sty >/dev/null 2>&1 ||
                   missing_packages+=(tikz-3dplot)
 
-                if [ "${#missing_packages[@]}" -eq 0 ]; then
+                kpsewhich longdivision.sty >/dev/null 2>&1 ||
+                  missing_packages+=(longdivision)
+
+                if [ "${#missing_packages[@]}" -gt 0 ]; then
+                  echo "Installing missing packages: ${missing_packages[*]}"
+                  tlmgr install "${missing_packages[@]}"
+                else
                   echo "All required TeX packages are already installed."
-                  exit 0
                 fi
 
-                TLYEAR="$(
-                  tlmgr --version 2>/dev/null |
-                  sed -n 's/.*version \(20[0-9][0-9]\).*/\1/p' |
-                  head -n 1
-                )"
+                # Make the refreshed TinyTeX binaries available to every later step.
+                echo "/root/.TinyTeX/bin/${TEX_BIN}" >> "$GITHUB_PATH"
 
-                if [ -z "$TLYEAR" ]; then
-                  echo "Could not determine the installed TeX Live release."
-                  tlmgr --version
-                  exit 1
-                fi
-
-                echo "Detected TeX Live release: $TLYEAR"
-                echo "Missing packages: ${missing_packages[*]}"
-
-                REPO="https://ftp.tug.org/historic/systems/texlive/${TLYEAR}/tlnet-final"
-
-                echo "Using matching frozen repository: $REPO"
-                tlmgr option repository "$REPO"
-
-                # Do not run `tlmgr update --self` here. It is unnecessary merely to
-                # install packages from the matching frozen repository.
-                tlmgr install "${missing_packages[@]}"
-
+                # Verify the required packages and engine.
                 kpsewhich tkz-euclide.sty
                 kpsewhich tikz-3dplot.sty
+                kpsewhich longdivision.sty
+                xelatex --version
 
             - name: install local ptx files
               run: pretext --version
