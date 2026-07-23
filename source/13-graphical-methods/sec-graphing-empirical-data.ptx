@@ -41,6 +41,8 @@
         </introduction>
     </objectives>
 
+    <!-- [LP] Add guidance on structured lesson plan-->
+
     <axiom component="lesson-plan">
         <title>Problem-Solving and Discovery</title>
         <dl>
@@ -77,25 +79,30 @@
             <p>
                 The data collected was plotted on a graph to show how the temperature changed throughout the day and night.
             </p>
-            <image width="70%">
+            <image width="80%">
                 <latex-image label="temperature-graph">
                     \begin{tikzpicture}
-                        \draw[help lines, color=gray!30, step=1] (0,0) grid (12,6);
-                        \draw[->] (0,0) -- (12.5,0) node[right] {Time (hours)};
-                        \draw[->] (0,0) -- (0,6.5) node[above] {Temp ($^\circ$C)};
-                        \foreach \x in {0,4,8,12,16,20,24}
-                            \draw (\x/2, 2pt) -- (\x/2, -2pt) node[below] {\x:00};
-                        \foreach \y in {0,10,20,30}
-                            \draw (2pt, \y/5) -- (-2pt, \y/5) node[left] {\y};
-                        
-                        \draw[blue, thick, smooth] plot coordinates {(0, 3) (2, 2.4) (4, 3.6) (6, 5) (8, 5.6) (10, 4.4) (12, 3.2)};
-                        \filldraw[blue] (0, 3) circle (1.5pt);
-                        \filldraw[blue] (2, 2.4) circle (1.5pt);
-                        \filldraw[blue] (4, 3.6) circle (1.5pt);
-                        \filldraw[blue] (6, 5) circle (1.5pt);
-                        \filldraw[blue] (8, 5.6) circle (1.5pt);
-                        \filldraw[blue] (10, 4.4) circle (1.5pt);
-                        \filldraw[blue] (12, 3.2) circle (1.5pt);
+                    \begin{axis}[
+                        axis x line=bottom, axis y line=left,
+                        xlabel={Time (h)},
+                        ylabel={Temp ($^\circ$C)},
+                        xmin=0, xmax=25,
+                        ymin=0, ymax=32,
+                        xtick={0,4,8,12,16,20,24},
+                        ytick distance=4,
+                        minor tick num=3,
+                        xticklabels={{0:00},{4:00},{8:00},{12:00},{16:00},{20:00},{24:00}},
+                        x tick label style={font=\footnotesize},
+                        tick label style={font=\footnotesize},
+                        grid=both,
+                        major grid style={line width=0.3pt, draw=gray!50},
+                        minor grid style={line width=0.2pt, draw=gray!25},
+                    ]
+                        \addplot[blue, thick, smooth] coordinates {
+                            (0,15) (4,12) (8,18) (12,25) (16,28) (20,22) (24,16)};
+                        \addplot[only marks, mark=*, mark size=1.5pt, blue] coordinates {
+                            (0,15) (4,12) (8,18) (12,25) (16,28) (20,22) (24,16)};
+                    \end{axis}
                     \end{tikzpicture}
                 </latex-image>
             </image>
@@ -140,6 +147,58 @@
                 </ol>
             </p>
         </statement>
+        <solution component="lesson-plan">
+                <p>
+                <ol>
+                    <li>
+                        <p>
+                            Temperature at <m>00:00</m> was <m>15^\circ</m>C. 
+                            Temperature at <m>08:00</m> was <m>18^\circ</m>C.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The maximum temperature was <m>28^\circ</m>C, recorded at <m>16:00</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The temperature decreased between <m>00:00</m> and <m>04:00</m>, and again between <m>16:00</m> and <m>24:00</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            From <m>04:00</m> to <m>16:00</m>, there was a consistent <term>positive trend</term> as the temperature rose steadily.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            A temperature of <m>5.2^\circ</m>C at <m>14:00</m> would be an <term>outlier</term> or an anomaly. It would create a sharp drop in the graph, interrupting the otherwise smooth upward trend from morning to late afternoon. This might indicate a recording error or an extreme local weather event.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            General trend: The temperature is moderate at midnight, cools down to a minimum just before dawn (<m>04:00</m>), then warms up significantly through the day to a peak in the late afternoon (<m>16:00</m>), before cooling down again after sunset.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Reasons for change:
+                            <ul>
+                                <li><p><m>00:00-04:00:</m> Lack of solar radiation at night leads to cooling.</p></li>
+                                <li><p><m>04:00-16:00:</m> Increasing intensity of sunlight as the sun rises and reaches its peak.</p></li>
+                                <li><p><m>16:00-24:00:</m> Decreasing solar intensity and eventual sunset leads to heat loss to the atmosphere.</p></li>
+                            </ul>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Share your findings with the class. (Encourage learners to use mathematical terms like "gradient" or "rate of change" in their discussion).
+                        </p>
+                    </li>
+                </ol>
+                </p>
+        </solution>
     </activity>
 
     <axiom component="lesson-plan">
@@ -201,32 +260,26 @@
                 </li>
             </ul>
         </p>
-        <image width="40%">
+        <image width="65%">
             <latex-image label="graphical-empirical-data">
                 \begin{tikzpicture}
-                    \draw[help lines, color=gray!30, step=1] (0,0) grid (5,5);
-                    \draw[->] (0,0) -- (5.5,0) node[right] {Independent Variable};
-                    \draw[->] (0,0) -- (0,5.5) node[above] {Dependent Variable};
-                    \foreach \x in {0,1,2,3,4,5}
-                        \draw (\x/2, 2pt) -- (\x/2, -2pt) node[below] {\x};
-                    \foreach \y in {0,1,2,3,4,5}
-                        \draw (2pt, \y/2) -- (-2pt, \y/2) node[left] {\y};
-                    
-                    % Example of a linear trend
-                    \filldraw[red] (0.5, 1) circle (1.5pt);
-                    \filldraw[red] (1.0, 2) circle (1.5pt);
-                    \filldraw[red] (1.5, 3) circle (1.5pt);
-                    \filldraw[red] (2.0, 4) circle (1.5pt);
-                    \filldraw[red] (2.5, 5) circle (1.5pt);
-                    \draw[red, thick] (0.25, 0.75) -- (2.75, 5.25);
-                    
-                    % Example of a non-linear trend
-                    \filldraw[blue] (3.0, 1) circle (1.5pt);
-                    \filldraw[blue] (3.5, 1.8) circle (1.5pt);
-                    \filldraw[blue] (4.0, 3) circle (1.5pt);
-                    \filldraw[blue] (4.5, 4.8) circle (1.5pt);
-                    \filldraw[blue] (5.0, 7) circle (1.5pt);
-                    \draw[blue, thick] plot coordinates {(3.0, 1) (3.25, 1.4) (3.75, 2.4) (4.25, 3.6) (4.75, 5.8) (5.25, 8)};
+                \begin{axis}[
+                    axis x line=bottom, axis y line=left,
+                    xlabel={Independent Variable},
+                    ylabel={Dependent Variable},
+                    xmin=0, xmax=5.5, ymin=0, ymax=8,
+                    xtick={0,1,2,3,4,5},
+                    ytick={0,1,2,3,4,5,6,7,8},
+                    tick label style={font=\footnotesize},
+                    grid=both,
+                    grid style={line width=0.3pt, draw=gray!30},
+                ]
+                    \addplot[red, thick, domain=0.25:2.75, samples=2] {2*x};
+                    \addplot[only marks, mark=*, mark size=1.5pt, red] coordinates {
+                        (0.5,1) (1.0,2) (1.5,3) (2.0,4) (2.5,5)};
+                    \addplot[blue, thick, smooth] coordinates {
+                        (3.0,1) (3.25,1.4) (3.75,2.4) (4.25,3.6) (4.75,5.8) (5.25,8)};
+                \end{axis}
                 \end{tikzpicture}
             </latex-image>
         </image>
@@ -276,23 +329,26 @@
                         </p>
                     </li>
                     <li>
-                        <image xml:id="img-tree-growth" width="50%">
+                        <p> We construct the graph as follows:</p>
+                        <image xml:id="img-tree-growth" width="65%">
                             <latex-image label="tree-growth-graph">
                                 \begin{tikzpicture}
-                                    \draw[help lines, color=gray!30, step=1] (0,0) grid (6,7);
-                                    \draw[->] (0,0) -- (6.5,0) node[right] {Diameter (in)};
-                                    \draw[->] (0,0) -- (0,7.5) node[above] {Age (yr)};
-                                    \foreach \x in {2,4,6,8,10}
-                                        \draw (\x/2, 2pt) -- (\x/2, -2pt) node[below] {\x};
-                                    \foreach \y in {0,20,40,60}
-                                        \draw (2pt, \y/10) -- (-2pt, \y/10) node[left] {\y};
-                                    
-                                    \filldraw[red] (1, 1.2) circle (2pt);
-                                    \filldraw[red] (2, 2.5) circle (2pt);
-                                    \filldraw[red] (3, 3.7) circle (2pt);
-                                    \filldraw[red] (4, 5.0) circle (2pt);
-                                    \filldraw[red] (5, 6.3) circle (2pt);
-                                    \draw[red, thick, dashed] (0,0) -- (5.5, 6.93);
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Diameter (in)},
+                                    ylabel={Age (yr)},
+                                    xmin=0, xmax=11,
+                                    ymin=0, ymax=70,
+                                    xtick={0,2,4,6,8,10},
+                                    ytick={0,20,40,60},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=2pt, red] coordinates {
+                                        (2,12) (4,25) (6,37) (8,50) (10,63)};
+                                    \addplot[red, thick, dashed, domain=0:11, samples=2] {6.3*x};
+                                \end{axis}
                                 \end{tikzpicture}
                             </latex-image>
                         </image>
@@ -312,26 +368,24 @@
             <p>
                 The scatter plot below shows the relationship between the number of hours students spent studying for a mathematics exam and their final scores.
             </p>
-            <image xml:id="img-scatter-study-ex" width="50%">
+            <image xml:id="img-scatter-study-ex" width="65%">
                 <latex-image>
                     \begin{tikzpicture}
-                        \draw[help lines, color=gray!30, step=1] (0,0) grid (5,5);
-                        \draw[->] (0,0) -- (5.5,0) node[right] {Hours};
-                        \draw[->] (0,0) -- (0,5.5) node[above] {Score (\%)};
-                        \foreach \x in {0,2,4,6,8,10}
-                            \draw (\x/2, 2pt) -- (\x/2, -2pt) node[below] {\x};
-                        \foreach \y in {0,20,40,60,80,100}
-                            \draw (2pt, \y/20) -- (-2pt, \y/20) node[left] {\y};
-                        
-                        \filldraw[blue] (0.5, 1.5) circle (1.5pt);
-                        \filldraw[blue] (1.0, 2.25) circle (1.5pt);
-                        \filldraw[blue] (1.5, 2.0) circle (1.5pt);
-                        \filldraw[blue] (2.0, 2.75) circle (1.5pt);
-                        \filldraw[blue] (2.5, 3.5) circle (1.5pt);
-                        \filldraw[blue] (3.0, 3.25) circle (1.5pt);
-                        \filldraw[blue] (3.5, 4.25) circle (1.5pt);
-                        \filldraw[blue] (4.0, 4.0) circle (1.5pt);
-                        \filldraw[blue] (4.5, 4.75) circle (1.5pt);
+                    \begin{axis}[
+                        axis x line=bottom, axis y line=left,
+                        xlabel={Hours},
+                        ylabel={Score (\%)},
+                        xmin=0, xmax=10,
+                        ymin=0, ymax=105,
+                        xtick={0,2,4,6,8,10},
+                        ytick={0,20,40,60,80,100},
+                        tick label style={font=\footnotesize},
+                        grid=both,
+                        grid style={line width=0.3pt, draw=gray!30},
+                    ]
+                        \addplot[only marks, mark=*, mark size=1.5pt, blue] coordinates {
+                            (1,30) (2,45) (3,40) (4,55) (5,70) (6,65) (7,85) (8,80) (9,95)};
+                    \end{axis}
                     \end{tikzpicture}
                 </latex-image>
             </image>
@@ -352,8 +406,7 @@
                     </li>
                     <li>
                         <p>
-                            For 7 hours of study (x = 3.5 on the graph), the points are clustered around the 80% mark (y = 4.0). 
-                            Therefore, we would expect a score of approximately 80%.
+                            For 7 hours of study, we look at x = 7 on the graph. The data point at (7, 85) and the overall upward trend suggest a score of approximately <m>80\%</m>.
                         </p>
                     </li>
                 </ol>
@@ -361,61 +414,81 @@
         </solution>
     </example>
 
-    <example>
-        <statement>
-            <p>
-                A car is purchased for <m>2,000,000</m> KES. The table below shows its value over the next <m>5</m> years.
-            </p>
-                <tabular bottom="minor" top="minor" left="minor" right="minor">
+        <example>
+            <statement>
+                <p>
+                    <xref ref="nairobi-rain"/> shows the long-term average monthly rainfall (in mm) for Nairobi, Kenya.
+                </p>
+                <table xml:id="nairobi-rain">
+                    <title>Nairobi Average Monthly Rainfall</title>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
                     <row>
-                        <cell>Year</cell>
-                        <cell>0</cell>
-                        <cell>1</cell>
-                        <cell>2</cell>
-                        <cell>3</cell>
-                        <cell>4</cell>
-                        <cell>5</cell>
+                        <cell>Month</cell>
+                        <cell>Jan</cell><cell>Feb</cell><cell>Mar</cell>
+                        <cell>Apr</cell><cell>May</cell><cell>Jun</cell>
                     </row>
                     <row>
-                        <cell>Value (Millions KES)</cell>
-                        <cell>2.0</cell>
-                        <cell>1.6</cell>
-                        <cell>1.3</cell>
-                        <cell>1.0</cell>
-                        <cell>0.8</cell>
-                        <cell>0.6</cell>
+                        <cell>Rainfall (mm)</cell>
+                        <cell>38</cell><cell>64</cell><cell>126</cell>
+                        <cell>211</cell><cell>158</cell><cell>46</cell>
+                    </row>
+                    <row>
+                        <cell>Month</cell>
+                        <cell>Jul</cell><cell>Aug</cell><cell>Sep</cell>
+                        <cell>Oct</cell><cell>Nov</cell><cell>Dec</cell>
+                    </row>
+                    <row>
+                        <cell>Rainfall (mm)</cell>
+                        <cell>15</cell><cell>23</cell><cell>31</cell>
+                        <cell>61</cell><cell>150</cell><cell>86</cell>
                     </row>
                 </tabular>
-            <p>
-                Describe the trend in the car's value and identify if the depreciation is linear.
-            </p>
-        </statement>
-        <solution>
-            <p>
-                <ul>
+                </table>
+                <p> Source: <url href="https://www.meteo.go.ke/">Kenya Meteorological Department</url></p>
+                <ol marker="(a)">
+                    <li><p>Plot the monthly rainfall data on a graph, with months on the horizontal axis and rainfall (mm) on the vertical axis.</p></li>
+                    <li><p>Identify the two months with the highest rainfall.</p></li>
+                    <li><p>Kenya has two rainy seasons each year. Use your graph to describe the timing and relative intensity of each season.</p></li>
+                    <li><p>During which months is Nairobi driest?</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
                     <li>
-                        <p>
-                            Trend: The value of the car decreases over time (negative trend).
-                        </p>
+                        <image width="75%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Month},
+                                    ylabel={Rainfall (mm)},
+                                    xmin=0.5, xmax=12.5,
+                                    ymin=0, ymax=230,
+                                    xtick={1,2,3,4,5,6,7,8,9,10,11,12},
+                                    xticklabels={Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec},
+                                    x tick label style={rotate=45, anchor=east, font=\scriptsize},
+                                    ytick={0,50,100,150,200},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick] coordinates {
+                                        (1,38)(2,64)(3,126)(4,211)(5,158)(6,46)
+                                        (7,15)(8,23)(9,31)(10,61)(11,150)(12,86)};
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (1,38)(2,64)(3,126)(4,211)(5,158)(6,46)
+                                        (7,15)(8,23)(9,31)(10,61)(11,150)(12,86)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
                     </li>
-                    <li>
-                        <p>
-                            <alert>Analysis:</alert> 
-                            The decrease in value each year is:
-                            <ul>
-                                <li>Year 0 to 1: 0.4 million</li>
-                                <li>Year 1 to 2: 0.3 million</li>
-                                <li>Year 2 to 3: 0.3 million</li>
-                                <li>Year 3 to 4: 0.2 million</li>
-                                <li>Year 4 to 5: 0.2 million</li>
-                            </ul>
-                            Since the value does not decrease by the same amount every year, the depreciation is <term>non-linear</term>.
-                        </p>
-                    </li>
-                </ul>
-            </p>
-        </solution>
-    </example>
+                    <li><p>April (211 mm) and May (158 mm).</p></li>
+                    <li><p>The <em>long rains</em> (March–May, peak April) are heavier and more prolonged. The <em>short rains</em> (October–December, peak November) are shorter and less intense.</p></li>
+                    <li><p>June–September, with July the driest at 15 mm.</p></li>
+                </ol>
+            </answer>
+        </example>
 
     <xi:include href="../lesson-plan-templates/assessment-intro.ptx" />
 
@@ -440,6 +513,27 @@
                 </p>
             </statement>
             <answer>
+                <image width="65%">
+                    <latex-image label="distance-time-graph">
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                            axis x line=bottom, axis y line=left,
+                            xlabel={Time (h)},
+                            ylabel={Distance (km)},
+                            xmin=0, xmax=6,
+                            ymin=0, ymax=80,
+                            xtick={0,1,2,3,4,5},
+                            ytick={0,15,30,45,60,75},
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.3pt, draw=gray!30},
+                        ]
+                            \addplot[blue, thick] coordinates {
+                                (1,15) (2,30) (3,45) (4,60) (5,75)};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
                 <p>The relationship is <term>linear</term> because the distance increases by a constant amount (15 km) every hour.</p>
             </answer>
         </exercise>
@@ -449,13 +543,21 @@
                 <p>
                     A science experiment measures the temperature of a cooling liquid over time.
                 </p>
-                <image width="40%">
+                <image width="65%">
                     <latex-image label="cooling-graph">
                         \begin{tikzpicture}
-                            \draw[help lines, color=gray!30, step=1] (0,0) grid (5,5);
-                            \draw[->] (0,0) -- (5.5,0) node[right] {Time (min)};
-                            \draw[->] (0,0) -- (0,5.5) node[above] {Temp ($^\circ$C)};
-                            \draw[blue, thick, smooth, domain=0:5] plot (\x, {5*exp(-\x/2)});
+                        \begin{axis}[
+                            axis x line=bottom, axis y line=left,
+                            xlabel={Time (min)},
+                            ylabel={Temp ($^\circ$C)},
+                            xmin=0, xmax=5,
+                            ymin=0, ymax=5,
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.3pt, draw=gray!30},
+                        ]
+                            \addplot[blue, thick, smooth, domain=0:5, samples=60] {5*exp(-x/2)};
+                        \end{axis}
                         \end{tikzpicture}
                     </latex-image>
                 </image>
@@ -482,7 +584,804 @@
                 </p>
             </statement>
             <answer>
+                <image width="65%">
+                    <latex-image label="club-members-graph">
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                            axis x line=bottom, axis y line=left,
+                            xlabel={Month},
+                            ylabel={New Members},
+                            xmin=0.5, xmax=4.5,
+                            ymin=0, ymax=50,
+                            xtick={1,2,3,4},
+                            ytick={0,10,20,30,40},
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.3pt, draw=gray!30},
+                        ]
+                            \addplot[red, thick, smooth] coordinates {
+                                (1,5) (2,10) (3,20) (4,40)};
+                            \addplot[only marks, mark=*, mark size=2pt, red] coordinates {
+                                (1,5) (2,10) (3,20) (4,40)};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                    
+                    
+                </image>
                 <p>The number of new members doubles each month. This is an exponential pattern.</p>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table below shows Kenya's estimated population at five-year intervals.
+                </p>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Year</cell>
+                        <cell>2000</cell><cell>2005</cell><cell>2010</cell><cell>2015</cell><cell>2020</cell>
+                    </row>
+                    <row>
+                        <cell>Population (millions)</cell>
+                        <cell>31</cell><cell>36</cell><cell>41</cell><cell>49</cell><cell>54</cell>
+                    </row>
+                </tabular>
+                <p>
+                    Source: <url href="https://data.worldbank.org/indicator/SP.POP.TOTL?locations=KE">World Bank, Kenya population data</url>.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Plot the data as a scatter graph with year on the horizontal axis and population on the vertical axis.</p></li>
+                    <li><p>Describe the overall trend.</p></li>
+                    <li><p>Is the rate of population growth constant? Justify your answer using the data.</p></li>
+                    <li><p>Use the graph to estimate Kenya's population in 2012.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="65%">
+                            <latex-image label="population-growth-graph">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Year},
+                                    ylabel={Population (millions)},
+                                    xmin=1998, xmax=2022,
+                                    ymin=28, ymax=58,
+                                    xtick={2000,2005,2010,2015,2020},
+                                    xticklabels={2000,2005,2010,2015,2020},
+                                    x tick label style={rotate=45, anchor=east, font=\footnotesize},
+                                    ytick={30,35,40,45,50,55},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[only marks, mark=*, mark size=3pt, red] coordinates {
+                                        (2000,31) (2005,36) (2010,41) (2015,49) (2020,54)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li><p>Strong positive trend — Kenya's population increases steadily over time.</p></li>
+                    <li>
+                        <p>
+                            The increases per 5-year period are: 5, 5, 8, 5 million. The increase from 2010 to 2015 is larger, so the growth rate is not perfectly constant — it is slightly accelerating, suggesting a non-linear (close to exponential) trend over a longer scale.
+                        </p>
+                    </li>
+                    <li>
+                        <p>Approximately 44.2 million (read where the graph intersects <m>x = 2012</m>).</p>
+                        <image width="65%">
+                            <latex-image label="population-2012-estimate-construction">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom,
+                                    axis y line=left,
+                                    xlabel={Year},
+                                    ylabel={Population (millions)},
+                                    xmin=1998, xmax=2022,
+                                    ymin=28, ymax=58,
+                                    xtick={2000,2005,2010,2012,2015,2020},
+                                    ytick={30,35,40,45,50,55},
+                                    tick label style={font=\footnotesize},
+                                    x tick label style={rotate=45, anchor=east, font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+
+                                    % Data points
+                                    \addplot[
+                                        only marks,
+                                        mark=*,
+                                        mark size=3pt,
+                                        red
+                                    ]
+                                    coordinates {
+                                        (2000,31)
+                                        (2005,36)
+                                        (2010,41)
+                                        (2015,49)
+                                        (2020,54)
+                                    };
+
+                                    % Join neighbouring points
+                                    \addplot[
+                                        blue,
+                                        thick
+                                    ]
+                                    coordinates {
+                                        (2000,31)
+                                        (2005,36)
+                                        (2010,41)
+                                        (2015,49)
+                                        (2020,54)
+                                    };
+
+                                    % Estimated population in 2012
+                                    \addplot[
+                                        only marks,
+                                        mark=*,
+                                        mark size=2.5pt,
+                                        black
+                                    ]
+                                    coordinates {(2012,44.2)};
+
+                                    % Construction lines
+                                    \addplot[
+                                        dashed,
+                                        black
+                                    ]
+                                    coordinates {(2012,28) (2012,44.2)};
+
+                                    \addplot[
+                                        dashed,
+                                        black
+                                    ]
+                                    coordinates {(1998,44.2) (2012,44.2)};
+
+                                    % Labels
+                                    \node[right,font=\footnotesize]
+                                    at (axis cs:2012,44.2)
+                                    {$(2012,\;44.2)$};
+
+                                    \node[
+                                        draw,
+                                        fill=white,
+                                        font=\footnotesize,
+                                        align=center
+                                    ]
+                                    at (axis cs:2004,53)
+                                    {
+                                        Estimated population\\
+                                        in 2012 $\approx 44.2$ million
+                                    };
+
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table below shows how average temperature varies with altitude at several locations across Kenya, from the lowland coast to the highlands near Mount Kenya.
+                </p>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Altitude (m)</cell>
+                        <cell>500</cell><cell>1000</cell><cell>1500</cell><cell>2000</cell><cell>2500</cell><cell>3000</cell>
+                    </row>
+                    <row>
+                        <cell>Avg. Temperature (°C)</cell>
+                        <cell>27</cell><cell>24</cell><cell>20</cell><cell>17</cell><cell>13</cell><cell>10</cell>
+                    </row>
+                </tabular>
+                <ol marker="(a)">
+                    <li><p>Plot the data with altitude on the horizontal axis and temperature on the vertical axis.</p></li>
+                    <li><p>Describe the relationship between altitude and temperature.</p></li>
+                    <li><p>Is the relationship approximately linear? Justify with calculations.</p></li>
+                    <li><p>Nairobi sits at about 1700 m above sea level. Use your graph to estimate Nairobi's average temperature.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="65%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Altitude (m)},
+                                    ylabel={Temp ($^\circ$C)},
+                                    xmin=0, xmax=3200,
+                                    ymin=8, ymax=30,
+                                    xtick={500,1000,1500,2000,2500,3000},
+                                    ytick={10,13,17,20,24,27},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick] coordinates {
+                                        (500,27)(1000,24)(1500,20)(2000,17)(2500,13)(3000,10)};
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (500,27)(1000,24)(1500,20)(2000,17)(2500,13)(3000,10)};
+                                    
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li><p>Strong <em>negative</em> relationship — as altitude increases, the average temperature decreases.</p></li>
+                    <li>
+                        <p>
+                            Temperature drop per 500 m: <m>27-24=3</m>, <m>24-20=4</m>, <m>20-17=3</m>, <m>17-13=4</m>, <m>13-10=3</m>. The drop is approximately 3–4 °C per 500 m (consistent with the standard atmospheric lapse rate of about 6–7 °C per 1000 m). The relationship is approximately linear.
+                        </p>
+                    </li>
+                    <li><p>Reading from the graph at 1700 m, the estimated temperature is approximately 18.8 °C — consistent with Nairobi's well-known mild climate.</p>
+                        <image width="65%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom,
+                                    axis y line=left,
+                                    xlabel={Altitude (m)},
+                                    ylabel={Temperature ($^\circ$C)},
+                                    xmin=0, xmax=3200,
+                                    ymin=8, ymax=30,
+                                    xtick={500,1000,1500,2000,2500,3000},
+                                    ytick={10,13,17,20,24,27},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+
+                                    % Temperature-altitude graph
+                                    \addplot[
+                                        blue,
+                                        thick
+                                    ]
+                                    coordinates {
+                                        (500,27)
+                                        (1000,24)
+                                        (1500,20)
+                                        (2000,17)
+                                        (2500,13)
+                                        (3000,10)
+                                    };
+
+                                    % Data points
+                                    \addplot[
+                                        only marks,
+                                        mark=*,
+                                        mark size=2pt,
+                                        blue
+                                    ]
+                                    coordinates {
+                                        (500,27)
+                                        (1000,24)
+                                        (1500,20)
+                                        (2000,17)
+                                        (2500,13)
+                                        (3000,10)
+                                    };
+
+                                    % Estimated point for Nairobi
+                                    \addplot[
+                                        only marks,
+                                        mark=*,
+                                        mark size=2.5pt,
+                                        red
+                                    ]
+                                    coordinates {(1700,18.8)};
+
+                                    % Reading lines
+                                    \addplot[dashed,red]
+                                    coordinates {(1700,8) (1700,18.8)};
+
+                                    \addplot[dashed,red]
+                                    coordinates {(0,18.8) (1700,18.8)};
+
+                                    % Labels
+                                   
+
+                                    \node[left,red,font=\footnotesize]
+                                    at (axis cs:0,18.8)
+                                    {$18.8^\circ\text{C}$};
+
+                                    \node[
+                                        draw,
+                                        fill=white,
+                                        font=\footnotesize,
+                                        align=center
+                                    ]
+                                    at (axis cs:2500,27)
+                                    {
+                                        Estimated temperature\\
+                                        at Nairobi\\
+                                        $\approx 18.8^\circ$C
+                                    };
+
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table shows the estimated number of mobile phone subscribers in Kenya at two-year intervals.
+                </p>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Year</cell>
+                        <cell>2004</cell><cell>2006</cell><cell>2008</cell><cell>2010</cell><cell>2012</cell>
+                    </row>
+                    <row>
+                        <cell>Subscribers (millions)</cell>
+                        <cell>3.4</cell><cell>7.3</cell><cell>16.3</cell><cell>24.4</cell><cell>29.2</cell>
+                    </row>
+                </tabular>
+                <p>
+                    Source: <url href="https://www.ca.go.ke/">Communications Authority of Kenya</url> annual reports.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Plot the data with year on the horizontal axis and number of subscribers on the vertical axis.</p></li>
+                    <li><p>Calculate the increase in subscribers in each 2-year period. Is the growth linear?</p></li>
+                    <li><p>Describe the shape of the graph and suggest a reason why growth was fastest between 2006 and 2010.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="65%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Year},
+                                    ylabel={Subscribers (millions)},
+                                    xmin=2003, xmax=2013,
+                                    ymin=0, ymax=32,
+                                    xtick={2004,2006,2008,2010,2012},
+                                    xticklabels={2004,2006,2008,2010,2012},
+                                    x tick label style={rotate=45, anchor=east, font=\footnotesize},
+                                    ytick={0,5,10,15,20,25,30},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick] coordinates {
+                                        (2004,3.4)(2006,7.3)(2008,16.3)(2010,24.4)(2012,29.2)};
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (2004,3.4)(2006,7.3)(2008,16.3)(2010,24.4)(2012,29.2)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li>
+                        <p>
+                            Increases per 2-year period: <m>3.9</m>, <m>9.0</m>, <m>8.1</m>, <m>4.8</m> million. Growth is <em>not</em> linear — the increase per period is not constant. The graph is steepest (fastest growth) between 2006 and 2010.
+                        </p>
+                    </li>
+                    <li>
+                        <p>The graph is non-linear (roughly S-shaped), rising steeply in the middle and flattening toward 2012. The rapid growth between 2006 and 2010 coincided with the launch of M-Pesa in 2007, which made mobile phones essential for everyday financial transactions, and with falling handset prices increasing affordability across Kenya.</p>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table below shows Kenya's life expectancy at birth from 1960 to 2023, recorded every five years.
+                </p>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Year</cell>
+                        <cell>1960</cell><cell>1965</cell><cell>1970</cell><cell>1975</cell><cell>1980</cell><cell>1985</cell><cell>1990</cell>
+                    </row>
+                    <row>
+                        <cell>Life expectancy (years)</cell>
+                        <cell>46.7</cell><cell>49.6</cell><cell>52.7</cell><cell>55.9</cell><cell>59.2</cell><cell>59.1</cell><cell>56.8</cell>
+                    </row>
+                    <row>
+                        <cell>Year</cell>
+                        <cell>1995</cell><cell>2000</cell><cell>2005</cell><cell>2010</cell><cell>2015</cell><cell>2020</cell><cell>2023</cell>
+                    </row>
+                    <row>
+                        <cell>Life expectancy (years)</cell>
+                        <cell>54.8</cell><cell>53.1</cell><cell>53.6</cell><cell>57.4</cell><cell>61.9</cell><cell>64.5</cell><cell>66.2</cell>
+                    </row>
+                </tabular>
+                <p>
+                    Source: <url href="https://ourworldindata.org/grapher/life-expectancy">Our World in Data — Life Expectancy</url>.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Plot the data as a line graph, with year on the horizontal axis and life expectancy on the vertical axis.</p></li>
+                    <li><p>In which five-year period did life expectancy fall by the most? By how many years did it fall?</p></li>
+                    <li><p>Life expectancy rose steadily from 1960 to around 1982, then declined for nearly two decades. Suggest a reason for this decline.</p></li>
+                    <li><p>Describe the trend in life expectancy since 2000. Is the increase approximately linear?</p></li>
+                    <li><p>Use your graph to estimate Kenya's life expectancy in 2012.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="75%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Year},
+                                    ylabel={Life expectancy (years)},
+                                    xmin=1958, xmax=2026,
+                                    ymin=40, ymax=72,
+                                    xtick={1960,1970,1980,1990,2000,2010,2020},
+                                    xticklabels={1960,1970,1980,1990,2000,2010,2020},
+                                    ytick={40,45,50,55,60,65,70},
+                                    x tick label style={rotate=45, anchor=east, font=\footnotesize},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick] coordinates {
+                                        (1960,46.7)(1965,49.6)(1970,52.7)(1975,55.9)(1980,59.2)
+                                        (1985,59.1)(1990,56.8)(1995,54.8)(2000,53.1)(2005,53.6)
+                                        (2010,57.4)(2015,61.9)(2020,64.5)(2023,66.2)};
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (1960,46.7)(1965,49.6)(1970,52.7)(1975,55.9)(1980,59.2)
+                                        (1985,59.1)(1990,56.8)(1995,54.8)(2000,53.1)(2005,53.6)
+                                        (2010,57.4)(2015,61.9)(2020,64.5)(2023,66.2)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li>
+                        <p>
+                            The five-year period with the greatest fall is <m>1985</m> to <m>1990</m>: a drop of <m>59.1 - 56.8 = 2.3</m> years.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The decline from around 1982 to 2000 was largely driven by the <em>HIV/AIDS epidemic</em>, which caused a sharp rise in adult mortality across Kenya and the wider region during the 1980s and 1990s.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Since 2000 life expectancy has risen consistently — from 53.1 years to 66.2 years in 2023. The increases per 5-year interval are approximately 0.5, 3.8, 4.5, 3.2, and 1.7 years, so the growth is not perfectly linear but is roughly steady (close to linear after 2005 when antiretroviral treatment became widely available in Kenya).
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            From the graph, 2012 lies two-fifths of the way from 2010 to 2015. Interpolating: <m>57.4 + \tfrac{2}{5}(61.9 - 57.4) = 57.4 + 1.8 \approx 59.2</m> years.
+                        </p>
+                        <image width="65%">
+                            <latex-image label="life-expectancy-2012-estimate-construction">
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom,
+                                    axis y line=left,
+                                    xlabel={Year},
+                                    ylabel={Life expectancy (years)},
+                                    xmin=1958, xmax=2026,
+                                    ymin=40, ymax=72,
+                                    xtick={1960,1970,1980,1990,2000,2010,2020},
+                                    xticklabels={1960,1970,1980,1990,2000,2010,2020},
+                                    ytick={40,45,50,55,60,65,70},
+                                    x tick label style={rotate=45, anchor=east, font=\footnotesize},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+
+                                    % Life expectancy graph
+                                    \addplot[blue, thick] coordinates {
+                                        (1960,46.7)(1965,49.6)(1970,52.7)(1975,55.9)(1980,59.2)
+                                        (1985,59.1)(1990,56.8)(1995,54.8)(2000,53.1)(2005,53.6)
+                                        (2010,57.4)(2015,61.9)(2020,64.5)(2023,66.2)
+                                    };
+
+                                    % Original data points
+                                    \addplot[
+                                        only marks,
+                                        mark=*,
+                                        mark size=2pt,
+                                        blue
+                                    ]
+                                    coordinates {
+                                        (1960,46.7)(1965,49.6)(1970,52.7)(1975,55.9)(1980,59.2)
+                                        (1985,59.1)(1990,56.8)(1995,54.8)(2000,53.1)(2005,53.6)
+                                        (2010,57.4)(2015,61.9)(2020,64.5)(2023,66.2)
+                                    };
+
+                                    % Estimated point for 2012
+                                    \addplot[
+                                        only marks,
+                                        mark=*,
+                                        mark size=2.5pt,
+                                        red
+                                    ]
+                                    coordinates {(2012,59.2)};
+
+                                    % Reading lines
+                                    \addplot[dashed,red]
+                                    coordinates {(2012,40) (2012,59.2)};
+
+                                    \addplot[dashed,red]
+                                    coordinates {(1958,59.2) (2012,59.2)};
+
+                                    % Labels
+                                    \node[below,red,font=\footnotesize]
+                                    at (axis cs:2012,40)
+                                    {2012};
+
+                                    \node[left,red,font=\footnotesize]
+                                    at (axis cs:1958,59.2)
+                                    {$59.2$};
+
+                                    \node[right,red,font=\footnotesize]
+                                    at (axis cs:2012,59.2)
+                                    {$(2012,59.2)$};
+
+                                    % Annotation box
+                                    \node[
+                                        draw,
+                                        fill=white,
+                                        font=\footnotesize,
+                                        align=center
+                                    ]
+                                    at (axis cs:1988,69)
+                                    {
+                                        Estimated life expectancy\\
+                                        in 2012\\
+                                        $\approx 59.2$ years
+                                    };
+
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table below shows the percentage of the population using the internet in five East African countries in 2019.
+                </p>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Country</cell>
+                        <cell>Kenya</cell><cell>Uganda</cell><cell>Tanzania</cell><cell>Ethiopia</cell><cell>Rwanda</cell>
+                    </row>
+                    <row>
+                        <cell>Internet users (%)</cell>
+                        <cell>22.7</cell><cell>26.0</cell><cell>26.4</cell><cell>16.0</cell><cell>28.8</cell>
+                    </row>
+                </tabular>
+                <p>
+                    Source: <url href="https://ourworldindata.org/grapher/share-of-individuals-using-the-internet">Our World in Data — Share of Individuals Using the Internet</url>.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Draw a bar chart to represent this data. Choose a suitable scale for the vertical axis.</p></li>
+                    <li><p>Which country had the highest internet usage in 2019? Which had the lowest?</p></li>
+                    <li><p>Calculate the mean internet usage across these five countries.</p></li>
+                    <li><p>Suggest reasons why Ethiopia's internet usage was notably lower than the other four countries.</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="65%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    ybar,
+                                    axis x line=bottom, axis y line=left,
+                                    ylabel={Internet users (\%)},
+                                    xtick=data,
+                                    symbolic x coords={Kenya,Uganda,Tanzania,Ethiopia,Rwanda},
+                                    x tick label style={rotate=45, anchor=east, font=\footnotesize},
+                                    ymin=0, ymax=36,
+                                    ytick={0,5,10,15,20,25,30,35},
+                                    nodes near coords,
+                                    nodes near coords align={vertical},
+                                    nodes near coords style={font=\tiny},
+                                    bar width=22pt,
+                                    enlarge x limits=0.15,
+                                    tick label style={font=\footnotesize},
+                                    grid=major,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[fill=blue!55] coordinates {
+                                        (Kenya,22.7)(Uganda,26.0)(Tanzania,26.4)(Ethiopia,16.0)(Rwanda,28.8)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li><p><term>Highest</term>: Rwanda (28.8%). <term>Lowest</term>: Ethiopia (16.0%).</p></li>
+                    <li>
+                        <p>
+                            Mean <m>= \dfrac{22.7 + 26.0 + 26.4 + 16.0 + 28.8}{5} = \dfrac{119.9}{5} = 24.0\%</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Ethiopia's lower internet access reflects several factors: limited electricity grid coverage in rural areas, lower average incomes reducing device and data affordability, and a historically less-developed telecommunications infrastructure compared to its neighbours. Kenya and Rwanda in particular have invested heavily in fibre-optic networks and mobile broadband.
+                        </p>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table below shows the percentage of Kenya's population using the internet between 2000 and 2023.
+                </p>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Year</cell>
+                        <cell>2000</cell><cell>2002</cell><cell>2004</cell><cell>2006</cell><cell>2008</cell><cell>2010</cell>
+                    </row>
+                    <row>
+                        <cell>Internet users (%)</cell>
+                        <cell>0.3</cell><cell>1.2</cell><cell>3.0</cell><cell>3.6</cell><cell>5.2</cell><cell>7.2</cell>
+                    </row>
+                    <row>
+                        <cell>Year</cell>
+                        <cell>2012</cell><cell>2014</cell><cell>2016</cell><cell>2018</cell><cell>2019</cell><cell>2023</cell>
+                    </row>
+                    <row>
+                        <cell>Internet users (%)</cell>
+                        <cell>10.5</cell><cell>16.5</cell><cell>16.6</cell><cell>19.5</cell><cell>22.7</cell><cell>35.0</cell>
+                    </row>
+                </tabular>
+                <p>
+                    Source: <url href="https://ourworldindata.org/grapher/share-of-individuals-using-the-internet">Our World in Data — Share of Individuals Using the Internet</url>.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Plot the data as a line graph, with year on the horizontal axis and internet users (%) on the vertical axis.</p></li>
+                    <li><p>During which two-year period shown in the table did internet usage grow by the least? By how much did it change?</p></li>
+                    <li><p>The percentage rises from 22.7% in 2019 to 35.0% in 2023 — a jump of 12.3 percentage points in four years. Suggest a reason for this accelerated growth.</p></li>
+                    <li><p>Is the overall trend from 2000 to 2023 linear? What shape of graph would better describe it?</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="75%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis x line=bottom, axis y line=left,
+                                    xlabel={Year},
+                                    ylabel={Internet users (\%)},
+                                    xmin=1999, xmax=2025,
+                                    ymin=0, ymax=40,
+                                    xtick={2000,2004,2008,2012,2016,2020,2024},
+                                    xticklabels={2000,2004,2008,2012,2016,2020,2024},
+                                    ytick={0,5,10,15,20,25,30,35,40},
+                                    x tick label style={rotate=45, anchor=east, font=\footnotesize},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick] coordinates {
+                                        (2000,0.3)(2002,1.2)(2004,3.0)(2006,3.6)(2008,5.2)(2010,7.2)
+                                        (2012,10.5)(2014,16.5)(2016,16.6)(2018,19.5)(2019,22.7)(2023,35.0)};
+                                    \addplot[only marks, mark=*, mark size=2pt, blue] coordinates {
+                                        (2000,0.3)(2002,1.2)(2004,3.0)(2006,3.6)(2008,5.2)(2010,7.2)
+                                        (2012,10.5)(2014,16.5)(2016,16.6)(2018,19.5)(2019,22.7)(2023,35.0)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li>
+                        <p>
+                            The period <m>2014</m>–<m>2016</m> showed the least growth: internet usage rose from <m>16.5\%</m> to <m>16.6\%</m>, an increase of only <m>0.1</m> percentage points.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The COVID-19 pandemic (2020–2021) forced many Kenyans to work, study, and communicate online, rapidly accelerating internet adoption. Schools and workplaces switching to remote formats created strong demand, while mobile data prices continued to fall.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The trend is <em>not</em> linear — the graph is steepest (fastest growth) in the early years (2000–2014) and again after 2019. A curve that starts flat, rises steeply, and then begins to level off describes an <term>S-shaped</term> (logistic) pattern typical of technology adoption.
+                        </p>
+                    </li>
+                </ol>
+            </answer>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The table shows the number of mobile cellular subscriptions per 100 people in four East African countries in 2022.
+                    A value above 100 means there are more active SIM cards than people — many individuals own more than one.
+                </p>
+                <tabular top="minor" bottom="minor" left="minor" right="minor" halign="center">
+                    <row>
+                        <cell>Country</cell>
+                        <cell>Kenya</cell><cell>Uganda</cell><cell>Ethiopia</cell><cell>Rwanda</cell>
+                    </row>
+                    <row>
+                        <cell>Subscriptions per 100 people</cell>
+                        <cell>110.9</cell><cell>83.9</cell><cell>57.0</cell><cell>91.3</cell>
+                    </row>
+                </tabular>
+                <p>
+                    Source: <url href="https://ourworldindata.org/grapher/mobile-cellular-subscriptions-per-100-people">Our World in Data — Mobile Cellular Subscriptions</url>.
+                </p>
+                <ol marker="(a)">
+                    <li><p>Draw a bar chart to represent this data. Mark the value 100 clearly on your vertical axis.</p></li>
+                    <li><p>Kenya's value is 110.9 subscriptions per 100 people. What does this tell us about mobile phone ownership in Kenya?</p></li>
+                    <li><p>Calculate how many more subscriptions per 100 people Kenya has compared to Ethiopia.</p></li>
+                    <li><p>Do all four countries have more than 50 subscriptions per 100 people? What does this suggest about mobile phone access across the region?</p></li>
+                </ol>
+            </statement>
+            <answer>
+                <ol marker="(a)">
+                    <li>
+                        <image width="60%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    ybar,
+                                    axis x line=bottom, axis y line=left,
+                                    ylabel={Subscriptions per 100 people},
+                                    xtick=data,
+                                    symbolic x coords={Kenya,Uganda,Ethiopia,Rwanda},
+                                    ymin=0, ymax=128,
+                                    ytick={0,20,40,60,80,100,120},
+                                    x tick label style={rotate=45, anchor=east, font=\footnotesize},
+                                    bar width=28pt,
+                                    enlarge x limits=0.2,
+                                    tick label style={font=\footnotesize},
+                                    grid=major,
+                                    grid style={line width=0.3pt, draw=gray!30},
+                                ]
+                                    \addplot[fill=red!55] coordinates {
+                                        (Kenya,110.9)(Uganda,83.9)(Ethiopia,57.0)(Rwanda,91.3)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li>
+                        <p>
+                            Kenya has more active SIM cards than people. This means many Kenyans — especially those using <em>M-Pesa</em> and other mobile-money services — carry more than one SIM card, often using separate lines for personal calls, mobile data, and financial transactions.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <m>110.9 - 57.0 = 53.9</m> more subscriptions per 100 people.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Yes — every country in the table exceeds 50 subscriptions per 100 people, meaning at least one in every two people has a mobile subscription. This indicates that mobile phone access has become widespread across East Africa, even in countries with lower incomes, reflecting the importance of mobile technology for communication and commerce in the region.
+                        </p>
+                    </li>
+                </ol>
             </answer>
         </exercise>
     </exercises>
