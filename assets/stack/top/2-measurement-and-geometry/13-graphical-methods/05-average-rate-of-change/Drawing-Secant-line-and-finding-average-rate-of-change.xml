@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Drawing Secant line and finding  average rate of change</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph of \(y=f(x)\) is shown below. </p>
+<p><strong>a)</strong> Draw the secant line joining \(A\) and \(B\) by dragging the two red endpoints \(P\) and \(Q\).</p>
+[[jsxgraph input-ref-ans1="ref_p1" input-ref-ans2="ref_p2" width="520px" height="520px"]]
+var X1={#x1#}, Y1={#y1#}, X2={#x2#}, Y2={#y2#}, M={#float(mm)#}, K={#float(kk)#};
+var XMIN={#float(xminv)#}, XMAX={#float(xmaxv)#}, YMAX={#float(ymaxv)#}, YMIN={#float(yminv)#};
+var DLO={#float(dlo)#}, DHI={#float(dhi)#};
+var SPX={#float(spx)#}, SPY={#float(spy)#}, SQX={#float(sqx)#}, SQY={#float(sqy)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[XMIN, YMAX, XMAX, YMIN], axis:true, showCopyright:false, showNavigation:false, grid:true, keepaspectratio:true});
+var f = brd.create('functiongraph', [function(x){ return Y1 + M*(x-X1) + K*(x-X1)*(x-X2); }, DLO, DHI], {strokeColor:'#1f4fd8', strokeWidth:2, highlight:false});
+brd.create('point',[X1,Y1],{name:'A',fixed:true,color:'#1f4fd8',size:3,label:{offset:[8,10]}});
+brd.create('point',[X2,Y2],{name:'B',fixed:true,color:'#1f4fd8',size:3,label:{offset:[8,10]}});
+var P = brd.create('point',[SPX,SPY],{name:'P',color:'#cc0000',size:4,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[6,-16]}});
+var Q = brd.create('point',[SQX,SQY],{name:'Q',color:'#cc0000',size:4,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[6,-16]}});
+brd.create('line',[P,Q],{strokeColor:'#cc0000',strokeWidth:2,straightFirst:true,straightLast:true});
+stack_jxg.bind_point(ref_p1, P);
+stack_jxg.bind_point(ref_p2, Q);
+[[/jsxgraph]]
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prt1]]</div>
+<p><strong>b)</strong> Determine the average rate of change of \(f(x)\) between \(x={@x1@}\) and \(x={@x2@}\).</p>
+<div>average rate of change \( = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>a)</strong> The secant line is the straight line joining \(A({@x1@},{@y1@})\) and \(B({@x2@},{@y2@})\).</p>
+<p><strong>b)</strong> The average rate of change of \(f\) between \(x={@x1@}\) and \(x={@x2@}\) is the gradient of that secant line:</p>
+\[
+\frac{f({@x2@})-f({@x1@})}{{@x2@}-{@x1@}} = \frac{{@y2@}-{@y1@}}{{@x2@}-{@x1@}} = \frac{{@y2-y1@}}{{@x2-x1@}} = {@mm@}.
+\]]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>x1 : rand_with_prohib(0,3,[]);        /* interval start */
+w  : rand_with_prohib(3,5,[]);        /* interval width */
+x2 : x1 + w;                          /* interval end */
+mm : rand_with_prohib(1,3,[]);        /* average rate of change (integer) */
+y1 : rand_with_prohib(1,4,[]);        /* f(x1) */
+y2 : y1 + mm*w;                       /* f(x2) */
+kk : (2*rand(2)-1)/2;                 /* curvature +/- 0.5 so the curve differs from the secant */
+Apt : [x1, y1];
+Bpt : [x2, y2];
+Sset : {Apt, Bpt};
+/* Square board window that always includes the origin, so both axes are visible. */
+xlo : min(x1, 0) - 1;
+xhi : x2 + 1;
+ylo : min(y1, 0) - 1;
+yhi : y2 + 2;
+sp  : max(xhi - xlo, yhi - ylo);
+xc  : (xlo + xhi)/2;
+yc  : (ylo + yhi)/2;
+xminv : xc - sp/2;
+xmaxv : xc + sp/2;
+yminv : yc - sp/2;
+ymaxv : yc + sp/2;
+dlo : x1 - 1;               /* curve drawing domain */
+dhi : x2 + 1;
+spx : x1;      spy : 0;     /* secant endpoints start on the x-axis */
+sqx : x2;      sqy : 0;
+/* example model answers, hidden */
+tans1 : Apt;
+tans2 : Bpt;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( A({@x1@},{@y1@})\), \(B({@x2@},{@y2@})\); rate \({@mm@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>tans1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>tans2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>mm</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>pA : [round(ans1[1]), round(ans1[2])];
+pB : [round(ans2[1]), round(ans2[2])];
+c1 : if elementp(pA, Sset) then 1 else 0;
+c2 : if (elementp(pB, Sset) and is(pB # pA)) then 1 else 0;
+ncorrect : c1 + c2;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Both endpoints on A and B?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ncorrect</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Exactly one endpoint correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ncorrect</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-partial</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>One endpoint is on the right point. Drag the other endpoint onto the second labelled point.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Both endpoints at the same spot?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>pA</sans>
+        <tans>pB</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-same</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Both endpoints are at the same place. Put one on \(A\) and the other on \(B\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Drag the two red endpoints onto the labelled points \(A\) and \(B\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct average rate of change?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>mm</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Reciprocal (dx over dy)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>1/mm</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-recip</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided the change in \(x\) by the change in \(y\). Average rate of change \(=\dfrac{\text{change in } y}{\text{change in } x}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Change in y only?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>y2-y1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-dy</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the change in \(y\) only. Divide it by the change in \(x\), \({@x2-x1@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Change in x only?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>x2-x1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-dx</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the change in \(x\) only. You need \(\dfrac{\text{change in } y}{\text{change in } x}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Average rate of change \(=\dfrac{f({@x2@})-f({@x1@})}{{@x2@}-{@x1@}}=\dfrac{{@y2@}-{@y1@}}{{@x2@}-{@x1@}}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>12001</deployedseed>
+    <deployedseed>12002</deployedseed>
+    <deployedseed>12003</deployedseed>
+    <deployedseed>12004</deployedseed>
+    <deployedseed>12005</deployedseed>
+    <deployedseed>12006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Secant endpoints correct + rate correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>mm</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Secant endpoints reversed (still correct)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>mm</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>One endpoint correct (partial)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[x2, y2+1]</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>mm</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-partial</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Both endpoints same non-target spot</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[x1, y1-3]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[x1, y1-3]</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>mm</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-same</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Rate: reciprocal</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>1/mm</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-recip</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Rate: change in y only</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>y2-y1</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-dy</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
