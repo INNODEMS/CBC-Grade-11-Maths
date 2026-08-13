@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Power rule: negative powers (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The power rule \( \dfrac{d}{dx}\!\left(x^{n}\right) = n\,x^{\,n-1} \) works for <b>negative</b> powers as well as positive ones. Here is the pattern for positive powers:</p>
+<table style="border-collapse:collapse;text-align:center;">
+<tr><th style="border:1px solid #000;padding:6px;">\( y \)</th><td style="border:1px solid #000;padding:6px;">\( x^{3} \)</td><td style="border:1px solid #000;padding:6px;">\( x^{2} \)</td><td style="border:1px solid #000;padding:6px;">\( x^{1} \)</td></tr>
+<tr><th style="border:1px solid #000;padding:6px;">\( \dfrac{dy}{dx} \)</th><td style="border:1px solid #000;padding:6px;">\( 3x^{2} \)</td><td style="border:1px solid #000;padding:6px;">\( 2x^{1} \)</td><td style="border:1px solid #000;padding:6px;">\( 1x^{0} \)</td></tr>
+</table>
+<p>Each derivative has the form \( n\cdot x^{\,n-1} \): the <b>coefficient</b> is the old power \( n \), and the <b>new power</b> is \( n-1 \). This keeps working when \( n \) is negative. In each line below, first rewrite the function as a single power (the <b>index</b>), then fill in the coefficient and the new power.</p>
+<div><b>For \( \dfrac{1}{x} \):</b> \( \dfrac{d}{dx}\!\left(\dfrac{1}{x}\right) = \dfrac{d}{dx}\Bigl(x \)<sup>[[input:idx1]]</sup>\( \Bigr) = \) [[input:c1]] \( \cdot\; x \)<sup>[[input:p1]]</sup></div>
+<div>[[validation:idx1]] [[validation:c1]] [[validation:p1]] [[feedback:prtidx1]] [[feedback:prtc1]] [[feedback:prtp1]]</div>
+<p></p>
+<div><b>For \( \dfrac{1}{x^{2}} \):</b> \( \dfrac{d}{dx}\!\left(\dfrac{1}{x^{2}}\right) = \dfrac{d}{dx}\Bigl(x \)<sup>[[input:idx2]]</sup>\( \Bigr) = \) [[input:c2]] \( \cdot\; x \)<sup>[[input:p2]]</sup></div>
+<div>[[validation:idx2]] [[validation:c2]] [[validation:p2]] [[feedback:prtidx2]] [[feedback:prtc2]] [[feedback:prtp2]]</div>
+<hr>
+<p> Now let's applying this to \( f(x) = {@fA@} \):</p>
+<div>\( \dfrac{d}{dx}\!\left({@fA@}\right) = \dfrac{d}{dx}\Bigl({@a@}\,x \)<sup>[[input:idxA]]</sup>\( \Bigr) = \) [[input:cA]] \( \cdot\; x \)<sup>[[input:pA]]</sup></div>
+<div>[[validation:idxA]] [[validation:cA]] [[validation:pA]] [[feedback:prtidxA]] [[feedback:prtcA]] [[feedback:prtpA]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Write each function as a single power first, then apply \( n\,x^{\,n-1} \).</p>
+<p>\( \dfrac{1}{x} = x^{-1} \): so \(n = -1 \), \(n-1 = -2 \), thus \( \dfrac{d}{dx}\!\left(\tfrac{1}{x}\right) = \dfrac{d}{dx}\!\left(x^{-1}\right) = -x^{-2} \).</p>
+<p>\( \dfrac{1}{x^{2}} = x^{-2} \): so \(n = -2 \), \(n-1 = -3 \), thus \( \dfrac{d}{dx}\!\left(\tfrac{1}{x^{2}}\right) = \dfrac{d}{dx}\!\left(x^{-2}\right) = -2x^{-3} \).</p>
+<p>\( {@fA@} = {@a@}\,x^{ {#idxA_ta#} } \). Bring the power down and multiply by the coefficient: \( {@a@}\cdot({#idxA_ta#}) = {@cA_ta@} \); reduce the power to \( {@pA_ta@} \). So</p>
+\[ f'(x) = {@dA@}. \]
+<p>Watch: the constant multiple \( {@a@} \) stays in front, and subtracting \( 1 \) from a <em>negative</em> power makes it <em>more</em> negative.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>9</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Predict x^-1 and x^-2: index (rewrite), coefficient, new power. */
+idx1_ta : -1;  c1_ta : -1;  p1_ta : -2;  p1_noreduce : -1;  p1_addone : 0;
+idx2_ta : -2;  c2_ta : -2;  p2_ta : -3;  p2_noreduce : -2;  p2_addone : -1;
+
+/* Part A: negative power with a constant multiple, f(x) = a/x^p. */
+a  : rand(8)+2;                /* coefficient 2..9 */
+p  : rand([2,3,4,5]);
+fA : a/x^p;
+idxA_ta : -p;                  /* rewritten index */
+cA_ta   : -a*p;                /* coefficient after differentiating */
+cA_dropc : -p;                 /* brought the power down but dropped the coefficient a */
+pA_ta   : -p-1;                /* new power */
+pA_noreduce : -p;              /* did not subtract 1 (kept the index) */
+pA_addone   : -p+1;            /* added 1 to the index instead of subtracting */
+dA : cA_ta*x^(pA_ta);          /* full derivative, for the worked solution */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( a={@a@},\ p={@p@};\ \text{index}={@idxA_ta@},\ \text{coeff}={@cA_ta@},\ \text{power}={@pA_ta@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>c1</name>
+      <type>algebraic</type>
+      <tans>c1_ta</tans>
+      <boxsize>3</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>c2</name>
+      <type>algebraic</type>
+      <tans>c2_ta</tans>
+      <boxsize>3</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>cA</name>
+      <type>algebraic</type>
+      <tans>cA_ta</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>idx1</name>
+      <type>algebraic</type>
+      <tans>idx1_ta</tans>
+      <boxsize>3</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>idx2</name>
+      <type>algebraic</type>
+      <tans>idx2_ta</tans>
+      <boxsize>3</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>idxA</name>
+      <type>algebraic</type>
+      <tans>idxA_ta</tans>
+      <boxsize>3</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>p1</name>
+      <type>algebraic</type>
+      <tans>p1_ta</tans>
+      <boxsize>3</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>p2</name>
+      <type>algebraic</type>
+      <tans>p2_ta</tans>
+      <boxsize>3</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>pA</name>
+      <type>algebraic</type>
+      <tans>pA_ta</tans>
+      <boxsize>3</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtc1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Coefficient for x^-1 is -1?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>c1</sans>
+        <tans>c1_ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtc1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Since there is no constant, the coefficient is the old power itself.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtc2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Coefficient for x^-2 is -2?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>c2</sans>
+        <tans>c2_ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtc2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Since there is no constant, the coefficient is the old power itself.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtcA</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Coefficient is a*index = -a p?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>cA</sans>
+        <tans>cA_ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtcA-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtcA-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Dropped the coefficient a (gave just the index)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>cA</sans>
+        <tans>cA_dropc</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtcA-dropc</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You brought the power down, but the constant \( {@a@} \) multiplies it too.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtcA-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The coefficient is the old power times the constant.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtidx1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Index of 1/x is -1?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>idx1</sans>
+        <tans>idx1_ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtidx1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtidx1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>A power in the denominator becomes a negative index.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtidx2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Index of 1/x^2 is -2?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>idx2</sans>
+        <tans>idx2_ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtidx2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtidx2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>A power in the denominator becomes a negative index.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtidxA</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Index of a/x^p is -p?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>idxA</sans>
+        <tans>idxA_ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtidxA-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtidxA-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Right size, wrong sign (gave +p)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>idxA</sans>
+        <tans>p</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtidxA-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Right size, wrong sign. A power in the <em>denominator</em> becomes a <em>negative</em> index.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtidxA-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Rewrite \( {@fA@} \) as a single power: move \( x^{@p@} \) out of the denominator by negating its power.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtp1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>New power for x^-1 is -2?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>p1</sans>
+        <tans>p1_ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtp1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtp1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Added 1 to the index instead of subtracting?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>p1</sans>
+        <tans>p1_addone</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtp1-addone</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You went the wrong way — you <em>raised</em> the power by \( 1 \). Differentiating <em>lowers</em> it, so the new power is one step below the index, not above.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prtp1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Left the power unchanged (did not subtract 1)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>p1</sans>
+        <tans>p1_noreduce</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtp1-noreduce</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You kept the power the same. Differentiating reduces it — the new power is one less than the index.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtp1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That is not the new power. Take the index and subtract \( 1 \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtp2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>New power for x^-2 is -3?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>p2</sans>
+        <tans>p2_ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtp2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtp2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Added 1 to the index instead of subtracting?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>p2</sans>
+        <tans>p2_addone</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtp2-addone</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You went the wrong way — you <em>raised</em> the power by \( 1 \). Differentiating <em>lowers</em> it, so the new power is one step below the index, not above.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prtp2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Left the power unchanged (did not subtract 1)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>p2</sans>
+        <tans>p2_noreduce</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtp2-noreduce</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You kept the power the same. Differentiating reduces it — the new power is one less than the index.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtp2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That is not the new power. Take the index and subtract \( 1 \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtpA</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>New power is index - 1 = -p-1?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>pA</sans>
+        <tans>pA_ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtpA-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtpA-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Added 1 to the index instead of subtracting?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>pA</sans>
+        <tans>pA_addone</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtpA-addone</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You went the wrong way — you <em>raised</em> the power by \( 1 \). Differentiating <em>lowers</em> it, so the new power is one step below the index, not above.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prtpA-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Left the power unchanged (did not subtract 1)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>pA</sans>
+        <tans>pA_noreduce</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtpA-noreduce</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You kept the index the same. Differentiating reduces it — the new power is one less than the index.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtpA-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That is not the new power. Take the index and subtract \( 1 \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <deployedseed>9009</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All nine boxes correct</description>
+      <testinput>
+        <name>c1</name>
+        <value>c1_ta</value>
+      </testinput>
+      <testinput>
+        <name>c2</name>
+        <value>c2_ta</value>
+      </testinput>
+      <testinput>
+        <name>cA</name>
+        <value>cA_ta</value>
+      </testinput>
+      <testinput>
+        <name>idx1</name>
+        <value>idx1_ta</value>
+      </testinput>
+      <testinput>
+        <name>idx2</name>
+        <value>idx2_ta</value>
+      </testinput>
+      <testinput>
+        <name>idxA</name>
+        <value>idxA_ta</value>
+      </testinput>
+      <testinput>
+        <name>p1</name>
+        <value>p1_ta</value>
+      </testinput>
+      <testinput>
+        <name>p2</name>
+        <value>p2_ta</value>
+      </testinput>
+      <testinput>
+        <name>pA</name>
+        <value>pA_ta</value>
+      </testinput>
+      <expected>
+        <name>prtc1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtc1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtc2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtcA</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtcA-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtidx1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtidx1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtidx2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtidx2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtidxA</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtidxA-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtp1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtp1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtp2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtp2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtpA</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtpA-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>New-power boxes not reduced (predict and Part A)</description>
+      <testinput>
+        <name>c1</name>
+        <value>c1_ta</value>
+      </testinput>
+      <testinput>
+        <name>c2</name>
+        <value>c2_ta</value>
+      </testinput>
+      <testinput>
+        <name>cA</name>
+        <value>cA_ta</value>
+      </testinput>
+      <testinput>
+        <name>idx1</name>
+        <value>idx1_ta</value>
+      </testinput>
+      <testinput>
+        <name>idx2</name>
+        <value>idx2_ta</value>
+      </testinput>
+      <testinput>
+        <name>idxA</name>
+        <value>idxA_ta</value>
+      </testinput>
+      <testinput>
+        <name>p1</name>
+        <value>p1_noreduce</value>
+      </testinput>
+      <testinput>
+        <name>p2</name>
+        <value>p2_noreduce</value>
+      </testinput>
+      <testinput>
+        <name>pA</name>
+        <value>pA_noreduce</value>
+      </testinput>
+      <expected>
+        <name>prtp1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtp1-noreduce</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtp2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtp2-noreduce</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtpA</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtpA-noreduce</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Part A: index wrong sign; coefficient dropped a</description>
+      <testinput>
+        <name>c1</name>
+        <value>c1_ta</value>
+      </testinput>
+      <testinput>
+        <name>c2</name>
+        <value>c2_ta</value>
+      </testinput>
+      <testinput>
+        <name>cA</name>
+        <value>cA_dropc</value>
+      </testinput>
+      <testinput>
+        <name>idx1</name>
+        <value>idx1_ta</value>
+      </testinput>
+      <testinput>
+        <name>idx2</name>
+        <value>idx2_ta</value>
+      </testinput>
+      <testinput>
+        <name>idxA</name>
+        <value>p</value>
+      </testinput>
+      <testinput>
+        <name>p1</name>
+        <value>p1_ta</value>
+      </testinput>
+      <testinput>
+        <name>p2</name>
+        <value>p2_ta</value>
+      </testinput>
+      <testinput>
+        <name>pA</name>
+        <value>pA_ta</value>
+      </testinput>
+      <expected>
+        <name>prtcA</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtcA-dropc</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtidxA</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtidxA-sign</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>New-power boxes: added 1 to the index instead of subtracting</description>
+      <testinput>
+        <name>c1</name>
+        <value>c1_ta</value>
+      </testinput>
+      <testinput>
+        <name>c2</name>
+        <value>c2_ta</value>
+      </testinput>
+      <testinput>
+        <name>cA</name>
+        <value>cA_ta</value>
+      </testinput>
+      <testinput>
+        <name>idx1</name>
+        <value>idx1_ta</value>
+      </testinput>
+      <testinput>
+        <name>idx2</name>
+        <value>idx2_ta</value>
+      </testinput>
+      <testinput>
+        <name>idxA</name>
+        <value>idxA_ta</value>
+      </testinput>
+      <testinput>
+        <name>p1</name>
+        <value>p1_addone</value>
+      </testinput>
+      <testinput>
+        <name>p2</name>
+        <value>p2_addone</value>
+      </testinput>
+      <testinput>
+        <name>pA</name>
+        <value>pA_addone</value>
+      </testinput>
+      <expected>
+        <name>prtp1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtp1-addone</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtp2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtp2-addone</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtpA</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtpA-addone</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
