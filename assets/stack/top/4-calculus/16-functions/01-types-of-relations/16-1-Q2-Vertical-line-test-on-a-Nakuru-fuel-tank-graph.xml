@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>16.1 Q2 Vertical line test on a Nakuru fuel tank graph</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A fuel station in Nakuru records the level of fuel in a tank as trucks fill it. The interactive board shows the recorded curve and a vertical line you can slide across the graph.</p>
+<p>Slide the vertical line across the whole graph and count how many times it crosses the curve at any position. Based on the vertical line test, could this graph represent a function?</p>
+<p>[[input:ans1]] [[validation:ans1]]</p>
+<p>[[feedback:prt1]]</p>
+
+[[jsxgraph input-ref="ref1" width="500px" height="420px"]]
+var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[-6,6,6,-6], axis:true, showCopyright:false, showNavigation:false});
+var isfun={#isfun#}, a={#a#};
+if (isfun==1){ board.create('functiongraph',[function(x){return 0.4*a*x*x-3;},-5,5],{strokeColor:'#1565c0',strokeWidth:2}); }
+else { board.create('curve',[function(t){return 0.4*a*t*t-3;}, function(t){return t;}, -4,4],{strokeColor:'#1565c0',strokeWidth:2}); }
+var vx=board.create('slider',[[-5,5.3],[5,5.3],[-5,-1,5]],{name:'line',snapWidth:0.1});
+board.create('line',[[function(){return vx.Value();},-6],[function(){return vx.Value();},6]],{strokeColor:'#c62828',strokeWidth:2,straightFirst:true,straightLast:true,dash:2});
+board.create('text',[-5.5,-5.3,'Slide the red line across the whole graph'],{fontSize:12,anchorX:'left'});
+[[/jsxgraph]]]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The vertical line test says a graph is a function when no vertical line, in any position, crosses the curve more than once. If even one position of the vertical line meets the curve twice, the graph is not a function.</p>
+<p>You must slide the line all the way across, not test only one place. For this graph the correct answer is {@correct@}.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* isfun=1 -> a genuine function graph (parabola-like, opens up);
+   isfun=0 -> not a function (sideways parabola crosses a vertical line twice). */
+isfun : rand([0,1]);
+correct : if isfun=1 then "function" else "not a function";
+a : rand([1,2]);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>Correct answer is {@correct@}.</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>That is correct. Well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>You are part of the way there.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>That is not correct yet.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>1</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>string</type>
+      <tans>correct</tans>
+      <boxsize>16</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>function</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>a1 : supcase(sconcat(ans1));
+cor : supcase(correct);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>is(a1=cor)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You checked the whole graph and applied the vertical line test properly.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(a1="FUNCTION") and is(cor="NOT A FUNCTION")]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-mistake1</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you tested the line in only one place. The vertical line test must hold at every position, not just one. Slide the line further along and you will find a place where it crosses the curve twice, which means this graph is not a function.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>true</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-mistake2</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check which direction the test line runs. The vertical line test slides a vertical line across and looks for repeated crossings at the same input. It is not about repeated output heights. Slide the vertical line across the whole graph once more before deciding.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>201</deployedseed>
+    <deployedseed>202</deployedseed>
+    <deployedseed>203</deployedseed>
+    <deployedseed>204</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>correct</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
