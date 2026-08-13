@@ -63,14 +63,38 @@ jobs:
                 # Self-update can be a no-op; tolerate that.
                 tlmgr update --self || true
                 # The install MUST succeed or the tikz figures won't compile.
+                
+                # if ! tlmgr install tkz-euclide tikz-3dplot footnotehyper; then
+                #     echo "Install from $REPO failed; retrying with $CURRENT"
+                #     tlmgr option repository "$CURRENT"
+                #     tlmgr update --self || true
+                #     tlmgr install tkz-euclide tikz-3dplot footnotehyper
+                # fi
+                # # Confirm the required style files are actually findable now.
+                # kpsewhich tikz-3dplot.sty tkz-euclide.sty footnotehyper.sty
+
+                # The install MUST succeed or the tikz figures won't compile.
                 if ! tlmgr install tkz-euclide tikz-3dplot footnotehyper; then
                     echo "Install from $REPO failed; retrying with $CURRENT"
                     tlmgr option repository "$CURRENT"
                     tlmgr update --self || true
                     tlmgr install tkz-euclide tikz-3dplot footnotehyper
                 fi
-                # Confirm the required style files are actually findable now.
-                kpsewhich tikz-3dplot.sty tkz-euclide.sty footnotehyper.sty
+
+                # Force the filename database to pick up the newly-installed files —
+                # tlmgr's auto-refresh isn't reliable in this container/profile.
+                mktexlsr
+
+                # Verify EACH file individually so a single missing package
+                # actually fails the build here, instead of at the LaTeX stage.
+                for f in tikz-3dplot.sty tkz-euclide.sty footnotehyper.sty; do
+                    echo "Checking $f ..."
+                    if ! kpsewhich "$f"; then
+                        echo "::error::$f not found after install + mktexlsr"
+                        tlmgr info "${f%.sty}" || true
+                        exit 1
+                    fi
+                done
 
             - name: install local ptx files
               run: pretext --version
