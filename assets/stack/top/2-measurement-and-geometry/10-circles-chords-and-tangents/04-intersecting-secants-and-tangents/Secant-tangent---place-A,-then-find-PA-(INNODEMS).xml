@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Secant-tangent - place A, then find PA (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>In the diagram, \(P\) is an external point, \(B\) and \(T\) lie on the circle, and \(PT\) is the tangent (so \(PT\) touches the circle at \(T\)). You are given that \(PT = {@ta_pt@}\text{ cm}\) </p>
+<p><strong>(a)</strong> Drag the red point \(A\) onto the circle so that \(P\), \(A\) and \(B\) lie on one straight line &mdash; that is, so that \(PAB\) is a secant. We have labelled \(BA\) with its length.</p>
+
+[[jsxgraph input-ref-ans1="refA" width="480px" height="430px"]]
+var PB = {#PB#}, PT = {#ta_pt#};
+
+var rad = Math.PI / 180;
+var u = [Math.cos(150 * rad), Math.sin(150 * rad)];
+var w = [Math.cos(212 * rad), Math.sin(212 * rad)];
+
+var Pp = [0, 0];
+var Bp = [PB * u[0], PB * u[1]];
+var Tp = [PT * w[0], PT * w[1]];
+
+function fixedCircle(P, T, B) {
+    var dx = T[0] - P[0], dy = T[1] - P[1], L = Math.hypot(dx, dy);
+    var nx = -dy / L, ny = dx / L;
+    var tbx = T[0] - B[0], tby = T[1] - B[1];
+    var s = -(tbx * tbx + tby * tby) / (2 * (nx * tbx + ny * tby));
+    return [[T[0] + s * nx, T[1] + s * ny], Math.abs(s)];
+}
+var fc = fixedCircle(Pp, Tp, Bp), ctr = fc[0], rr = fc[1];
+var pad = 1.2;
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [ctr[0] - rr - pad, ctr[1] + rr + pad, Math.max(ctr[0] + rr, 0) + pad + 0.6, ctr[1] - rr - pad],
+    keepaspectratio: true, axis: false, showCopyright: false, showNavigation: false
+});
+
+var circle = board.create('circle', [ctr, rr], {strokeColor: '#178a8a', strokeWidth: 1.5, fixed: true});
+
+var P = board.create('point', Pp, {name: 'P', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [10, 0], anchorX: 'left', anchorY: 'middle'}});
+var B = board.create('point', Bp, {name: 'B', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-4, 12], anchorX: 'right', anchorY: 'bottom'}});
+var T = board.create('point', Tp, {name: 'T', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-4, -12], anchorX: 'right', anchorY: 'top'}});
+
+board.create('segment', [P, T], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+
+var A = board.create('glider', [ctr[0], ctr[1] + rr, circle],
+    {name: 'A', size: 4, fillColor: '#d32f2f', strokeColor: '#d32f2f', label: {offset: [8, 8]}});
+
+board.create('segment', [P, A], {strokeColor: '#1565c0', strokeWidth: 2});
+board.create('segment', [A, B], {strokeColor: '#1565c0', strokeWidth: 2});
+
+/* AP labelled as the unknown x (follows the glider) */
+board.create('text', [
+    function () { return (P.X() + A.X()) / 2 - 0.3; },
+    function () { return (P.Y() + A.Y()) / 2 + 0.5; },
+    'x'
+], {anchorX: 'middle', anchorY: 'middle', fontSize: 15, fixed: true, cssStyle: 'color:#1565c0'});
+
+/* AB labelled with its LIVE length (updates as A is dragged) */
+board.create('text', [
+    function () { return (A.X() + B.X()) / 2 - 0.3; },
+    function () { return (A.Y() + B.Y()) / 2 + 1; },
+    function () { return A.Dist(B).toFixed(1) + ' cm'; }
+], {anchorX: 'middle', anchorY: 'middle', fontSize: 13, fixed: true, cssStyle: 'color:#1565c0'});
+
+/* PT (given) on the tangent */
+board.create('text', [
+    (Pp[0] + Tp[0]) / 2 + 0.4,
+    (Pp[1] + Tp[1]) / 2,
+    PT + ' cm'
+], {anchorX: 'left', anchorY: 'middle', fontSize: 13, fixed: true, cssStyle: 'color:#333'});
+
+stack_jxg.bind_point(refA, A);
+[[/jsxgraph]]
+
+<div style="display:none">[[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>
+
+<p><strong>(b)</strong> Hence use the diagram to find the length \(PA\) (marked \(x\)):</p>
+<div>\( PA = \) [[input:ans2]]\(\text{ cm}\) [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>(a)</strong> The secant from \(P\) cuts the circle twice: at the far point \(B\) and at the near point \(A\). So \(A\) is the second crossing of the straight line \(PB\) with the circle.</p>
+<p><strong>(b)</strong> By the secant-tangent theorem \(PT^2 = PA\cdot PB\), and \(PB = PA + AB\), so</p>
+\[ PA\,(PA + {@AB@}) = {@ta_pt@}^2 = {@PA*PB@}. \]
+<p>This gives \(PA^2 + {@AB@}\,PA - {@PA*PB@} = 0\), whose positive root is</p>
+\[ PA = \frac{-{@AB@} + \sqrt{{@AB@}^2 + 4\cdot{@PA*PB@}}}{2} = {@ta_pa@}\text{ cm}. \]]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Perfect-square products give whole PA and PT (PT = sqrt(PA*PB)). */
+data : sublist(
+  create_list([pa,ab], pa,2,14, ab,2,26),
+  lambda([z], is(
+        integerp(sqrt(z[1]*(z[1]+z[2])))
+    and sqrt(z[1]*(z[1]+z[2])) >= 4 and sqrt(z[1]*(z[1]+z[2])) <= 18
+    and z[1]+z[2] <= 32 )));
+sel : rand(data);
+PA : sel[1];
+AB : sel[2];
+PB : PA + AB;
+ta_pt : sqrt(PA*PB);          /* tangent length */
+ta_pa : PA;                   /* answer to (b) */
+/* geometry for marking the placed point A (same layout as the JSXGraph block) */
+ua : float(cos(150*%pi/180));
+va : float(sin(150*%pi/180));
+ta_Ax : float(PA*ua);
+ta_Ay : float(PA*va);
+ta_A : [ta_Ax, ta_Ay];
+Bx : float(PB*ua);
+By : float(PB*va);
+B_pt : [Bx, By];
+/* distractors for (b) */
+wrong_useAB_b : PA*PB/AB;     /* used PT^2 = PA*AB -> PA = PT^2/AB */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( PA={@PA@},\ AB={@AB@},\ PB={@PB@},\ PT={@ta_pt@} \) cm</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta_A</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta_pa</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sdist : sqrt((ans1[1]-ta_Ax)^2 + (ans1[2]-ta_Ay)^2);
+bdist : sqrt((ans1[1]-Bx)^2 + (ans1[2]-By)^2);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>A placed at the correct near point.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>sdist</sans>
+        <tans>0</tans>
+        <testoptions>0.8</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Good &mdash; \(A\) is correctly placed: \(P\), \(A\) and \(B\) are now in a straight line.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>A dropped onto B instead of the near point.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>bdist</sans>
+        <tans>0</tans>
+        <testoptions>0.8</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-atB</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the point \(B\) itself. The secant cuts the circle <em>twice</em> &mdash; drag \(A\) to the other crossing, the one nearer to \(P\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-notplaced</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not quite. \(A\) should sit on the straight line through \(P\) and \(B\) &mdash; the nearer of the two places where that line crosses the circle. Drag \(A\) until \(P\), \(A\), \(B\) are in line.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct PA.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta_pa</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Used PT^2 = PA*AB (chord) instead of PA*PB.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>wrong_useAB_b</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-useAB</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you used \(PT^2 = PA\cdot AB\). The theorem uses the <em>whole</em> secant \(PB\), not the chord \(AB\): \(PT^2 = PA\cdot PB\) with \(PB = PA + AB\). That gives a quadratic in \(PA\). Try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave the tangent length PT instead of PA.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta_pt</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-gavePT</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is \(PT\), the tangent length. You need \(PA\), the near part of the secant. Use \(PT^2 = PA\cdot PB\) and solve for \(PA\). Try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Set up \(PT^2 = PA\cdot PB\) with \(PB = PA + AB\); this is a quadratic in \(PA\). Solve it and take the positive root. Have another go.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>A placed correctly; PA correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_A</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_pa</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>A dropped on B; (b) used AB not PB</description>
+      <testinput>
+        <name>ans1</name>
+        <value>B_pt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wrong_useAB_b</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-atB</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-useAB</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>A misplaced; (b) gave PT</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[ta_Ax+2, ta_Ay+2]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_pt</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-notplaced</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-gavePT</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>A correct; (b) other wrong value (generic)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_A</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(ta_pa+1,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

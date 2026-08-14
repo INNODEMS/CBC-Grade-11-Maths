@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Construct the derivative line of a quadratic (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The blue curve is \( f(x) = {@fexpr@} \).</p>
+<p>Move the <strong>\(x\)-slider</strong> to slide the red point \(A\) along the blue curve. At each position you see the <strong>tangent</strong> to \(f\) there, and a <span style="color:#2e7d32"><strong>green point</strong></span> whose height is the <em>slope</em> of that tangent &mdash; that is, \( f'(x) \), the derivative at that \(x\). (The green point leaves no trail.)</p>
+<p><strong>Your task:</strong> drag the two purple points \(P\) and \(Q\) to draw the straight line that the green slope-value lies on for <em>every</em> \(x\). That line is the graph of the derivative \( f'(x) \).</p>
+[[jsxgraph input-ref-ans1="ref_ans1" input-ref-ans2="ref_ans2" width='560px' height='560px']]
+var mm = {#m#}, kk = {#k#}, aa = {#float(a)#}, cc = {#c#};
+var win = {#win#}, xslider_mid = {#float(xslider_mid)#}, xslider_dist = {#float(xslider_dist)#}, yinit = {#yinit#};
+
+var f  = function (x) { return aa*x*x + kk*x + cc; };   // the curve
+var fp = function (x) { return mm*x + kk; };            // its derivative (target line)
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-win, win, win, -win],
+    keepAspectRatio: true, axis: true,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+
+// f(x): the blue parabola. Its arms may run off the board - that is fine.
+board.create('functiongraph', [f, -win, win],
+    {strokeColor: '#0055bb', strokeWidth: 2, highlight: false, name: ''});
+board.create('text', [-win + 0.3, win - 0.6, 'y = f(x)'],
+    {color: '#0055bb', fontSize: 14, fixed: true});
+
+// An x-slider drives A along the curve. A slider handle drags smoothly regardless of
+// scaling (a glider on the curve does not), and reads well: "sweep x, watch the slope".
+// Sits in the bottom-left, just above the tangent-slope readout.
+var xs = board.create('slider',
+    [[-win + 0.5, -win + 1.8], [-win + 4.5, -win + 1.8], [xslider_mid-xslider_dist, xslider_mid, xslider_mid+xslider_dist]],
+    {name: 'x', snapWidth: 0.01, precision: 1,
+     baseline: {strokeColor: '#bbb'}, highline: {strokeColor: '#d32f2f'},
+     label: {fontSize: 15}});
+var xv = function () { return xs.Value(); };
+
+// A = (x, f(x)), driven by the slider (not draggable).
+var A = board.create('point',
+    [function () { return xv(); }, function () { return f(xv()); }],
+    {name: 'A', size: 2, strokeColor: '#d32f2f', fillColor: '#d32f2f',
+     fixed: true, showInfobox: false, label: {offset: [8, 14], color: '#d32f2f', fontSize: 13}});
+// Tangent through A with the true slope f'(A.x).
+board.create('line', [A,
+    [function () { return A.X() + 1; }, function () { return A.Y() + fp(A.X()); }]],
+    {strokeColor: '#d32f2f', strokeWidth: 1.5, dash: 2,
+     straightFirst: true, straightLast: true, highlight: false});
+// Green slope-point at (x, f'(x)) and a dashed drop to the axis.
+board.create('point', [function () { return xv(); }, function () { return fp(xv()); }],
+    {name: '', size: 2, strokeColor: '#2e7d32', fillColor: '#2e7d32',
+     fixed: true, showInfobox: false});
+board.create('segment',
+    [[function () { return xv(); }, 0],
+     [function () { return xv(); }, function () { return fp(xv()); }]],
+    {strokeColor: '#2e7d32', strokeWidth: 1, dash: 1});
+board.create('text', [-win + 0.3, -win + 0.7,
+    function () { return 'tangent slope at x = ' + xv().toFixed(1)
+        + '  is  ' + fp(xv()).toFixed(1); }],
+    {color: '#2e7d32', fontSize: 13, fixed: true});
+
+// The student's answer: two purple points forming a line
+var P1 = board.create('point', [-2, yinit], {
+    name: 'P', size: 2, strokeColor: '#8e24aa', fillColor: '#8e24aa',
+    showInfobox: false,
+    label: {offset: [6, 12], color: '#8e24aa'}
+});
+var P2 = board.create('point', [2, yinit], {
+    name: 'Q', size: 2, strokeColor: '#8e24aa', fillColor: '#8e24aa',
+    showInfobox: false,
+    label: {offset: [6, 12], color: '#8e24aa'}
+});
+board.create('line', [P1, P2], {strokeColor: '#8e24aa', strokeWidth: 2,
+    straightFirst: true, straightLast: true});
+
+stack_jxg.bind_point(ref_ans1, P1);
+stack_jxg.bind_point(ref_ans2, P2);
+[[/jsxgraph]]
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The graph of \(f'\) plots the <em>slope of the tangent</em> to \(f\) at each \(x\). Because \(f\) is a quadratic, those slopes change at a steady rate, so the graph of \(f'\) is a <strong>straight line</strong> &mdash; and a line needs only <strong>two points</strong>, both of which you can read straight off the picture.</p>
+<p><strong>1. Find where the gradient is zero.</strong> The tangent is horizontal at the <em>vertex</em> of the parabola, here at \(x = {@vertex_x@}\). A horizontal tangent has slope \(0\), so the graph of \(f'\) passes through
+\[ \left({@vertex_x@},\ 0\right). \]</p>
+<p><strong>2. Read one more tangent.</strong> Slide \(A\) to \(x = {@wsx2@}\) and read the height of the green point &mdash; the slope of the tangent there is \({@wsslope2@}\). So \(f'\) also passes through
+\[ \left({@wsx2@},\ {@wsslope2@}\right). \]</p>
+<p>Plot those two points and draw the straight line through them: that is the graph of \(f'\). Every other tangent slope falls on the same line, so
+\[ f'(x) = {@m@}x + {@k@}. \]</p>
+<p>Here is the finished picture. The parabola's tangent is horizontal at the vertex (red), which drops straight down to the green point \(\left({@vertex_x@},\,0\right)\) on the \(x\)-axis; the purple line through the two green points is \(f'\):</p>
+[[jsxgraph width='420px' height='420px']]
+var mm = {#m#}, kk = {#k#}, aa = {#float(a)#}, cc = {#c#};
+var vx = {#vertex_x#}, wx2 = {#wsx2#}, ws2 = {#wsslope2#};
+var win = 8;
+var f  = function (x) { return aa*x*x + kk*x + cc; };
+var fp = function (x) { return mm*x + kk; };
+var b = JXG.JSXGraph.initBoard(divid, {boundingbox: [-win, win, win, -win],
+    keepAspectRatio: true, axis: true, showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}});
+// the parabola f, with its horizontal-tangent vertex
+b.create('functiongraph', [f, -win, win], {strokeColor: '#0055bb', strokeWidth: 2, highlight: false});
+b.create('text', [-win + 0.3, win - 0.6, 'y = f(x)'], {color: '#0055bb', fontSize: 13, fixed: true});
+b.create('point', [vx, f(vx)], {size: 3, strokeColor: '#d32f2f', fillColor: '#d32f2f', fixed: true, showInfobox: false, name: ''});
+b.create('line', [[vx - 1.4, f(vx)], [vx + 1.4, f(vx)]], {strokeColor: '#d32f2f', strokeWidth: 1.2, dash: 2, straightFirst: false, straightLast: false, highlight: false});
+b.create('segment', [[vx, f(vx)], [vx, 0]], {strokeColor: '#999', strokeWidth: 1, dash: 1});
+// the derivative line f' (the correct answer)
+b.create('functiongraph', [fp, -win, win], {strokeColor: '#8e24aa', strokeWidth: 2.5, highlight: false});
+b.create('text', [vx + 2.2, 2*mm + 0.8, "y = f '(x)"], {color: '#8e24aa', fontSize: 13, fixed: true, anchorX: 'left'});
+// the two points read straight off the picture
+b.create('point', [vx, 0], {size: 4, strokeColor: '#2e7d32', fillColor: '#2e7d32', fixed: true, showInfobox: false, name: '(' + vx + ', 0)', label: {offset: [8, -4], fontSize: 12}});
+b.create('point', [wx2, ws2], {size: 4, strokeColor: '#2e7d32', fillColor: '#2e7d32', fixed: true, showInfobox: false, name: '(' + wx2 + ', ' + ws2 + ')', label: {offset: [8, 8], fontSize: 12}});
+[[/jsxgraph]]
+<p>Notice the constant \(c = {@c@}\) played no part: sliding the whole parabola up or down doesn't tilt any tangent, so it never changes \(f'\).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Design backwards from f'(x) = m x + k. */
+m : rand([-2,-1,1,2]);              /* slope of f' = 2a; |m|<=2 keeps a true 1:1 board a sensible size */
+a : m/2;                            /* leading coefficient of f (whole or half integer) */
+/* intercept k = b. Vertex x = -k/m must be an INTEGER, so m must divide k: any k when
+   |m|=1, but only even k when |m|=2. */
+kpool : if abs(m) = 1 then [-3,-2,-1,0,1,2,3] else [-2,0,2];
+k : rand(kpool);
+/* vertical shift c in -2..2, excluding two values: c = k (so the "used c" distractor stays
+   distinct from the correct intercept) and c = k^2/(2*m) (which would put the vertex ON the
+   x-axis, y_vertex = 0, collapsing the "line through the vertex" diagnostic). */
+c : rand(delete(k^2/(2*m), delete(k, [-2,-1,0,1,2])));
+
+fexpr : a*x^2 + k*x + c;            /* f(x), for display */
+
+/* Board: square [-8,8]^2 with keepAspectRatio TRUE, so a slope looks like that slope.
+   Vertex x = -k/m is always an integer (k chosen so m divides k), giving a clean
+   horizontal-tangent point to sample and place. */
+win     : 8;                        /* half-window (square window [-8,8] x [-8,8]) */
+/* Restrict the slider so A = (x, f(x)) stays on the board: |f(x)| <= win. The parabola
+   reaches the near board edge (top if it opens up, bottom if it opens down) at the
+   vertex +/- halfw, so slide x over [vertex - halfw, vertex + halfw]. */
+xslider_mid  : -k/m;                          /* vertex x: start A at the horizontal tangent */
+yvertex      : c - k^2/(4*a);                 /* vertex y */
+xedge_bound  : if a > 0 then win else -win;   /* the board edge the arms reach */
+xslider_dist : sqrt((xedge_bound - yvertex)/a) - 0.15;  /* half-width of {|f(x)| <= win}, inset slightly */
+yinit   : 3;                        /* starting height of the (wrong) purple line */
+
+/* Model-answer points: two lattice points on f'(x) = m x + k. */
+ta1 : [0, k];
+ta2 : [1, m + k];
+
+/* Values reused in feedback / worked solution. */
+vertex_x : -k/m;                    /* where the tangent is horizontal (gradient 0) */
+
+/* Worked solution reads f' off TWO points on the picture: the vertex (slope 0) and a
+   second sample. Use x = 0 for simplicity - unless the vertex is already at x = 0
+   (k = 0), in which case sample x = 1 so the two points are distinct. */
+wsx2     : if k = 0 then 1 else 0;
+wsslope2 : m*wsx2 + k;              /* tangent slope read off the graph at x = wsx2 */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:prt1]]</text>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( f(x)={@fexpr@};\ f'(x)={@m@}x+{@k@};\ a={@a@},\ c={@c@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* Read the two dragged points off the bound inputs. */
+x1 : ans1[1];  y1 : ans1[2];
+x2 : ans2[1];  y2 : ans2[2];
+dx : x2 - x1;
+/* Slope and intercept of the student's line, guarded against a vertical pair
+   (that degenerate case is caught first, at node 0). */
+sslope : if abs(dx) > 0.001 then (y2 - y1)/dx else 0;
+sint   : if abs(dx) > 0.001 then y1 - sslope*x1 else 0;
+/* Height of the student's line directly above the parabola's vertex - used to catch a
+   line drawn THROUGH the vertex point instead of through (vertex, 0) on the x-axis. */
+lineAtVertex : sslope*vertex_x + sint;]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Degenerate: are the two points stacked vertically (same x)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>dx</sans>
+        <tans>0</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-degenerate</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your two points \(P\) and \(Q\) are stacked vertically (the same \(x\)), so they don't define a slope. Drag them apart horizontally so the line runs left-to-right.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Does the line run through the parabola's vertex? Checked first, so it fires as soon as the line hits the vertex, whatever the slope.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>lineAtVertex</sans>
+        <tans>yvertex</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-vertex</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your line runs through the <em>vertex of the parabola</em>. The gradient there really is \(0\) &mdash; but on the graph of \(f'\) a slope of \(0\) means a <em>height</em> of \(0\), so that point belongs on the \(x\)-axis, at \(\left({@vertex_x@},\,0\right)\), not up at the turning point. Anchor your line there, on the axis, then check its steepness against the green slope-heights.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Is the slope of the student's line correct (= m)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>sslope</sans>
+        <tans>m</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>3</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Slope correct - is the intercept correct (= k)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>sint</sans>
+        <tans>k</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct &mdash; your line passes through the tangent-slope value at every \(x\), so it <em>is</em> the graph of \(f'\). For a quadratic, those slopes fall on a straight line.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Slope wrong - is it a instead of 2a (dropped the factor of 2)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>sslope</sans>
+        <tans>a</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-halfslope</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Close &mdash; the right idea, but your line is too shallow, by half. Sample a few tangents with the slider and watch the green point: its height changes <em>twice</em> as fast as your line does. Read two green slope-heights carefully and steepen your line to pass through them.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-slopewrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your line's slope doesn't match the tangent slopes. Drag the red point \(A\) to a few different \(x\)-values and watch the green point &mdash; those green heights are what your line must pass through. Remember you are plotting the <em>slopes</em> of \(f\), not the curve \(f\) itself.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description>Slope ok, intercept wrong - did they use the constant term c?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>sint</sans>
+        <tans>c</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-usedc</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your slope is right, but the line is shifted vertically &mdash; it looks like you read the intercept off the parabola (its height \(c\) at \(x=0\)) instead of off the tangent. Sliding \(f\) up or down doesn't tilt any tangent, so \(c\) has no effect on \(f'\). Move \(A\) to \(x=0\) and read the green point: that height is where \(f'\) crosses the axis.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-intwrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your slope is right, but the line crosses the \(y\)-axis in the wrong place. Move the red point \(A\) to \(x = 0\): the height of the green point there is \(f'(0)\), which is exactly where your line should cross the axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1011</deployedseed>
+    <deployedseed>2022</deployedseed>
+    <deployedseed>3033</deployedseed>
+    <deployedseed>4044</deployedseed>
+    <deployedseed>5055</deployedseed>
+    <deployedseed>6066</deployedseed>
+    <deployedseed>7077</deployedseed>
+    <deployedseed>8088</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct: two lattice points on f'(x)=mx+k.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct via a DIFFERENT pair of points on the same line.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([-1, -m+k],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([2, 2*m+k],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Degenerate: both points at the same x.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([1, m+k],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([1, m+k+3],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-degenerate</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Half-slope: line of slope a (=m/2) instead of 2a. (On rare variants where this slope-a line also happens to pass through the vertex, it is reported as prt1-vertex - run on another variant.)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([0, k],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([2, 2*a+k],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-halfslope</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Used c: correct slope but intercept = c. (On variants where the vertex sits on the y-axis, k=0, or k=2m, this same line also passes through the vertex and is reported as prt1-vertex - run on another variant.)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([0, c],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([1, m+c],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-usedc</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Correct slope, generic wrong intercept (not c, not k).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([0, k+7],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([1, m+k+7],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-intwrong</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Generic wrong slope (horizontal line at y=7, clear of every possible vertex height, so it lands on slopewrong not vertex).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[-2, 7]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[2, 7]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-slopewrong</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>8</testcase>
+      <description>Through the vertex: correct slope, but the line passes through the parabola's vertex (vertex_x, yvertex) rather than (vertex_x, 0).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([0, k+yvertex],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([1, m+k+yvertex],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-vertex</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

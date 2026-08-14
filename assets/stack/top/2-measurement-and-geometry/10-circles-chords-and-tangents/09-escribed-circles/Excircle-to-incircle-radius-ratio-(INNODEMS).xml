@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Excircle-to-incircle radius ratio (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>In triangle \(ABC\) the sides are
+\(a = BC = {@a@}\), \(b = CA = {@b@}\) and \(c = AB = {@c@}\).</p>
+
+<p>The <em>incircle</em> (inradius \(r\), blue) is drawn. The <em>excircle opposite \(A\)</em>
+(exradius \(r_a\), red) is also drawn; the line \(ED\) is parallel to \(CB\) and tangent to this
+excircle on the far side, meeting the extensions of \(AB\) and \(AC\) at \(E\) and \(D\), with
+\(a' = ED = {@aprime@}\).</p>
+
+[[jsxgraph width='460px' height='540px']]
+var a={#a#}, b={#b#}, c={#c#};
+var aprimeStr="{#aprime#}";
+var Bx=0,By=0,Cx=a,Cy=0;
+var Ax=(c*c-b*b+a*a)/(2*a);
+var Ay=Math.sqrt(Math.max(c*c-Ax*Ax,0));
+var per=a+b+c, s=per/2, area=0.5*a*Ay;
+var Ix=(a*Ax+c*Cx)/per, Iy=(a*Ay)/per, r=area/s;
+var den=-a+b+c;
+var Jx=(-a*Ax+c*Cx)/den, Jy=(-a*Ay)/den, ra=area/(s-a);
+var yED=Jy-ra;
+var Ex=Ax*(yED/Ay), Ey=yED;
+var u=1-yED/Ay, Dx=Ax+u*(Cx-Ax), Dy=yED;
+var xs=[Ax,Bx,Cx,Ex,Dx,Ix-r,Ix+r,Jx-ra,Jx+ra];
+var ys=[Ay,By,Cy,Ey,Dy,Iy+r,Jy-ra];
+var xmin=Math.min.apply(null,xs),xmax=Math.max.apply(null,xs),ymin=Math.min.apply(null,ys),ymax=Math.max.apply(null,ys);
+var pX=0.10*(xmax-xmin),pY=0.10*(ymax-ymin);
+var board=JXG.JSXGraph.initBoard(divid,{boundingbox:[xmin-pX,ymax+pY,xmax+pX,ymin-pY],
+  keepaspectratio:true,axis:false,showCopyright:false,showNavigation:false,pan:{enabled:false},zoom:{enabled:false}});
+var dim={strokeColor:'#9e9e9e',strokeWidth:1,dash:2,fixed:true,highlight:false};
+board.create('segment',[[Bx,By],[Ex,Ey]],dim);
+board.create('segment',[[Cx,Cy],[Dx,Dy]],dim);
+var A=board.create('point',[Ax,Ay],{fixed:true,highlight:false,name:'A',size:2,fillColor:'#222',strokeColor:'#222',label:{anchorY:'bottom', anchorX:'middle', fontSize:16}});
+var B=board.create('point',[Bx,By],{fixed:true,highlight:false,name:'B',size:2,fillColor:'#222',strokeColor:'#222',label:{anchorX:'right', anchorY:'top', offset:[-12,-8], fontSize:16}});
+var C=board.create('point',[Cx,Cy],{fixed:true,highlight:false,name:'C',size:2,fillColor:'#222',strokeColor:'#222',label:{anchorX:'left', anchorY:'top', offset:[10,-8], fontSize:16}});
+board.create('polygon',[A,B,C],{fixed:true,highlight:false,fillColor:'#e3f2fd',fillOpacity:0.45,
+  borders:{strokeColor:'#222',strokeWidth:2,highlight:false,fixed:true},vertices:{visible:false}});
+var E=board.create('point',[Ex,Ey],{fixed:true,highlight:false,name:'E',size:2,fillColor:'#2e7d32',strokeColor:'#2e7d32',label:{anchorX:'left', anchorY:'top', offset:[-12,-8], fontSize:16}});
+var D=board.create('point',[Dx,Dy],{fixed:true,highlight:false,name:'D',size:2,fillColor:'#2e7d32',strokeColor:'#2e7d32',label:{anchorX:'left', anchorY:'top', offset:[10,-8], fontSize:16}});
+board.create('segment',[E,D],{strokeColor:'#2e7d32',strokeWidth:2,fixed:true,highlight:false});
+function drawCircle(cx,cy,rad,ang,sym,col,lx,ly){
+  board.create('circle',[[cx,cy],rad],{strokeColor:col,strokeWidth:1.6,fillColor:'none',fixed:true,highlight:false});
+  board.create('point',[cx,cy],{fixed:true,highlight:false,size:1,fillColor:col,strokeColor:col,withLabel:false});
+  var ex=cx+rad*Math.cos(ang), ey=cy+rad*Math.sin(ang);
+  board.create('segment',[[cx,cy],[ex,ey]],{strokeColor:col,strokeWidth:1,fixed:true,highlight:false});
+  board.create('text',[(cx+ex)/2+lx,(cy+ey)/2+ly,sym],{fixed:true,highlight:false,fontSize:15,strokeColor:col,anchorX:'middle',anchorY:'middle'});
+}
+var sc=0.05*(xmax-xmin);
+drawCircle(Ix,Iy,r,2.094,'r','#1565c0',-0.5*sc,-0.5*sc);
+drawCircle(Jx,Jy,ra,0.349,'rₐ','#c62828',0,-1.1*sc);
+var dx=0.05*(xmax-xmin),dy=0.05*(ymax-ymin);
+board.create('text',[(Bx+Cx)/2,(By+Cy)/2-0.5*dy,'a = '+a],{fixed:true,highlight:false,fontSize:16,strokeColor:'#222',anchorX:'middle',anchorY:'middle'});
+board.create('text',[(Cx+Ax)/2+1.5*dx,(Cy+Ay)/2,'b = '+b],{fixed:true,highlight:false,fontSize:16,strokeColor:'#222',anchorX:'middle',anchorY:'middle'});
+board.create('text',[(Ax+Bx)/2-1.5*dx,(Ay+By)/2,'c = '+c],{fixed:true,highlight:false,fontSize:16,strokeColor:'#222',anchorX:'middle',anchorY:'middle'});
+board.create('text',[(Ex+Dx)/2,Ey-dy,"a' = "+aprimeStr],{fixed:true,highlight:false,fontSize:16,strokeColor:'#2e7d32',anchorX:'middle',anchorY:'middle'});
+[[/jsxgraph]]
+
+<p>Find the ratio of the exradius \(r_a\) to the inradius \(r\). Give your answer as a fraction in lowest terms.</p>
+
+<div>\( \dfrac{r_a}{r} = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Because \(ED \parallel CB\), triangles \(AED\) and \(ABC\) are similar, and the excircle
+opposite \(A\) is the <em>incircle</em> of the larger triangle \(AED\). Since \(r = \frac{\Delta}{s}\) scales linearly with the sides (as the semi-perimeter scales linearly and the area scales quadratically), the ratio of the two inradii is therefore the scale factor of the similarity, which is the ratio of any pair of
+corresponding sides:</p>
+\[ \frac{r_a}{r} \;=\; \frac{ED}{BC} \;=\; \frac{a'}{a} \;=\; \frac{{@aprime@}}{{@a@}} \;=\; {@ta1@}. \]
+<p>Equivalently, from \(r=\dfrac{\Delta}{s}\) and \(r_a=\dfrac{\Delta}{s-a}\) with
+\(s=\dfrac{a+b+c}{2}={@s@}\), the area \(\Delta\) cancels:</p>
+\[ \frac{r_a}{r} \;=\; \frac{\Delta/(s-a)}{\Delta/s} \;=\; \frac{s}{s-a}
+   \;=\; \frac{a+b+c}{\,b+c-a\,} \;=\; {@ta1@}. \]
+<p>Notice that \(b\) and \(c\) are not needed for the first solution.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[inr(t) := block([x:t[1],y:t[2],z:t[3],ss], ss:(x+y+z)/2,
+            sqrt(ss*(ss-x)*(ss-y)*(ss-z))/ss);   /* inradius of a triangle */
+alltri : [[4,5,6],[5,6,7],[6,7,8],[4,6,7],[5,7,8],[6,8,9],[7,8,10],[5,6,8]];
+/* drop any triangle with r = 1: then r_a = r_a/r, so the "found r_a" distractor
+   would coincide with the correct answer. (All curated cases have r ~ 1.3..2.2.) */
+data : sublist(alltri, lambda([t], is(float(inr(t)) # 1)));
+row : data[rand(length(data))+1];
+a : row[1];                /* BC, opposite A (smallest side) */
+b : row[2];                /* CA */
+c : row[3];                /* AB */
+s : (a+b+c)/2;             /* semi-perimeter */
+ratio : (a+b+c)/(b+c-a);   /* = s/(s-a) = r_a/r (exact rational) */
+recip : 1/ratio;           /* r/r_a : the reciprocal misconception */
+aprime : a*ratio;          /* a' = ED = a * scale factor (may be fractional) */
+area : sqrt(s*(s-a)*(s-b)*(s-c)); /* Heron area (an irrational surd) */
+rin  : area/s;             /* inradius r : gave a radius, not the ratio */
+rex  : area/(s-a);         /* exradius r_a : gave a radius, not the ratio */
+ta1 : ratio;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\(a={@a@},\,b={@b@},\,c={@c@},\,a'={@aprime@};\ \ r_a/r={@ta1@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: r_a/r to 3 s.f. (1% relative tol)</description>
+        <answertest>NumRelative</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Diagnose: reciprocal r/r_a; else generic</description>
+        <answertest>NumRelative</answertest>
+        <sans>ans1</sans>
+        <tans>recip</tans>
+        <testoptions>0.02</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-recip</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is \(\dfrac{r}{r_a}\), the reciprocal. The excircle is larger than the incircle, so \(\dfrac{r_a}{r} &gt; 1\). Take the reciprocal of your value.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Diagnose: gave the exradius r_a itself (2% rel tol)</description>
+        <answertest>NumRelative</answertest>
+        <sans>ans1</sans>
+        <tans>rex</tans>
+        <testoptions>0.02</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-exradius</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That looks like the exradius \(r_a\) itself, not the ratio. You still need to divide by the inradius: the answer is \(\dfrac{r_a}{r}\), a pure number with no length units.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Diagnose: gave the inradius r itself; else generic</description>
+        <answertest>NumRelative</answertest>
+        <sans>ans1</sans>
+        <tans>rin</tans>
+        <testoptions>0.02</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-inradius</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That looks like the inradius \(r\) itself, not the ratio. The question asks for \(\dfrac{r_a}{r}\) &mdash; divide the exradius by this value to get a pure number.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Since \(ED\) is parallel to \(BC\), triangles \(AED\) and \(ABC\) are similar; the ratio \(\dfrac{r_a}{r}\) is their scale factor. Compare a corresponding pair of lengths.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct ratio as a decimal</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(float(ta1),simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct ratio as an exact fraction</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta1,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Reciprocal r/r_a</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(float(recip),simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-recip</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Gave the exradius r_a itself</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(float(rex),simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-exradius</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Gave the inradius r itself</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(float(rin),simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-inradius</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Generic wrong value</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(float(ta1)+5,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
