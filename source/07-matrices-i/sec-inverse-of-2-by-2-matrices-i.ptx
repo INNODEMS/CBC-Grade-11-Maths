@@ -166,6 +166,53 @@
         </ul>
     </insight>
 
+    <exploration xml:id="exploration-inverse-undoes-transformation">
+        <title>Seeing an Inverse Undo a Transformation</title>
+        <p>
+            A matrix transforms the cat. The rotation matrix <m>R</m> turns it about the origin <m>O</m>, and the scaling matrix <m>S</m> stretches it. Their inverses <m>R^{-1}</m> and <m>S^{-1}</m> are the matrices that <em>undo</em> these transformations, returning the cat exactly to where it started.
+        </p>
+        <p>
+            Use the sliders to choose an angle <m>\theta</m> and the stretch factors <m>s_x</m> and <m>s_y</m>; the matrices on the right update as you do. Then press the buttons to apply a matrix or its inverse to the cat.
+        </p>
+        <interactive xml:id="interactive-inverse-rotation-scaling" platform="jsxgraph" width="90%" aspect="3:2.9" source="jsxgraph/inverse-rotation-scaling-matrices.js">
+            <sbsgroup>
+                <sidebyside width="90%" margins="0% 0%">
+                    <slate xml:id="jsx-inv-rot-scale" surface="jsxboard" aspect="3:2"/>
+                </sidebyside>
+                <sidebyside width="60%" margins="19% 10%">
+                    <slate surface="html">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                             style="display:grid; grid-template-columns:1fr 1fr; gap:6px; width:100%;">
+                            <input id="apply_rotation" type="button" value="Apply R (rotate)"
+                                onclick="applyRotation();" onkeypress="applyRotation();"
+                                style="font-size:15px; padding:6px;"/>
+                            <input id="apply_scaling" type="button" value="Apply S (scale)"
+                                onclick="applyScaling();" onkeypress="applyScaling();"
+                                style="font-size:15px; padding:6px;"/>
+                            <input id="apply_inverse_rotation" type="button" value="Apply R⁻¹ (rotate back)"
+                                onclick="applyInverseRotation();" onkeypress="applyInverseRotation();"
+                                style="font-size:15px; padding:6px;"/>
+                            <input id="apply_inverse_scaling" type="button" value="Apply S⁻¹ (unscale)"
+                                onclick="applyInverseScaling();" onkeypress="applyInverseScaling();"
+                                style="font-size:15px; padding:6px;"/>
+                            <input id="reset_transform" type="button" value="Reset to start"
+                                onclick="resetTransform();" onkeypress="resetTransform();"
+                                style="font-size:15px; padding:6px; grid-column:1 / span 2;"/>
+                        </div>
+                    </slate>
+                </sidebyside>
+            </sbsgroup>
+            <instructions>
+                <p>
+                    Pick an angle and stretch factors with the sliders. Press <c>Apply R</c> to rotate the cat, then <c>Apply R⁻¹</c> to send it back to where it began — this is what it means for <m>R^{-1}</m> to undo <m>R</m>. Do the same with <c>Apply S</c> and <c>Apply S⁻¹</c>. Press <c>Reset to start</c> at any time.
+                </p>
+            </instructions>
+        </interactive>
+        <p>
+            Because applying a matrix and then its inverse leaves the cat unchanged, we have <m>R^{-1}R = I</m> and <m>S^{-1}S = I</m>. Now try applying <em>both</em> transformations and undoing them: press <c>Apply R</c>, then <c>Apply S</c>. To get the cat back, you must undo them in the <em>reverse</em> order<mdash/><q>Apply S⁻¹</q> and then <q>Apply R⁻¹</q>. This is a first glimpse of the rule <m>\left(SR\right)^{-1} = R^{-1}S^{-1}</m>, which you will meet again <xref ref="shirt-and-jumper"/>.
+        </p>
+    </exploration>
+
     <note>
         <p>
             So far, we have explored what inverses do and how to verify them. In the next lesson (<xref ref="sec-inverse-of-2-by-2-matrices-ii"/>), we will develop a general formula for finding the inverse of any invertible 2 by 2 matrix.
@@ -447,7 +494,7 @@
             </solution>
         </exercise>
 
-        <exercise>
+        <exercise xml:id="shirt-and-jumper">
             <statement>
                 <p>
                     The scaling matrix
