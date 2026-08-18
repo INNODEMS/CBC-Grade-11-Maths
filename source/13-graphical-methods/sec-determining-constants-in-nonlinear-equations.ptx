@@ -41,6 +41,8 @@
         </introduction>
     </objectives>
 
+    <!-- [LP] Add guidance on activity -->
+
     <axiom component="lesson-plan">
         <title>Problem-Solving and Discovery</title>
         <dl>
@@ -59,7 +61,7 @@
             <li>
                 <title>Teacher's Role</title>
                 <p>
-                    Facilitate the "Cracking the Code" activity. Provide groups with "straightened" graphs and challenge them to find the original constants. Encourage them to verify their found values by testing a point from the original data.
+                    Guide students through the process of identifying the gradient and y-intercept from the straightened graph, and then using these values to determine the constants in the original non-linear equation.
                 </p>
             </li>
         </dl>
@@ -75,8 +77,38 @@
                 They plotted a graph of <m>\log P</m> against <m>\log V</m> to "straighten" the data.
             </p>
             <p>
-                The resulting straight line passes through the points <m>(1, 2.3)</m> and <m>(2, 0.9)</m>.
+                The resulting straight line passes through the points <m>(1, 2.3)</m> and <m>(2, 0.9)</m>, as shown below.
             </p>
+            <figure xml:id="fig-activity-log-pv">
+                <caption>Graph of <m>\log_{10} P</m> against <m>\log_{10} V</m> obtained by the engineers.</caption>
+                <image width="85%">
+                    <latex-image>
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                        grid=both,
+                        minor grid style={draw=gray!15, line width=0.2pt},
+                        major grid style={draw=gray!40, line width=0.4pt},
+                        minor tick num=1,
+                        axis lines=left,
+                        xlabel={$\log_{10} V$},
+                        ylabel={$\log_{10} P$},
+                        xmin=0, xmax=3, ymin=0, ymax=4.0,
+                        xtick={0,0.5,1.0,1.5,2.0,2.5, 3.0},
+                        ytick={0,0.5,1.0,1.5,2.0,2.5, 3.0, 3.5, 4.0},
+                        axis equal image,
+                        tick label style={font=\small},
+                        label style={font=\small}
+                        ]
+                        \addplot[blue, very thick] coordinates {(0, 3.7) (2.65, 0)};
+                        \addplot[only marks, mark=*, blue, mark size=2pt]
+                        coordinates {(1,2.3) (2,0.9)};
+                        \node[right, font=\small] at (axis cs:1,2.3) {$(1,\ 2.3)$};
+                        \node[right, font=\small] at (axis cs:2,0.9) {$(2,\ 0.9)$};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
             <p>
                 <alert>What to do:</alert>
                 <ol>
@@ -139,14 +171,14 @@
             <ul>
                 <li>
                     <p>
-                        For <m>y = ax^n \implies \lg y = n\lg x + \lg a</m>:
+                        For <m>y = ax^n \implies \log_{10} y = n\log_{10} x + \log_{10} a</m>:
                         <me>n = \text{gradient}</me>
                         <me>a = 10^{\text{intercept}}</me>
                     </p>
                 </li>
                 <li>
                     <p>
-                        For <m>y = ab^x \implies \lg y = (\lg b)x + \lg a</m>:
+                        For <m>y = ab^x \implies \log_{10} y = (\log_{10} b)x + \log_{10} a</m>:
                         <me>b = 10^{\text{gradient}}</me>
                         <me>a = 10^{\text{intercept}}</me>
                     </p>
@@ -226,6 +258,40 @@
                 </ol>
                 The values are <m>n = 2</m> and <m>k = 2</m>.
             </p>
+            <figure xml:id="fig-example-log-log-kxn">
+                <caption>Graph of <m>\log_{10} y</m> against <m>\log_{10} x</m> with gradient triangle showing <m>n = 2</m> and y-intercept giving <m>\log_{10} k = 0.3</m>.</caption>
+                <image width="60%">
+                    <latex-image>
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                        grid=both,
+                        minor grid style={draw=gray!15, line width=0.2pt},
+                        major grid style={draw=gray!40, line width=0.4pt},
+                        minor tick num=1,
+                        axis lines=left,
+                        xlabel={$\log_{10} x$},
+                        ylabel={$\log_{10} y$},
+                        xmin=0, xmax=0.65, ymin=0, ymax=1.55,
+                        xtick={0,0.1,0.2,0.3,0.4,0.5,0.6},
+                        ytick={0,0.3,0.6,0.9,1.2,1.5},
+                        width=7cm, height=7.5cm,
+                        tick label style={font=\small},
+                        label style={font=\small}
+                        ]
+                        \addplot[blue, very thick] coordinates {(0,0.3) (0.6,1.5)};
+                        \draw[dashed, gray, thick] (axis cs:0.2,0.7) -- (axis cs:0.5,0.7) -- (axis cs:0.5,1.3);
+                        \node[below, font=\small] at (axis cs:0.35,0.67) {$\Delta\log x = 0.3$};
+                        \node[right, font=\small] at (axis cs:0.51,1.0) {$\Delta\log y = 0.6$};
+                        \addplot[only marks, mark=*, blue, mark size=2pt]
+                        coordinates {(0.2,0.7) (0.5,1.3)};
+                        \addplot[only marks, mark=*, red, mark size=2.5pt]
+                        coordinates {(0,0.3)};
+                        \node[above right, font=\small] at (axis cs:0.01,0.3) {intercept $= 0.3 = \log_{10} k$};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
         </solution>
     </example>
 
@@ -272,6 +338,42 @@
             </ol>
             The values are <m>A = 100000</m> and <m>k = 0.316</m>.
             </p>
+            <figure xml:id="fig-example-log-y-vs-x-decay">
+                <caption>Graph of <m>\log_{10} y</m> against <m>x</m> with gradient <m>-0.5</m> and y-intercept <m>5</m>, giving <m>k = 10^{-0.5}</m> and <m>A = 10^5</m>.</caption>
+                <image width="90%">
+                    <latex-image>
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                        grid=both,
+                        minor grid style={draw=gray!15, line width=0.2pt},
+                        major grid style={draw=gray!40, line width=0.4pt},
+                        minor tick num=1,
+                        axis lines=left,
+                        xlabel={$x$},
+                        ylabel={$\log_{10} y$},
+                        xmin=0, xmax=11, ymin=0, ymax=5.5,
+                        xtick={0,2,4,6,8,10},
+                        ytick={0,1,2,3,4,5},
+                        width=7.5cm, height=7.5cm,
+                        tick label style={font=\small},
+                        axis equal image,
+                        label style={font=\small}
+                        ]
+                        \addplot[blue, very thick] coordinates {(0,5) (10,0)};
+                        \draw[dashed, gray, thick] (axis cs:2,4) -- (axis cs:4,4) -- (axis cs:4,3);
+                        \node[above, font=\small] at (axis cs:3,4.05) {run $= 2$};
+                        \node[right, font=\small] at (axis cs:4.1,3.5) {fall $= 1$};
+                        \addplot[only marks, mark=*, blue, mark size=2pt]
+                        coordinates {(2,4)};
+                        \addplot[only marks, mark=*, red, mark size=2.5pt]
+                        coordinates {(0,5)};
+                        \node[above right, font=\small] at (axis cs:0.2,5.0) {$\log_{10} A = 5$};
+                        \node[below left, font=\small] at (axis cs:2.1,4.0) {$(2,\ 4)$};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
         </solution>
     </example>
 
@@ -291,6 +393,37 @@
                     Result: <m>n=2, a=10</m>.
                 </p>
             </answer>
+            <solution>
+                <p>
+                    Given <m>y = ax^n</m>, the linear form is <m>\log y = n\log x + \log a</m>.
+                    We have points <m>(1, 3)</m> and <m>(3, 7)</m> on the <m>(\log x, \log y)</m> plane.
+                    <md>
+                        <mrow>n \amp= \frac{7 - 3}{3 - 1} = \frac{4}{2} = 2</mrow>
+                        <mrow>\log a \amp= 3 - 2(1) = 1 \implies a = 10^1 = 10</mrow>
+                    </md>
+                </p>
+                <image width="65%">
+                    <latex-image>
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                            axis lines=left,
+                            xlabel={$\log x$},
+                            ylabel={$\log y$},
+                            xmin=0, xmax=4,
+                            ymin=0, ymax=8,
+                            xtick={0,1,2,3,4},
+                            ytick={0,2,4,6,8},
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.2pt, draw=gray!30},
+                        ]
+                            \addplot[blue, thick, domain=0:4] {2*x + 1};
+                            \addplot[only marks, mark=*, mark size=2pt, red] coordinates {(1,3) (3,7)};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </solution>
         </exercise>
         <exercise>
             <statement>
@@ -323,6 +456,50 @@
                     </li>
                 </ol>
             </answer>
+            <solution>
+                <p>
+                    <ol>
+                        <li>
+                            <p>
+                                Linear form: <m>\log I = n \log d + \log k</m>.
+                                From the problem:
+                                <md>
+                                    <mrow>\text{Gradient } n \amp= -2</mrow>
+                                    <mrow>\text{Intercept } \log k \amp= 1.5 \implies k = 10^{1.5} \approx 31.6</mrow>
+                                </md>
+                            </p>
+                            <image width="65%">
+                                <latex-image>
+                                    \begin{tikzpicture}
+                                    \begin{axis}[
+                                        axis lines=left,
+                                        xlabel={$\log d$},
+                                        ylabel={$\log I$},
+                                        xmin=0, xmax=2,
+                                        ymin=-1, ymax=2,
+                                        xtick={0,0.5,1,1.5,2},
+                                        ytick={-1,0,1,2},
+                                        tick label style={font=\footnotesize},
+                                        grid=both,
+                                        grid style={line width=0.2pt, draw=gray!30},
+                                    ]
+                                        \addplot[blue, thick, domain=0:1.5] {-2*x + 1.5};
+                                        \addplot[only marks, mark=*, mark size=2pt, red] coordinates {(0,1.5)};
+                                        \node[right, font=\footnotesize] at (axis cs:0,1.5) {Intercept $(0, 1.5)$};
+                                    \end{axis}
+                                    \end{tikzpicture}
+                                </latex-image>
+                            </image>
+                        </li>
+                        <li>
+                            <p>
+                                When distance <m>d = 5</m>, <m>\log d \approx 0.7</m>.
+                                <md>I = 31.6 \times 5^{-2} = \frac{31.6}{25} = 1.264</md>
+                            </p>
+                        </li>
+                    </ol>
+                </p>
+            </solution>
         </exercise>
         <exercise>
             <statement>
@@ -340,6 +517,398 @@
                     Result: <m>a=3, b=2</m>.
                 </p>
             </answer>
+            <solution>
+                <p>
+                    Given <m>y^2 = ax + b</m>, we plot <m>y^2</m> on the vertical axis and <m>x</m> on the horizontal axis.
+                    The gradient is <m>a = 3</m> and the line passes through <m>(4, 14)</m> on the <m>(x, y^2)</m> plane.
+                    <md>
+                        <mrow>y^2 \amp= 3x + b</mrow>
+                        <mrow>14 \amp= 3(4) + b \implies b = 2</mrow>
+                    </md>
+                </p>
+                <image width="65%">
+                    <latex-image>
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                            axis lines=left,
+                            xlabel={$x$},
+                            ylabel={$y^2$},
+                            xmin=0, xmax=6,
+                            ymin=0, ymax=20,
+                            xtick={0,2,4,6},
+                            ytick={0,5,10,15,20},
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.2pt, draw=gray!30},
+                        ]
+                            \addplot[blue, thick, domain=0:6] {3*x + 2};
+                            \addplot[only marks, mark=*, mark size=2pt, red] coordinates {(4,14)};
+                            \node[below right, font=\footnotesize] at (axis cs:4,14) {$(4, 14)$};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    Variables <m>x</m> and <m>y</m> satisfy the equation <m>y = ax^2 + b</m>. A student plots <m>y</m> against <m>x^2</m> and obtains a straight line with gradient <m>3</m> passing through the point <m>(4,\ 15)</m>.
+                    Find <m>a</m> and <m>b</m>.
+                </p>
+            </statement>
+            <solution>
+                <p>
+                    Let <m>Y = y</m> and <m>X = x^2</m>. The equation becomes <m>Y = aX + b</m>, so the gradient equals <m>a</m> and the y-intercept equals <m>b</m>.
+                    <md>a = 3</md>
+                    Substituting the point <m>(X, Y) = (4, 15)</m>:
+                    <md>15 = 3(4) + b \implies b = 3</md>
+                    Therefore <m>a = 3</m> and <m>b = 3</m>, giving <m>y = 3x^2 + 3</m>.
+                </p>
+                <image width="65%">
+                    <latex-image>
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                            axis lines=left,
+                            xlabel={$x^2$},
+                            ylabel={$y$},
+                            xmin=0, xmax=6,
+                            ymin=0, ymax=25,
+                            xtick={0,2,4,6},
+                            ytick={0,5,10,15,20},
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.2pt, draw=gray!30},
+                        ]
+                            \addplot[blue, thick, domain=0:6] {3*x + 3};
+                            \addplot[only marks, mark=*, mark size=2pt, red] coordinates {(4,15)};
+                            \node[below right, font=\footnotesize] at (axis cs:4,15) {$(4, 15)$};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The variables <m>x</m> and <m>y</m> are related by <m>y = ab^x</m>.
+                    A graph of <m>\log y</m> against <m>x</m> gives a straight line with gradient <m>0.477</m> and y-intercept <m>0.301</m>.
+                </p>
+                <ol>
+                    <li><p>Find the values of <m>a</m> and <m>b</m>.</p></li>
+                    <li><p>Calculate <m>y</m> when <m>x = 5</m>.</p></li>
+                </ol>
+            </statement>
+            <solution>
+                <ol>
+                    <li>
+                        <p>
+                            Linearizing: <m>\log y = (\log b)\,x + \log a</m>. So:
+                            <md>
+                                <mrow>\log b \amp= 0.477 \implies b = 10^{0.477} = 3</mrow>
+                                <mrow>\log a \amp= 0.301 \implies a = 10^{0.301} = 2</mrow>
+                            </md>
+                            Therefore <m>a = 2</m> and <m>b = 3</m>, giving <m>y = 2 \times 3^x</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>y = 2 \times 3^5 = 2 \times 243 = 486</md>
+                        </p>
+                    </li>
+                </ol>
+                <image width="65%">
+                    <latex-image>
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                            axis lines=left,
+                            xlabel={$x$},
+                            ylabel={$\log y$},
+                            xmin=0, xmax=2,
+                            ymin=0, ymax=1.5,
+                            xtick={0,0.5,1,1.5,2},
+                            ytick={0,0.5,1},
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.2pt, draw=gray!30},
+                        ]
+                            \addplot[blue, thick, domain=0:2] {0.477*x + 0.301};
+                            \addplot[only marks, mark=*, mark size=2pt, red] coordinates {(0,0.301)};
+                            \node[right, font=\footnotesize] at (axis cs:0,0.301) {Intercept $0.301$};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    Variables <m>x</m> and <m>y</m> satisfy the law <m>y = a + \dfrac{b}{x}</m>. When <m>y</m> is plotted against <m>\dfrac{1}{x}</m>, a straight line is obtained passing through the points <m>(0.125,\ 4)</m> and <m>(1,\ 11)</m>. Find <m>a</m> and <m>b</m>.
+                </p>
+            </statement>
+            <solution>
+                <p>
+                    Let <m>Y = y</m> and <m>X = \dfrac{1}{x}</m>. The equation becomes <m>Y = bX + a</m>, so the gradient is <m>b</m> and the y-intercept is <m>a</m>.
+                    <md>b = \frac{11 - 4}{1 - 0.125} = \frac{7}{0.875} = 8</md>
+                    Using the point <m>(0.125, 4)</m>:
+                    <md>4 = 8(0.125) + a \implies 4 = 1 + a \implies a = 3</md>
+                    Therefore <m>a = 3</m> and <m>b = 8</m>, giving <m>y = 3 + \dfrac{8}{x}</m>.
+                </p>
+                <image width="65%">
+                    <latex-image>
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                            axis lines=left,
+                            xlabel={$1/x$},
+                            ylabel={$y$},
+                            xmin=0, xmax=1.2,
+                            ymin=0, ymax=12,
+                            xtick={0,0.2,0.4,0.6,0.8,1.0},
+                            ytick={0,2,4,6,8,10,12},
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.2pt, draw=gray!30},
+                        ]
+                            \addplot[blue, thick, domain=0:1.1] {8*x + 3};
+                            \addplot[only marks, mark=*, mark size=2pt, red] coordinates {(0.125,4) (1,11)};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    A student investigates the relationship between the length <m>L</m> (cm) of a pendulum and the period <m>T</m> (seconds) of its swing.
+                </p>
+                <tabular bottom="minor" top="minor" left="minor" right="minor">
+                    <row><cell><m>L</m> (cm)</cell><cell>25</cell><cell>50</cell><cell>75</cell><cell>100</cell></row>
+                    <row><cell><m>T</m> (s)</cell><cell>1.00</cell><cell>1.41</cell><cell>1.73</cell><cell>2.00</cell></row>
+                </tabular>
+                <p>
+                    The relationship is believed to follow <m>T^2 = kL</m>.
+                </p>
+                <ol>
+                    <li><p>Construct a table of <m>T^2</m> against <m>L</m>.</p></li>
+                    <li><p>Plot <m>T^2</m> against <m>L</m> and draw the best straight line through the origin.</p></li>
+                    <li><p>Find the value of the constant <m>k</m> from your graph.</p></li>
+                    <li><p>Use your equation to predict the period of a pendulum of length 150 cm.</p></li>
+                </ol>
+            </statement>
+            <solution>
+                <ol>
+                    <li>
+                        <p>
+                            <tabular bottom="minor" top="minor" left="minor" right="minor">
+                                <row><cell><m>L</m> (cm)</cell><cell>25</cell><cell>50</cell><cell>75</cell><cell>100</cell></row>
+                                <row><cell><m>T^2</m> (s²)</cell><cell>1.00</cell><cell>1.99</cell><cell>2.99</cell><cell>4.00</cell></row>
+                            </tabular>
+                        </p>
+                    </li>
+                    <li>
+                        <p>The points lie very close to a straight line through the origin.</p>
+                        <image width="65%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis lines=left,
+                                    xlabel={$L$ (cm)},
+                                    ylabel={$T^2$ (s$^2$)},
+                                    xmin=0, xmax=120,
+                                    ymin=0, ymax=5,
+                                    xtick={0,20,40,60,80,100},
+                                    ytick={0,1,2,3,4,5},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.2pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick, domain=0:110] {0.04*x};
+                                    \addplot[only marks, mark=*, mark size=2pt, red] coordinates {(25,1.00) (50,1.99) (75,2.99) (100,4.00)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li>
+                        <p>
+                            Using the point <m>(100,\ 4.00)</m>:
+                            <md>k = \frac{T^2}{L} = \frac{4.00}{100} = 0.04 \text{ s}^2\text{/cm}</md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>T^2 = 0.04 \times 150 = 6 \implies T = \sqrt{6} \approx 2.45 \text{ s}</md>
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    A radioactive sample decays according to the law <m>N = N_0 e^{-\lambda t}</m>, where <m>N</m> is the number of atoms at time <m>t</m> (seconds). A graph of <m>\ln N</m> against <m>t</m> is a straight line with gradient <m>-0.03</m> and y-intercept <m>5.6</m>.
+                </p>
+                <ol>
+                    <li><p>Find the values of <m>\lambda</m> and <m>N_0</m> (to 3 s.f.).</p></li>
+                    <li><p>Find the number of atoms present after 40 seconds.</p></li>
+                </ol>
+            </statement>
+            <solution>
+                <ol>
+                    <li>
+                        <p>
+                            Linearizing: <m>\ln N = -\lambda t + \ln N_0</m>. Comparing:
+                            <md>
+                                <mrow>\lambda \amp= 0.03</mrow>
+                                <mrow>\ln N_0 \amp= 5.6 \implies N_0 = e^{5.6} \approx 270</mrow>
+                            </md>
+                        </p>
+                        <image width="65%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis lines=left,
+                                    xlabel={$t$},
+                                    ylabel={$\ln N$},
+                                    xmin=0, xmax=50,
+                                    ymin=4, ymax=6,
+                                    xtick={0,10,20,30,40,50},
+                                    ytick={4.0,4.5,5.0,5.5,6.0},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.2pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick, domain=0:50] {-0.03*x + 5.6};
+                                    \addplot[only marks, mark=*, mark size=2pt, red] coordinates {(0,5.6)};
+                                    \node[right, font=\footnotesize] at (axis cs:0,5.6) {Intercept $5.6$};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li>
+                        <p>
+                            <md>N = 270\,e^{-0.03 \times 40} = 270\,e^{-1.2} \approx 270 \times 0.301 \approx 81 \text{ atoms}</md>
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    A scientist suspects the data below follows a power law <m>y = ax^n</m>. Complete the table of <m>\log x</m> and <m>\log y</m> values, plot <m>\log y</m> against <m>\log x</m>, and hence find <m>a</m> and <m>n</m>.
+                </p>
+                <tabular bottom="minor" top="minor" left="minor" right="minor">
+                    <row><cell><m>x</m></cell><cell>1</cell><cell>2</cell><cell>4</cell><cell>8</cell></row>
+                    <row><cell><m>y</m></cell><cell>3</cell><cell>12</cell><cell>48</cell><cell>192</cell></row>
+                    <row><cell><m>\log x</m></cell><cell>0</cell><cell>0.301</cell><cell>0.602</cell><cell>0.903</cell></row>
+                    <row><cell><m>\log y</m></cell><cell></cell><cell></cell><cell></cell><cell></cell></row>
+                </tabular>
+            </statement>
+            <solution>
+                <p>
+                    Completed table:
+                    <tabular bottom="minor" top="minor" left="minor" right="minor">
+                        <row><cell><m>\log x</m></cell><cell>0</cell><cell>0.301</cell><cell>0.602</cell><cell>0.903</cell></row>
+                        <row><cell><m>\log y</m></cell><cell>0.477</cell><cell>1.079</cell><cell>1.681</cell><cell>2.283</cell></row>
+                    </tabular>
+                </p>
+                <p>
+                    The graph of <m>\log y</m> vs <m>\log x</m> is a straight line, confirming a power law.
+                    <md>n = \frac{2.283 - 0.477}{0.903 - 0} = \frac{1.806}{0.903} = 2</md>
+                    <md>\log a = 0.477 \implies a = 10^{0.477} = 3</md>
+                    Therefore <m>y = 3x^2</m>.
+                </p>
+                <image width="65%">
+                    <latex-image>
+                        \begin{tikzpicture}
+                        \begin{axis}[
+                            axis lines=left,
+                            xlabel={$\log x$},
+                            ylabel={$\log y$},
+                            xmin=0, xmax=1.0,
+                            ymin=0, ymax=2.5,
+                            xtick={0,0.2,0.4,0.6,0.8,1.0},
+                            ytick={0,0.5,1.0,1.5,2.0,2.5},
+                            tick label style={font=\footnotesize},
+                            grid=both,
+                            grid style={line width=0.2pt, draw=gray!30},
+                        ]
+                            \addplot[blue, thick, domain=0:1.0] {2*x + 0.477};
+                            \addplot[only marks, mark=*, mark size=2pt, red] coordinates {(0,0.477) (0.301,1.079) (0.602,1.681) (0.903,2.283)};
+                        \end{axis}
+                        \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </solution>
+        </exercise>
+
+        <exercise>
+            <statement>
+                <p>
+                    The intensity <m>P</m> of sound from a speaker is recorded at various distances <m>d</m> (metres). When <m>\log P</m> is plotted against <m>\log d</m>, the straight line passes through <m>(0,\ 2)</m> and <m>(1,\ 0)</m>.
+                </p>
+                <ol>
+                    <li><p>Find the gradient and y-intercept of the line.</p></li>
+                    <li><p>Write down the law relating <m>P</m> and <m>d</m>.</p></li>
+                    <li><p>Calculate the intensity at a distance of 5 metres.</p></li>
+                </ol>
+            </statement>
+            <solution>
+                <ol>
+                    <li>
+                        <p>
+                            <md>
+                                <mrow>\text{gradient} \amp= \frac{0 - 2}{1 - 0} = -2</mrow>
+                                <mrow>\text{y-intercept} \amp= 2</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            From <m>\log P = -2\log d + 2</m>:
+                            <md>n = -2, \quad \log a = 2 \implies a = 100</md>
+                            Law: <m>P = 100d^{-2} = \dfrac{100}{d^2}</m> (the inverse square law of sound intensity).
+                        </p>
+                        <image width="65%">
+                            <latex-image>
+                                \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis lines=left,
+                                    xlabel={$\log d$},
+                                    ylabel={$\log P$},
+                                    xmin=0, xmax=1.2,
+                                    ymin=-0.5, ymax=2.5,
+                                    xtick={0,0.2,0.4,0.6,0.8,1.0},
+                                    ytick={0,0.5,1.0,1.5,2.0,2.5},
+                                    tick label style={font=\footnotesize},
+                                    grid=both,
+                                    grid style={line width=0.2pt, draw=gray!30},
+                                ]
+                                    \addplot[blue, thick, domain=0:1.1] {-2*x + 2};
+                                    \addplot[only marks, mark=*, mark size=2pt, red] coordinates {(0,2) (1,0)};
+                                \end{axis}
+                                \end{tikzpicture}
+                            </latex-image>
+                        </image>
+                    </li>
+                    <li>
+                        <p>
+                            <md>P = \frac{100}{5^2} = \frac{100}{25} = 4 \text{ units}</md>
+                        </p>
+                    </li>
+                </ol>
+            </solution>
         </exercise>
     </exercises>
 
