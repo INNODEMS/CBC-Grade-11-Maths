@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Incircle radius of a non-right triangle (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>In triangle \(ABC\) the sides are
+\(a = BC = {@opp@}\) cm, \(b = CA = {@p@}\) cm and \(c = AB = {@q@}\) cm,
+and the angle at \(A\) is \(\widehat{A} = {@ang@}^\circ\) (marked in orange).</p>
+
+<p>Find the radius of the <em>inscribed</em> circle (centre \(I\), in blue), in centimetres.
+Work through the steps below, giving each answer <strong>to 3 decimal places</strong>.</p>
+
+[[jsxgraph width='450px' height='430px']]
+var Ax=0, Ay=0, Bx={#q#}, By=0, Cx={#Cxv#}, Cy={#Cyv#};   // angle given at A
+var la=Math.hypot(Bx-Cx,By-Cy), lb=Math.hypot(Ax-Cx,Ay-Cy), lc=Math.hypot(Ax-Bx,Ay-By);
+var per=la+lb+lc;
+var area=Math.abs((Bx-Ax)*(Cy-Ay)-(Cx-Ax)*(By-Ay))/2, r=area/(per/2);
+var Ix=(la*Ax+lb*Bx+lc*Cx)/per, Iy=(la*Ay+lb*By+lc*Cy)/per;
+var xs=[Ax,Bx,Cx,Ix-r,Ix+r], ys=[Ay,By,Cy,Iy-r,Iy+r];
+var xmin=Math.min.apply(null,xs),xmax=Math.max.apply(null,xs),ymin=Math.min.apply(null,ys),ymax=Math.max.apply(null,ys);
+var pX=0.16*(xmax-xmin),pY=0.16*(ymax-ymin);
+var board=JXG.JSXGraph.initBoard(divid,{boundingbox:[xmin-pX,ymax+pY,xmax+pX,ymin-pY],
+keepaspectratio:true,axis:false,showCopyright:false,showNavigation:false,pan:{enabled:false},zoom:{enabled:false}});
+var A=board.create('point',[Ax,Ay],{fixed:true,highlight:false,name:'A',size:2,label:{offset:[-12,-8]}});
+var B=board.create('point',[Bx,By],{fixed:true,highlight:false,name:'B',size:2,label:{offset:[10,-8]}});
+var C=board.create('point',[Cx,Cy],{fixed:true,highlight:false,name:'C',size:2,label:{offset:[0,12]}});
+board.create('polygon',[A,B,C],{fixed:true,highlight:false,fillColor:'#e3f2fd',fillOpacity:0.5,
+borders:{strokeColor:'#222',strokeWidth:2,highlight:false,fixed:true},vertices:{visible:false}});
+board.create('angle',[B,A,C],{type:'sector',radius:Math.min(la,lb,lc)*0.1,selection:'minor',
+fillColor:'#ffb74d',fillOpacity:0.45,strokeColor:'#ef6c00',name:{#ang#}+'°',withLabel:true,fixed:true,highlight:false});
+board.create('circle',[[Ix,Iy],r],{strokeColor:'#1565c0',strokeWidth:1.5,fillColor:'none',fixed:true,highlight:false});
+board.create('point',[Ix,Iy],{fixed:true,highlight:false,name:'I',size:1,strokeColor:'#1565c0',fillColor:'#1565c0',label:{offset:[6,-2]}});
+var sl={fixed:true,highlight:false,fontSize:15,anchorX:'middle',anchorY:'middle'};
+var dx=0.06*(xmax-xmin),dy=0.06*(ymax-ymin);
+board.create('text',[(Bx+Cx)/2+dx,(By+Cy)/2+dy,'a = '+{#opp#}],sl);
+board.create('text',[(Cx+Ax)/2-dx,(Cy+Ay)/2,'b = '+{#p#}],sl);
+board.create('text',[(Ax+Bx)/2,(Ay+By)/2-dy,'c = '+{#q#}],sl);
+[[/jsxgraph]]
+
+<div><strong>Step 1.</strong> The semi-perimeter is \(s = \) [[input:ans1]] [[validation:ans1]] cm (to 3 d.p.) [[feedback:prt1]]</div>
+
+<div><strong>Step 2.</strong> The triangle area is \(\Delta = \) [[input:ans2]] [[validation:ans2]] cm\(^2\) (to 3 d.p.) [[feedback:prt2]]</div>
+
+<div><strong>Step 3.</strong> The inradius \(r = \) [[input:ans3]] [[validation:ans3]] cm (to 3 d.p.) [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Work step by step.</p>
+\[ s = \frac{a+b+c}{2} = \frac{{@opp@}+{@p@}+{@q@}}{2} = {@ssemiexact@} \approx {@dispdp(ssemi,3)@}, \]
+\[ \Delta = \sqrt{s(s-a)(s-b)(s-c)} = {@areaexact@} \approx {@dispdp(area,3)@}, \]
+\[ r = \frac{\Delta}{s} = {@rinexact@} \approx {@dispdp(rin,3)@}\text{ cm}. \]
+<p>So, to 3 decimal places, \(s \approx {@dispdp(ssemi,3)@}\) cm,
+\(\Delta \approx {@dispdp(area,3)@}\) cm\(^2\) and
+\(r \approx {@dispdp(rin,3)@}\) cm.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>data : [[5,8,7,60],[3,8,7,60],[8,15,13,60],[7,15,13,60],[3,5,7,120],[7,8,13,120]];
+    row  : data[rand(6)+1];
+    p    : row[1];            /* b = CA, opposite B */
+    q    : row[2];            /* c = AB, opposite C */
+    opp  : row[3];            /* a = BC, opposite A (the given-angle vertex) */
+    ang  : row[4];            /* angle A in degrees (60 or 120) */
+    th   : ang*%pi/180;
+    ssemiexact: (p + q + opp)/2;                              /* semi-perimeter s */
+    areaexact : sqrt(ssemiexact*(ssemiexact-opp)*(ssemiexact-p)*(ssemiexact-q));  /* Heron's formula (an exact surd) */
+    rinexact  : areaexact/ssemiexact;        /* inradius = area / s */
+    ssemi : decimalplaces(float(ssemiexact), 3);
+    area  : decimalplaces(float(areaexact), 3);
+    rin   : decimalplaces(float(rinexact), 3);
+    dia  : 2*rinexact;             /* twice the radius: missing 1/2, or the diameter */
+    Cxv  : float(p*cos(th));  /* vertex C for the figure */
+    Cyv  : float(p*sin(th));
+    ta1  : ssemi;             /* model answer, step 1 */
+    ta2  : area;              /* model answer, step 2 */
+    ta3  : rin;               /* model answer, step 3 */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\(a={@opp@}, b={@p@}, c={@q@}, A={@ang@}^\circ\); \(s={@dispdp(ssemi,3)@}\), \(\Delta={@dispdp(area,3)@}\), \(r={@dispdp(rin,3)@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>numerical</type>
+      <tans>ta3</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct semi-perimeter (3 d.p.)</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ssemi</tans>
+        <testoptions>0.0005</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct semi-perimeter.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Diagnose: gave the full perimeter, not the semi-perimeter</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>opp+p+q</tans>
+        <testoptions>0.0005</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-perim</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the full perimeter \(a+b+c\). The <em>semi</em>-perimeter is half of it: \(s=\dfrac{a+b+c}{2}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. The semi-perimeter is \(s=\dfrac{a+b+c}{2}\) (round to 3 d.p.).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[cfa : ans1*(ans1-opp)*(ans1-p)*(ans1-q);
+cfarea : if cfa>0 then float(sqrt(cfa)) else -1;]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct area (3 d.p.)</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>area</tans>
+        <testoptions>0.0005</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct area.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Carry forward: Heron applied correctly to the student's own (incorrect) s</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>cfarea</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-cf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have applied Heron's formula correctly, but to an incorrect semi-perimeter. Marks carried forward. With the correct \(s\), \(\Delta=\sqrt{s(s-a)(s-b)(s-c)}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Use Heron's formula \(\Delta=\sqrt{s(s-a)(s-b)(s-c)}\) with your semi-perimeter \(s\) (round to 3 d.p.).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>cfr : if ans1#0 then float(ans2/ans1) else -1;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct inradius (3 d.p.)</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>rin</tans>
+        <testoptions>0.0005</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct inradius.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Carry forward: r = (student's area) / (student's s)</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>cfr</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-cf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct method: you divided your area by your semi-perimeter, \(r=\dfrac{\Delta}{s}\). Marks carried forward, although the earlier value(s) were not exact.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Diagnose: value is about twice the radius (diameter / missing 1/2)</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>dia</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-twice</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your value is about twice the inradius - that is the diameter. The radius is half of it: \(r=\dfrac{\Delta}{s}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Diagnose: gave the area, did not divide by s</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ans2</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-area</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the area, not the radius. Divide by the semi-perimeter: \(r=\dfrac{\Delta}{s}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. The inradius is \(r=\dfrac{\Delta}{s}\) (round to 3 d.p.).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All three steps correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ssemi</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>area</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>rin</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong s, but Heron and r carried forward correctly (half + full ECF)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ssemi+1,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(round(float(sqrt((ssemi+1)*((ssemi+1)-opp)*((ssemi+1)-p)*((ssemi+1)-q)))*1000)/1000,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ev(round(((round(float(sqrt((ssemi+1)*((ssemi+1)-opp)*((ssemi+1)-p)*((ssemi+1)-q)))*1000)/1000)/(ssemi+1))*1000)/1000,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-cf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-cf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Gave full perimeter for s; area and r (true values) still correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(opp+p+q,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>area</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>rin</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-perim</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>s and area correct; gave the diameter for r</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ssemi</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>area</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ev(round(float(dia)*1000)/1000,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-twice</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>s and area correct; gave the area again for r</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ssemi</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>area</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>area</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-area</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>s correct; area wrong (not ECF); generic wrong area and radius</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ssemi</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>area+5</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>rin+5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

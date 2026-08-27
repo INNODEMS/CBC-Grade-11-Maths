@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Matrix addition and subtraction in context (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[[[ if test="is(ctx=1)" ]]
+<p>{@nE@} classes keep a record of how many books they borrow from the school library, in {@nC@} categories ({@catStr@}). The numbers borrowed on {@per1@} are given by the matrix \(M\), and those borrowed on {@per2@} by the matrix \(T\).</p>
+[[/ if ]][[ if test="is(ctx=2)" ]]
+<p>{@nE@} market stalls record how much produce they sell, in {@nC@} types ({@catStr@}). Their sales in kilograms on {@per1@} are given by the matrix \(M\), and on {@per2@} by the matrix \(T\).</p>
+[[/ if ]][[ if test="is(ctx=3)" ]]
+<p>A shop has {@nElow@} branches that record how many items they sell, in {@nC@} product lines ({@catStr@}). The numbers sold in {@per1@} are given by the matrix \(M\), and in {@per2@} by the matrix \(T\).</p>
+[[/ if ]][[ if test="is(ctx=4)" ]]
+<p>{@nE@} farms record their harvest, in {@nC@} crops ({@catStr@}). The number of bags harvested {@per1@} is given by the matrix \(M\), and {@per2@} by the matrix \(T\).</p>
+[[/ if ]][[ if test="is(ctx=5)" ]]
+<p>{@nE@} wildlife conservancies count the animals seen during an annual survey, in {@nC@} species ({@catStr@}). The numbers recorded in {@per1@} are given by the matrix \(M\), and in {@per2@} by the matrix \(T\).</p>
+[[/ if ]][[ if test="is(ctx=6)" ]]
+<p>{@nE@} clinics record how many patients they see, in {@nC@} services ({@catStr@}). The numbers seen in {@per1@} are given by the matrix \(M\), and in {@per2@} by the matrix \(T\).</p>
+[[/ if ]]
+<p>\[ M = {@MM@} \qquad T = {@TT@} \]</p>
+<p>In each matrix the rows represent {@entStr@}, and the columns represent {@catStr@}, in that order.</p>
+<p><b>(a)</b> Find the total for {@per1@} and {@per2@} combined.</p>
+<div>\( M+T = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p><b>(b)</b> Find the change from {@per1@} to {@per2@} (that is, \(T-M\)).</p>
+<div>\( T-M = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>You add (or subtract) two matrices of the same size <em>entry by entry</em>: each entry of the answer comes from the entries in the same position.</p>
+<p><b>(a)</b> Add corresponding entries:</p>
+\[ M+T = {@MM@} + {@TT@} = {@sumM@}. \]
+<p><b>(b)</b> Subtract corresponding entries, keeping the order \(T-M\):</p>
+\[ T-M = {@TT@} - {@MM@} = {@diffM@}. \]
+<p>In part (b) a positive entry is an increase from {@per1@} to {@per2@}, and a negative entry is a decrease.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Context bank: rows = entities, columns = categories, the two matrices = two
+   time periods, so M+T is the combined total and T-M is the change. Each list
+   holds 3 items so the question works at either 2 or 3 rows / 2 or 3 columns. */
+allcats : [ ["Fiction","Science","History"],
+            ["tomatoes","onions","potatoes"],
+            ["bread","milk","sugar"],
+            ["maize","beans","sorghum"],
+            ["elephants","zebras","giraffes"],
+            ["immunisations","antenatal visits","dental visits"] ];
+allents : [ ["Class 1","Class 2","Class 3"],
+            ["Stall A","Stall B","Stall C"],
+            ["the Eastleigh branch","the Westlands branch","the Kasarani branch"],
+            ["Farm A","Farm B","Farm C"],
+            ["Tsavo","Amboseli","Nairobi"],
+            ["the Embu clinic","the Meru clinic","the Nyeri clinic"] ];
+allper  : [ ["Monday","Tuesday"],
+            ["Saturday","Sunday"],
+            ["Week 1","Week 2"],
+            ["last season","this season"],
+            ["the 2024 count","the 2025 count"],
+            ["January","February"] ];
+allunit : ["books","kilograms","items","bags","animals","patients"];
+
+/* string helpers */
+numword(k) := if is(k=2) then "two" else "three";
+capword(k) := if is(k=2) then "Two" else "Three";
+listjoin(L) := if is(length(L)=1) then L[1]
+  else sconcat(simplode(rest(L,-1), ", "), " and ", last(L));
+
+/* choose the variant */
+ctx  : rand(6)+1;
+nrow : rand(2)+2;          /* 2 or 3 entities  */
+ncol : rand(2)+2;          /* 2 or 3 categories */
+
+cats : allcats[ctx];  catsU : makelist(cats[j], j, 1, ncol);
+ents : allents[ctx];  entsU : makelist(ents[i], i, 1, nrow);
+per  : allper[ctx];   per1 : per[1];  per2 : per[2];
+unit : allunit[ctx];
+catStr : listjoin(catsU);
+entStr : listjoin(entsU);
+nE    : capword(nrow);     /* "Two"/"Three" to start a sentence */
+nElow : numword(nrow);     /* "two"/"three" mid-sentence        */
+nC    : numword(ncol);     /* "two"/"three" categories          */
+
+/* Design backwards: pick M (3..14) and a non-zero change D in {-3..4}\{0},
+   then T = M + D so every entry of T is >= 0 and D is never the zero matrix. */
+MM : genmatrix(lambda([i,j], rand(12)+3), nrow, ncol);
+DD : genmatrix(lambda([i,j], rand([-3,-2,-1,1,2,3,4])), nrow, ncol);
+TT : MM + DD;
+
+sumM    : MM + TT;         /* (a) total            */
+diffM   : TT - MM;         /* (b) change ( = D )   */
+diffRev : MM - TT;         /* error: subtracted in the wrong order */
+onesM   : genmatrix(lambda([i,j], 1), nrow, ncol);
+wrongSum  : sumM + onesM;  /* generic wrong answers for the catch-all branches */
+wrongDiff : diffM + onesM;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( \text{ctx}={@ctx@},\ {@nrow@}\times{@ncol@},\ M={@MM@},\ T={@TT@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>matrix</type>
+      <tans>sumM</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>matrix</type>
+      <tans>diffM</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Part (a) correct: M+T</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>sumM</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Gave the difference T-M instead of the total</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>diffM</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-usedDiff</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the <em>difference</em> \(T-M\). Part (a) asks for the combined total, so <strong>add</strong> matching entries: \(M+T\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Subtracted instead of added (M-T)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>diffRev</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-subtracted</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you subtracted. For the <em>total</em> you add the corresponding entries of \(M\) and \(T\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Add each entry of \(M\) to the entry in the same position of \(T\). See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Part (b) correct: T-M</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>diffM</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Subtracted in the wrong order (M-T)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>diffRev</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-reversed</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You subtracted in the wrong order. The question asks for \(T-M\) (the {@per2@} figures minus the {@per1@} figures), so each entry is (entry of \(T\)) \(-\) (entry of \(M\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Added instead of subtracted (M+T)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>sumM</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-added</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the sum \(M+T\). Part (b) asks for the change, so <strong>subtract</strong>: \(T-M\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Subtract each entry of \(M\) from the entry in the same position of \(T\). See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both parts correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sumM</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>diffM</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>(a) gave the difference; (b) reversed the order</description>
+      <testinput>
+        <name>ans1</name>
+        <value>diffM</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>diffRev</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-usedDiff</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-reversed</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>(a) subtracted M-T; (b) added M+T</description>
+      <testinput>
+        <name>ans1</name>
+        <value>diffRev</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>sumM</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-subtracted</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-added</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong answers (catch-all branch)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrongSum</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wrongDiff</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
