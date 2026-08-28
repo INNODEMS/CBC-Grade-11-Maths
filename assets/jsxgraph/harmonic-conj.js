@@ -1,0 +1,16 @@
+var board = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-5, 5, 5, -3]});
+var A = board.create('point',[-4,-2]);
+var B = board.create('point',[0,-2]);
+var p = board.create('line',[A,B],{name: 'p',withLabel: true, color: 'green'});
+var C = board.create('glider', [4, 0, p]);
+var E = board.create('point', [1,4], {name: 'E',size:2, color: 'blue'});
+var q = board.create('line',[A,E],{name: 'q',withLabel: true, color: 'green'});
+var r = board.create('line',[B,E],{name: 'r',withLabel: true, color: 'green'});
+var F = board.create('glider', [0,0,q], {name: 'F',size:2, color: 'blue'});
+var s = board.create('line',[C,F],{name: 's',withLabel: true, color: 'green'});
+var G = board.create('intersection', [s, r,0], {name: 'G',size:2, color: 'blue'});
+var t = board.create('line',[A,G],{color: 'grey', dash:"2"});
+var u = board.create('line',[B,F],{color: 'grey', dash:"2"});
+var H = board.create('intersection', [t, u], {name: 'H',size:2, color: 'blue'});
+var v = board.create('line', [E,H],{color: 'grey', dash:"2"});
+var D = board.create('intersection', [p, v, 0]);
