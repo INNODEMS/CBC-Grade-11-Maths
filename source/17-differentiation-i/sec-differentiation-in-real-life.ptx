@@ -19,7 +19,7 @@
                     </p>
                 </li>
                 <li>
-                    <title>Specific Learning Outcomes</title> 
+                    <title>Specific Learning Outcomes</title>
                     <p>
                         Appreciate the use of differentiation in real life
                     </p>
@@ -41,127 +41,600 @@
         </introduction>
     </objectives>
 
-    <!-- [LP] Add guidance on activity -->
-
-    <!-- <axiom component="lesson-plan">
-            <title>Problem-Solving and Discovery</title>
-            <dl>
-                <li>
-                    <title>Suggested Time</title>
-                    <p>
-                        XX minutes
-                    </p>
-                </li>
-                <li>
-                    <title>Objective</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-                <li>
-                    <title>Teacher's Role</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-            </dl>
-        </axiom> -->
-
-    <!-- Add Activity -->
-
-    <!-- <activity>
-        <statement>
-        </statement>
-    </activity> -->
-
-    <!-- [LP] Add guidance on structured lesson plan-->
-
-    <!-- <axiom component="lesson-plan">
-        <title>Structured Instruction</title>
-        <p>
-            <dl>
+    <axiom component="lesson-plan">
+        <title>Problem-Solving and Discovery</title>
+        <dl>
             <li>
                 <title>Suggested Time</title>
-                <p>
-                    XX minutes
-                </p>
+                <p>15 minutes</p>
             </li>
             <li>
                 <title>Objective</title>
-                <p>
-                    To formalize the concepts and properties learners discovered in the anchor task.
-                </p>
+                <p>Discover that the derivative represents a meaningful rate of change by working with a concrete physical quantity before formal generalisation.</p>
             </li>
-            </dl>
-        </p>
-        <paragraphs>
-            <title>Key Takeaways &amp; Teacher Connection</title>
-            <ol>
-                <li>
-                    <p>
-                        <alert>Connecting to Learner Work:</alert> XXXX
-                    </p>
-                </li>
-            </ol>
-        </paragraphs>
-    </axiom> -->
+            <li>
+                <title>Teacher's Role</title>
+                <p>Let learners complete the table for <m>V(t)</m> before computing <m>V'(t)</m>. Ask: <q>What is happening to the rate of evaporation as time passes? Why might that be?</q> Connect the decreasing rate to the decreasing water surface area. For Part C, let learners articulate what <m>V'(10)=0</m> means before confirming. The goal is for learners to see that the derivative's sign and magnitude carry physical meaning.</p>
+            </li>
+            <li>
+                <title>Advanced Learners</title>
+                <p>Do not introduce the second derivative formally, but prompt those who notice that <m>V'(t)</m> is itself linear: <q>What does the constant rate of change of <m>V'(t)</m> tell you about the evaporation?</q></p>
+            </li>
+        </dl>
+    </axiom>
 
-    <!-- Add insight / key takeaway directly related to activity / learner experience -->
+    <activity xml:id="activity-real-life-trough">
+        <title>Evaporation from a Triangular Trough</title>
+        <introduction>
+            <p>A V-shaped irrigation trough holds 200 litres when full. On a hot day, water evaporates. As the water level drops, the exposed surface area shrinks — so the evaporation rate slows. The volume (in litres) at time <m>t</m> hours is modelled by</p>
+            <md>
+                <mrow>V(t) = 2t^2 - 40t + 200, \quad 0 \leq t \leq 10.</mrow>
+            </md>
+            <figure xml:id="fig-real-life-trough">
+                <caption>Volume <m>V(t) = 2t^2 - 40t + 200</m>: the trough empties steadily slower as <m>t \to 10</m>. Tangent lines at <m>t=0</m> (orange, steep) and <m>t=8</m> (teal, nearly flat) show the changing evaporation rate.</caption>
+                <image width="72%">
+                    <latex-image>
+                    \begin{tikzpicture}[x=0.65cm, y=0.025cm]
+                        \draw[->,thin,gray!70] (-0.3,0) -- (11.5,0) node[right,font=\small] {$t$ (hours)};
+                        \draw[->,thin,gray!70] (0,-8) -- (0,215) node[above,font=\small] {$V$ (litres)};
+                        \foreach \t in {2,4,6,8,10} {
+                            \draw[thin,gray!35] (\t,0) -- (\t,200);
+                            \draw[thin] (\t,3) -- (\t,-3) node[below,font=\scriptsize] {$\t$};
+                        }
+                        \foreach \v in {50,100,150,200} {
+                            \draw[thin,gray!35] (0,\v) -- (10,\v);
+                            \draw[thin] (0.15,\v) -- (-0.15,\v) node[left,font=\scriptsize] {$\v$};
+                        }
+                        \draw[blue!65!black, line width=1.5pt, domain=0:10, samples=60]
+                            plot (\x, {2*(\x-10)*(\x-10)});
+                        \node[blue!65!black, right, font=\small] at (0.4,158) {$V(t)$};
+                        % tangent at t=0: V'(0)=-40, V(0)=200. y=-40t+200, hits 0 at t=5
+                        \draw[orange!80!black, line width=1.2pt] (0,200) -- (5,0);
+                        \node[orange!80!black, right, font=\scriptsize] at (0.5,110) {$V'(0)=-40$};
+                        % tangent at t=8: V'(8)=-8, V(8)=8. y=-8(t-8)+8=-8t+72, hits 0 at t=9
+                        \draw[teal!70!black, line width=1.2pt] (5.5,28) -- (9,0);
+                        \node[teal!70!black, above, font=\scriptsize] at (6.6,22) {$V'(8)=-8$};
+                        \filldraw[blue!65!black] (0,200) circle (3pt) node[right,font=\scriptsize] {$(0,\,200)$};
+                        \filldraw[blue!65!black] (10,0) circle (3pt) node[above right,font=\scriptsize] {$(10,\,0)$};
+                    \end{tikzpicture}
+                    </latex-image>
+                </image>
+            </figure>
+        </introduction>
+        <task xml:id="task-trough-partA">
+            <title>Part A: Explore <m>V(t)</m></title>
+            <task xml:id="task-trough-a">
+                <statement>
+                    <p>How much water is in the trough at <m>t = 0</m>? At <m>t = 5</m>?</p>
+                </statement>
+                <answer>
+                    <p><m>V(0) = 200</m> litres; <m>V(5) = 2(25) - 200 + 200 = 50</m> litres.</p>
+                </answer>
+            </task>
+            <task xml:id="task-trough-b">
+                <statement>
+                    <p>Complete the table by substituting each value of <m>t</m> into <m>V(t) = 2t^2 - 40t + 200</m>.</p>
+                    <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+                        <row header="yes" bottom="medium">
+                            <cell><m>t</m> (hours)</cell>
+                            <cell>0</cell>
+                            <cell>2</cell>
+                            <cell>4</cell>
+                            <cell>6</cell>
+                            <cell>8</cell>
+                            <cell>10</cell>
+                        </row>
+                        <row>
+                            <cell><m>V(t)</m> (litres)</cell>
+                            <cell></cell>
+                            <cell></cell>
+                            <cell></cell>
+                            <cell></cell>
+                            <cell></cell>
+                            <cell></cell>
+                        </row>
+                    </tabular>
+                </statement>
+                <answer>
+                    <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+                        <row header="yes" bottom="medium">
+                            <cell><m>t</m> (hours)</cell>
+                            <cell>0</cell>
+                            <cell>2</cell>
+                            <cell>4</cell>
+                            <cell>6</cell>
+                            <cell>8</cell>
+                            <cell>10</cell>
+                        </row>
+                        <row>
+                            <cell><m>V(t)</m> (litres)</cell>
+                            <cell>200</cell>
+                            <cell>128</cell>
+                            <cell>72</cell>
+                            <cell>32</cell>
+                            <cell>8</cell>
+                            <cell>0</cell>
+                        </row>
+                    </tabular>
+                </answer>
+            </task>
+            <task xml:id="task-trough-c">
+                <statement>
+                    <p>Describe in words what is happening to <m>V(t)</m> over time. Is the volume decreasing at a constant rate?</p>
+                </statement>
+                <answer>
+                    <p>The volume decreases from 200 litres to 0. The drops get smaller each period (72, 56, 40, 24, 8), so the trough empties more and more slowly — the rate of evaporation is not constant.</p>
+                </answer>
+            </task>
+        </task>
+        <task xml:id="task-trough-partB">
+            <title>Part B: The Rate of Evaporation</title>
+            <task xml:id="task-trough-d">
+                <statement>
+                    <p>Using the power rule, find <m>V'(t)</m>. State its units.</p>
+                </statement>
+                <answer>
+                    <md>
+                        <mrow>V'(t) = 4t - 40 \quad \text{litres per hour.}</mrow>
+                    </md>
+                </answer>
+            </task>
+            <task xml:id="task-trough-e">
+                <statement>
+                    <p>Complete the table of evaporation rates.</p>
+                    <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+                        <row header="yes" bottom="medium">
+                            <cell><m>t</m> (hours)</cell>
+                            <cell>0</cell>
+                            <cell>2</cell>
+                            <cell>4</cell>
+                            <cell>6</cell>
+                            <cell>8</cell>
+                            <cell>10</cell>
+                        </row>
+                        <row>
+                            <cell><m>V'(t)</m> (litres/hour)</cell>
+                            <cell></cell>
+                            <cell></cell>
+                            <cell></cell>
+                            <cell></cell>
+                            <cell></cell>
+                            <cell></cell>
+                        </row>
+                    </tabular>
+                </statement>
+                <answer>
+                    <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+                        <row header="yes" bottom="medium">
+                            <cell><m>t</m> (hours)</cell>
+                            <cell>0</cell>
+                            <cell>2</cell>
+                            <cell>4</cell>
+                            <cell>6</cell>
+                            <cell>8</cell>
+                            <cell>10</cell>
+                        </row>
+                        <row>
+                            <cell><m>V'(t)</m> (litres/hour)</cell>
+                            <cell><m>-40</m></cell>
+                            <cell><m>-32</m></cell>
+                            <cell><m>-24</m></cell>
+                            <cell><m>-16</m></cell>
+                            <cell><m>-8</m></cell>
+                            <cell><m>0</m></cell>
+                        </row>
+                    </tabular>
+                </answer>
+            </task>
+            <task xml:id="task-trough-f">
+                <statement>
+                    <p>Explain why <m>V'(t)</m> is negative throughout <m>0 \leq t \lt 10</m>. What does the magnitude <m>|V'(t)|</m> represent physically?</p>
+                </statement>
+                <answer>
+                    <p><m>V'(t) \lt 0</m> because the volume is decreasing — water is evaporating. The magnitude <m>|V'(t)|</m> is the rate at which water is leaving the trough, in litres per hour.</p>
+                </answer>
+            </task>
+            <task xml:id="task-trough-g">
+                <statement>
+                    <p>Is the evaporation rate constant, getting faster, or getting slower? Why does this make physical sense?</p>
+                </statement>
+                <answer>
+                    <p>Getting slower: the magnitude <m>|V'(t)|</m> decreases from 40 to 0. Physically, as the water level in a V-shaped trough drops, the exposed surface area shrinks — less water is in contact with the air, so less can evaporate per hour.</p>
+                </answer>
+            </task>
+        </task>
+        <task xml:id="task-trough-partC">
+            <title>Part C: Interpreting <m>V'(10) = 0</m></title>
+            <task xml:id="task-trough-h">
+                <statement>
+                    <p>What does <m>V'(10) = 0</m> mean in context? What does <m>V(10) = 0</m> confirm?</p>
+                </statement>
+                <answer>
+                    <p><m>V'(10) = 0</m> means that at <m>t = 10</m> hours the evaporation rate is zero — the trough is neither gaining nor losing water at that instant. <m>V(10) = 0</m> confirms that the trough is empty: there is no water left to evaporate.</p>
+                </answer>
+            </task>
+        </task>
+    </activity>
 
-    <!-- <insight>
-    </insight> -->
+    <axiom component="lesson-plan">
+        <title>Structured Instruction</title>
+        <dl>
+            <li>
+                <title>Suggested Time</title>
+                <p>10 minutes</p>
+            </li>
+            <li>
+                <title>Teacher's Role</title>
+                <p>Open by asking <q>What units did <m>V'(t)</m> have in the activity?</q> Use learner responses to generalise: the units of <m>f'</m> are always (units of <m>f</m>) per (unit of <m>x</m>). Then pose these questions in turn:</p>
+                <ul>
+                    <li><p><q>If <m>V'(t)</m> is negative, what is happening to <m>V</m>?</q></p></li>
+                    <li><p><q>If the units of <m>f</m> are kilograms and the units of <m>x</m> are seconds, what are the units of <m>f'</m>?</q></p></li>
+                    <li><p><q>In the activity, <m>V'(10) = 0</m>. Does that mean <m>V(10) = 0</m>? What does it actually mean?</q></p></li>
+                </ul>
+            </li>
+            <li>
+                <title>Key Misconception</title>
+                <p>The idea that <m>f'(a) = 0</m> does not imply <m>f(a) = 0</m> is a common confusion. In the activity, both happen to be zero at <m>t = 10</m> — a coincidence worth highlighting. Ask: <q>Can you find a time where <m>V'(t) \neq 0</m> but <m>V(t)</m> is also non-zero?</q> (Yes: <m>V'(5) = -20</m> but <m>V(5) = 50</m>.)</p>
+            </li>
+        </dl>
+    </axiom>
 
-    <!-- Add further instruction (not in a block) to develop ideas as needed -->
+    <p>The derivative of a function has units equal to <m>\dfrac{\text{output units}}{\text{input unit}}</m>, and gives the instantaneous rate of change at any point. For example, if <m>C(x)</m> gives a cost in KSh, then <m>C'(x)</m> is the <term>marginal cost</term> — the approximate extra cost of producing one more item when <m>x</m> items have already been produced.</p>
+
+    <insight xml:id="insight-real-life">
+        <title>Interpreting the Derivative</title>
+        <p>If <m>f(x)</m> models a real-world quantity, then at any value <m>x = a</m>:</p>
+        <ul>
+            <li><p><m>f'(a)</m> is the <term>instantaneous rate of change</term> of <m>f</m> at <m>x = a</m>.</p></li>
+            <li><p>Its units are <m>\dfrac{\text{units of }f}{\text{unit of }x}</m>.</p></li>
+            <li><p><m>f'(a) \gt 0</m>: the quantity is <em>increasing</em> at that instant.</p></li>
+            <li><p><m>f'(a) \lt 0</m>: the quantity is <em>decreasing</em> at that instant.</p></li>
+            <li><p><m>f'(a) = 0</m>: the quantity is <em>momentarily constant</em> — neither rising nor falling.</p></li>
+        </ul>
+    </insight>
 
     <xi:include href="../lesson-plan-templates/example-intro.ptx" />
 
-    <!-- Add at least 3 examples -->
-
-    <!-- <example>
-        <statement>
-        </statement>
-        <solution>
-        </solution>
+    <example xml:id="PRECALC-zZpVi9z4u4" original="PRECALC/modules/m49455/index.cnxml" license="CC-BY-4.0">
+      <title>Finding a Marginal Cost</title>
+      <statement>
+        <p>The cost in dollars of producing <m>x</m> laptop computers is <m>f(x)=x^{2}-100x.</m> At the point where 200 computers have been produced, what is the approximate cost of producing the 201st unit?</p>
+      </statement>
+      <solution>
+        <p>If <m>f(x)=x^{2}-100x</m> describes the cost of producing <m>x</m> computers, then <m>f'(x)</m> is the marginal cost. We find the derivative from first principles:</p>
+        <md>
+            <mrow>f'(x) \amp= \lim_{h \to 0}\frac{f(x+h)-f(x)}{h}</mrow>
+            <mrow>\amp= \lim_{h \to 0}\frac{(x+h)^{2}-100(x+h)-(x^{2}-100x)}{h}</mrow>
+            <mrow>\amp= \lim_{h \to 0}\frac{x^{2}+2xh+h^{2}-100x-100h-x^{2}+100x}{h}</mrow>
+            <mrow>\amp= \lim_{h \to 0}\frac{2xh+h^{2}-100h}{h}</mrow>
+            <mrow>\amp= \lim_{h \to 0}\frac{\cancel{h}(2x+h-100)}{\cancel{h}}</mrow>
+            <mrow>\amp= \lim_{h \to 0}(2x+h-100) = 2x-100</mrow>
+        </md>
+        <md>
+            <mrow>f'(200) = 2(200)-100 = 300</mrow>
+        </md>
+        <p>The marginal cost of producing the 201st unit is approximately $300.</p>
+      </solution>
     </example>
 
-    <example>
-        <statement>
-        </statement>
-        <solution>
-        </solution>
+    <note>
+        <p>Using the power rule, <m>f'(x) = 2x - 100</m> follows immediately — no limit calculation required. The derivation above confirms the same result.</p>
+    </note>
+
+    <example xml:id="PRECALC-4KbDeUCJpT" original="PRECALC/modules/m49455/index.cnxml" license="CC-BY-4.0">
+      <title>Interpreting a Derivative in Context</title>
+      <statement>
+        <p>A car leaves an intersection. The distance it travels in miles is given by the function <m>f(t),</m> where <m>t</m> represents hours. Explain the following notations:</p>
+        <ol marker="(a)">
+          <li><m>f(0)=0</m></li>
+          <li><m>f'(1)=60</m></li>
+          <li><m>f(1)=70</m></li>
+          <li><m>f(2.5)=150</m></li>
+        </ol>
+      </statement>
+      <solution>
+        <p>Evaluating <m>f(t)</m> gives the distance traveled in <m>t</m> hours; evaluating <m>f'(t)</m> gives the speed at time <m>t</m>.</p>
+        <ol marker="(a)">
+          <li><m>f(0)=0</m>: in zero hours, the car has traveled zero miles.</li>
+          <li><m>f'(1)=60</m>: one hour into the trip, the car is traveling at 60 miles per hour.</li>
+          <li><m>f(1)=70</m>: one hour in, the car has traveled 70 miles. At some point during the first hour it must have been traveling faster than 60 mph.</li>
+          <li><m>f(2.5)=150</m>: two hours and thirty minutes into the trip, the car has traveled 150 miles.</li>
+        </ol>
+      </solution>
     </example>
 
-    <example>
+    <example xml:id="example-real-life-cooling">
+        <title>Rate of Cooling</title>
         <statement>
+            <p>A cup of tea cools according to <m>T(t) = 80 - 20t + 2t^2</m> degrees Celsius, where <m>t</m> is the time in minutes after pouring (<m>0 \leq t \leq 5</m>).</p>
+            <ol marker="(a)">
+                <li><p>Find <m>T'(t)</m> and state its units.</p></li>
+                <li><p>Find and interpret <m>T'(1)</m> and <m>T'(3)</m>.</p></li>
+                <li><p>At what time does <m>T'(t) = 0</m>? What temperature has the tea reached?</p></li>
+            </ol>
+            <figure xml:id="fig-real-life-cooling">
+                <caption>Temperature <m>T(t) = 80 - 20t + 2t^2</m>: the tea cools rapidly at first, then levels off at <m>30^\circ</m>C as it reaches room temperature at <m>t = 5</m> minutes. Drag the point to read the cooling rate <m>T'(t)</m> at any time.</caption>
+                <interactive xml:id="interactive-cooling-rate" platform="jsxgraph" width="90%" aspect="1:1" source="jsxgraph/cooling-rate.js">
+                    <slate xml:id="cooling-rate" surface="jsxboard" aspect="1:1"/>
+                    <instructions>
+                        <p>Drag the red point along the curve. The orange tangent's slope is the instantaneous cooling rate <m>T'(t) = -20 + 4t</m> (°C per minute), which rises to <m>0</m> at <m>t = 5</m>.</p>
+                    </instructions>
+                </interactive>
+            </figure>
         </statement>
         <solution>
+            <p><alert>(a)</alert> By the power rule:</p>
+            <md>
+                <mrow>T'(t) = -20 + 4t \quad \text{degrees Celsius per minute.}</mrow>
+            </md>
+            <p>The negative value (for small <m>t</m>) indicates the temperature is falling.</p>
+            <p><alert>(b)</alert></p>
+            <md>
+                <mrow>T'(1) \amp= -20 + 4(1) = -16</mrow>
+                <mrow>T'(3) \amp= -20 + 4(3) = -8</mrow>
+            </md>
+            <p>After 1 minute, the tea is cooling at <m>16^\circ</m>C per minute. After 3 minutes, the rate has halved to <m>8^\circ</m>C per minute — the tea is approaching room temperature.</p>
+            <p><alert>(c)</alert> Set <m>T'(t) = 0</m>:</p>
+            <md>
+                <mrow>-20 + 4t \amp= 0</mrow>
+                <mrow>t \amp= 5</mrow>
+            </md>
+            <md>
+                <mrow>T(5) = 80 - 20(5) + 2(25) = 80 - 100 + 50 = 30</mrow>
+            </md>
+            <p>The tea stops cooling at <m>30^\circ</m>C after 5 minutes — room temperature.</p>
         </solution>
-    </example> -->
+    </example>
 
     <xi:include href="../lesson-plan-templates/assessment-intro.ptx" />
 
     <!-- If STACK questions are included, uncomment this: -->
-
     <!-- <xi:include href="../lesson-plan-templates/checkpoint.ptx" /> -->
 
-    <!-- Add STACK exercises if made -->
+    <exercises>
+        <exercisegroup>
 
-    <!-- Add static exercises -->
+            <introduction>
+                <p>
+                    For the following exercises, explain what each notation means in context.
+                </p>
+            </introduction>
 
-    <!-- <exercises>
-        <exercise>
-            <statement>   
+            <exercise xml:id="PRECALC-a3QqmwCR3N-parts" original="PRECALC/modules/m49455/index.cnxml" license="CC-BY-4.0">
+                <p>The volume <m>f(t)</m> of a tank of petrol, in litres, <m>t</m> minutes after noon.</p>
+                <statement>
+                    <ol marker="(a)">
+                        <li><m>f(0)=600</m></li>
+                        <li><m>f'(30)=-20</m></li>
+                        <li><m>f(30)=0</m></li>
+                        <li><m>f'(200)=30</m></li>
+                        <li><m>f(240)=500</m></li>
+                    </ol>
+                </statement>
+                <answer>
+                    <ol marker="(a)">
+                        <li>At noon, the tank holds 600 litres.</li>
+                        <li>At 12:30 <em>p.m.</em>, the volume is decreasing at 20 litres per minute — the tank is draining.</li>
+                        <li>At 12:30 <em>p.m.</em>, the tank is empty.</li>
+                        <li>At 200 minutes after noon, the volume is increasing at 30 litres per minute — the tank is being refilled.</li>
+                        <li>At 4:00 <em>p.m.</em>, the tank holds 500 litres.</li>
+                    </ol>
+                </answer>
+            </exercise>
 
-            </statement>   
+            <exercise>
+                <p>The height, <m>s,</m> of a projectile after <m>t</m> seconds is given by <m>s(t)=-16t^{2}+80t.</m></p>
+                <statement>
+                    <ol marker="(a)">
+                        <li><m>s(2)=96</m></li>
+                        <li><m>s'(2)=16</m></li>
+                        <li><m>s(3)=96</m></li>
+                        <li><m>s'(3)=-16</m></li>
+                        <li><m>s(0)=0,\; s(5)=0</m></li>
+                    </ol>
+                </statement>
+                <answer>
+                    <ol marker="(a)">
+                        <li>The height of the projectile after 2 seconds is 96 feet.</li>
+                        <li>After 2 seconds, the projectile is moving upward at 16 feet per second.</li>
+                        <li>The height of the projectile at <m>t=3</m> seconds is 96 feet.</li>
+                        <li>After 3 seconds, the projectile is moving downward at 16 feet per second.</li>
+                        <li>The projectile starts on the ground and returns to the ground after 5 seconds.</li>
+                    </ol>
+                </answer>
+            </exercise>
+        </exercisegroup>
+
+        <exercise xml:id="PRECALC-dwNOf3OzQ8-parts" original="PRECALC/modules/m49455/index.cnxml" license="CC-BY-4.0">
+          <statement>
+            <p>The volume <m>V</m> of a sphere with respect to its radius <m>r</m> is given by <m>V=\dfrac{4}{3}\pi r^{3}.</m></p>
+            <ol marker="(a)">
+              <li>Find the average rate of change of <m>V</m> as <m>r</m> changes from 1 cm to 2 cm.</li>
+              <li>Find the instantaneous rate of change of <m>V</m> when <m>r=3\text{ cm}.</m></li>
+            </ol>
+          </statement>
+          <solution>
+            <ol marker="(a)">
+              <li>
+                <p>Average rate of change:</p>
+                <md>
+                    <mrow>\frac{V(2)-V(1)}{2-1} \amp= \frac{\dfrac{4}{3}\pi(8) - \dfrac{4}{3}\pi(1)}{1} = \frac{32\pi}{3} - \frac{4\pi}{3} = \frac{28\pi}{3} \approx 29.3 \text{ cm}^3 \text{ per cm.}</mrow>
+                </md>
+              </li>
+              <li>
+                <p>By the power rule, <m>V'(r) = 4\pi r^2</m>, so:</p>
+                <md>
+                    <mrow>V'(3) = 4\pi(9) = 36\pi \approx 113.1 \text{ cm}^3 \text{ per cm.}</mrow>
+                </md>
+              </li>
+            </ol>
+          </solution>
+        </exercise>
+
+        <exercise xml:id="ex-real-life-revenue">
+            <title>Marginal Revenue</title>
+            <statement>
+                <p>A company's total revenue (KSh) from selling <m>x</m> units is <m>R(x) = 500x - 5x^2.</m></p>
+                <figure xml:id="fig-real-life-revenue">
+                    <caption>Revenue <m>R(x) = 500x - 5x^2</m> (y-axis in thousands of KSh). The curve peaks at <m>x = 50</m> units where <m>R'(50)=0</m>; for <m>x \lt 50</m> marginal revenue is positive and for <m>x \gt 50</m> it is negative.</caption>
+                    <image width="68%">
+                        <latex-image>
+                        \begin{tikzpicture}[x=0.065cm, y=0.42cm]
+                            % y-axis in thousands of KSh to avoid dimension overflow
+                            \draw[->,thin,gray!70] (-1,0) -- (108,0) node[right,font=\small] {$x$ (units)};
+                            \draw[->,thin,gray!70] (0,-0.3) -- (0,13.5) node[above,font=\small] {$R$};
+                            \foreach \xx in {10,20,30,40,50,60,70,80,90,100} {
+                                \draw[thin,gray!35] (\xx,0) -- (\xx,12.8);
+                                \draw[thin] (\xx,0.15) -- (\xx,-0.15) node[below,font=\scriptsize] {\xx};
+                            }
+                            \foreach \yv in {2,4,6,8,10,12} {
+                                \draw[thin,gray!35] (0,\yv) -- (103,\yv);
+                                \draw[thin] (1.5,\yv) -- (-1.5,\yv) node[left,font=\scriptsize] {\yv k};
+                            }
+                            % curve R(x)/1000 = 0.5x - 0.005x^2
+                            \draw[blue!65!black, line width=1.5pt, domain=0:100, samples=80]
+                                plot (\x, {0.5*\x - 0.005*\x*\x});
+                            \node[blue!65!black, right, font=\small] at (73,9.8) {$R(x)$};
+                            % tangent at x=10: R/1000=4.5, slope=0.4. y=0.4x+0.5
+                            \draw[orange!80!black, line width=1.2pt, domain=0:20]
+                                plot (\x, {0.4*\x + 0.5});
+                            \node[orange!80!black, right, font=\scriptsize] at (12,7) {$R'(10)=400$};
+                            % horizontal tangent at x=50: y=12.5 (=12500 KSh)
+                            \draw[teal!70!black, line width=1.2pt] (37,12.5) -- (63,12.5);
+                            \node[teal!70!black, below, font=\scriptsize] at (50,12.5) {$R'(50)=0$};
+                            \filldraw[blue!65!black] (50,12.5) circle (3pt)
+                                node[above,font=\scriptsize] {$(50,\;12500)$};
+                        \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+                <ol marker="(a)">
+                    <li><p>Find <m>R'(x)</m>. What does <m>R'(x)</m> represent?</p></li>
+                    <li><p>Find <m>R'(10)</m>, <m>R'(50)</m>, and <m>R'(60)</m>. Interpret each in context, including units.</p></li>
+                    <li><p>At what value of <m>x</m> is <m>R'(x) = 0</m>? What does this suggest about selling strategy?</p></li>
+                    <li><p>For <m>x \gt 50</m>, <m>R'(x) \lt 0</m>. Explain why selling more units might reduce total revenue.</p></li>
+                </ol>
+            </statement>
             <solution>
+                <ol marker="(a)">
+                    <li>
+                        <md>
+                            <mrow>R'(x) = 500 - 10x \quad \text{KSh per unit.}</mrow>
+                        </md>
+                        <p><m>R'(x)</m> is the <term>marginal revenue</term> — the approximate additional revenue (in KSh) earned by selling one more unit when <m>x</m> units have already been sold.</p>
+                    </li>
+                    <li>
+                        <md>
+                            <mrow>R'(10) \amp= 500 - 100 = 400 \text{ KSh per unit}</mrow>
+                            <mrow>R'(50) \amp= 500 - 500 = 0 \text{ KSh per unit}</mrow>
+                            <mrow>R'(60) \amp= 500 - 600 = -100 \text{ KSh per unit}</mrow>
+                        </md>
+                        <p>At 10 units, each extra unit sold adds KSh 400 to total revenue. At 50 units, revenue is at its peak — selling one more unit makes no difference. At 60 units, each extra unit <em>reduces</em> total revenue by KSh 100.</p>
+                    </li>
+                    <li>
+                        <md>
+                            <mrow>500 - 10x = 0 \implies x = 50</mrow>
+                        </md>
+                        <p>Total revenue is maximised when 50 units are sold, giving:</p>
+                        <md>
+                            <mrow>R(50) = 500(50) - 5(50)^2 = 25000 - 12500 = \text{KSh } 12500.</mrow>
+                        </md>
+                    </li>
+                    <li>
+                        <p>Beyond 50 units, the company may need to lower its price per unit to attract more buyers. The price reduction applies to all units sold, so the loss from discounting outweighs the gain from the extra sale — total revenue falls.</p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
 
-            </solution>             
-        </exercise>        
-    </exercises> -->
+        <exercise xml:id="ex-real-life-cooling">
+            <title>Tea Cooling</title>
+            <introduction>
+                <p>The temperature of a cup of tea (in <m>^\circ</m>C) is modelled by <m>T(t) = 80 - 20t + 2t^2</m>, where <m>t</m> is in minutes after pouring.</p>
+            </introduction>
+            <task xml:id="task-ex-cooling-a">
+                <statement>
+                    <p>What is the temperature at <m>t = 0</m>?</p>
+                </statement>
+                <answer>
+                    <p><m>T(0) = 80^\circ</m>C.</p>
+                </answer>
+            </task>
+            <task xml:id="task-ex-cooling-b">
+                <statement>
+                    <p>Find <m>T'(t)</m>. State its units.</p>
+                </statement>
+                <answer>
+                    <p><m>T'(t) = -20 + 4t</m>, in degrees Celsius per minute.</p>
+                </answer>
+            </task>
+            <task xml:id="task-ex-cooling-c">
+                <statement>
+                    <p>Find <m>T'(2)</m>. What does this tell you?</p>
+                </statement>
+                <answer>
+                    <p><m>T'(2) = -20 + 8 = -12^\circ</m>C per minute. After 2 minutes, the tea is cooling at <m>12^\circ</m>C per minute.</p>
+                </answer>
+            </task>
+            <task xml:id="task-ex-cooling-d">
+                <statement>
+                    <p>At what time does <m>T'(t) = 0</m>? What temperature has the tea reached?</p>
+                </statement>
+                <answer>
+                    <p><m>-20 + 4t = 0 \implies t = 5</m> minutes. <m>T(5) = 80 - 100 + 50 = 30^\circ</m>C — room temperature.</p>
+                </answer>
+            </task>
+        </exercise>
 
-    <!-- [LP] Add information on how to differentiate  -->
+        <exercise xml:id="ex-real-life-population">
+            <title>★ Population Growth</title>
+            <introduction>
+                <p>The population of a town is modelled by <m>P(t) = 500t^2 + 1000t + 50000</m>, where <m>t</m> is the number of years after 2020.</p>
+            </introduction>
+            <task xml:id="task-pop-a">
+                <statement>
+                    <p>What is the population in 2020? In 2023?</p>
+                </statement>
+                <answer>
+                    <p><m>P(0) = 50\,000</m>; <m>P(3) = 500(9) + 3000 + 50000 = 57\,500.</m></p>
+                </answer>
+            </task>
+            <task xml:id="task-pop-b">
+                <statement>
+                    <p>Find <m>P'(t)</m>. What does it represent?</p>
+                </statement>
+                <answer>
+                    <p><m>P'(t) = 1000t + 1000</m> people per year — the rate at which the population is growing.</p>
+                </answer>
+            </task>
+            <task xml:id="task-pop-c">
+                <statement>
+                    <p>Find <m>P'(0)</m> and <m>P'(5)</m>. Interpret each in context.</p>
+                </statement>
+                <answer>
+                    <p><m>P'(0) = 1000</m>: in 2020, the population is growing by 1000 people per year. <m>P'(5) = 6000</m>: by 2025, the growth rate has risen to 6000 people per year.</p>
+                </answer>
+            </task>
+            <task xml:id="task-pop-d">
+                <statement>
+                    <p>Is the town growing faster in 2020 or in 2025?</p>
+                </statement>
+                <answer>
+                    <p>In 2025, since <m>P'(5) = 6000 \gt P'(0) = 1000.</m></p>
+                </answer>
+            </task>
+            <task xml:id="task-pop-e">
+                <statement>
+                    <p>★ The derivative <m>P'(t) = 1000t + 1000</m> is itself a function of <m>t</m>. What is the rate of change of <m>P'(t)</m>? What does it tell you about how the town is growing?</p>
+                </statement>
+                <answer>
+                    <p>The rate of change of <m>P'(t)</m> is its own derivative: <m>\dfrac{d}{dt}[P'(t)] = 1000</m> people per year, per year. This constant value means the growth rate itself increases by 1000 people/year every year — the population is growing at an accelerating pace.</p>
+                </answer>
+            </task>
+        </exercise>
+    </exercises>
 
-    <!-- <axiom component="lesson-plan">
+    <axiom component="lesson-plan">
         <title>Differentiation</title>
 
         <table>
@@ -170,34 +643,30 @@
                 <row header="yes" bottom="minor">
                     <cell>Learner Group</cell>
                     <cell>Strategy &amp; Learning Experience</cell>
-                    <cell></cell>
                 </row>
                 <row>
                     <cell>Struggling Learners (Support)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
+                    <cell>Activity Part A (table only) + Examples 1–2 (interpretation only) + Exercises 1–2. Provide a reference card showing the units of the derivative. Focus on reading and interpreting, not computing.</cell>
                 </row>
                 <row>
                     <cell>On-Level Learners (Core)</cell>
                     <cell>
-                        <line>The core lesson activities as described above.</line>
+                        <line>The core lesson activities as described above: full activity, all examples, Exercises 1–5.</line>
                     </cell>
-                    <cell></cell>
                 </row>
                 <row>
                     <cell>Advanced Learners (Challenge)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
+                    <cell>Exercise 6, especially part (e). Prompt learners to notice that <m>P'(t)</m> is itself differentiable — a first glimpse of the second derivative.</cell>
                 </row>
             </tabular>
         </table>
-    </axiom> -->
+    </axiom>
 
     <xi:include href="../lesson-plan-templates/assessment-methods.ptx" />
 
     <xi:include href="../lesson-plan-templates/reflection.ptx"/>
+
+    <convention>
+      <p>This section <xref ref="sec-differentiation-in-real-life" text="title"/> is adapted from "<url href="https://github.com/openstax/osbooks-college-algebra-bundle/tree/e10e6b91143fe884c7c60dc0ad82ef23e1be0aa5/modules/m49455/index.cnxml">Using Instantaneous Rates of Change to Solve Real-World Problems</url>" in Open STAX Precalculus 2e, used under <url href="https://creativecommons.org/licenses/by/4.0/deed.en">CC-BY-4.0</url>.</p>
+    </convention>
 </section>

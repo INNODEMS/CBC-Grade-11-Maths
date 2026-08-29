@@ -19,7 +19,7 @@
                     </p>
                 </li>
                 <li>
-                    <title>Specific Learning Outcomes</title> 
+                    <title>Specific Learning Outcomes</title>
                     <p>
                         Calculate the gradient at a curve at point
                     </p>
@@ -41,163 +41,522 @@
         </introduction>
     </objectives>
 
-    <!-- [LP] Add guidance on activity -->
+    <axiom component="lesson-plan">
+        <title>Problem-Solving and Discovery</title>
+        <dl>
+            <li>
+                <title>Suggested Time</title>
+                <p>
+                    12 minutes
+                </p>
+            </li>
+            <li>
+                <title>Objective</title>
+                <p>
+                    To derive the derivative of <m>x^2</m> and <m>x^3</m> geometrically, by asking how the area of a square (and the volume of a cube) changes when the side length grows by a small amount. From the pattern, learners predict the general power rule.
+                </p>
+            </li>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Guide learners to expand <m>(x+\Delta x)^2</m> and <m>(x+\Delta x)^3</m> algebraically, then connect each term to a geometric piece. Emphasise that the <m>(\Delta x)^2</m> and smaller terms vanish in the limit. Do not state the power rule until learners have completed Part C.
+                </p>
+            </li>
+        </dl>
+    </axiom>
 
-    <!-- <axiom component="lesson-plan">
-            <title>Problem-Solving and Discovery</title>
-            <dl>
-                <li>
-                    <title>Suggested Time</title>
-                    <p>
-                        XX minutes
-                    </p>
-                </li>
-                <li>
-                    <title>Objective</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-                <li>
-                    <title>Teacher's Role</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-            </dl>
-        </axiom> -->
-
-    <!-- Add Activity -->
-
-    <!-- <activity>
+    <activity xml:id="activity-growing-shapes">
+        <title>Growing Squares and Cubes</title>
         <statement>
+            <paragraphs>
+                <title>Part A: A Growing Square</title>
+                <p>
+                    A square tile has side length <m>x</m> cm, so its area is <m>A = x^2</m>.
+                    Suppose we increase the side length by a small amount <m>\Delta x</m>,
+                    making the new side <m>x + \Delta x</m>.
+                </p>
+
+                <figure xml:id="fig-growing-square-interactive">
+                    <caption>
+                        Drag the sliders to change <m>x</m> and <m>\Delta x</m>.
+                        The blue region is the original square <m>x^2</m>.
+                        The orange strips each have area <m>x \cdot \Delta x</m>,
+                        and the red corner square has area <m>(\Delta x)^2</m>.
+                    </caption>
+                    <interactive
+                        xml:id="interactive-growing-square"
+                        platform="jsxgraph"
+                        width="90%"
+                        aspect="16:12"
+                        source="jsxgraph/growing-square.js">
+                        <slate
+                            xml:id="jsxgraph-growing-square"
+                            surface="jsxboard"
+                            aspect="16:12"/>
+                        <instructions>
+                            <p>
+                                <ul>
+                                    <li><p>Drag the <alert>x</alert> slider to change the side length of the original square.</p></li>
+                                    <li><p>Drag the <alert>Δx</alert> slider to increase the side by a small amount.</p></li>
+                                    <li><p>Watch how the orange and red regions represent the increase in area, and how <m>\Delta A / \Delta x</m> changes as <m>\Delta x \to 0</m>.</p></li>
+                                </ul>
+                            </p>
+                        </instructions>
+                    </interactive>
+                </figure>
+
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Write an expression for the new area when the side length becomes <m>x + \Delta x</m>.
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                New area <m>= (x + \Delta x)^2 = x^2 + 2x\,\Delta x + (\Delta x)^2</m>.
+                            </p>
+                        </solution>
+                    </li>
+                    <li>
+                        <p>
+                            Write an expression for the <em>change</em> in area, <m>\Delta A</m>.
+                            Expand and simplify.
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                <md>
+                                    <mrow>\Delta A \amp= (x+\Delta x)^2 - x^2</mrow>
+                                    <mrow>\amp= x^2 + 2x\,\Delta x + (\Delta x)^2 - x^2</mrow>
+                                    <mrow>\amp= 2x\,\Delta x + (\Delta x)^2</mrow>
+                                </md>
+                            </p>
+                        </solution>
+                        <note component="lesson-plan">
+                            <p>
+                                Ask learners to identify each term in the diagram:
+                                <m>2x\,\Delta x</m> is the combined area of the two orange strips,
+                                and <m>(\Delta x)^2</m> is the tiny red corner square.
+                            </p>
+                        </note>
+                    </li>
+                    <li>
+                        <p>
+                            Divide <m>\Delta A</m> by <m>\Delta x</m> and simplify.
+                            What happens to your expression as <m>\Delta x \to 0</m>?
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                <md>
+                                    <mrow>\frac{\Delta A}{\Delta x} \amp= \frac{2x\,\Delta x + (\Delta x)^2}{\Delta x} = 2x + \Delta x</mrow>
+                                </md>
+                                As <m>\Delta x \to 0</m>, this approaches <m>2x</m>.
+                                So <m>\dfrac{dA}{dx} = 2x</m>, which matches the power rule: <m>\dfrac{d}{dx}(x^2) = 2x</m>.
+                            </p>
+                        </solution>
+                        <note component="lesson-plan">
+                            <p>
+                                Make the connection explicit: <m>\dfrac{\Delta A}{\Delta x} = 2x + \Delta x</m>
+                                is the same calculation as the limit definition of the derivative from the previous section,
+                                just carried out geometrically. The <m>(\Delta x)^2</m> term — the red corner — becomes negligible
+                                as <m>\Delta x \to 0</m>.
+                            </p>
+                        </note>
+                    </li>
+                </ol>
+            </paragraphs>
+
+            <paragraphs>
+                <title>Part B: A Growing Cube</title>
+                <p>
+                    Now consider a cube with side length <m>x</m>, so its volume is <m>V = x^3</m>.
+                    We increase the side by <m>\Delta x</m>.
+                </p>
+
+                <figure xml:id="fig-growing-cube">
+                    <caption>
+                        The original cube (blue, volume <m>x^3</m>) grows to side <m>x + \Delta x</m>.
+                        The three orange slabs each have volume <m>x^2 \Delta x</m>,
+                        one on each face of the original cube.
+                        Use the sliders to change <m>x</m> and <m>\Delta x</m>.
+                    </caption>
+                    <interactive
+                        xml:id="interactive-growing-cube"
+                        platform="jsxgraph"
+                        width="90%"
+                        aspect="16:13"
+                        source="jsxgraph/growing-cube.js">
+                        <slate
+                            xml:id="jsxgraph-growing-cube"
+                            surface="jsxboard"
+                            aspect="16:13"/>
+                        <instructions>
+                            <p>
+                                <ul>
+                                    <li><p>Drag the <alert>x</alert> slider to change the side length of the original cube (blue).</p></li>
+                                    <li><p>Drag the <alert>Δx</alert> slider to add the three orange slabs (each with volume <m>x^2\Delta x</m>).</p></li>
+                                    <li><p>The three orange slabs (on the top, right, and back faces) together make up <m>3x^2\Delta x</m> — the dominant part of the growth.</p></li>
+                                </ul>
+                            </p>
+                        </instructions>
+                    </interactive>
+                </figure>
+
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Expand <m>(x + \Delta x)^3</m>.
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                <m>(x + \Delta x)^3 = x^3 + 3x^2\,\Delta x + 3x\,(\Delta x)^2 + (\Delta x)^3</m>
+                            </p>
+                        </solution>
+                    </li>
+                    <li>
+                        <p>
+                            Write an expression for <m>\Delta V = (x+\Delta x)^3 - x^3</m> and simplify.
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                <m>\Delta V = 3x^2\,\Delta x + 3x\,(\Delta x)^2 + (\Delta x)^3</m>
+                            </p>
+                        </solution>
+                    </li>
+                    <li>
+                        <p>
+                            Divide by <m>\Delta x</m> and let <m>\Delta x \to 0</m>.
+                            What is <m>\dfrac{dV}{dx}</m>?
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                <md>
+                                    <mrow>\frac{\Delta V}{\Delta x} \amp= 3x^2 + 3x\,\Delta x + (\Delta x)^2</mrow>
+                                </md>
+                                As <m>\Delta x \to 0</m>, the last two terms vanish, giving
+                                <m>\dfrac{dV}{dx} = 3x^2</m>.
+                            </p>
+                        </solution>
+                        <note component="lesson-plan">
+                            <p>
+                                Connect to the diagram: the three orange slabs together contribute
+                                <m>3x^2\,\Delta x</m> to the volume increase. The edge bars (<m>3x\,(\Delta x)^2</m>)
+                                and corner cube (<m>(\Delta x)^3</m>) are the terms that vanish in the limit.
+                            </p>
+                        </note>
+                    </li>
+                </ol>
+            </paragraphs>
+
+            <paragraphs>
+                <title>Part C: Spotting the Pattern</title>
+                <p>
+                    Complete the table below, using your results from Parts A and B.
+                </p>
+                <table xml:id="table-power-pattern">
+                    <title>Derivatives of powers of <m>x</m></title>
+                    <tabular halign="center" top="minor" left="minor">
+                        <row header="yes" bottom="medium">
+                            <cell right="minor"><m>f(x)</m></cell>
+                            <cell right="minor"><m>x^1</m></cell>
+                            <cell right="minor"><m>x^2</m></cell>
+                            <cell right="minor"><m>x^3</m></cell>
+                            <cell><m>x^4</m></cell>
+                        </row>
+                        <row bottom="minor">
+                            <cell right="minor"><m>f'(x)</m></cell>
+                            <cell right="minor"><m>1</m></cell>
+                            <cell right="minor"><m>2x</m></cell>
+                            <cell right="minor"><m>3x^2</m></cell>
+                            <cell>?</cell>
+                        </row>
+                    </tabular>
+                </table>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Describe the pattern you see. What do you think <m>f'(x)</m> is when <m>f(x) = x^4</m>?
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                The power comes down as a coefficient and the exponent decreases by 1.
+                                So <m>\dfrac{d}{dx}(x^4) = 4x^3</m>.
+                            </p>
+                        </solution>
+                    </li>
+                    <li>
+                        <p>
+                            Using the same pattern, predict <m>f'(x)</m> for <m>f(x) = x^n</m>
+                            where <m>n</m> is any positive integer.
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                <m>f'(x) = nx^{n-1}</m>. This is the power rule.
+                            </p>
+                        </solution>
+                    </li>
+                </ol>
+            </paragraphs>
         </statement>
-    </activity> -->
+    </activity>
 
-    <!-- [LP] Add guidance on structured lesson plan-->
-
-    <!-- <axiom component="lesson-plan">
+    <axiom component="lesson-plan">
         <title>Structured Instruction</title>
         <p>
             <dl>
             <li>
                 <title>Suggested Time</title>
                 <p>
-                    XX minutes
+                    5 minutes
                 </p>
             </li>
             <li>
                 <title>Objective</title>
                 <p>
-                    To formalize the concepts and properties learners discovered in the anchor task.
+                    Formalise the power rule and emphasise that it is consistent with differentiation from first principles.
                 </p>
             </li>
             </dl>
         </p>
         <paragraphs>
             <title>Key Takeaways &amp; Teacher Connection</title>
-            <ol>
+            <ul>
                 <li>
                     <p>
-                        <alert>Connecting to Learner Work:</alert> XXXX
+                        Connect the pattern from the table directly to the formal statement:
+                        "the exponent comes down as a coefficient and the exponent decreases by one."
                     </p>
                 </li>
-            </ol>
+                <li>
+                    <p>
+                        Remind learners that in Part B, the terms <m>3x(\Delta x)^2</m> and <m>(\Delta x)^3</m>
+                        vanished in the limit — this is the same reasoning as the limit definition, just done geometrically.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        The power rule also holds for <m>n = 0</m> (constant functions) and will later extend
+                        to negative and fractional exponents.
+                    </p>
+                </li>
+            </ul>
         </paragraphs>
-    </axiom> -->
+    </axiom>
 
-    <!-- Add insight / key takeaway directly related to activity / learner experience -->
+    <insight xml:id="insight-power-rule">
+        <title>The Power Rule</title>
+        <p>
+            If <m>f(x) = x^n</m> where <m>n</m> is any real number, then
+            <md>f'(x) = nx^{n-1}</md>
+            In Leibniz notation: <m>\displaystyle\frac{d}{dx}\!\left(x^n\right) = nx^{n-1}</m>.
+        </p>
+        <p>
+            If <m>f(x) = cx^n</m> for a constant <m>c</m>, then the constant multiplies through:
+            <md>f'(x) = cnx^{n-1}</md>
+        </p>
+    </insight>
 
-    <!-- <insight>
-    </insight> -->
-
-    <!-- Add further instruction (not in a block) to develop ideas as needed -->
+    <p>
+        The power rule gives the same answer as differentiating from first principles, but far more quickly.
+    </p>
 
     <xi:include href="../lesson-plan-templates/example-intro.ptx" />
 
-    <!-- Add at least 3 examples -->
-
-    <!-- <example>
+    <example xml:id="example-power-rule-basic">
+        <title>Using the Power Rule</title>
         <statement>
+            <p>
+                Find <m>f'(x)</m> for <m>f(x) = x^6</m>.
+            </p>
         </statement>
         <solution>
+            <p>
+                Applying the power rule with <m>n = 6</m>:
+                <md>f'(x) = 6x^{6-1} = 6x^5</md>
+            </p>
         </solution>
     </example>
 
-    <example>
+    <example xml:id="example-power-rule-gradient-at-point">
+        <title>Gradient at a Point</title>
         <statement>
+            <p>
+                Find the gradient of the curve <m>y = x^4</m> at the point where <m>x = 3</m>.
+            </p>
         </statement>
         <solution>
+            <p>
+                First, differentiate using the power rule:
+                <md>\frac{dy}{dx} = 4x^3</md>
+                Then substitute <m>x = 3</m>:
+                <md>4(3)^3 = 4 \times 27 = 108</md>
+                The gradient of the curve at <m>x = 3</m> is <m>108</m>.
+            </p>
         </solution>
     </example>
 
-    <example>
+    <example xml:id="example-power-rule-constant-multiple">
+        <title>Constant Multiple</title>
         <statement>
+            <p>
+                Find <m>\frac{dy}{dx}</m> for <m>y = 5x^3</m>.
+            </p>
         </statement>
         <solution>
+            <p>
+                The constant <m>5</m> multiplies through the derivative.
+                Applying the power rule to <m>x^3</m>:
+                <md>
+                    <mrow>\frac{dy}{dx} \amp= 5 \cdot \frac{d}{dx}(x^3)</mrow>
+                    <mrow>\amp= 5 \cdot 3x^2</mrow>
+                    <mrow>\amp= 15x^2</mrow>
+                </md>
+            </p>
         </solution>
-    </example> -->
+    </example>
 
     <xi:include href="../lesson-plan-templates/assessment-intro.ptx" />
 
-    <!-- If STACK questions are included, uncomment this: -->
+    <exercises xml:id="exercises-power-rule">
 
-    <!-- <xi:include href="../lesson-plan-templates/checkpoint.ptx" /> -->
-
-    <!-- Add STACK exercises if made -->
-
-    <!-- Add static exercises -->
-
-    <!-- <exercises>
-        <exercise>
-            <statement>   
-
-            </statement>   
+        <exercise xml:id="ex-power-rule-1">
+            <statement>
+                <p>
+                    Find <m>f'(x)</m> for <m>f(x) = x^7</m>.
+                </p>
+            </statement>
             <solution>
+                <p>
+                    Applying the power rule with <m>n = 7</m>:
+                    <md>f'(x) = 7x^6</md>
+                </p>
+            </solution>
+        </exercise>
 
-            </solution>             
-        </exercise>        
-    </exercises> -->
+        <exercise xml:id="ex-power-rule-2">
+            <statement>
+                <p>
+                    Find <m>\dfrac{dy}{dx}</m> for <m>y = x^5</m>.
+                </p>
+            </statement>
+            <solution>
+                <p>
+                    <md>\frac{dy}{dx} = 5x^4</md>
+                </p>
+            </solution>
+        </exercise>
 
-    <!-- [LP] Add information on how to differentiate  -->
+        <exercise xml:id="ex-power-rule-gradient-at-point">
+            <statement>
+                <p>
+                    Find the gradient of <m>f(x) = x^3</m> at <m>x = -2</m>.
+                </p>
+            </statement>
+            <solution>
+                <p>
+                    Differentiate: <m>f'(x) = 3x^2</m>.
+                </p>
+                <p>
+                    Substitute <m>x = -2</m>:
+                    <md>f'(-2) = 3(-2)^2 = 3 \times 4 = 12</md>
+                    The gradient at <m>x = -2</m> is <m>12</m>.
+                </p>
+            </solution>
+        </exercise>
 
-    <!-- <axiom component="lesson-plan">
-        <title>Differentiation</title>
+        <exercise xml:id="ex-power-rule-find-n">
+            <statement>
+                <p>
+                    A function <m>f(x) = x^n</m> passes through the point <m>(2,\, 32)</m>.
+                    <ol marker="(a)">
+                        <li><p>Find <m>n</m>.</p></li>
+                        <li><p>Find the gradient of <m>f</m> at <m>x = 2</m>.</p></li>
+                    </ol>
+                </p>
+            </statement>
+            <solution>
+                <p>
+                    <ol marker="(a)">
+                        <li>
+                            <p>
+                                Since <m>f(2) = 32</m>, we need <m>2^n = 32 = 2^5</m>, so <m>n = 5</m>.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                With <m>f(x) = x^5</m>, the power rule gives <m>f'(x) = 5x^4</m>.
+                                At <m>x = 2</m>:
+                                <md>f'(2) = 5 \times 2^4 = 5 \times 16 = 80</md>
+                            </p>
+                        </li>
+                    </ol>
+                </p>
+            </solution>
+        </exercise>
 
-        <table>
-            <title>Differentiation</title>
-            <tabular halign="left">
-                <row header="yes" bottom="minor">
-                    <cell>Learner Group</cell>
-                    <cell>Strategy &amp; Learning Experience</cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>Struggling Learners (Support)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>On-Level Learners (Core)</cell>
-                    <cell>
-                        <line>The core lesson activities as described above.</line>
-                    </cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>Advanced Learners (Challenge)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
-                </row>
-            </tabular>
-        </table>
-    </axiom> -->
+        <exercise xml:id="ex-power-rule-first-principles-x2">
+            <title>Power Rule from First Principles for <m>x^2</m></title>
+            <statement>
+                <p>
+                    Use the definition of the derivative,
+                    <md>f'(x) = \lim_{h \to 0}\frac{f(x+h) - f(x)}{h},</md>
+                    to find <m>f'(x)</m> for <m>f(x) = x^2</m>.
+                    Verify your answer matches the power rule.
+                </p>
+            </statement>
+            <solution>
+                <p>
+                    First, compute <m>f(x+h) = (x+h)^2 = x^2 + 2xh + h^2</m>.
+                </p>
+                <p>
+                    Then form the difference quotient and simplify:
+                    <md>
+                        <mrow>f'(x) \amp= \lim_{h \to 0}\frac{(x+h)^2 - x^2}{h}</mrow>
+                        <mrow>\amp= \lim_{h \to 0}\frac{x^2 + 2xh + h^2 - x^2}{h}</mrow>
+                        <mrow>\amp= \lim_{h \to 0}\frac{2xh + h^2}{h}</mrow>
+                        <mrow>\amp= \lim_{h \to 0}\frac{h(2x + h)}{h}</mrow>
+                        <mrow>\amp= \lim_{h \to 0}(2x + h)</mrow>
+                        <mrow>\amp= 2x</mrow>
+                    </md>
+                </p>
+                <p>
+                    The power rule gives <m>\dfrac{d}{dx}(x^2) = 2 \cdot x^{2-1} = 2x</m>. <m>\checkmark</m>
+                </p>
+            </solution>
+        </exercise>
+
+        <exercise xml:id="ex-power-rule-first-principles-x3">
+            <title>Power Rule from First Principles for <m>x^3</m></title>
+            <statement>
+                <p>
+                    Use the definition of the derivative to find <m>f'(x)</m> for <m>f(x) = x^3</m>.
+                    Verify your answer matches the power rule.
+                </p>
+            </statement>
+            <solution>
+                <p>
+                    Compute <m>f(x+h) = (x+h)^3</m> by expanding:
+                    <md>(x+h)^3 = x^3 + 3x^2 h + 3x h^2 + h^3</md>
+                </p>
+                <p>
+                    Form the difference quotient:
+                    <md>
+                        <mrow>f'(x) \amp= \lim_{h \to 0}\frac{(x+h)^3 - x^3}{h}</mrow>
+                        <mrow>\amp= \lim_{h \to 0}\frac{x^3 + 3x^2 h + 3x h^2 + h^3 - x^3}{h}</mrow>
+                        <mrow>\amp= \lim_{h \to 0}\frac{3x^2 h + 3x h^2 + h^3}{h}</mrow>
+                        <mrow>\amp= \lim_{h \to 0}\frac{h(3x^2 + 3xh + h^2)}{h}</mrow>
+                        <mrow>\amp= \lim_{h \to 0}(3x^2 + 3xh + h^2)</mrow>
+                        <mrow>\amp= 3x^2</mrow>
+                    </md>
+                </p>
+                <p>
+                    The power rule gives <m>\dfrac{d}{dx}(x^3) = 3 \cdot x^{3-1} = 3x^2</m>. <m>\checkmark</m>
+                </p>
+            </solution>
+        </exercise>
+
+    </exercises>
 
     <xi:include href="../lesson-plan-templates/assessment-methods.ptx" />
 
     <xi:include href="../lesson-plan-templates/reflection.ptx"/>
+
 </section>
