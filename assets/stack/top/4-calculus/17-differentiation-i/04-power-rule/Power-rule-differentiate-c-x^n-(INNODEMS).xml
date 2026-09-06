@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Power rule: differentiate c x^n (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Differentiate using the <b>power rule</b>. Give an exact answer (no decimals).</p>
+[[ if test="notn=1" ]]
+<p>Find \( f'(x) \) for \( f(x) = {@expr@} \).</p>
+[[/ if ]]
+[[ if test="notn=2" ]]
+<p>Find \( \dfrac{dy}{dx} \) for \( y = {@expr@} \).</p>
+[[/ if ]]
+[[ if test="notn=3" ]]
+<p>Find \( \dfrac{d}{dx}\!\left( {@expr@} \right) \).</p>
+[[/ if ]]
+<div>[[ if test="notn=1" ]]\( f'(x) = \)[[/ if ]][[ if test="notn=2" ]]\( \dfrac{dy}{dx} = \)[[/ if ]][[ if test="notn=3" ]]\( \dfrac{d}{dx}\!\left( {@expr@} \right) = \)[[/ if ]] [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[[[ if test="notn=1" ]]<p>The <b>power rule</b>: if \( f(x)=c\,x^{n} \) then \( f'(x)=c\,n\,x^{\,n-1} \). Bring the exponent down as a factor, then reduce the exponent by \( 1 \); the constant multiple stays put.</p>[[/ if ]][[ if test="notn=2" ]]<p>The <b>power rule</b>: if \( y=c\,x^{n} \) then \( \dfrac{dy}{dx}=c\,n\,x^{\,n-1} \). Bring the exponent down as a factor, then reduce the exponent by \( 1 \); the constant multiple stays put.</p>[[/ if ]][[ if test="notn=3" ]]<p>The <b>power rule</b>: \( \dfrac{d}{dx}\!\left(c\,x^{n}\right)=c\,n\,x^{\,n-1} \). Bring the exponent down as a factor, then reduce the exponent by \( 1 \); the constant multiple stays put.</p>[[/ if ]]
+<p>Here \( c = {@c@} \) and \( n = {@n@} \), so</p>
+\[ [[ if test="notn=1" ]]f'(x)[[/ if ]][[ if test="notn=2" ]]\dfrac{dy}{dx}[[/ if ]][[ if test="notn=3" ]]\dfrac{d}{dx}\!\left( {@expr@} \right)[[/ if ]] = {@ev(step_disp, simp=false)@} = {@ta1@}. \]
+<p>The constant multiple \( {@c@} \) just rides along; the old exponent \( {@n@} \) becomes the new coefficient factor and the power drops to \( {@m@} \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomise backwards: choose c, n, then the answer is c*n*x^(n-1). */
+n : rand(5)+2;                                  /* exponent 2..6 */
+m : n-1;                                         /* reduced exponent, a clean integer */
+c : rand_with_prohib(2,9,[n]) * rand([-1,1]);   /* |c| in 2..9, c != n, random sign */
+notn : rand(3)+1;                                /* 1: f'(x)  2: dy/dx  3: Leibniz */
+
+expr : c*x^n;                                    /* the function to differentiate */
+ta1  : c*n*x^m;                                  /* model answer c n x^(n-1) */
+
+/* Misconception targets. */
+w_keepexp : c*n*x^n;      /* power down, exponent not reduced */
+w_nomult  : c*x^m;        /* exponent reduced, forgot the factor n */
+w_dropc   : n*x^m;        /* dropped the constant multiple c */
+w_incpow  : c*n*x^(n+1);  /* raised the exponent (integration reflex) */
+
+/* Coefficient shown unevaluated for the worked solution, e.g. 3*4*x^3. */
+simp:false;
+step_disp : c*n*x^m;
+simp:true;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( c={@c@},\ n={@n@},\ \text{notn}={@notn@};\ \ f'={@ta1@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>14</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>diff</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct derivative?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Brought the power down but did not reduce the exponent?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_keepexp</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-keepexp</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You brought the power down as a factor, but the exponent must also drop by \( 1 \), giving a new power of \( {@m@} \), not \( {@n@} \).</p>[[ if test="notn=1" ]]<p>Recall \( f'(x)=c\,n\,x^{\,n-1} \).</p>[[/ if ]][[ if test="notn=2" ]]<p>Recall \( \dfrac{dy}{dx}=c\,n\,x^{\,n-1} \).</p>[[/ if ]][[ if test="notn=3" ]]<p>Recall \( \dfrac{d}{dx}\!\left(c\,x^{n}\right)=c\,n\,x^{\,n-1} \).</p>[[/ if ]]]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Reduced the exponent but forgot to multiply by n?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_nomult</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nomult</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You reduced the exponent correctly, but you forgot to multiply by the old exponent. The power \( {@n@} \) comes down as a factor: the coefficient should be \( {@c@}\times{@n@} \), not \( {@c@} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Dropped the constant multiple c?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_dropc</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-dropc</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You differentiated \( x^{{@n@}} \) correctly, but the constant multiple \( {@c@} \) has been lost. A constant factor stays put: differentiate \( x^{{@n@}} \) to get \( {@n@}\,x^{\,{@m@}} \), then multiply by \( {@c@} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Raised the exponent (integration reflex)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_incpow</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-incpow</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the direction: when you <em>differentiate</em>, the exponent goes <em>down</em> by \( 1 \) (to \( {@m@} \)). Raising it by \( 1 \) is what integration does.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description>Wrote the original function back (did not differentiate)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>expr</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-orig</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the original function \( {@expr@} \). You still need to differentiate it: bring the power down and reduce the exponent by \( 1 \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Apply the power rule — [[ if test="notn=1" ]]\( f'(x)=c\,n\,x^{\,n-1} \)[[/ if ]][[ if test="notn=2" ]]\( \dfrac{dy}{dx}=c\,n\,x^{\,n-1} \)[[/ if ]][[ if test="notn=3" ]]\( \dfrac{d}{dx}\!\left(c\,x^{n}\right)=c\,n\,x^{\,n-1} \)[[/ if ]] — bring the exponent down as a factor, then reduce the power by \( 1 \). See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Kept the exponent (did not reduce it)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_keepexp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-keepexp</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Forgot to multiply by n</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_nomult</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-nomult</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Dropped the constant multiple</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_dropc</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-dropc</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Raised the exponent (integration reflex)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_incpow</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incpow</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Wrote the original function back</description>
+      <testinput>
+        <name>ans1</name>
+        <value>expr</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-orig</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Generic wrong value (catch-all)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta1+1,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
