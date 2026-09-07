@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Testing on Line of best fit by dragging, order and classification</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The number of hours spent practising per week \((x)\) and the number of mistakes made in a recital \((y)\) were recorded for 5 students. The mean practice hours is \(\bar{x}={@xm@}\) and the mean number of mistakes is \(\bar{y}={@ym@}\). Two of the plotted points are \(A({@ax@},{@ay@})\) and \(B({@bx@},{@by@})\).</p>
+<p><strong>1)</strong> Drag the red marker onto that point where the line of best fit must pass through.</p>
+[[jsxgraph input-ref-ans1="rM" width="520px" height="480px"]]
+var AX={#ax#}, AY={#ay#}, BX={#bx#}, BY={#by#};
+var XMAX={#float(xmaxw)#}, YMAX={#float(ymaxw)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1, YMAX, XMAX, -1.5], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[XMAX-0.2, -0.8, 'Practice hours (x)'],{anchorX:'right',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.2, YMAX-0.4, 'Mistakes (y)'],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('point',[AX,AY],{name:'A',fixed:true,color:'#000000',fillColor:'#000000',size:3,label:{offset:[8,6]}});
+brd.create('point',[BX,BY],{name:'B',fixed:true,color:'#000000',fillColor:'#000000',size:3,label:{offset:[8,6]}});
+var M = brd.create('point',[1,1],{name:'M',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[8,-2],cssStyle:'font-weight:bold;color:#cc0000'}});
+brd.create('text',[-0.8, YMAX-2, function(){ return 'M = ('+Math.round(M.X())+', '+Math.round(M.Y())+')'; }],{anchorX:'left',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#cc0000'});
+stack_jxg.bind_point(rM, M);
+[[/jsxgraph]]
+<div style="display:none">[[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prtMean]]</div>
+<p><strong>2)</strong> How do you draw a line of best fit? Put the steps below into the correct order.</p>
+[[parsons input="ansSteps"]]
+{# parsons_encode(proof_steps) #}
+[[/parsons]]
+<div>[[input:ansSteps]] [[validation:ansSteps]] [[feedback:prtSteps]]</div>
+<p><strong>3)</strong> State the gradient and the type of relationship.</p>
+<div>Gradient: [[input:ansGrad]] [[validation:ansGrad]] [[feedback:prtGrad]]</div>
+<div>Relationship: [[input:ansRel]] [[validation:ansRel]] [[feedback:prtRel]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>1)</strong> By the mean-point method the line must pass through \(\left(\bar{x},\bar{y}\right)=({@xm@},{@ym@})\).</p>
+<p><strong>2)</strong> To draw the line of best fit:</p>
+<ol>
+<li>Plot the mean point \(({@xm@},{@ym@})\) and mark it clearly (e.g. a crossed circle labelled M).</li>
+<li>Lay a transparent ruler across the grid.</li>
+<li>Pivot the ruler through the mean point so the remaining points are balanced evenly above and below the line.</li>
+<li>Draw a single, clean, straight line right across the grid.</li>
+</ol>
+<p><strong>3)</strong> As \(x\) increases, \(y\)
+[[ if test="is(sgn=1)" ]] increases, so the gradient is <strong>positive</strong> and there is a <strong>positive</strong> relationship. [[ else ]] decreases, so the gradient is <strong>negative</strong> and there is a <strong>negative</strong> relationship (more practice, fewer mistakes). [[/ if ]]</p>
+[[jsxgraph width="480px" height="440px"]]
+var AX={#ax#}, AY={#ay#}, BX={#bx#}, BY={#by#}, XM={#xm#}, YM={#ym#}, SL={#float(slope)#};
+var XMAX={#float(xmaxw)#}, YMAX={#float(ymaxw)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1, YMAX, XMAX, -1.5], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[XMAX-0.2, -0.8, 'Practice hours (x)'],{anchorX:'right',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.2, YMAX-0.4, 'Mistakes (y)'],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[function(x){ return YM + SL*(x-XM); }, 0, XMAX-0.3],{strokeColor:'#1f4fd8', strokeWidth:2, highlight:false});
+brd.create('point',[AX,AY],{name:'A',fixed:true,color:'#000000',fillColor:'#000000',size:3,label:{offset:[8,6]}});
+brd.create('point',[BX,BY],{name:'B',fixed:true,color:'#000000',fillColor:'#000000',size:3,label:{offset:[8,6]}});
+brd.create('point',[XM,YM],{name:'M',fixed:true,color:'#cc0000',fillColor:'#cc0000',size:4,label:{offset:[8,-2],cssStyle:'font-weight:bold;color:#cc0000'}});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[stack_include_contrib("prooflib.mac");
+xm : rand([5,6,7,8]);
+ym : rand([7,8,9,10]);
+dx : rand([3,4]);
+dy : rand([5,6]);
+sgn : rand([-1,1]);
+ax : xm - dx; ay : ym - sgn*dy;
+bx : xm + dx; by : ym + sgn*dy;
+slope : sgn*dy/dx;
+xmaxw : bx + 2;
+ymaxw : max(ay, by, ym) + 3;
+mean_str : sconcat("Plot the mean point \\((", xm, ",\\ ", ym, ")\\) and mark it clearly.");
+proof_steps : [
+ ["mean", mean_str],
+ ["ruler", "Lay a transparent ruler across the grid."],
+ ["pivot", "Pivot the ruler through the mean point so the remaining points are balanced evenly above and below the line."],
+ ["draw", "Draw a single, clean, straight line right across the grid."]
+];
+proof_steps : random_permutation(proof_steps);
+ta : proof("mean","ruler","pivot","draw");
+GradOpts : [[optPos, is(sgn=1), "Positive"], [optNeg, is(sgn=-1), "Negative"]];
+RelOpts  : [[optPosR, is(sgn=1), "Positive relationship (as x increases, y increases)"], [optNegR, is(sgn=-1), "Negative relationship (as x increases, y decreases)"]];
+gradCorrect : if is(sgn=1) then optPos else optNeg;
+relCorrect  : if is(sgn=1) then optPosR else optNegR;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>mean \(({@xm@},{@ym@})\), \(A({@ax@},{@ay@}),B({@bx@},{@by@})\), sgn={@sgn@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>[xm,ym]</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansGrad</name>
+      <type>dropdown</type>
+      <tans>GradOpts</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansRel</name>
+      <type>dropdown</type>
+      <tans>RelOpts</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansSteps</name>
+      <type>parsons</type>
+      <tans>[ta, proof_steps]</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtGrad</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansGrad</sans>
+        <tans>gradCorrect</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtGrad-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtGrad-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Compare \(A\) and \(B\): as \(x\) increases, does \(y\) rise or fall? That gives the sign of the gradient.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtMean</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>mm : [round(ans1[1]), round(ans1[2])];</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>mm</sans>
+        <tans>[xm,ym]</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtMean-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtMean-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The line of best fit passes through the mean point \((\bar{x},\bar{y})=({@xm@},{@ym@})\). Drag the marker there.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtRel</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansRel</sans>
+        <tans>relCorrect</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtRel-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtRel-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>A negative gradient means a negative relationship, and a positive gradient a positive one.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtSteps</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sa : parsons_decode(ansSteps);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtSteps-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtSteps-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Plot the mean point first, then place and pivot the ruler through it, and finally draw the line.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>25001</deployedseed>
+    <deployedseed>25002</deployedseed>
+    <deployedseed>25003</deployedseed>
+    <deployedseed>25004</deployedseed>
+    <deployedseed>25005</deployedseed>
+    <deployedseed>25006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[xm,ym]</value>
+      </testinput>
+      <testinput>
+        <name>ansGrad</name>
+        <value>gradCorrect</value>
+      </testinput>
+      <testinput>
+        <name>ansRel</name>
+        <value>relCorrect</value>
+      </testinput>
+      <testinput>
+        <name>ansSteps</name>
+        <value>parsons_answer(ta, proof_steps)</value>
+      </testinput>
+      <expected>
+        <name>prtGrad</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtGrad-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtMean</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtMean-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtRel</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtRel-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtSteps</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtSteps-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Mean off; steps wrong; gradient wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[xm+1,ym]</value>
+      </testinput>
+      <testinput>
+        <name>ansGrad</name>
+        <value>if is(sgn=1) then optNeg else optPos</value>
+      </testinput>
+      <testinput>
+        <name>ansRel</name>
+        <value>relCorrect</value>
+      </testinput>
+      <testinput>
+        <name>ansSteps</name>
+        <value><![CDATA[parsons_answer(proof("ruler","mean","pivot","draw"), proof_steps)]]></value>
+      </testinput>
+      <expected>
+        <name>prtGrad</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtGrad-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtMean</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtMean-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtSteps</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtSteps-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

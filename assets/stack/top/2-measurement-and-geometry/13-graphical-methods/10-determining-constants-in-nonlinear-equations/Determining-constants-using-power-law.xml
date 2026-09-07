@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Determining constants using power law</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The variables \(x\) and \(y\) are related by the power law \[ y = k\,x^{n}, \] where \(k\) and \(n\) are constants. The experimental data are:</p>
+<table border="1" cellpadding="6" style="border-collapse:collapse">
+<tr><th>\(x\)</th><th>\(y\)</th></tr>
+<tr><td>\({@x1@}\)</td><td>\({@y1@}\)</td></tr>
+<tr><td>\({@x2@}\)</td><td>\({@y2@}\)</td></tr>
+<tr><td>\({@x3@}\)</td><td>\({@y3@}\)</td></tr>
+</table>
+<p>By plotting a suitable straight-line graph, determine the constants. Give values to 2 decimal places where appropriate.</p>
+<div>\( n = \) [[input:ansn]] [[validation:ansn]] [[feedback:prtn]]</div>
+<div>\( k = \) [[input:ansk]] [[validation:ansk]] [[feedback:prtk]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>Solution.</strong></p>
+<ol>
+<li><strong>Linearise.</strong> Take logarithms (base 10) of \(y=k\,x^{n}\): \[ \log_{10} y = n\,\log_{10} x + \log_{10} k, \] so a graph of \(Y=\log_{10} y\) against \(X=\log_{10} x\) is a straight line with gradient \(m=n\) and intercept \(c=\log_{10} k\).</li>
+<li><strong>Find the gradient \(n\).</strong> Using the first and last transformed points, \[ n=\frac{Y_3-Y_1}{X_3-X_1}=\frac{{@dispdp(py3,2)@}-{@dispdp(py1,2)@}}{{@dispdp(px3,2)@}-{@dispdp(px1,2)@}}={@nval@}. \]</li>
+<li><strong>Find the intercept.</strong> Substitute the point \(({@dispdp(px1,2)@},\,{@dispdp(py1,2)@})\) into \(Y=nX+c\): \[ {@dispdp(py1,2)@}={@nval@}\times{@dispdp(px1,2)@}+c \;\Rightarrow\; c={@dispdp(cval,2)@}=\log_{10} k \;\Rightarrow\; k=10^{{@dispdp(cval,2)@}}={@kval@}. \]</li>
+<li><strong>State the values:</strong> \(n={@nval@}\) and \(k={@kval@}\).</li>
+</ol>
+<p>The graph of \(\log_{10} y\) against \(\log_{10} x\), with the gradient triangle and the intercept, is shown below.</p>
+[[jsxgraph width="470px" height="470px"]]
+var PX=[{#float(px1)#},{#float(px2)#},{#float(px3)#}];
+var PY=[{#float(py1)#},{#float(py2)#},{#float(py3)#}];
+var M={#float(nval)#}, C={#float(cval)#};
+var XMIN={#float(gxlo)#}, XMAX={#float(gxhi)#}, YMAX={#float(gyhi)#}, YMIN={#float(gylo)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[XMIN, YMAX, XMAX, YMIN], axis:true, showCopyright:false, showNavigation:false, grid:true, keepaspectratio:false});
+brd.create('text',[XMAX-0.02, 0.02, 'log10 x'],{anchorX:'right',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.02, YMAX-0.02, 'log10 y'],{anchorX:'left',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[function(x){return M*x + C;}, 0, XMAX-0.05],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+for (var i=0;i<3;i++){ brd.create('point',[PX[i],PY[i]],{name:'',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:3}); }
+brd.create('segment',[[PX[0],PY[0]],[PX[2],PY[0]]],{dash:2,strokeColor:'#2ca02c',strokeWidth:2});
+brd.create('segment',[[PX[2],PY[0]],[PX[2],PY[2]]],{dash:2,strokeColor:'#2ca02c',strokeWidth:2});
+brd.create('text',[(PX[0]+PX[2])/2, PY[0], 'run '+(PX[2]-PX[0]).toFixed(2)],{anchorX:'middle',anchorY:'top',fixed:true,fontSize:12,cssStyle:'color:#2ca02c'});
+brd.create('text',[PX[2]+0.01, (PY[0]+PY[2])/2, 'rise '+(PY[2]-PY[0]).toFixed(2)],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'color:#2ca02c'});
+brd.create('point',[0,C],{name:'',fixed:true,color:'#cc0000',size:4});
+brd.create('text',[0.02, C, 'intercept = '+C.toFixed(2)],{anchorX:'left',anchorY:'bottom',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#cc0000'});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>nval : rand([2,3]);
+kval : rand([2,3,5]);
+x1 : 2; x2 : 3; x3 : 4;
+y1 : kval*x1^nval;
+y2 : kval*x2^nval;
+y3 : kval*x3^nval;
+px1 : log(x1)/log(10);   /* log10 x */
+px2 : log(x2)/log(10);
+px3 : log(x3)/log(10);
+py1 : log(y1)/log(10);   /* log10 y */
+py2 : log(y2)/log(10);
+py3 : log(y3)/log(10);
+cval : log(kval)/log(10);   /* intercept = log10 k */
+/* graph window */
+gxlo : -0.1;
+gxhi : px3 + 0.15;
+gylo : min(0, cval, py1) - 0.1;
+gyhi : max(py1, py2, py3) + 0.2;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@kval@}x^{@nval@}\); \(n={@nval@}, k={@kval@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ansk</name>
+      <type>numerical</type>
+      <tans>kval</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansn</name>
+      <type>numerical</type>
+      <tans>nval</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtk</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>k within tolerance?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansk</sans>
+        <tans>kval</tans>
+        <testoptions>0.2</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtk-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtk-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the intercept \(c=\log_{10} k\), then \(k=10^{c}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtn</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>n within tolerance?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansn</sans>
+        <tans>nval</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtn-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtn-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>\(n\) is the gradient of \(\log_{10} y\) against \(\log_{10} x\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>21001</deployedseed>
+    <deployedseed>21002</deployedseed>
+    <deployedseed>21003</deployedseed>
+    <deployedseed>21004</deployedseed>
+    <deployedseed>21005</deployedseed>
+    <deployedseed>21006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ansk</name>
+        <value>kval</value>
+      </testinput>
+      <testinput>
+        <name>ansn</name>
+        <value>nval</value>
+      </testinput>
+      <expected>
+        <name>prtk</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtk-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtn</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtn-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong values</description>
+      <testinput>
+        <name>ansk</name>
+        <value>kval+2</value>
+      </testinput>
+      <testinput>
+        <name>ansn</name>
+        <value>nval+1</value>
+      </testinput>
+      <expected>
+        <name>prtk</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtk-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtn</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtn-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
