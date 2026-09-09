@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Sketch the graph of a quadratic (drag the parabola)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Sketch the graph of \[ y = {@qexpr@}. \]</p>
+<p>Drag the red point \(V\) to the <strong>vertex</strong> (turning point), and drag the red point \(W\) to any other point the curve passes through.</p>
+[[jsxgraph input-ref-ansV="rV" input-ref-ansW="rW" width="540px" height="540px"]]
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-6.5, 12.5, 6.5, -12.5], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+var V = brd.create('point',[-4,4],{name:'V',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[8,8],cssStyle:'font-weight:bold;color:#cc0000'}});
+var W = brd.create('point',[-3,5],{name:'W',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[8,8],cssStyle:'font-weight:bold;color:#cc0000'}});
+function af(){ var dx=W.X()-V.X(); if (Math.abs(dx)<1e-6) return null; return (W.Y()-V.Y())/(dx*dx); }
+brd.create('functiongraph',[function(x){ var a=af(); if (a===null) return NaN; return a*(x-V.X())*(x-V.X()) + V.Y(); }, -6.5, 6.5],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+stack_jxg.bind_point(rV, V);
+stack_jxg.bind_point(rW, W);
+[[/jsxgraph]]
+<div style="display:none">[[input:ansV]] [[validation:ansV]] [[input:ansW]] [[validation:ansW]]</div>
+<div>[[feedback:prtVertex]] [[feedback:prtShape]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>How to sketch \(y={@qexpr@}\):</strong></p>
+<ol>
+<li><p><strong>Direction.</strong><p>
+<p> The coefficient of \(x^2\) is \(a={@a@}\), so the parabola opens
+[[ if test="is(a>0)" ]] <strong>upwards</strong> [[ else ]] <strong>downwards</strong> [[/ if ]].</p></li>
+<li><p><strong>Vertex.</strong></p>
+<p> Completing the square gives \(y={@a@}(x-({@h@}))^2 + ({@k@})\)</p>
+<p> Therefore, the vertex is at \(({@h@},\,{@k@})\).</p></li>
+<li><p><strong>x-intercepts (roots).</strong></p>
+<p> Solving \(y=0\) gives \(x={@r1@}\) and \(x={@r2@}\).</p></li>
+<li><p><strong>y-intercept.</strong></p>
+<p> Putting \(x=0\) gives \(y={@cc@}\), i.e. the point \((0,\,{@cc@})\).</p></li>
+<li><p><strong>Sketch.</strong></p>
+<p> Plot the vertex, the two roots and the y-intercept, then draw a smooth parabola through them.</p></li>
+</ol>
+[[jsxgraph width="500px" height="500px"]]
+var A={#a#}, H={#h#}, K={#k#}, R1={#r1#}, R2={#r2#}, CC={#cc#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-6.5, 12.5, 6.5, -12.5], axis:true, grid:true, showCopyright:false, showNavigation:false, keepaspectratio:false});
+brd.create('functiongraph',[function(x){ return A*(x-H)*(x-H) + K; }, -6.5, 6.5],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+brd.create('point',[H,K],{name:'vertex',fixed:true,color:'#cc0000',fillColor:'#cc0000',size:4,label:{offset:[8,-4],cssStyle:'font-weight:bold;color:#cc0000'}});
+brd.create('point',[R1,0],{name:'',fixed:true,color:'#2ca02c',fillColor:'#2ca02c',size:3});
+brd.create('point',[R2,0],{name:'',fixed:true,color:'#2ca02c',fillColor:'#2ca02c',size:3});
+brd.create('point',[0,CC],{name:'',fixed:true,color:'#000000',fillColor:'#000000',size:3});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>a : rand([1,-1,2,-2]);
+h : rand([-2,-1,0,1,2]);
+d : rand([1,2]);
+k : -a*d^2;
+r1 : h - d;
+r2 : h + d;
+bb : -2*a*h;
+cc : a*h^2 + k;
+qexpr : a*x^2 + bb*x + cc;
+Wtx : h + 1;
+Wty : k + a;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@qexpr@}\); vertex \(({@h@},{@k@})\), roots \({@r1@},{@r2@}\), a={@a@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ansV</name>
+      <type>algebraic</type>
+      <tans>[h,k]</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansW</name>
+      <type>algebraic</type>
+      <tans>[Wtx,Wty]</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <prt>
+      <name>prtShape</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>dxp : ansW[1] - ansV[1];
+as : if is(dxp=0) then 999 else (ansW[2]-ansV[2])/dxp^2;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>leading coefficient</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>as</sans>
+        <tans>a</tans>
+        <testoptions>0.3</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtShape-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtShape-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Check the coefficient \(a={@a@}\): it fixes how steep the parabola is and whether it opens up or down. Place \(W\) on the curve, e.g. one step right of the vertex at \(({@Wtx@},{@Wty@})\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtVertex</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>hs : round(ansV[1]); ks : round(ansV[2]);
+vok : if (is(hs=h) and is(ks=k)) then 1 else 0;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>vertex</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>vok</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtVertex-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtVertex-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The vertex is at the turning point. Complete the square (or use \(x=-\frac{b}{2a}\)) to find it: the vertex should be \(({@h@},{@k@})\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>28001</deployedseed>
+    <deployedseed>28002</deployedseed>
+    <deployedseed>28003</deployedseed>
+    <deployedseed>28004</deployedseed>
+    <deployedseed>28005</deployedseed>
+    <deployedseed>28006</deployedseed>
+    <deployedseed>28007</deployedseed>
+    <deployedseed>28008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Vertex and shape correct</description>
+      <testinput>
+        <name>ansV</name>
+        <value>[h,k]</value>
+      </testinput>
+      <testinput>
+        <name>ansW</name>
+        <value>[Wtx,Wty]</value>
+      </testinput>
+      <expected>
+        <name>prtShape</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtShape-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtVertex</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtVertex-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Vertex wrong, shape still correct</description>
+      <testinput>
+        <name>ansV</name>
+        <value>[h+1,k]</value>
+      </testinput>
+      <testinput>
+        <name>ansW</name>
+        <value>[h+2,k+a]</value>
+      </testinput>
+      <expected>
+        <name>prtShape</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtShape-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtVertex</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtVertex-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Vertex correct, shape wrong (wrong a)</description>
+      <testinput>
+        <name>ansV</name>
+        <value>[h,k]</value>
+      </testinput>
+      <testinput>
+        <name>ansW</name>
+        <value>[h+1, k+a+2]</value>
+      </testinput>
+      <expected>
+        <name>prtShape</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtShape-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtVertex</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtVertex-correct</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

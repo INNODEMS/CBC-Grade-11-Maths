@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text><![CDATA[Empirical data — altitude and temperature (plot & interpret)]]></text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The table shows the average temperature recorded at different altitudes in a region.</p>
+<table border="1" cellpadding="6" style="border-collapse:collapse">
+<tr><th>Altitude (m)</th><td>\({@a1@}\)</td><td>\({@a2@}\)</td><td>\({@a3@}\)</td><td>\({@a4@}\)</td><td>\({@a5@}\)</td><td>\({@a6@}\)</td></tr>
+<tr><th>Temperature (&deg;C)</th><td>\({@T1@}\)</td><td>\({@T2@}\)</td><td>\({@T3@}\)</td><td>\({@T4@}\)</td><td>\({@T5@}\)</td><td>\({@T6@}\)</td></tr>
+</table>
+<p><strong>a) Identify the variables.</strong></p>
+<div>Independent variable: [[input:ansIndep]] [[validation:ansIndep]] [[feedback:prtIndep]]</div>
+<div>Dependent variable: [[input:ansDep]] [[validation:ansDep]] [[feedback:prtDep]]</div>
+<p><strong>b) Plot the data</strong> with the independent variable on the horizontal axis. Drag the six red points onto their \((\text{altitude},\ \text{temperature})\) positions.</p>
+[[jsxgraph input-ref-ans1="r1" input-ref-ans2="r2" input-ref-ans3="r3" input-ref-ans4="r4" input-ref-ans5="r5" input-ref-ans6="r6" width="560px" height="480px"]]
+var AX=[{#a1#},{#a2#},{#a3#},{#a4#},{#a5#},{#a6#}];
+var YMAX={#float(ymax)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-250, YMAX, 3600, -3], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[3550, -1.6, 'Altitude (m)'],{anchorX:'right',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[80, YMAX-0.5, 'Temperature (°C)'],{anchorX:'left',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#333'});
+var pts=[];
+for (var i=0;i<6;i++){ pts[i]=brd.create('point',[AX[i],0],{name:'',color:'#cc0000',fillColor:'#cc0000',size:4,snapToGrid:true,snapSizeX:500,snapSizeY:1}); }
+stack_jxg.bind_point(r1,pts[0]);
+stack_jxg.bind_point(r2,pts[1]);
+stack_jxg.bind_point(r3,pts[2]);
+stack_jxg.bind_point(r4,pts[3]);
+stack_jxg.bind_point(r5,pts[4]);
+stack_jxg.bind_point(r6,pts[5]);
+[[/jsxgraph]]
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]] [[input:ans3]] [[validation:ans3]] [[input:ans4]] [[validation:ans4]] [[input:ans5]] [[validation:ans5]] [[input:ans6]] [[validation:ans6]]</div>
+<div>[[feedback:prtPlot]]</div>
+<p><strong>c) Describe the relationship</strong> between altitude and temperature.</p>
+<div>[[input:ansDesc]] [[validation:ansDesc]] [[feedback:prtDesc]]</div>
+<p><strong>d) Use your graph to estimate</strong> the average temperature at an altitude of \({@estAlt@}\) m (to the nearest degree).</p>
+<div>Temperature \(\approx\) [[input:ansEst]] [[validation:ansEst]] \(\ ^{\circ}\mathrm{C}\) [[feedback:prtEst]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>a)</strong> The <em>independent</em> variable is <strong>altitude</strong> (chosen/controlled); the <em>dependent</em> variable is <strong>temperature</strong> (measured in response). Altitude goes on the horizontal axis.</p>
+<p><strong>b) &amp; c)</strong> The points lie close to a straight line that slopes downward: as altitude increases, temperature <strong>decreases at a roughly constant rate</strong> (a negative, linear relationship).</p>
+<p><strong>d)</strong> Reading the line at \({@estAlt@}\) m (between the \({@a3@}\) m and \({@a4@}\) m points) gives \[ T \approx {@dispdp(Test,1)@}\ ^{\circ}\mathrm{C}\ (\approx {@round(Test)@}\ ^{\circ}\mathrm{C}). \]</p>
+[[jsxgraph width="520px" height="440px"]]
+var AX=[{#a1#},{#a2#},{#a3#},{#a4#},{#a5#},{#a6#}];
+var AY=[{#T1#},{#T2#},{#T3#},{#T4#},{#T5#},{#T6#}];
+var TS={#Tstart#}, D={#d#}, EA={#estAlt#}, ET={#float(Test)#}, YMAX={#float(ymax)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-250, YMAX, 3600, -3], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[3550, -1.6, 'Altitude (m)'],{anchorX:'right',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[80, YMAX-0.5, 'Temperature (°C)'],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[function(x){ return TS - D*(x-500)/500; }, 300, 3200],{strokeColor:'#1f4fd8', strokeWidth:2, highlight:false});
+for (var i=0;i<6;i++){ brd.create('point',[AX[i],AY[i]],{name:'',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:3}); }
+brd.create('point',[EA,ET],{name:'',fixed:true,color:'#cc0000',size:4});
+brd.create('segment',[[EA,0],[EA,ET]],{dash:2,strokeColor:'#cc0000',strokeWidth:1});
+brd.create('segment',[[0,ET],[EA,ET]],{dash:2,strokeColor:'#cc0000',strokeWidth:1});
+brd.create('text',[EA+40, ET+0.6, '('+EA+', '+ET.toFixed(1)+')'],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#cc0000'});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>6</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[Tstart : rand([25,26,27,28,29,30]);
+d : rand([2,3,4]);
+a1:500; a2:1000; a3:1500; a4:2000; a5:2500; a6:3000;
+T1:Tstart; T2:Tstart-d; T3:Tstart-2*d; T4:Tstart-3*d; T5:Tstart-4*d; T6:Tstart-5*d;
+estAlt : rand([700,1200,1700,2200,2700]);
+Test : Tstart - d*(estAlt-500)/500;
+P1:[a1,T1]; P2:[a2,T2]; P3:[a3,T3]; P4:[a4,T4]; P5:[a5,T5]; P6:[a6,T6];
+ymax : Tstart + 3;
+IndepOpts : [[optAlt, true, "Altitude"], [optTemp, false, "Temperature"]];
+DepOpts   : [[optTemp, true, "Temperature"], [optAlt, false, "Altitude"]];
+DescOpts : [[optC1, true, "As altitude increases, the temperature decreases at a roughly constant rate (a negative, linear relationship)."],
+            [optC2, false, "As altitude increases, the temperature increases (a positive relationship)."],
+            [optC3, false, "The temperature stays about the same as altitude increases."],
+            [optC4, false, "There is no relationship between altitude and temperature."]];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( T_{start}={@Tstart@}, d={@d@}\); est at \({@estAlt@}\) m \(\to {@dispdp(Test,2)@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>P1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>P2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>P3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>P4</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>algebraic</type>
+      <tans>P5</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans6</name>
+      <type>algebraic</type>
+      <tans>P6</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansDep</name>
+      <type>dropdown</type>
+      <tans>DepOpts</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansDesc</name>
+      <type>radio</type>
+      <tans>DescOpts</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansEst</name>
+      <type>numerical</type>
+      <tans>Test</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansIndep</name>
+      <type>dropdown</type>
+      <tans>IndepOpts</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtDep</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansDep</sans>
+        <tans>optTemp</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtDep-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtDep-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The dependent variable is the one measured in response &mdash; here, temperature.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtDesc</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansDesc</sans>
+        <tans>optC1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtDesc-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtDesc-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Look at how temperature changes as altitude increases: it falls steadily.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtEst</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansEst</sans>
+        <tans>Test</tans>
+        <testoptions>1.2</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtEst-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtEst-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Read the temperature on your straight line at \({@estAlt@}\) m (it lies between the \({@a3@}\) m and \({@a4@}\) m readings).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtIndep</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansIndep</sans>
+        <tans>optAlt</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtIndep-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtIndep-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The independent variable is the one you choose/control &mdash; here, altitude.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtPlot</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[q1:[round(ans1[1]),round(ans1[2])];
+q2:[round(ans2[1]),round(ans2[2])];
+q3:[round(ans3[1]),round(ans3[2])];
+q4:[round(ans4[1]),round(ans4[2])];
+q5:[round(ans5[1]),round(ans5[2])];
+q6:[round(ans6[1]),round(ans6[2])];
+qs : {q1,q2,q3,q4,q5,q6};
+ncov : (if elementp(P1,qs) then 1 else 0)+(if elementp(P2,qs) then 1 else 0)+(if elementp(P3,qs) then 1 else 0)+(if elementp(P4,qs) then 1 else 0)+(if elementp(P5,qs) then 1 else 0)+(if elementp(P6,qs) then 1 else 0);
+allflag : if is(ncov=6) then 1 else 0;
+partflag : if (is(ncov>=3) and is(ncov<6)) then 1 else 0;]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>all six</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>allflag</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtPlot-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtPlot-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>partial</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>partflag</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtPlot-partial</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Some points are correctly placed. Drag every point onto its \((\text{altitude},\ \text{temperature})\) value from the table.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtPlot-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Drag each red point up to the temperature for its altitude, reading the values from the table.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>22001</deployedseed>
+    <deployedseed>22002</deployedseed>
+    <deployedseed>22003</deployedseed>
+    <deployedseed>22004</deployedseed>
+    <deployedseed>22005</deployedseed>
+    <deployedseed>22006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>P1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>P2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>P3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>P4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>P5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>P6</value>
+      </testinput>
+      <testinput>
+        <name>ansDep</name>
+        <value>optTemp</value>
+      </testinput>
+      <testinput>
+        <name>ansDesc</name>
+        <value>optC1</value>
+      </testinput>
+      <testinput>
+        <name>ansEst</name>
+        <value>Test</value>
+      </testinput>
+      <testinput>
+        <name>ansIndep</name>
+        <value>optAlt</value>
+      </testinput>
+      <expected>
+        <name>prtDesc</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtDesc-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtEst</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtEst-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtIndep</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtIndep-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtPlot</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtPlot-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Plot partial (3 of 6); variables swapped; description wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>P1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>P2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>P3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>[a4,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>[a5,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>[a6,0]</value>
+      </testinput>
+      <testinput>
+        <name>ansDep</name>
+        <value>optAlt</value>
+      </testinput>
+      <testinput>
+        <name>ansDesc</name>
+        <value>optC2</value>
+      </testinput>
+      <testinput>
+        <name>ansEst</name>
+        <value>Test</value>
+      </testinput>
+      <testinput>
+        <name>ansIndep</name>
+        <value>optTemp</value>
+      </testinput>
+      <expected>
+        <name>prtDesc</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtDesc-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtIndep</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtIndep-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtPlot</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtPlot-partial</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Estimate out of tolerance</description>
+      <testinput>
+        <name>ans1</name>
+        <value>P1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>P2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>P3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>P4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>P5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>P6</value>
+      </testinput>
+      <testinput>
+        <name>ansDep</name>
+        <value>optTemp</value>
+      </testinput>
+      <testinput>
+        <name>ansDesc</name>
+        <value>optC1</value>
+      </testinput>
+      <testinput>
+        <name>ansEst</name>
+        <value>Test+5</value>
+      </testinput>
+      <testinput>
+        <name>ansIndep</name>
+        <value>optAlt</value>
+      </testinput>
+      <expected>
+        <name>prtEst</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtEst-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
