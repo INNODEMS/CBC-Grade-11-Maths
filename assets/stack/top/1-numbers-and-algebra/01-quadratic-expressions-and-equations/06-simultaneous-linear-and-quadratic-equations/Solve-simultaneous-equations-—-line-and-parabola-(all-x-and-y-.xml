@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Solve simultaneous equations — line and parabola (all x and y values)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Solve the following simultaneous equations: \[ y = {@line@}, \qquad y = {@para@}. \]</p>
+<p>Hence find all possible values of \(x\) and \(y\).</p>
+<div>Set of \(x\)-values: \( x \in \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<div>Set of \(y\)-values: \( y \in \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(Enter each as a set, e.g. \(\{a,\ b\}\).)</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Both right-hand sides equal \(y\), so set them equal and solve for \(x\):</p>
+\[
+\begin{align*}
+{@para@} &= {@line@}\\
+{@quadexpr@} &= 0\\
+(x-({@r1@}))(x-({@r2@})) &= 0
+\end{align*}
+\]
+<p>giving \(x={@r1@}\) or \(x={@r2@}\).</p>
+<p>Now substitute each \(x\)-value into <em>both</em> equations. Because the equations are simultaneous, both must give the same \(y\):</p>
+<p><strong>When \(x={@r1@}\):</strong></p>
+<ul>
+<li>Into \(y={@line@}\): \(\quad y={@mm@}\cdot({@r1@})+({@kk@})={@y1@}\).</li>
+<li>Into \(y={@para@}\): \(\quad y=({@r1@})^2+({@cc@})={@y1@}\).</li>
+</ul>
+<p>Both equations give \(y={@y1@}\), so \(({@r1@},\,{@y1@})\) is a solution.</p>
+<p><strong>When \(x={@r2@}\):</strong></p>
+<ul>
+<li>Into \(y={@line@}\): \(\quad y={@mm@}\cdot({@r2@})+({@kk@})={@y2@}\).</li>
+<li>Into \(y={@para@}\): \(\quad y=({@r2@})^2+({@cc@})={@y2@}\).</li>
+</ul>
+<p>Both equations give \(y={@y2@}\), so \(({@r2@},\,{@y2@})\) is a solution.</p>
+<p>Therefore \(x\in{@xset@}\) and \(y\in{@yset@}\).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>r1 : rand_with_prohib(-4,4,[]);
+r2 : rand_with_prohib(-4,4,[r1,-r1]);   /* distinct and not the negative of r1 */
+cc : rand_with_prohib(-5,5,[]);         /* parabola constant */
+mm : r1 + r2;                           /* line slope */
+kk : cc - r1*r2;                        /* line intercept */
+line : mm*x + kk;                       /* RHS of y = line */
+para : x^2 + cc;                        /* RHS of y = parabola */
+quadexpr : expand(para - line);         /* x^2 - mm*x + r1*r2 = (x-r1)(x-r2) */
+xset : {r1, r2};
+xset_neg : {-r1, -r2};                  /* sign-of-roots misconception */
+y1 : ev(line, x=r1);
+y2 : ev(line, x=r2);
+yset : {y1, y2};</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@line@},\ y={@para@}\); \(x\in{@xset@}\), \(y\in{@yset@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>xset</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>2</insertstars>
+      <syntaxhint>{a,b}</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>solve</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>yset</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>2</insertstars>
+      <syntaxhint>{a,b}</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>solve</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct set of x-values?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>xset</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Did they give a set of two values?</description>
+        <answertest>SameType</answertest>
+        <sans>ans1</sans>
+        <tans>xset</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-single</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>There are two \(x\)-values. Give both as a set \(\{\,\ldots\,\}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Sign-of-roots error {-r1,-r2}?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>xset_neg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the signs when reading roots from the factors: if \((x-p)(x-q)=0\) then \(x=p\) or \(x=q\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Set the two right-hand sides equal, then solve the resulting quadratic \({@quadexpr@}=0\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct set of y-values?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>yset</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Did they give a set of values?</description>
+        <answertest>SameType</answertest>
+        <sans>ans2</sans>
+        <tans>yset</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-other</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Substitute each \(x\)-value into \(y={@line@}\) to obtain the matching \(y\)-values.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-single</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>There are two \(y\)-values (one for each \(x\)). Give both as a set \(\{\,\ldots\,\}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>6001</deployedseed>
+    <deployedseed>6002</deployedseed>
+    <deployedseed>6003</deployedseed>
+    <deployedseed>6004</deployedseed>
+    <deployedseed>6005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>6007</deployedseed>
+    <deployedseed>6008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both sets correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>xset</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>yset</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>x sign-of-roots error</description>
+      <testinput>
+        <name>ans1</name>
+        <value>xset_neg</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>yset</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-sign</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>x gave one value only</description>
+      <testinput>
+        <name>ans1</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>yset</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-single</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>y gave one value only</description>
+      <testinput>
+        <name>ans1</name>
+        <value>xset</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>y1</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-single</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>y wrong values (generic)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>xset</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>{y1+1, y2}</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-other</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Alternate Segment Theorem - two tangent-chord angles (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>In the figure, \(PTL\) is a tangent to the circle at \(T\), and \(TQ\) and \(TS\) are chords. The point \(S\) lies in the alternate segment. You are given that</p>
+\[ \angle PTQ = {@p@}^\circ \qquad\text{and}\qquad \angle LTS = {@q@}^\circ . \]
+
+[[jsxgraph width="470px" height="470px"]]
+var p = {#p#};
+var q = {#q#};
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-3.4, 3.2, 3.4, -3.4],
+    keepaspectratio: true,
+    axis: false,
+    showCopyright: false,
+    showNavigation: false
+});
+
+var R   = 2.5;
+var rad = Math.PI / 180;
+var aT  = 270;                       // T at the bottom; tangent is horizontal
+
+var O = board.create('point', [0, 0], {visible: false, fixed: true});
+board.create('circle', [O, R], {strokeColor: '#888', strokeWidth: 1.5, fixed: true});
+
+var T = board.create('point', [R * Math.cos(aT * rad), R * Math.sin(aT * rad)],
+    {name: 'T', size: 3, fixed: true, fillColor: '#1565c0', strokeColor: '#1565c0',
+     label: {offset: [0, -14], anchorX: 'middle', anchorY: 'top'}});
+var Q = board.create('point', [R * Math.cos((aT + 2 * p) * rad), R * Math.sin((aT + 2 * p) * rad)],
+    {name: 'Q', size: 3, fixed: true, fillColor: '#1565c0', strokeColor: '#1565c0',
+     label: {offset: [12, 2], anchorX: 'left', anchorY: 'middle'}});
+var S = board.create('point', [R * Math.cos((aT - 2 * q) * rad), R * Math.sin((aT - 2 * q) * rad)],
+    {name: 'S', size: 3, fixed: true, fillColor: '#1565c0', strokeColor: '#1565c0',
+     label: {offset: [-12, 2], anchorX: 'right', anchorY: 'middle'}});
+
+var Ty = R * Math.sin(aT * rad);
+var L = board.create('point', [-2.0, Ty],
+    {name: 'L', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333',
+     label: {offset: [-4, -12], anchorX: 'right', anchorY: 'top'}});
+var P = board.create('point', [2.0, Ty],
+    {name: 'P', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333',
+     label: {offset: [6, -2], anchorX: 'left', anchorY: 'middle'}});
+board.create('segment', [L, P], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+
+board.create('segment', [T, Q], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+board.create('segment', [T, S], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+board.create('segment', [S, Q], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+
+board.create('angle', [P, T, Q],
+    {radius: 0.7, type: 'sector', selection: 'minor',
+     fillColor: '#90caf9', fillOpacity: 0.5, strokeColor: '#1565c0',
+     name: p + '°', fixed: true});
+board.create('angle', [S, T, L],
+    {radius: 0.55, type: 'sector', selection: 'minor',
+     fillColor: '#ffcc80', fillOpacity: 0.5, strokeColor: '#ef6c00',
+     name: q + '°', fixed: true});
+
+board.create('angle', [T, S, Q],
+    {radius: 0.55, type: 'sector', selection: 'minor',
+     fillColor: '#c5e1a5', fillOpacity: 0.5, strokeColor: '#558b2f',
+     name: 'α', fixed: true});
+board.create('angle', [T, Q, S],
+    {radius: 0.55, type: 'sector', selection: 'minor',
+     fillColor: '#ce93d8', fillOpacity: 0.5, strokeColor: '#7b1fa2',
+     name: 'β', fixed: true});
+[[/jsxgraph]]
+
+<div>(a) Find \( \alpha = \angle TSQ = \) [[input:ans1]]\(^\circ\) [[validation:ans1]]\(^\circ\) [[feedback:prt1]]</div>
+<div>(b) Find \( \beta = \angle TQS = \) [[input:ans2]]\(^\circ\) [[validation:ans2]]\(^\circ\) [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>By the <strong>Alternate Segment Theorem</strong>, a tangent-chord angle equals the inscribed angle in the alternate segment (on the other side of that chord).</p>
+<p><strong>(a)</strong> For the chord \(TQ\), the tangent-chord angle is \( \angle PTQ = {@p@}^\circ \). Its alternate segment contains \(S\), so</p>
+\[ \alpha = \angle TSQ = \angle PTQ = {@p@}^\circ . \]
+<p><strong>(b)</strong> For the chord \(TS\), the tangent-chord angle is \( \angle LTS = {@q@}^\circ \). Its alternate segment contains \(Q\), so</p>
+\[ \beta = \angle TQS = \angle LTS = {@q@}^\circ . \]
+<p>Check: the remaining angle of triangle \(TSQ\) is \( \angle STQ = 180^\circ - {@p@}^\circ - {@q@}^\circ = {@angT@}^\circ\), and along the straight tangent line at \(T\), \( \angle LTS + \angle STQ + \angle QTP = {@q@}^\circ + {@angT@}^\circ + {@p@}^\circ = 180^\circ\).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* angs chosen so that angT = 180 - p - q is always >= 65, hence distinct from
+   both p and q (no answer collides with the angle-at-T distractor). */
+angs : [45,50,55,60];
+p : rand(angs);
+q : rand(delete(p, angs));
+ta1 : p;
+ta2 : q;
+angT : 180 - p - q;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( \angle PTQ = {@p@}^\circ,\ \angle LTS = {@q@}^\circ \) (so \(\alpha={@ta1@}^\circ,\ \beta={@ta2@}^\circ\))</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: angle TSQ = angle PTQ = p.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Swap: gave the other tangent-chord angle (angle LTS = q).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-swap</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Make sure you don't confuse the angle at \(S\) with the angle at \(Q\). Which angle is in the alternate segment for the chord \(TQ\)?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave the angle STQ at T (180 - p - q) instead of the angle at S.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>angT</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-angleT</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Make sure you apply the Alternate Segment Theorem correctly.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Which angle is in the alternate segment for the chord \(TQ\)?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: angle TQS = angle LTS = q.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Swap: gave the other tangent-chord angle (angle PTQ = p).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-swap</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Make sure you don't confuse the angle at \(S\) with the angle at \(Q\). Which angle is in the alternate segment for the chord \(TS\)?.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave the angle STQ at T (180 - p - q) instead of the angle at Q.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>angT</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-angleT</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is \( \angle STQ\), the angle of the triangle at \(T\). You need the angle at \(Q\), namely \( \angle TQS\), which by the Alternate Segment Theorem equals \( \angle LTS\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Hint: \( \angle TQS\) is the inscribed angle in the alternate segment for the chord \(TS\), so it equals the tangent-chord angle \( \angle LTS\). See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Both swapped (matched the wrong tangent-chord angle)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-swap</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-swap</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Part (a) gives the angle at T; part (b) correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>angT</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-angleT</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Both other wrong values (generic)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta1+3,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(ta2+3,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-other</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-other</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

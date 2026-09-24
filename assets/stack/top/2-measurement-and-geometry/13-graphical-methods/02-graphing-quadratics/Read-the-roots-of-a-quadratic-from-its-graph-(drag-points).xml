@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Read the roots of a quadratic from its graph (drag points)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph of \( y = {@fexpr@} \) is drawn on the Cartesian plane below.</p>
+<p><strong>a)</strong> Use the graph to determine the values of \(x\) for which \( {@fexpr@} = 0 \).</p>
+<p>Drag the two red points \(A\) and \(B\) onto the graph's \(x\)-intercepts (where the curve crosses the \(x\)-axis). The points snap to whole numbers.</p>
+[[jsxgraph input-ref-ans1="ref_p1" input-ref-ans2="ref_p2" width="520px" height="520px"]]
+var BB = {#bb#}, CC = {#cc#};
+var XMIN = {#float(xmin)#}, XMAX = {#float(xmax)#}, YMAX = {#float(ymaxv)#}, YMIN = {#float(yminv)#};
+var SX1 = {#float(startx1)#}, SX2 = {#float(startx2)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[XMIN, YMAX, XMAX, YMIN], axis:true, showCopyright:false, showNavigation:false, grid:true, keepaspectratio:false});
+var f = brd.create('functiongraph', [function(x){ return x*x + BB*x + CC; }], {strokeColor:'#1f4fd8', strokeWidth:2, highlight:false});
+var g1 = brd.create('glider', [SX1, 0, brd.defaultAxes.x], {name:'A', size:4, color:'#cc0000', snapToGrid:true, snapSizeX:1, label:{offset:[6,-14]}});
+var g2 = brd.create('glider', [SX2, 0, brd.defaultAxes.x], {name:'B', size:4, color:'#cc0000', snapToGrid:true, snapSizeX:1, label:{offset:[6,-14]}});
+brd.create('text',[XMIN+0.3, YMAX-0.6, function(){ return 'A: x = ' + Math.round(g1.X()); }],{fixed:true, anchorX:'left', fontSize:14, color:'#cc0000'});
+brd.create('text',[XMIN+0.3, YMAX-1.5, function(){ return 'B: x = ' + Math.round(g2.X()); }],{fixed:true, anchorX:'left', fontSize:14, color:'#cc0000'});
+stack_jxg.bind_point(ref_p1, g1);
+stack_jxg.bind_point(ref_p2, g2);
+[[/jsxgraph]]
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The curve crosses the \(x\)-axis where \(y=0\), i.e. where \({@fexpr@}=0\). Factorising, \[ (x-{@r1@})(x-{@r2@}) = 0, \] so \(x={@r1@}\) or \(x={@r2@}\). These are the two \(x\)-intercepts of the graph.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>r1 : rand_with_prohib(-2,3,[]);       /* first root */
+gap : rand_with_prohib(2,5,[]);       /* root separation */
+r2 : r1 + gap;                        /* second root */
+bb : -(r1 + r2);                      /* x-coefficient */
+cc : r1*r2;                           /* constant */
+fexpr : x^2 + bb*x + cc;              /* = (x-r1)(x-r2) */
+rs : {r1, r2};
+/* Board window and (non-root) start positions for the two points. */
+xmin : r1 - 3;
+xmax : r2 + 3;
+ymaxv : gap^2/4 + 3;
+yminv : -gap^2/4 - 2;
+startx1 : r1 - 2;
+startx2 : r2 + 2;
+/* Example model answers (points on the roots); hidden. */
+tans1 : [r1, 0];
+tans2 : [r2, 0];</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@fexpr@}\); roots \(x={@r1@},{@r2@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct — both intercepts are marked.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>One intercept is correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Not on the intercepts yet.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>tans1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>tans2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sx1 : round(ans1[1]);
+sx2 : round(ans2[1]);
+c1 : if elementp(sx1, {r1, r2}) then 1 else 0;
+c2 : if (elementp(sx2, {r1, r2}) and is(sx2 # sx1)) then 1 else 0;
+ncorrect : c1 + c2;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Both intercepts marked?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ncorrect</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Exactly one intercept marked?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ncorrect</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-partial</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>One point is on an \(x\)-intercept. Drag the other point to the second place where the curve crosses the \(x\)-axis.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Both points at the same spot?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sx1</sans>
+        <tans>sx2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-same</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Both points are at the same spot, but there are two <em>different</em> \(x\)-intercepts.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Drag each red point to where the curve crosses the \(x\)-axis (where \(y=0\)).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>11001</deployedseed>
+    <deployedseed>11002</deployedseed>
+    <deployedseed>11003</deployedseed>
+    <deployedseed>11004</deployedseed>
+    <deployedseed>11005</deployedseed>
+    <deployedseed>11006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both intercepts marked (in order)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[r1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[r2,0]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Both intercepts marked (reversed)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[r2,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[r1,0]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>One correct, one wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[r1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[r2+1,0]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-partial</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Both points at the same (non-root) spot</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[r1-1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[r1-1,0]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-same</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Both wrong, different spots</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[r1-1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[r2+1,0]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-other</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

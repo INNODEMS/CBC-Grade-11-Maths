@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Two-secant theorem - find PD and the chord CD (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>From an external point \(P\), two secants are drawn to a circle. The first secant meets the circle at \(A\) and \(B\), with \( PA = {@PA@} \) cm and \( AB = {@AB@} \) cm. The second secant meets the circle at \(C\) and \(D\), with \( PC = {@PC@} \) cm.</p>
+
+[[jsxgraph width="480px" height="430px"]]
+var PA = {#PA#}, PB = {#PB#}, PC = {#PC#}, PD = {#ta_pd#};
+
+var rad = Math.PI / 180;
+var u1 = [Math.cos(158 * rad), Math.sin(158 * rad)];
+var u2 = [Math.cos(202 * rad), Math.sin(202 * rad)];
+
+var Pp = [0, 0];
+var Ap = [PA * u1[0], PA * u1[1]], Bp = [PB * u1[0], PB * u1[1]];
+var Cp = [PC * u2[0], PC * u2[1]], Dp = [PD * u2[0], PD * u2[1]];
+
+function circum(p1, p2, p3) {
+    var x1 = p1[0], y1 = p1[1], x2 = p2[0], y2 = p2[1], x3 = p3[0], y3 = p3[1];
+    var d = 2 * (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2));
+    var cx = ((x1*x1 + y1*y1) * (y2 - y3) + (x2*x2 + y2*y2) * (y3 - y1) + (x3*x3 + y3*y3) * (y1 - y2)) / d;
+    var cy = ((x1*x1 + y1*y1) * (x3 - x2) + (x2*x2 + y2*y2) * (x1 - x3) + (x3*x3 + y3*y3) * (x2 - x1)) / d;
+    return [cx, cy];
+}
+var ctr = circum(Ap, Bp, Cp);
+var rr  = Math.hypot(ctr[0] - Ap[0], ctr[1] - Ap[1]);
+var pad = 1.2;
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [ctr[0] - rr - pad, ctr[1] + rr + pad, Math.max(ctr[0] + rr, 0) + pad + 0.6, ctr[1] - rr - pad],
+    keepaspectratio: true, axis: false, showCopyright: false, showNavigation: false
+});
+
+board.create('circle', [ctr, rr], {strokeColor: '#178a8a', strokeWidth: 1.5, fixed: true});
+board.create('segment', [Pp, Bp], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+board.create('segment', [Pp, Dp], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+
+var A = board.create('point', Ap, {name: 'A', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [2, 12], anchorX: 'left', anchorY: 'bottom'}});
+var B = board.create('point', Bp, {name: 'B', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-4, 12], anchorX: 'right', anchorY: 'bottom'}});
+var C = board.create('point', Cp, {name: 'C', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [4, -12], anchorX: 'left', anchorY: 'top'}});
+var D = board.create('point', Dp, {name: 'D', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-4, -12], anchorX: 'right', anchorY: 'top'}});
+var P = board.create('point', Pp, {name: 'P', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [10, 0], anchorX: 'left', anchorY: 'middle'}});
+
+function lbl(p1, p2, dy, txt) {
+    board.create('text', [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2 + dy, txt],
+        {anchorX: 'middle', anchorY: 'middle', fontSize: 13, fixed: true, cssStyle: 'color:#333'});
+}
+lbl(Pp, Ap,  0.8, PA + ' cm');
+lbl(Ap, Bp,  0.8, PB - PA + ' cm');
+lbl(Pp, Cp, -0.8, PC + ' cm');
+[[/jsxgraph]]
+
+<div>(a) Find \( PD = \) [[input:ans1]]\(\text{ cm}\) [[validation:ans1]] [[feedback:prt1]]</div>
+<div>(b) Hence find the chord length \( CD = \) [[input:ans2]]\(\text{ cm}\) [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>We are told \(PA\) and \(AB\), so first find the whole distance from \(P\) to \(B\):</p>
+\[ PB = PA + AB = {@PA@} + {@AB@} = {@PB@}\text{ cm}. \]
+<p>By the <strong>two-secant theorem</strong>, \( PA\cdot PB = PC\cdot PD \), so</p>
+\[ {@PA@}\times{@PB@} = {@PC@}\times PD \quad\Rightarrow\quad PD = \frac{{@PA@}\times{@PB@}}{{@PC@}} = {@ta_pd@}\text{ cm}. \]
+<p>The chord \(CD\) is the part of the second secant inside the circle:</p>
+\[ CD = PD - PC = {@ta_pd@} - {@PC@} = {@ta_cd@}\text{ cm}. \]]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomise (PA, AB, PC); PB = PA + AB; require PA*PB divisible by PC so PD is a
+   whole number. PC < PD keeps P external with C the near point; PC # PA keeps the
+   two secants distinct; CD >= 2; lengths bounded. Generated on the fly. */
+quads : sublist(
+  create_list([pa,ab,pc], pa,2,8, ab,3,14, pc,2,9),
+  lambda([z], is(
+        integerp(z[1]*(z[1]+z[2])/z[3])
+    and z[3] < z[1]*(z[1]+z[2])/z[3]
+    and z[3] # z[1]
+    and z[1]*(z[1]+z[2])/z[3] - z[3] >= 2
+    and z[1]+z[2] <= 20
+    and z[1]*(z[1]+z[2])/z[3] <= 24
+    and z[1]*z[2] # z[1]*(z[1]+z[2])/z[3] )));  /* PA*AB # PD, so the raw-product slip is detectable */
+sel : rand(quads);
+PA : sel[1];
+AB : sel[2];
+PC : sel[3];
+PB : PA + AB;
+ta_pd : PA*PB/PC;         /* PD */
+ta_cd : ta_pd - PC;       /* chord CD */
+wrong_useAB : PA*AB/PC;        /* used AB instead of PB:  PA*AB = PC*PD */
+wrong_rawprod : PA*AB;         /* multiplied PA*AB and gave that as PD (no divide by PC) */
+wrong_chord_pd : PC + PA*AB/PC; /* used the chords: PA*AB = PC*CD, so PD = PC + PA*AB/PC */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( PA={@PA@},\ AB={@AB@},\ PC={@PC@};\ PB={@PB@},\ PD={@ta_pd@},\ CD={@ta_cd@} \) cm</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta_pd</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta_cd</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct PD.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta_pd</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Used AB instead of PB (forgot PB = PA + AB).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_useAB</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-useAB</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you used \(AB\) as the second length. But \(PB\) is the whole distance from \(P\) to \(B\), so work out \(PB = PA + AB\) first, then apply \(PA\cdot PB = PC\cdot PD\). Try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Multiplied PA*AB and gave it as PD (used AB, and did not divide by PC).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_rawprod</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-rawproduct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you worked out \(PA\times AB\) and used that as \(PD\). Two things to fix: the first secant's product is \(PA\times PB\) with \(PB = PA + AB\) (not \(AB\)); and that product equals \(PC\times PD\), so you must divide by \(PC\) to get \(PD\). Try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Used the chords: PA*AB = PC*CD, giving PD = PC + PA*AB/PC.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_chord_pd</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-chordprod</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you applied the theorem to the chords inside the circle, as \(PA\cdot AB = PC\cdot CD\). The two-secant theorem instead uses the <em>whole</em> secants measured from \(P\): \(PA\cdot PB = PC\cdot PD\), where \(PB = PA + AB\) and \(PD\) is the full distance from \(P\) to \(D\). Set it up that way and try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use the two-secant theorem \(PA\cdot PB = PC\cdot PD\), remembering that \(PB = PA + AB\). Form the equation and solve for \(PD\). Have another go.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct CD = PD - PC.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta_cd</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Follow-through: CD = (student's PD) - PC.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ans1-PC</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-followthrough</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is \(PD - PC\) using your value of \(PD\), so your method is right &mdash; but your \(PD\) is not correct yet. Fix part (a), then subtract \(PC\) again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave PD (the whole secant length) instead of the chord CD.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ans1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-gavePD</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is \(PD\), the whole distance from \(P\) to \(D\). The chord \(CD\) is only the part inside the circle: \(CD = PD - PC\). Subtract \(PC\) and try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The chord \(CD\) is the part of the secant inside the circle, \(CD = PD - PC\). Once you have \(PD\), subtract \(PC\). Try again.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_pd</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_cd</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>(a) used AB instead of PB; (b) correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_useAB</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_cd</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-useAB</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>(a) correct; (b) gave PD instead of CD</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_pd</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_pd</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-gavePD</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Wrong PD; CD follows through</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta_pd+1,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(ta_pd+1-PC,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-followthrough</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Both wrong (generic)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta_pd+3,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(ta_cd+100,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

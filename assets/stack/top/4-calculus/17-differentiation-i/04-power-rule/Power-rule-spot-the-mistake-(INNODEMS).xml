@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Power rule: spot the mistake (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A student differentiates using the <b>power rule</b>. Read their working carefully.</p>
+[[ if test="notn=1" ]]<p>They want \( f'(x) \) for \( f(x) = {@expr@} \), and write:</p>
+\[ f'(x) = {@ev(L1s,simp=false)@} = {@buggy_final@}. \][[/ if ]]
+[[ if test="notn=2" ]]<p>They want \( \dfrac{dy}{dx} \) for \( y = {@expr@} \), and write:</p>
+\[ \dfrac{dy}{dx} = {@ev(L1s,simp=false)@} = {@buggy_final@}. \][[/ if ]]
+[[ if test="notn=3" ]]<p>They want \( \dfrac{d}{dx}\!\left({@expr@}\right) \), and write:</p>
+\[ \dfrac{d}{dx}\!\left({@expr@}\right) = {@ev(L1s,simp=false)@} = {@buggy_final@}. \][[/ if ]]
+<p><b>(a)</b>&nbsp; What, if anything, is wrong with this working?</p>
+<div>[[input:diag]] [[validation:diag]] [[feedback:prtdiag]]</div>
+<p><b>(b)</b>&nbsp; Write the correct derivative. (If the working above is already right, just re-type it.)</p>
+<div>[[ if test="notn=1" ]]\( f'(x) = \)[[/ if ]][[ if test="notn=2" ]]\( \dfrac{dy}{dx} = \)[[/ if ]][[ if test="notn=3" ]]\( \dfrac{d}{dx}\!\left({@expr@}\right) = \)[[/ if ]] [[input:fix]] [[validation:fix]] [[feedback:prtfix]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[[[ if test="is_ok" ]]<p>This working is <b>correct</b> — every step follows the power rule, and the answer \( {@ta1@} \) is right.</p>[[/ if ]][[ if test="not(is_ok)" ]]<p>The working contains a mistake: {@err_name@}</p>[[/ if ]]
+<p>Applied correctly, the power rule gives</p>
+[[ if test="notn=1" ]]\[ f'(x) = {@ev(step_disp,simp=false)@} = {@ta1@}. \][[/ if ]][[ if test="notn=2" ]]\[ \dfrac{dy}{dx} = {@ev(step_disp,simp=false)@} = {@ta1@}. \][[/ if ]][[ if test="notn=3" ]]\[ \dfrac{d}{dx}\!\left({@expr@}\right) = {@ev(step_disp,simp=false)@} = {@ta1@}. \][[/ if ]]
+<p>Bring the exponent \( {@n@} \) down as a multiplying factor and reduce the power to \( {@m@} \); the constant multiple \( {@c@} \) stays put.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomise backwards: choose c, n, then a misconception (or "correct"). */
+n : rand(5)+2;                         /* exponent 2..6 */
+m : n-1;
+c : rand_with_prohib(2,9,[n]);         /* positive 2..9, c != n for clean display */
+notn : rand(3)+1;                       /* 1: f'(x)  2: dy/dx  3: Leibniz */
+errtype : rand(5)+1;                    /* 1 keepexp 2 nomult 3 incpow 4 dropc 5 correct */
+is_ok : is(errtype = 5);
+
+expr : c*x^n;
+ta1  : c*n*x^m;                         /* the TRUE derivative */
+
+/* Simplified final answers (Line 2) for each variant. */
+final_keepexp : c*n*x^n;
+final_nomult  : c*x^m;
+final_incpow  : c*n*x^(n+1);
+final_dropc   : n*x^m;
+final_correct : ta1;
+
+/* Error tag (bare atom), the shown final, and a human-readable name. */
+if errtype = 1 then ( errtag : keepexp, buggy_final : final_keepexp,
+    err_name : "the exponent was not reduced by 1, so the power stayed the same." )
+elseif errtype = 2 then ( errtag : nomult, buggy_final : final_nomult,
+    err_name : "the power was not brought down as a multiplying factor." )
+elseif errtype = 3 then ( errtag : incpow, buggy_final : final_incpow,
+    err_name : "the exponent was increased by 1 instead of decreased (raising the power is integration, not differentiation)." )
+elseif errtype = 4 then ( errtag : dropc, buggy_final : final_dropc,
+    err_name : "the constant multiple was dropped." )
+else ( errtag : nowrong, buggy_final : final_correct, err_name : "" );
+
+/* Unevaluated Line-1 forms (built with simp OFF so 9.4.x^(4-1) shows the working).
+   The L1s selection MUST run under simp:false too - assigning it while simp is on
+   re-simplifies 9*4*x^4 back to 36*x^4. Use is() because "=" is not a boolean when
+   simp is off. */
+simp:false;
+L1_keepexp : c*n*x^n;
+L1_nomult  : c*x^(n-1);
+L1_incpow  : c*n*x^(n+1);
+L1_dropc   : n*x^(n-1);
+L1_correct : c*n*x^(n-1);
+step_disp  : c*n*x^(n-1);              /* rule-application line for the worked solution */
+if is(errtype=1) then L1s : L1_keepexp
+elseif is(errtype=2) then L1s : L1_nomult
+elseif is(errtype=3) then L1s : L1_incpow
+elseif is(errtype=4) then L1s : L1_dropc
+else L1s : L1_correct;
+simp:true;
+
+/* Radio options: values are bare atoms; display strings render as plain text
+   (input option casstring). Shuffle the order and record it in the question note. */
+opts : [[keepexp, is(errtag=keepexp), "The exponent was not reduced by 1"],
+        [nomult,  is(errtag=nomult),  "The power was not brought down as a multiplying factor"],
+        [incpow,  is(errtag=incpow),  "The exponent was increased instead of decreased"],
+        [dropc,   is(errtag=dropc),   "The constant multiple was dropped"],
+        [nowrong, is(errtag=nowrong), "Nothing is wrong: the differentiation is correct"]];
+diag_ta : random_permutation(opts);
+opt_order : maplist(first, diag_ta);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( c={@c@},\ n={@n@},\ \text{notn}={@notn@},\ \text{err}={@errtag@};\ \text{shown}={@buggy_final@};\ \text{opts}={@opt_order@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>diag</name>
+      <type>radio</type>
+      <tans>diag_ta</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>casstring</options>
+    </input>
+    <input>
+      <name>fix</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>diff</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtdiag</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct diagnosis?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>diag</sans>
+        <tans>errtag</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtdiag-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtdiag-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>False alarm: flagged an error on correct working?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>is_ok</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtdiag-falsealarm</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Look again — this working is actually correct. Check each step against the power rule: the power comes down as a factor and the exponent drops by \( 1 \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prtdiag-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Missed the error (said nothing is wrong)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>diag</sans>
+        <tans>nowrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtdiag-missed</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>There <em>is</em> a mistake here. Compare the working with the power rule, line by line: has the power been brought down as a factor, and has the exponent dropped by \( 1 \)?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtdiag-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>You spotted that something is off, but not the right cause. Check both parts of the rule: the coefficient (did the power come down as a factor?) and the exponent (did it drop by exactly \( 1 \)?).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtfix</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct derivative?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>fix</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtfix-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtfix-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Re-typed the student's incorrect answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>fix</sans>
+        <tans>buggy_final</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtfix-unchanged</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the student's answer — the one that is incorrect. Apply the power rule yourself: bring the power down as a factor and reduce the exponent by \( 1 \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtfix-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not the correct derivative. See the worked solution for the right application of the power rule.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <deployedseed>9009</deployedseed>
+    <deployedseed>10010</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct diagnosis and correct derivative</description>
+      <testinput>
+        <name>diag</name>
+        <value>errtag</value>
+      </testinput>
+      <testinput>
+        <name>fix</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prtdiag</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtdiag-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtfix</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtfix-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct diagnosis, wrong derivative (generic)</description>
+      <testinput>
+        <name>diag</name>
+        <value>errtag</value>
+      </testinput>
+      <testinput>
+        <name>fix</name>
+        <value>ev(ta1+1,simp)</value>
+      </testinput>
+      <expected>
+        <name>prtdiag</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtdiag-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtfix</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtfix-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

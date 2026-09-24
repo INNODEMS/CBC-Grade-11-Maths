@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Perpendicular intersecting chords (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Two chords \(AB\) and \(CD\) of a circle intersect at right angles at a point \(P\) inside the circle. Given that \( AP = {@AP@} \) cm and \( PB = {@PB@} \) cm, and that \(P\) is the midpoint of \(CD\) (so \(CP = PD = y\) cm):</p>
+
+[[jsxgraph width="470px" height="470px"]]
+var AP = {#AP#}, PB = {#PB#}, y = {#y#};
+
+var cx = (PB - AP) / 2;
+var r  = (AP + PB) / 2;
+var pad = 2;
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [cx - r - pad, r + pad, cx + r + pad, -r - pad],
+    keepaspectratio: true, axis: false, showCopyright: false, showNavigation: false
+});
+
+board.create('circle', [[cx, 0], r], {strokeColor: '#888', strokeWidth: 1.5, fixed: true});
+
+var A = board.create('point', [-AP, 0], {name: 'A', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-12, 0], anchorX: 'right', anchorY: 'middle'}});
+var B = board.create('point', [PB, 0],  {name: 'B', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [12, 0], anchorX: 'left', anchorY: 'middle'}});
+var C = board.create('point', [0, y],   {name: 'C', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-6, 12], anchorX: 'right', anchorY: 'bottom'}});
+var D = board.create('point', [0, -y],  {name: 'D', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-6, -12], anchorX: 'right', anchorY: 'top'}});
+var P = board.create('point', [0, 0],   {name: 'P', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-6, -12], anchorX: 'right', anchorY: 'top'}});
+
+board.create('segment', [A, B], {strokeColor: '#1565c0', strokeWidth: 2.5, fixed: true});
+board.create('segment', [C, D], {strokeColor: '#d32f2f', strokeWidth: 2.5, fixed: true});
+
+board.create('angle', [B, P, C], {type: 'square', radius: 0.6, fillColor: '#bbb', fillOpacity: 0.6, strokeColor: '#666', fixed: true, label: {visible: false}});
+
+function lbl(x, yy, txt, ax, ay) {
+    board.create('text', [x, yy, txt], {anchorX: ax, anchorY: ay, fontSize: 13, fixed: true, cssStyle: 'color:#333'});
+}
+lbl(-AP / 2, 0.35, AP + ' cm', 'middle', 'bottom');
+lbl(PB / 2, 0.35, PB + ' cm', 'middle', 'bottom');
+lbl(0.4, y / 2, 'y cm', 'left', 'middle');
+lbl(0.4, -y / 2, 'y cm', 'left', 'middle');
+[[/jsxgraph]]
+
+<div>(a) Find \( CP = \) [[input:ans1]]\(\text{ cm}\) [[validation:ans1]] [[feedback:prt1]]</div>
+<div>(b) Find the length of \( CD = \) [[input:ans2]]\(\text{ cm}\) [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>When two chords intersect inside a circle, \( AP\cdot PB = CP\cdot PD \). Here \(P\) is the midpoint of \(CD\), so \(CP = PD\), giving</p>
+\[ CP^2 = AP\cdot PB = {@AP@}\times{@PB@} = {@AP*PB@}. \]
+<p>Hence</p>
+\[ CP = \sqrt{{@AP*PB@}} = {@ta_cp@}\text{ cm}. \]
+<p>Since \(P\) bisects \(CD\),</p>
+\[ CD = 2\,CP = {@ta_cd@}\text{ cm}. \]]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Generate admissible (AP, PB): AP < PB, product a perfect square, CP in range.
+   integerp(sqrt(AP*PB)) keeps only perfect-square products, so CP = sqrt(AP*PB)
+   is a whole number; CD = 2*CP. */
+pairs : sublist(
+  create_list([ap,pb], ap,2,24, pb,2,28),
+  lambda([z], is(
+        z[1] < z[2]
+    and integerp(sqrt(z[1]*z[2]))
+    and sqrt(z[1]*z[2]) >= 3 and sqrt(z[1]*z[2]) <= 16
+    and z[1]+z[2] <= 34 )));
+sel : rand(pairs);
+AP : sel[1];
+PB : sel[2];
+y  : sqrt(AP*PB);
+ta_cp : y;            /* CP = PD = y */
+ta_cd : 2*y;          /* CD */
+wrong_nosqrt : AP*PB; /* found CP^2 but forgot to take the square root */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( AP={@AP@},\ PB={@PB@};\ CP={@ta_cp@},\ CD={@ta_cd@} \) cm</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta_cp</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta_cd</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct CP = sqrt(AP*PB).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta_cp</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Found CP^2 = AP*PB but did not take the square root.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_nosqrt</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nosqrt</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have found \(AP\cdot PB\), which equals \(CP^2\) here (because \(CP = PD\)). \(CP\) itself is the square root of that. Take the square root and try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Since \(P\) is the midpoint of \(CD\), \(CP = PD\), so the chord rule gives \(AP\cdot PB = CP^2\). Use this to find \(CP\). Have another go.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct CD = 2*CP.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta_cd</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Follow-through: CD = twice the student's own CP.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>2*ans1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-followthrough</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is twice your value of \(CP\), so your method for part (b) is right &mdash; but your \(CP\) is not correct yet. Re-do part (a), then double it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave CP instead of the whole chord CD.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ans1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-gavecp</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is \(CP\), only half of the chord. Since \(P\) is the midpoint, \(CD = 2\,CP\). Double it and try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>\(P\) is the midpoint of \(CD\), so once you have \(CP\) the full chord is \(CD = 2\,CP\). Try again.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_cp</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_cd</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot the square root in (a); (b) correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_nosqrt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_cd</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-nosqrt</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>(a) correct; (b) gave CP instead of CD</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_cp</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_cp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-gavecp</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Wrong CP; CD follows through (doubled)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta_cp+1,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(2*(ta_cp+1),simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-followthrough</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Both wrong (generic)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta_cp+3,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(ta_cd+3,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

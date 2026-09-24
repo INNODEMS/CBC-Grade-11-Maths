@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Alternate Segment Theorem - Solve for x (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>In the figure, \(PT\) is a tangent to the circle at \(T\), \(TQ\) is a chord, and \(S\) lies in the alternate segment. The marked angles are</p>
+\[ \angle PTQ = ({@e1@})^\circ \qquad\text{and}\qquad \angle TSQ = ({@e2@})^\circ . \]
+
+[[jsxgraph width="470px" height="470px"]]
+var A  = {#taA#};
+var a1 = {#a1#}, b1 = {#b1#};
+var a2 = {#a2#}, b2 = {#b2#};
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-3.4, 3.2, 3.4, -3.4],
+    keepaspectratio: true,
+    axis: false,
+    showCopyright: false,
+    showNavigation: false
+});
+
+var R   = 2.5;
+var rad = Math.PI / 180;
+var aT  = 270;
+
+function lin(a, b) {
+    var s = a + 'x';
+    if (b > 0)      s += ' + ' + b;
+    else if (b < 0) s += ' - ' + (-b);
+    return '(' + s + ')°';
+}
+
+var O = board.create('point', [0, 0], {visible: false, fixed: true});
+board.create('circle', [O, R], {strokeColor: '#888', strokeWidth: 1.5, fixed: true});
+
+var T = board.create('point', [R * Math.cos(aT * rad), R * Math.sin(aT * rad)],
+    {name: 'T', size: 3, fixed: true, fillColor: '#1565c0', strokeColor: '#1565c0',
+     label: {offset: [0, -14], anchorX: 'middle', anchorY: 'top'}});
+var Q = board.create('point', [R * Math.cos((aT + 2 * A) * rad), R * Math.sin((aT + 2 * A) * rad)],
+    {name: 'Q', size: 3, fixed: true, fillColor: '#1565c0', strokeColor: '#1565c0',
+     label: {offset: [12, 2], anchorX: 'left', anchorY: 'middle'}});
+var S = board.create('point', [R * Math.cos((90 + A) * rad), R * Math.sin((90 + A) * rad)],
+    {name: 'S', size: 3, fixed: true, fillColor: '#1565c0', strokeColor: '#1565c0',
+     label: {offset: [-12, 2], anchorX: 'right', anchorY: 'middle'}});
+
+var Ty = R * Math.sin(aT * rad);
+var Lend = board.create('point', [-2.0, Ty], {visible: false, fixed: true});
+var P = board.create('point', [2.0, Ty],
+    {name: 'P', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333',
+     label: {offset: [6, -2], anchorX: 'left', anchorY: 'middle'}});
+board.create('segment', [Lend, P], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+
+board.create('segment', [T, Q], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+board.create('segment', [T, S], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+board.create('segment', [S, Q], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+
+board.create('angle', [P, T, Q],
+    {radius: 0.7, type: 'sector', selection: 'minor',
+     fillColor: '#90caf9', fillOpacity: 0.5, strokeColor: '#1565c0',
+     name: lin(a1, b1), fixed: true});
+
+board.create('angle', [T, S, Q],
+    {radius: 0.6, type: 'sector', selection: 'minor',
+     fillColor: '#c5e1a5', fillOpacity: 0.5, strokeColor: '#558b2f',
+     name: lin(a2, b2), fixed: true});
+[[/jsxgraph]]
+
+<div>(a) Find \( x = \) [[input:ans1]]\(^\circ\) [[validation:ans1]] [[feedback:prt1]]</div>
+<div>(b) Hence find \( \angle PTQ = \) [[input:ans2]]\(^\circ\) [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>By the <strong>Alternate Segment Theorem</strong>, the tangent-chord angle equals the inscribed angle in the alternate segment, so \( \angle PTQ = \angle TSQ \):</p>
+\[ {@e1@} \;=\; {@e2@}. \]
+<p>Collecting terms gives \( {@a1-a2@}\,x = {@b2-b1@} \), so</p>
+\[ x = {@taX@}. \]
+<p><strong>(b)</strong> Substituting back,</p>
+\[ \angle PTQ = ({@e1@}) = ({@a1@}\times {@taX@} + {@b1@})^\circ = {@taA@}^\circ , \]
+<p>and as a check \( \angle TSQ = {@taA@}^\circ \) too.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Design backwards: pick the solution x0 and common angle A, then build two
+   distinct linear expressions that both equal A at x = x0. */
+A  : rand([45,50,55,60]);
+x0 : rand([8,9,10,11,12,13,14,15]);
+a1 : rand([3,4]);
+a2 : rand(delete(a1,[2,3]));
+b1 : A - a1*x0;
+b2 : A - a2*x0;
+e1 : a1*x + b1;
+e2 : a2*x + b2;
+taX : x0;
+taA : A;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( \angle PTQ=({@e1@})^\circ,\ \angle TSQ=({@e2@})^\circ;\ x={@taX@},\ \angle PTQ={@taA@}^\circ \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>taX</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>taA</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct value of x.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>taX</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Set the two marked angles equal (not supplementary): \( \angle PTQ = \angle TSQ \) by the Alternate Segment Theorem. Then collect the \(x\) terms and solve the linear equation. See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct angle PTQ = A.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>taA</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Follow-through: angle consistent with the student's own x.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>a1*ans1+b1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-followthrough</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your method is right: you substituted your \(x\) into \(({@e1@})\). But your value of \(x\) is not correct, so re-solve part (a) and substitute again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Once you have \(x\), substitute it into \( \angle PTQ = ({@e1@}) \). See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>taX</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>taA</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong x, angle follows through from that x</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(taX+1,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(a1*(taX+1)+b1,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-followthrough</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Correct x, wrong angle</description>
+      <testinput>
+        <name>ans1</name>
+        <value>taX</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(taA+5,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Both wrong, angle not consistent with x (generic)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(taX+2,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(taA+7,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

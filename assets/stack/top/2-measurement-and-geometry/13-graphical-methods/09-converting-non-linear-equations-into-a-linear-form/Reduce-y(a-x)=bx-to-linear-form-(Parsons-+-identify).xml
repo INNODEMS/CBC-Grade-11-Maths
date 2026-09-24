@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Reduce y(a-x)=bx to linear form (Parsons + identify)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Two variables \(x\) and \(y\) are related by \[ y(a-x)=bx, \] where \(a\) and \(b\) are constants. This relation can be written in the straight-line form \(Y=mX+c\).</p>
+<p><strong>a)</strong> Drag the steps into the correct order to reduce the equation to linear form.</p>
+[[parsons input="ans1"]]
+{# parsons_encode(proof_steps) #}
+[[/parsons]]
+<div>[[input:ans1]] [[validation:ans1]] [[feedback:prtA]]</div>
+<p><strong>b)</strong> Hence identify each part of the linear form \(Y=mX+c\):</p>
+<div>\( X = \) [[input:ansX]] [[validation:ansX]] [[feedback:prtX]]</div>
+<div>\( Y = \) [[input:ansY]] [[validation:ansY]] [[feedback:prtY]]</div>
+<div>gradient \( m = \) [[input:ansG]] [[validation:ansG]] [[feedback:prtG]]</div>
+<div>intercept \( c = \) [[input:ansI]] [[validation:ansI]] [[feedback:prtI]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Starting from \(y(a-x)=bx\), divide both sides by \(xy\):</p>
+\[
+\begin{align*}
+\frac{a-x}{x} &= \frac{b}{y}\\
+\frac{a}{x}-1 &= \frac{b}{y}\\
+\frac{1}{y} &= \frac{a}{b}\cdot\frac{1}{x}-\frac{1}{b}.
+\end{align*}
+\]
+<p>Comparing with \(Y=mX+c\): \[ X=\frac{1}{x},\quad Y=\frac{1}{y},\quad m=\frac{a}{b},\quad c=-\frac{1}{b}. \]</p>
+<p>So a graph of \(\dfrac1y\) against \(\dfrac1x\) is a straight line with gradient \(\dfrac{a}{b}\) and intercept \(-\dfrac{1}{b}\).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>5</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[stack_include_contrib("prooflib.mac");
+proof_steps : [
+ ["start",    "Start with the given relation:  \\(y(a-x)=bx\\)."],
+ ["divxy",    "Divide both sides by \\(xy\\):  \\(\\dfrac{a-x}{x}=\\dfrac{b}{y}\\)."],
+ ["split",    "Split the left-hand side:  \\(\\dfrac{a}{x}-1=\\dfrac{b}{y}\\)."],
+ ["divb",     "Divide both sides by \\(b\\):  \\(\\dfrac{1}{b}\\left(\\dfrac{a}{x}-1\\right)=\\dfrac{1}{y}\\)."],
+ ["linear",   "Write in straight-line form:  \\(\\dfrac{1}{y}=\\dfrac{a}{b}\\cdot\\dfrac{1}{x}-\\dfrac{1}{b}\\)."],
+ ["identify", "Compare with \\(Y=mX+c\\):  \\(Y=\\dfrac{1}{y},\\ X=\\dfrac{1}{x}\\), gradient \\(\\dfrac{a}{b}\\), intercept \\(-\\dfrac{1}{b}\\)."]
+];
+proof_steps : random_permutation(proof_steps);
+ta : proof("start","divxy","split","divb","linear","identify");
+/* Dropdown option lists for part (b): [value, correct, display]. */
+Xopts : [[1/x, true, "\\(\\dfrac{1}{x}\\)"], [1/y, false, "\\(\\dfrac{1}{y}\\)"], [x, false, "\\(x\\)"], [x/y, false, "\\(\\dfrac{x}{y}\\)"]];
+Yopts : [[1/y, true, "\\(\\dfrac{1}{y}\\)"], [1/x, false, "\\(\\dfrac{1}{x}\\)"], [y, false, "\\(y\\)"], [y/x, false, "\\(\\dfrac{y}{x}\\)"]];
+Gopts : [[a/b, true, "\\(\\dfrac{a}{b}\\)"], [b/a, false, "\\(\\dfrac{b}{a}\\)"], [-1/b, false, "\\(-\\dfrac{1}{b}\\)"], [a, false, "\\(a\\)"]];
+Iopts : [[-1/b, true, "\\(-\\dfrac{1}{b}\\)"], [1/b, false, "\\(\\dfrac{1}{b}\\)"], [a/b, false, "\\(\\dfrac{a}{b}\\)"], [-1/a, false, "\\(-\\dfrac{1}{a}\\)"]];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>Linear form of \(y(a-x)=bx\): order {@map(first, proof_steps)@}; \(X=1/x, Y=1/y, m=a/b, c=-1/b\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>parsons</type>
+      <tans>[ta, proof_steps]</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansG</name>
+      <type>dropdown</type>
+      <tans>Gopts</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansI</name>
+      <type>dropdown</type>
+      <tans>Iopts</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansX</name>
+      <type>dropdown</type>
+      <tans>Xopts</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansY</name>
+      <type>dropdown</type>
+      <tans>Yopts</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtA</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sa : parsons_decode(ans1);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Steps in the correct order?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtA-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtA-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not the right order yet. Work towards isolating \(\dfrac{1}{y}\): divide by \(xy\), split the left-hand side, then divide by \(b\), and finally read off the linear form.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtG</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Gradient correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansG</sans>
+        <tans>a/b</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtG-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtG-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The coefficient of \(\dfrac{1}{x}\) is the gradient, \(\dfrac{a}{b}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtI</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Intercept correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansI</sans>
+        <tans>-1/b</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtI-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtI-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The constant term is the intercept, \(-\dfrac{1}{b}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtX</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>X correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansX</sans>
+        <tans>1/x</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtX-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtX-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>In the linear form the variable multiplied by the gradient is \(\dfrac{1}{x}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtY</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Y correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansY</sans>
+        <tans>1/y</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtY-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtY-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The subject of the linear form is \(\dfrac{1}{y}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>15001</deployedseed>
+    <deployedseed>15002</deployedseed>
+    <deployedseed>15003</deployedseed>
+    <deployedseed>15004</deployedseed>
+    <deployedseed>15005</deployedseed>
+    <deployedseed>15006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>parsons_answer(ta, proof_steps)</value>
+      </testinput>
+      <testinput>
+        <name>ansG</name>
+        <value>a/b</value>
+      </testinput>
+      <testinput>
+        <name>ansI</name>
+        <value>-1/b</value>
+      </testinput>
+      <testinput>
+        <name>ansX</name>
+        <value>1/x</value>
+      </testinput>
+      <testinput>
+        <name>ansY</name>
+        <value>1/y</value>
+      </testinput>
+      <expected>
+        <name>prtA</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtA-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtG</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtG-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtI</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtI-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtX</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtX-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtY</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtY-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong step order</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[parsons_answer(proof("divxy","start","split","divb","linear","identify"), proof_steps)]]></value>
+      </testinput>
+      <testinput>
+        <name>ansG</name>
+        <value>a/b</value>
+      </testinput>
+      <testinput>
+        <name>ansI</name>
+        <value>-1/b</value>
+      </testinput>
+      <testinput>
+        <name>ansX</name>
+        <value>1/x</value>
+      </testinput>
+      <testinput>
+        <name>ansY</name>
+        <value>1/y</value>
+      </testinput>
+      <expected>
+        <name>prtA</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtA-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Gradient and intercept swapped-ish (wrong choices)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>parsons_answer(ta, proof_steps)</value>
+      </testinput>
+      <testinput>
+        <name>ansG</name>
+        <value>b/a</value>
+      </testinput>
+      <testinput>
+        <name>ansI</name>
+        <value>1/b</value>
+      </testinput>
+      <testinput>
+        <name>ansX</name>
+        <value>1/x</value>
+      </testinput>
+      <testinput>
+        <name>ansY</name>
+        <value>1/y</value>
+      </testinput>
+      <expected>
+        <name>prtG</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtG-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtI</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtI-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

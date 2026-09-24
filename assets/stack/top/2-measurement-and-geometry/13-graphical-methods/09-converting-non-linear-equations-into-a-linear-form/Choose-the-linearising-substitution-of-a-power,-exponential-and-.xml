@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Choose the linearising substitution of a power, exponential and logarithmic form</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>To linearise the equation below (where \(a\) and \(b\) are constants) into the straight-line form \(Y=mX+c\), which variables must be plotted on the \(y\)-axis (\(Y\)) and the \(x\)-axis (\(X\))?</p>
+<p>The equation is:
+[[ if test="is(eqtype=1)" ]] \[ y = a\,x^{b}. \] [[ elif test="is(eqtype=2)" ]] \[ y = a\,e^{b x}. \] [[ else ]] \[ y = a + b\,\ln(x). \] [[/ if ]]
+</p>
+<div>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[[[ if test="is(eqtype=1)" ]]
+<p>Take natural logarithms of \(y=a\,x^{b}\): \[ \ln(y)=\ln(a)+b\ln(x). \] Comparing with \(Y=mX+c\): \(Y=\ln(y)\), \(X=\ln(x)\), gradient \(b\), intercept \(\ln(a)\).</p>
+[[ elif test="is(eqtype=2)" ]]
+<p>Take natural logarithms of \(y=a\,e^{b x}\): \[ \ln(y)=\ln(a)+b x. \] Comparing with \(Y=mX+c\): \(Y=\ln(y)\), \(X=x\), gradient \(b\), intercept \(\ln(a)\).</p>
+[[ else ]]
+<p>The equation \(y=a+b\,\ln(x)\) is already linear in \(\ln(x)\): \[ y = b\,\ln(x) + a. \] Comparing with \(Y=mX+c\): \(Y=y\), \(X=\ln(x)\), gradient \(b\), intercept \(a\).</p>
+[[/ if ]]
+<p>Plotting \(Y=y\) against \(X=x\) with no transformation would leave the relationship curved.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[eqtype : rand(3)+1;              /* 1 power, 2 exponential, 3 logarithmic */
+o1 : [y, x];
+o2 : [log(y), log(x)];
+o3 : [log(y), x];
+o4 : [y, log(x)];
+tac : if is(eqtype=1) then o2 elseif is(eqtype=2) then o3 else o4;   /* correct option */
+f2 : is(eqtype=1);
+f3 : is(eqtype=2);
+f4 : is(eqtype=3);
+mcopts : [
+ [o1, false, "\\(Y=y,\\ X=x\\)"],
+ [o2, f2,    "\\(Y=\\ln(y),\\ X=\\ln(x)\\)"],
+ [o3, f3,    "\\(Y=\\ln(y),\\ X=x\\)"],
+ [o4, f4,    "\\(Y=y,\\ X=\\ln(x)\\)"]
+];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>eqtype {@eqtype@}; correct \({@tac@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>radio</type>
+      <tans>mcopts</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct substitution chosen?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>tac</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Chose the no-transformation option?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>o1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-notransform</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Plotting \(y\) against \(x\) applies no transformation, so the graph stays curved. You need to transform at least one variable.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That transformation linearises a different type of equation. Take logarithms of the correct side(s) so that \(Y\) becomes a linear function of \(X\) — see the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>16001</deployedseed>
+    <deployedseed>16002</deployedseed>
+    <deployedseed>16003</deployedseed>
+    <deployedseed>16004</deployedseed>
+    <deployedseed>16005</deployedseed>
+    <deployedseed>16006</deployedseed>
+    <deployedseed>16007</deployedseed>
+    <deployedseed>16008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct substitution for this variant</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tac</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>No-transformation choice</description>
+      <testinput>
+        <name>ans1</name>
+        <value>o1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-notransform</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>A transform for a different equation type (generic wrong)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[log(x), log(y)]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-other</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

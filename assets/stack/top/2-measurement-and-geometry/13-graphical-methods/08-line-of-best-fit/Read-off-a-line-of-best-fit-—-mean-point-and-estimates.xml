@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Read off a line of best fit — mean point and estimates</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The scatter graph shows the exam score (\(y\), as a percentage) against the number of hours spent revising (\(x\)) for a class of students. A line of best fit has been drawn, and the mean point \(M\) is marked with a circled cross.</p>
+[[jsxgraph width="560px" height="520px"]]
+var DX = {#dxs#};
+var DY = {#py#};
+var M={#m#}, C={#c#}, XB={#xbar#}, YB={#ybar#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.6, 106, 9, -10], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[8.8, -5, 'Revision hours (x)'],{anchorX:'right',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.15, 104, 'Exam score % (y)'],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[function(x){ return M*x + C; }, 0, 8.5],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+for (var i=0;i<DX.length;i++){ brd.create('point',[DX[i],DY[i]],{name:'',fixed:true,color:'#000000',fillColor:'#000000',size:3}); }
+brd.create('point',[XB,YB],{name:'M',fixed:true,face:'x',strokeColor:'#cc0000',strokeWidth:3,size:6,label:{offset:[10,8],cssStyle:'font-weight:bold;color:#cc0000'}});
+brd.create('circle',[[XB,YB], 0.35],{strokeColor:'#cc0000',strokeWidth:1.5,fillOpacity:0,highlight:false});
+[[/jsxgraph]]
+<p><strong>1)</strong> Write down the coordinates of the mean point \(M\).</p>
+<div>\( \bar{x} = \) [[input:ansMx]] [[validation:ansMx]] [[feedback:prtMx]]</div>
+<div>\( \bar{y} = \) [[input:ansMy]] [[validation:ansMy]] [[feedback:prtMy]]</div>
+<p><strong>2)</strong> Use the line of best fit to estimate the exam score (\(y\)) for a student who revises for:</p>
+<div>\( x = {@q1@} \) hours: [[input:ansE1]] [[validation:ansE1]] \(\%\) [[feedback:prtE1]]</div>
+<div>\( x = {@q2@} \) hours: [[input:ansE2]] [[validation:ansE2]] \(\%\) [[feedback:prtE2]]</div>
+<div>\( x = {@q3@} \) hours: [[input:ansE3]] [[validation:ansE3]] \(\%\) [[feedback:prtE3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>1)</strong> The line of best fit passes through the mean point, which is marked at \(M=({@xbar@},\ {@ybar@})\). So \(\bar{x}={@xbar@}\) and \(\bar{y}={@ybar@}\).</p>
+<p><strong>2)</strong> Read the height of the line at each \(x\)-value (equivalently, use \(y={@m@}x+({@c@})\)):</p>
+<ul>
+<li>\(x={@q1@}\Rightarrow y={@e1@}\%\)</li>
+<li>\(x={@q2@}\Rightarrow y={@e2@}\%\)</li>
+<li>\(x={@q3@}\Rightarrow y={@e3@}\%\)</li>
+</ul>
+[[jsxgraph width="480px" height="460px"]]
+var DX = {#dxs#};
+var DY = {#py#};
+var M={#m#}, C={#c#}, XB={#xbar#}, YB={#ybar#};
+var QX=[{#q1#},{#q2#},{#q3#}];
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.6, 106, 9, -10], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[8.8, -5, 'Revision hours (x)'],{anchorX:'right',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.15, 104, 'Exam score % (y)'],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[function(x){ return M*x + C; }, 0, 8.5],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+for (var i=0;i<DX.length;i++){ brd.create('point',[DX[i],DY[i]],{name:'',fixed:true,color:'#000000',fillColor:'#000000',size:3}); }
+for (var j=0;j<3;j++){ var qx=QX[j], qy=M*qx+C; brd.create('segment',[[qx,0],[qx,qy]],{dash:2,strokeColor:'#2ca02c',strokeWidth:1}); brd.create('segment',[[qx,qy],[0,qy]],{dash:2,strokeColor:'#2ca02c',strokeWidth:1}); brd.create('point',[qx,qy],{name:'',fixed:true,color:'#2ca02c',size:3}); }
+brd.create('point',[XB,YB],{name:'M',fixed:true,face:'x',strokeColor:'#cc0000',strokeWidth:3,size:6,label:{offset:[10,8],cssStyle:'font-weight:bold;color:#cc0000'}});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>5</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>m : rand([5,6,7,8]);
+c : 100 - 8*m - rand([4,8,12]);
+xstart : rand([1,2]);
+xbar : xstart + 3;
+ybar : m*xbar + c;
+dxs : makelist(xstart + i - 1, i, 1, 7);
+nl : random_permutation([-4,-2,0,2,4,-3,3]);
+py : makelist(m*dxs[i] + c + nl[i], i, 1, 7);
+qcand : delete(xbar, dxs);
+qperm : random_permutation(qcand);
+q1 : qperm[1]; q2 : qperm[2]; q3 : qperm[3];
+e1 : m*q1 + c; e2 : m*q2 + c; e3 : m*q3 + c;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@m@}x+({@c@})\); mean \(({@xbar@},{@ybar@})\); q={@q1@},{@q2@},{@q3@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ansE1</name>
+      <type>numerical</type>
+      <tans>e1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansE2</name>
+      <type>numerical</type>
+      <tans>e2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansE3</name>
+      <type>numerical</type>
+      <tans>e3</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansMx</name>
+      <type>numerical</type>
+      <tans>xbar</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansMy</name>
+      <type>numerical</type>
+      <tans>ybar</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtE1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansE1</sans>
+        <tans>e1</tans>
+        <testoptions>3</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtE1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtE1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Go up from \(x={@q1@}\) to the line, then across to the \(y\)-axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtE2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansE2</sans>
+        <tans>e2</tans>
+        <testoptions>3</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtE2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtE2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Go up from \(x={@q2@}\) to the line, then across to the \(y\)-axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtE3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansE3</sans>
+        <tans>e3</tans>
+        <testoptions>3</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtE3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtE3-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Go up from \(x={@q3@}\) to the line, then across to the \(y\)-axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtMx</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansMx</sans>
+        <tans>xbar</tans>
+        <testoptions>0.5</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtMx-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtMx-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Read the horizontal position of the marked point \(M\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtMy</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansMy</sans>
+        <tans>ybar</tans>
+        <testoptions>1.0</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtMy-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtMy-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Read the vertical position of the marked point \(M\) from the \(y\)-axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>27001</deployedseed>
+    <deployedseed>27002</deployedseed>
+    <deployedseed>27003</deployedseed>
+    <deployedseed>27004</deployedseed>
+    <deployedseed>27005</deployedseed>
+    <deployedseed>27006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ansE1</name>
+        <value>e1</value>
+      </testinput>
+      <testinput>
+        <name>ansE2</name>
+        <value>e2</value>
+      </testinput>
+      <testinput>
+        <name>ansE3</name>
+        <value>e3</value>
+      </testinput>
+      <testinput>
+        <name>ansMx</name>
+        <value>xbar</value>
+      </testinput>
+      <testinput>
+        <name>ansMy</name>
+        <value>ybar</value>
+      </testinput>
+      <expected>
+        <name>prtE1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtE1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtE2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtE2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtE3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtE3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtMx</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtMx-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtMy</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtMy-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Mean y wrong; first estimate wrong</description>
+      <testinput>
+        <name>ansE1</name>
+        <value>e1+10</value>
+      </testinput>
+      <testinput>
+        <name>ansE2</name>
+        <value>e2</value>
+      </testinput>
+      <testinput>
+        <name>ansE3</name>
+        <value>e3</value>
+      </testinput>
+      <testinput>
+        <name>ansMx</name>
+        <value>xbar</value>
+      </testinput>
+      <testinput>
+        <name>ansMy</name>
+        <value>ybar+10</value>
+      </testinput>
+      <expected>
+        <name>prtE1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtE1-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtMy</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtMy-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

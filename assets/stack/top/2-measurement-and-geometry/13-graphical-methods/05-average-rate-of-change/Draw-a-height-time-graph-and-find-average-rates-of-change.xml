@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Draw a height-time graph and find average rates of change</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Draw a graph to represent the height \(h\), in metres, of a ball above the ground at time \(t\), in seconds. The graph passes through \(A({@t1@},{@h1@})\), \(B({@t2@},{@h2@})\) and \(C({@t3@},{@h3@})\).</p>
+<p><strong>a)</strong> Draw the graph by dragging the three red points onto \(A\), \(B\) and \(C\). A curve is drawn through the points as you move them.</p>
+[[jsxgraph input-ref-ans1="ref_p1" input-ref-ans2="ref_p2" input-ref-ans3="ref_p3" width="540px" height="540px"]]
+var XMIN={#float(xminv)#}, XMAX={#float(xmaxv)#}, YMAX={#float(ymaxv)#}, YMIN={#float(yminv)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[XMIN, YMAX, XMAX, YMIN], axis:true, showCopyright:false, showNavigation:false, grid:true, keepaspectratio:false});
+brd.create('text',[XMAX-0.15, 0.6, 't (s)'],{anchorX:'right',fixed:true,fontSize:14,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.35, YMAX-0.15, 'h (m)'],{anchorX:'left',fixed:true,fontSize:14,cssStyle:'font-weight:bold;color:#333'});
+var p1 = brd.create('point',[{#t1#},0],{name:'1',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[9,2],fontSize:14,cssStyle:'font-weight:bold;color:#cc0000'}});
+var p2 = brd.create('point',[{#t2#},0],{name:'2',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[9,2],fontSize:14,cssStyle:'font-weight:bold;color:#cc0000'}});
+var p3 = brd.create('point',[{#t3#},0],{name:'3',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[9,2],fontSize:14,cssStyle:'font-weight:bold;color:#cc0000'}});
+function lag(t){ var x1=p1.X(),y1=p1.Y(),x2=p2.X(),y2=p2.Y(),x3=p3.X(),y3=p3.Y(); var da=(x1-x2)*(x1-x3), db=(x2-x1)*(x2-x3), dc=(x3-x1)*(x3-x2); if(da===0||db===0||dc===0){return NaN;} return y1*(t-x2)*(t-x3)/da + y2*(t-x1)*(t-x3)/db + y3*(t-x1)*(t-x2)/dc; }
+brd.create('functiongraph',[lag, function(){return Math.min(p1.X(),p2.X(),p3.X());}, function(){return Math.max(p1.X(),p2.X(),p3.X());}],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+stack_jxg.bind_point(ref_p1, p1);
+stack_jxg.bind_point(ref_p2, p2);
+stack_jxg.bind_point(ref_p3, p3);
+[[/jsxgraph]]
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]] [[input:ans3]] [[validation:ans3]]</div>
+<div>[[feedback:prt1]]</div>
+<p><strong>b)</strong> Determine the average rate of change of height (in m/s) between:</p>
+<div><strong>i.</strong> \(t={@t1@}\) and \(t={@t2@}\): [[input:ans4]] [[validation:ans4]] [[feedback:prt2]]</div>
+<div><strong>ii.</strong> \(t={@t2@}\) and \(t={@t3@}\): [[input:ans5]] [[validation:ans5]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>a)</strong> The graph passes through \(A({@t1@},{@h1@})\), \(B({@t2@},{@h2@})\) and \(C({@t3@},{@h3@})\), shown below.</p>
+[[jsxgraph width="470px" height="470px"]]
+var T1={#t1#}, T2={#t2#}, T3={#t3#}, H1={#h1#}, H2={#h2#}, H3={#h3#};
+var XMIN={#float(xminv)#}, XMAX={#float(xmaxv)#}, YMAX={#float(ymaxv)#}, YMIN={#float(yminv)#};
+function dfun(t){ return H1*(t-T2)*(t-T3)/((T1-T2)*(T1-T3)) + H2*(t-T1)*(t-T3)/((T2-T1)*(T2-T3)) + H3*(t-T1)*(t-T2)/((T3-T1)*(T3-T2)); }
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[XMIN, YMAX, XMAX, YMIN], axis:true, showCopyright:false, showNavigation:false, grid:true, keepaspectratio:false});
+brd.create('text',[XMAX-0.15, 0.6, 't (s)'],{anchorX:'right',fixed:true,fontSize:14,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.35, YMAX-0.15, 'h (m)'],{anchorX:'left',fixed:true,fontSize:14,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[dfun, T1, T3],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+brd.create('point',[T1,H1],{name:'A',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:4,label:{offset:[-16,10],fontSize:16,cssStyle:'font-weight:bold;color:#1f4fd8'}});
+brd.create('point',[T2,H2],{name:'B',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:4,label:{offset:[-16,10],fontSize:16,cssStyle:'font-weight:bold;color:#1f4fd8'}});
+brd.create('point',[T3,H3],{name:'C',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:4,label:{offset:[-16,10],fontSize:16,cssStyle:'font-weight:bold;color:#1f4fd8'}});
+[[/jsxgraph]]
+<p><strong>b)</strong> Average rate of change \(=\dfrac{\text{change in height}}{\text{change in time}}\):</p>
+\[
+\text{i. } \frac{{@h2@}-{@h1@}}{{@t2@}-{@t1@}} = \frac{{@h2-h1@}}{{@t2-t1@}} = {@r1@}\text{ m/s}, \qquad
+\text{ii. } \frac{{@h3@}-{@h2@}}{{@t3@}-{@t2@}} = \frac{{@h3-h2@}}{{@t3-t2@}} = {@r2@}\text{ m/s}.
+\]
+<p>A rate of \(0\) means the height did not change over that interval; a negative rate means the ball was falling.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>g  : rand_with_prohib(1,2,[]);        /* equal time gap */
+t1 : rand_with_prohib(1,2,[]);
+t2 : t1 + g;
+t3 : t1 + 2*g;
+r1 : rand_with_prohib(-2,3,[]);       /* average rate on [t1,t2] (may be 0) */
+r2 : rand_with_prohib(-4,2,[0]);      /* average rate on [t2,t3] (nonzero) */
+h1 : rand_with_prohib(2,6,[]);
+h2 : h1 + r1*g;
+h3 : h2 + r2*g;
+Apt : [t1, h1];
+Bpt : [t2, h2];
+Cpt : [t3, h3];
+/* board window */
+hmin : min(h1, h2, h3, 0);
+hmax : max(h1, h2, h3, 0);
+xminv : min(t1, 0) - 1;
+xmaxv : t3 + 1;
+yminv : hmin - 2;
+ymaxv : hmax + 3;
+tans1 : Apt;
+tans2 : Bpt;
+tans3 : Cpt;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( A({@t1@},{@h1@}),B({@t2@},{@h2@}),C({@t3@},{@h3@})\); rates \({@r1@},{@r2@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>tans1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>tans2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>tans3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>r1</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>algebraic</type>
+      <tans>r2</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>q1 : [round(ans1[1]), round(ans1[2])];
+q2 : [round(ans2[1]), round(ans2[2])];
+q3 : [round(ans3[1]), round(ans3[2])];
+hasA : if (is(q1 = Apt) or is(q2 = Apt) or is(q3 = Apt)) then 1 else 0;
+hasB : if (is(q1 = Bpt) or is(q2 = Bpt) or is(q3 = Bpt)) then 1 else 0;
+hasC : if (is(q1 = Cpt) or is(q2 = Cpt) or is(q3 = Cpt)) then 1 else 0;
+ncov : hasA + hasB + hasC;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>All three points placed on A, B, C?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ncov</sans>
+        <tans>3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Two of the three placed correctly?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ncov</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-partial</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Two points are correctly placed. Drag the remaining point onto its labelled position.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Drag the three red points onto \(A({@t1@},{@h1@})\), \(B({@t2@},{@h2@})\) and \(C({@t3@},{@h3@})\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct average rate on [t1,t2]?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>r1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Sign / order reversed?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>-r1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the order and sign: rate \(=\dfrac{h(t={@t2@})-h(t={@t1@})}{{@t2@}-{@t1@}}\) (later height minus earlier height).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Average rate \(=\dfrac{{@h2@}-{@h1@}}{{@t2@}-{@t1@}}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct average rate on [t2,t3]?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>r2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Sign reversed (forgot the ball is falling)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>-r2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Watch the sign. Use later height minus earlier height: \(\dfrac{h(t={@t3@})-h(t={@t2@})}{{@t3@}-{@t2@}}\). If the height decreases, the rate is negative.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Average rate \(=\dfrac{{@h3@}-{@h2@}}{{@t3@}-{@t2@}}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>14001</deployedseed>
+    <deployedseed>14002</deployedseed>
+    <deployedseed>14003</deployedseed>
+    <deployedseed>14004</deployedseed>
+    <deployedseed>14005</deployedseed>
+    <deployedseed>14006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>Cpt</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>r2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Points reordered (still all on A,B,C)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Cpt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>r2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Two points correct (partial)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[t3,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>r2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-partial</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Points all misplaced</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[t1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[t2,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[t3,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>r2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-other</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Rate ii: sign reversed</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>Cpt</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>-r2</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-sign</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Rate i: wrong value</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>Cpt</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>r1+3</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>r2</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-other</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

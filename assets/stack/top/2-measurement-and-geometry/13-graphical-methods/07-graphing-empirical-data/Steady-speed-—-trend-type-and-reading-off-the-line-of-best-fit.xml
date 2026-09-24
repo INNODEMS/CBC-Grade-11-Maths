@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Steady speed — trend type and reading off the line of best fit</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A car moves at a steady speed. When the distance travelled is plotted against time, the points lie on a straight line rising from the origin, with a line of best fit drawn through them.</p>
+<p><strong>a)</strong> Is this trend linear or non-linear?</p>
+<div>[[input:ansTrend]] [[validation:ansTrend]] [[feedback:prtTrend]]</div>
+<p><strong>b)</strong> The point at \(t={@tq@}\) s is not a measured value. Put the steps for reading it off the line of best fit into the correct order.</p>
+[[parsons input="ansSteps"]]
+{# parsons_encode(proof_steps) #}
+[[/parsons]]
+<div>[[input:ansSteps]] [[validation:ansSteps]] [[feedback:prtSteps]]</div>
+<p><strong>c)</strong> On the graph, drag the red marker along the time axis to \(t={@tq@}\) s. Follow the dashed lines up to the line and across to the distance axis, then enter the distance you read off.</p>
+[[jsxgraph input-ref-ansT="rT" width="520px" height="480px"]]
+var V={#v#}, TMAX={#tmax#}, YMAX={#float(ymax)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.7, YMAX, TMAX+0.7, -5], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[TMAX+0.6, -2.5, 'Time (s)'],{anchorX:'right',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.1, YMAX-1.5, 'Distance (m)'],{anchorX:'left',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[function(t){ return V*t; }, 0, TMAX],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+var gt = brd.create('glider',[1,0,brd.defaultAxes.x],{name:'',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:1});
+brd.create('segment',[[function(){return gt.X();},0],[function(){return gt.X();},function(){return V*gt.X();}]],{dash:2,strokeColor:'#cc0000',strokeWidth:1.5});
+brd.create('segment',[[function(){return gt.X();},function(){return V*gt.X();}],[0,function(){return V*gt.X();}]],{dash:2,strokeColor:'#cc0000',strokeWidth:1.5});
+brd.create('point',[0,function(){return V*gt.X();}],{name:'',color:'#cc0000',size:3,fixed:true});
+brd.create('text',[-0.5, YMAX-3.5, function(){ return 'marker at t = '+Math.round(gt.X())+' s'; }],{anchorX:'left',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#cc0000'});
+stack_jxg.bind_point(rT, gt);
+[[/jsxgraph]]
+<div style="display:none">[[input:ansT]] [[validation:ansT]]</div>
+<div>Distance at \(t={@tq@}\) s \(\approx\) [[input:ansEst]] [[validation:ansEst]] \(\ \mathrm{m}\) [[feedback:prtEst]] [[feedback:prtMark]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>a)</strong> The trend is <strong>linear</strong>: the points lie on a straight line. At a steady speed the distance is proportional to time, \(d=v\,t\).</p>
+<p><strong>b)</strong> To read off a value that was not measured, use the line of best fit:</p>
+<ol>
+<li>Find \(t={@tq@}\) s on the horizontal (time) axis.</li>
+<li>Move vertically up until you reach the line of best fit.</li>
+<li>Move horizontally across to the distance (vertical) axis and read off the value.</li>
+</ol>
+<p><strong>c)</strong> Here the steady speed is \({@v@}\ \mathrm{m/s}\), so at \(t={@tq@}\) s the distance is \[ d = {@v@}\times{@tq@} = {@dq@}\ \mathrm{m}. \] The dashed lines below show the read-off.</p>
+[[jsxgraph width="480px" height="440px"]]
+var V={#v#}, TMAX={#tmax#}, YMAX={#float(ymax)#}, TQ={#tq#}, DQ={#dq#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.7, YMAX, TMAX+0.7, -5], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[TMAX+0.6, -2.5, 'Time (s)'],{anchorX:'right',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.1, YMAX-1.5, 'Distance (m)'],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[function(t){ return V*t; }, 0, TMAX],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+brd.create('segment',[[TQ,0],[TQ,DQ]],{dash:2,strokeColor:'#cc0000',strokeWidth:1.5});
+brd.create('segment',[[TQ,DQ],[0,DQ]],{dash:2,strokeColor:'#cc0000',strokeWidth:1.5});
+brd.create('point',[TQ,DQ],{name:'',fixed:true,color:'#cc0000',size:4});
+brd.create('point',[0,DQ],{name:'',fixed:true,color:'#cc0000',size:3});
+brd.create('text',[0.15, DQ+1.5, 'read '+DQ+' m'],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#cc0000'});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[stack_include_contrib("prooflib.mac");
+v : rand([5,6,8,10]);
+tq : rand([3,4,5,6]);
+dq : v*tq;
+tmax : 8;
+ymax : v*tmax + 6;
+find_t_str : sconcat("Find the time \\(t=", tq, "\\) s on the horizontal (time) axis.");
+proof_steps : [["find_t", find_t_str], ["up", "Move vertically up until you reach the line of best fit."], ["across", "Move horizontally across to the distance (vertical) axis and read off the value."]];
+proof_steps : random_permutation(proof_steps);
+ta : proof("find_t","up","across");
+TrendOpts : [[optLin, true, "Linear — the points lie on a straight line."], [optNon, false, "Non-linear — the points lie on a curve."]];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( v={@v@}, t={@tq@}\to d={@dq@}\); steps {@map(first, proof_steps)@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ansEst</name>
+      <type>numerical</type>
+      <tans>dq</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansSteps</name>
+      <type>parsons</type>
+      <tans>[ta, proof_steps]</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansT</name>
+      <type>algebraic</type>
+      <tans>[tq,0]</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansTrend</name>
+      <type>radio</type>
+      <tans>TrendOpts</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtEst</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansEst</sans>
+        <tans>dq</tans>
+        <testoptions>2.5</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtEst-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtEst-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Read the height of the line at \(t={@tq@}\) s from the distance axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtMark</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>tmark : round(ansT[1]);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>tmark</sans>
+        <tans>tq</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtMark-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtMark-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Drag the red marker so it sits at \(t={@tq@}\) s on the time axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtSteps</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sa : parsons_decode(ansSteps);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtSteps-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtSteps-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Start from the time axis, go up to the line, then across to the distance axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtTrend</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansTrend</sans>
+        <tans>optLin</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtTrend-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtTrend-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>A straight line means the relationship is linear.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>23001</deployedseed>
+    <deployedseed>23002</deployedseed>
+    <deployedseed>23003</deployedseed>
+    <deployedseed>23004</deployedseed>
+    <deployedseed>23005</deployedseed>
+    <deployedseed>23006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ansEst</name>
+        <value>dq</value>
+      </testinput>
+      <testinput>
+        <name>ansSteps</name>
+        <value>parsons_answer(ta, proof_steps)</value>
+      </testinput>
+      <testinput>
+        <name>ansT</name>
+        <value>[tq,0]</value>
+      </testinput>
+      <testinput>
+        <name>ansTrend</name>
+        <value>optLin</value>
+      </testinput>
+      <expected>
+        <name>prtEst</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtEst-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtMark</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtMark-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtSteps</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtSteps-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtTrend</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtTrend-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Trend wrong; steps wrong order; marker off; estimate wrong</description>
+      <testinput>
+        <name>ansEst</name>
+        <value>dq+8</value>
+      </testinput>
+      <testinput>
+        <name>ansSteps</name>
+        <value><![CDATA[parsons_answer(proof("up","find_t","across"), proof_steps)]]></value>
+      </testinput>
+      <testinput>
+        <name>ansT</name>
+        <value>[tq+1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ansTrend</name>
+        <value>optNon</value>
+      </testinput>
+      <expected>
+        <name>prtEst</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtEst-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtMark</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtMark-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtSteps</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtSteps-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtTrend</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtTrend-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

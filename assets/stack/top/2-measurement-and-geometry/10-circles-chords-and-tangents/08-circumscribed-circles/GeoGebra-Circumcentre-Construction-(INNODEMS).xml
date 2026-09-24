@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>GeoGebra Circumcentre Construction (INNODEMS)</text>
+    </name>
+    <questiontext format="plain_text">
+      <text><![CDATA[<p>The triangle \(ABC\) below has vertices
+\(A={@ntupleify(A)@}\), \(B={@ntupleify(B)@}\) and \(C={@ntupleify(C)@}\).</p>
+
+<p>Using the construction tools provided, construct the circumcircle of triangle \(ABC\).</p>
+
+<p>GeoGebra displays the coordinates of the points you construct. Read off the position of the circumcentre and the radius of the circumscribed circle (the circumradius), and enter them below, each rounded to <strong>3 decimal places</strong>.</p>
+
+[[geogebra set="A__fixed,B__fixed,C__fixed" width="1200px" height="600px"]]
+params["material_id"]="dcdnc4ee";
+/* Restricted compass-and-straightedge toolbar. customToolBar OVERRIDES the file's
+   toolbar; numbers are GeoGebra tool IDs, | starts a new menu.
+   0 Move, 6 Delete | 5 Intersect | 2 Line | 10 Circle(centre,point) |
+   8 Perpendicular-bisector, 4 Perpendicular line | 38 Distance or Length.
+   Provides 8 Perp-bisector (the natural tool for the circumcentre), 4
+   Perpendicular line, and 38 to measure the radius. */
+/* params["appName"]="geometry"; */
+params["showToolBar"]=true;
+params["customToolBar"]="0 | 6 | 5 | 2 | 10 | 9 | 4 | 8 | 38";
+params["showToolBarHelp"]=false;
+/* Hide the algebra input bar and menu bar. NOTE: the algebra VIEW panel is
+   governed by the saved file (perspective is ignored with material_id), so ALSO
+   close the Algebra View in the GeoGebra material and re-save. */
+params["showAlgebraInput"]=true;
+params["algebraInputPosition"]="bottom";
+params["showMenuBar"]=false;
+params["showResetIcon"]=true;
+params["showFullscreenButton"]=true;
+[[/geogebra]]
+
+<div>Circumcentre \(O = (\,\) [[input:xc]] \(,\) [[input:yc]] \(\,)\) \( (\,\)[[validation:xc]], [[validation:yc]] \(\,)\)</div>
+
+<div>[[feedback:prt1]]</div>
+
+<div>Circumradius \(R = \) [[input:r]] [[validation:r]]</div>
+
+<div>[[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="plain_text">
+      <text><![CDATA[<p>The centre of the circumscribed circle is the <em>circumcentre</em>: the point where the three <strong>perpendicular bisectors of the sides</strong> meet. It is the unique point equidistant from all three vertices, so the distance from it to each vertex is the same &mdash; that common distance is the circumradius \(R\).</p>
+
+<p><strong>Construction.</strong> Construct the perpendicular bisector of any two sides (say \(AB\) and \(BC\)) using the perpendicular-bisector tool; their intersection \(O\) is the circumcentre. Drawing the circle centred at \(O\) through any vertex gives the circumscribed circle, and the distance from \(O\) to that vertex is the circumradius. (For an obtuse triangle \(O\) lies outside the triangle.)</p>
+
+
+[[geogebra set="A__fixed,B__fixed,C__fixed" width="1200px" height="600px"]]
+params["material_id"]="pcttvewn";
+/* Restricted compass-and-straightedge toolbar. customToolBar OVERRIDES the file's
+   toolbar; numbers are GeoGebra tool IDs, | starts a new menu.
+   0 Move, 6 Delete | 5 Intersect | 2 Line | 10 Circle(centre,point) |
+   8 Perpendicular-bisector, 4 Perpendicular line | 38 Distance or Length.
+   Provides 8 Perp-bisector (the natural tool for the circumcentre), 4
+   Perpendicular line, and 38 to measure the radius. */
+/* params["appName"]="geometry"; */
+params["showToolBar"]=true;
+params["customToolBar"]="0 | 6 | 5 | 2 | 10 | 9 | 4 | 8 | 38";
+params["showToolBarHelp"]=false;
+/* Hide the algebra input bar and menu bar. NOTE: the algebra VIEW panel is
+   governed by the saved file (perspective is ignored with material_id), so ALSO
+   close the Algebra View in the GeoGebra material and re-save. */
+params["showAlgebraInput"]=true;
+params["algebraInputPosition"]="bottom";
+params["showMenuBar"]=false;
+params["showResetIcon"]=true;
+params["showFullscreenButton"]=true;
+[[/geogebra]]
+
+
+<p>For this triangle the circumcentre is
+\(O \approx ({@dispdp(ta_O[1],3)@},\ {@dispdp(ta_O[2],3)@})\) and the circumradius is
+\(R \approx {@dispdp(ta_R,3)@}\).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>tris : [ [[0,0],[11,0],[-1,4]], [[0,0],[11,0],[0,5]], [[0,0],[10,0],[-1,5]], [[0,0],[9,0],[-1,4]], [[0,0],[11,0],[2,4]], [[0,0],[11,0],[-1,6]], [[0,0],[10,0],[0,4]], [[0,0],[11,0],[1,6]], [[0,0],[10,0],[2,4]], [[0,0],[11,0],[2,5]] ];
+tri : tris[rand(length(tris))+1];
+A : tri[1] + [-1,-1];
+B : tri[2] + [-1,-1];
+C : tri[3] + [-1,-1];
+/* side lengths, each opposite its like-named vertex */
+la : Distance(B,C);  /* a = |BC|, opposite A */
+lb : Distance(A,C);  /* b = |CA|, opposite B */
+lc : Distance(A,B);  /* c = |AB|, opposite C */
+perim : la+lb+lc;
+ssemi : perim/2;
+/* circumcentre = intersection of perpendicular bisectors (target answer) */
+ddet : 2*(A[1]*(B[2]-C[2])+B[1]*(C[2]-A[2])+C[1]*(A[2]-B[2]));
+ta_O : [((A[1]^2+A[2]^2)*(B[2]-C[2])+(B[1]^2+B[2]^2)*(C[2]-A[2])+(C[1]^2+C[2]^2)*(A[2]-B[2]))/ddet, ((A[1]^2+A[2]^2)*(C[1]-B[1])+(B[1]^2+B[2]^2)*(A[1]-C[1])+(C[1]^2+C[2]^2)*(B[1]-A[1]))/ddet];
+/* circumradius R = distance from O to any vertex */
+ta_R : sqrt((ta_O[1]-A[1])^2+(ta_O[2]-A[2])^2);
+/* inradius r = area/s, used only to detect the wrong radius in feedback */
+area : abs(A[1]*(B[2]-C[2])+B[1]*(C[2]-A[2])+C[1]*(A[2]-B[2]))/2;
+ta_inr : area/ssemi;
+/* distractor centres used only for misconception feedback */
+ta_G : [(A[1]+B[1]+C[1])/3, (A[2]+B[2]+C[2])/3];   /* centroid: medians */
+ta_X : [(la*A[1]+lb*B[1]+lc*C[1])/perim, (la*A[2]+lb*B[2]+lc*C[2])/perim];   /* incentre: angle bisectors */
+ta_H : [A[1]+B[1]+C[1]-2*ta_O[1], A[2]+B[2]+C[2]-2*ta_O[2]];   /* orthocentre: altitudes (perpendiculars from vertices) */
+/* rounded model answers (to 3 d.p.), used for the inputs and the question tests */
+rnd3(z) := float(round(float(z)*1000)/1000);
+ans_xc : rnd3(ta_O[1]);
+ans_yc : rnd3(ta_O[2]);
+ans_r  : rnd3(ta_R);
+ans_Hx : rnd3(ta_H[1]);
+ans_Hy : rnd3(ta_H[2]);
+ans_Xx : rnd3(ta_X[1]);
+ans_Xy : rnd3(ta_X[2]);
+ans_Gx : rnd3(ta_G[1]);
+ans_Gy : rnd3(ta_G[2]);
+ans_ir : rnd3(ta_inr);</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\(A={@ntupleify(A)@},\ B={@ntupleify(B)@},\ C={@ntupleify(C)@},\ O \approx ({@dispdp(ta_O[1],3)@},\ {@dispdp(ta_O[2],3)@}),\ R \approx {@dispdp(ta_R,3)@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>r</name>
+      <type>numerical</type>
+      <tans>ans_r</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>xc</name>
+      <type>numerical</type>
+      <tans>ans_xc</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>yc</name>
+      <type>numerical</type>
+      <tans>ans_yc</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* largest single-coordinate error, so x AND y must each be correct to 3 d.p. */
+errCirc : max(abs(xc-ta_O[1]), abs(yc-ta_O[2]));
+errOrth : max(abs(xc-ta_H[1]), abs(yc-ta_H[2]));
+errInc  : max(abs(xc-ta_X[1]), abs(yc-ta_X[2]));
+errCent : max(abs(xc-ta_G[1]), abs(yc-ta_G[2]));</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Both circumcentre coordinates correct to 3 d.p.?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>errCirc</sans>
+        <tans>0</tans>
+        <testoptions>0.0005</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-circumcentre</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The centre is correctly placed at the circumcentre.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Did they find the orthocentre instead?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>errOrth</sans>
+        <tans>0</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-orthocentre</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That point is the <em>orthocentre</em> &mdash; where the three <strong>altitudes</strong> meet (each a perpendicular dropped from a vertex to the opposite side). For the circumcircle you need the perpendicular bisectors of the <strong>sides</strong>: lines perpendicular to a side <em>through its midpoint</em>, not through a vertex.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Did they find the incentre instead?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>errInc</sans>
+        <tans>0</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-incentre</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That point is the <em>incentre</em> &mdash; where the three angle bisectors meet. It is equidistant from the three <strong>sides</strong>, not the three <strong>vertices</strong>. For the circumcircle you must perpendicularly bisect the <strong>sides</strong>, not bisect the angles.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Did they find the centroid instead?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>errCent</sans>
+        <tans>0</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-centroid</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That point is the <em>centroid</em> &mdash; where the three medians meet (the triangle's balance point). The circumcircle's centre is equidistant from the vertices, which you get from the perpendicular bisectors of the sides.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your point \(O\) is not the circumcentre. The circumcentre is where the perpendicular bisectors of the sides cross &mdash; check that each line you drew is perpendicular to a side and passes through that side's midpoint.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>errInr : abs(r-ta_inr);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Circumradius correct to 3 d.p.?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>r</sans>
+        <tans>ta_R</tans>
+        <testoptions>0.0005</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-radius-ok</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The circumradius is correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Did they give the inradius instead of the circumradius?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>errInr</sans>
+        <tans>0</tans>
+        <testoptions>0.005</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-inradius</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the <em>inradius</em> &mdash; the radius of the <strong>inscribed</strong> circle (the one that fits inside the triangle, touching all three sides). Here you want the <strong>circumradius</strong>: the radius of the circle through the three vertices, which is the distance from the circumcentre \(O\) to any vertex.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-radius-no</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your circumradius is not correct (to 3 decimal places). The circumradius is the distance from the circumcentre to any vertex &mdash; measure from \(O\) to \(A\), \(B\) or \(C\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct: circumcentre and circumradius both correct</description>
+      <testinput>
+        <name>r</name>
+        <value>ans_r</value>
+      </testinput>
+      <testinput>
+        <name>xc</name>
+        <value>ans_xc</value>
+      </testinput>
+      <testinput>
+        <name>yc</name>
+        <value>ans_yc</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-circumcentre</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-radius-ok</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Centre correct but circumradius wrong</description>
+      <testinput>
+        <name>r</name>
+        <value>ans_r+5</value>
+      </testinput>
+      <testinput>
+        <name>xc</name>
+        <value>ans_xc</value>
+      </testinput>
+      <testinput>
+        <name>yc</name>
+        <value>ans_yc</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-circumcentre</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-0-F | prt2-radius-no</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Used the orthocentre instead</description>
+      <testinput>
+        <name>r</name>
+        <value>ans_r+5</value>
+      </testinput>
+      <testinput>
+        <name>xc</name>
+        <value>ans_Hx</value>
+      </testinput>
+      <testinput>
+        <name>yc</name>
+        <value>ans_Hy</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-0-F | prt1-orthocentre</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-0-F | prt2-radius-no</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Used the incentre instead</description>
+      <testinput>
+        <name>r</name>
+        <value>ans_r+5</value>
+      </testinput>
+      <testinput>
+        <name>xc</name>
+        <value>ans_Xx</value>
+      </testinput>
+      <testinput>
+        <name>yc</name>
+        <value>ans_Xy</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-0-F | prt1-1-F | prt1-incentre</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-0-F | prt2-radius-no</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Used the centroid instead (circumradius correct)</description>
+      <testinput>
+        <name>r</name>
+        <value>ans_r</value>
+      </testinput>
+      <testinput>
+        <name>xc</name>
+        <value>ans_Gx</value>
+      </testinput>
+      <testinput>
+        <name>yc</name>
+        <value>ans_Gy</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-0-F | prt1-1-F | prt1-2-F | prt1-centroid</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-radius-ok</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Neither a recognised centre nor circumradius</description>
+      <testinput>
+        <name>r</name>
+        <value>ans_r+5</value>
+      </testinput>
+      <testinput>
+        <name>xc</name>
+        <value>100</value>
+      </testinput>
+      <testinput>
+        <name>yc</name>
+        <value>100</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-0-F | prt1-1-F | prt1-2-F | prt1-other</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-0-F | prt2-radius-no</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Centre correct but gave the inradius instead of the circumradius</description>
+      <testinput>
+        <name>r</name>
+        <value>ans_ir</value>
+      </testinput>
+      <testinput>
+        <name>xc</name>
+        <value>ans_xc</value>
+      </testinput>
+      <testinput>
+        <name>yc</name>
+        <value>ans_yc</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-circumcentre</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-0-F | prt2-inradius</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

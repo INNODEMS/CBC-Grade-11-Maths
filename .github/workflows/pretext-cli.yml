@@ -57,7 +57,7 @@ jobs:
                 # oscarlevin/pretext:full images may already ship them, so if
                 # they are already on kpsewhich's path there is nothing to do --
                 # skip tlmgr entirely and avoid the repository dance below.
-                if kpsewhich tikz-3dplot.sty tkz-euclide.sty; then
+                if kpsewhich tikz-3dplot.sty tkz-euclide.sty footnotehyper.sty; then
                     echo "Required style files already present; skipping tlmgr install."
                     exit 0
                 fi
@@ -90,7 +90,7 @@ jobs:
                     echo "Trying tlmgr repository: $REPO"
                     tlmgr option repository "$REPO"
                     tlmgr update --self || true
-                    if tlmgr install tkz-euclide tikz-3dplot; then
+                    if tlmgr install tkz-euclide tikz-3dplot footnotehyper; then
                         installed=1
                         break
                     fi
@@ -100,8 +100,10 @@ jobs:
                 # Only fail the step if the style files still cannot be found. If a
                 # mirror install succeeded, or the image already had the packages,
                 # kpsewhich will confirm and we proceed.
-                if ! kpsewhich tikz-3dplot.sty tkz-euclide.sty; then
-                    echo "::error::Could not locate tkz-euclide.sty / tikz-3dplot.sty after tlmgr install (installed=$installed). Frozen tlnet-final for TeX Live ${TLYEAR:-unknown} may be unavailable, or the container's TeX Live release has drifted."
+                mktexlsr
+
+                if ! kpsewhich tikz-3dplot.sty tkz-euclide.sty footnotehyper.sty; then
+                    echo "::error::Could not locate tkz-euclide.sty / tikz-3dplot.sty / footnotehyper.sty after tlmgr install (installed=$installed). Frozen tlnet-final for TeX Live ${TLYEAR:-unknown} may be unavailable, or the container's TeX Live release has drifted."
                     exit 1
                 fi
 

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Scalar multiplication of a matrix or vector (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[[[ if test="is(ncol=1)" ]]
+<p>A clinic records the number of doses of a medicine used in its {@nrow@} wards on Monday as the vector \(\mathbf{d}\):</p>
+\[ \mathbf{d} = {@dd@} \]
+<p>Each dose uses {@kk@} ml of solution. The total amount of solution used in each ward is \({@kk@}\,\mathbf{d}\). Compute this vector (in ml).</p>
+[[/ if ]][[ if test="is(ncol>1)" ]]
+<p>A clinic records the number of doses of a medicine used in its {@nrow@} wards over {@ncol@} days in the matrix \(\mathbf{d}\) (the rows are wards and the columns are days):</p>
+\[ \mathbf{d} = {@dd@} \]
+<p>Each dose uses {@kk@} ml of solution. The total amount of solution used is \({@kk@}\,\mathbf{d}\). Compute this matrix (in ml).</p>
+[[/ if ]]
+<div>\( {@kk@}\,\mathbf{d} = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>To multiply a matrix (or vector) by a scalar, multiply <strong>every entry</strong> by that scalar:</p>
+\[ {@kk@}\,\mathbf{d} = {@kk@}\,{@dd@} = {@ta@}. \]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Fixed context, random numbers. ncol = 1 is the vector case. */
+nrow : rand(2)+2;                                 /* wards: 2 or 3 */
+ncol : rand(3)+1;                                 /* days: 1, 2 or 3 (1 => vector) */
+kk   : rand(4)+2;                                 /* scalar (ml per dose): 2..5 */
+dd   : genmatrix(lambda([i,j], rand(12)+1), nrow, ncol);  /* doses, entries 1..12 */
+
+ta        : kk*dd;        /* model answer: every entry multiplied by kk */
+wrong_none: dd;           /* error: forgot to multiply */
+wrong_add : dd + kk;      /* error: added the scalar to each entry */
+onesM     : genmatrix(lambda([i,j], 1), nrow, ncol);
+wrong_gen : ta + onesM;   /* a generic wrong answer for the catch-all branch */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( k={@kk@},\ {@nrow@}\times{@ncol@},\ k\mathbf{d}={@ta@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>matrix</type>
+      <tans>ta</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: kk*d</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Entered d unchanged (forgot to multiply)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_none</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nomult</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the original \(\mathbf{d}\). Scalar multiplication multiplies <strong>every</strong> entry by \({@kk@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Added the scalar to each entry instead of multiplying</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_add</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-added</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you added \({@kk@}\) to each entry. Scalar multiplication means <strong>multiply</strong> each entry by \({@kk@}\), not add it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Multiply every entry of \(\mathbf{d}\) by \({@kk@}\). See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot to multiply (entered d)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_none</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-nomult</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Added the scalar instead of multiplying</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_add</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-added</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong answer (catch-all)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_gen</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

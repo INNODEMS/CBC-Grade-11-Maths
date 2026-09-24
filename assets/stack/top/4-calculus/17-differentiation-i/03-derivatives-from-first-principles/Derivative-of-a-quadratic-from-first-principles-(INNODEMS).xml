@@ -1,0 +1,1058 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Derivative of a quadratic from first principles (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>In this question you differentiate \( f(x) = {@fexpr@} \) <b>from first principles</b>, one step at a time. Give exact answers (no decimals).</p>
+<p><b>Step 1.</b> Expand \( f(x+h) \) fully:</p>
+<div>\( f(x+h) = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p><b>Step 2.</b> Form the difference quotient and simplify it by cancelling the factor \( h \):</p>
+<div>\( \displaystyle\dfrac{f(x+h)-f(x)}{h} = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p><b>Step 3.</b> Let \( h \to 0 \) to obtain the derivative:</p>
+<div>\( \displaystyle f'(x) = \lim_{h \to 0}\dfrac{f(x+h)-f(x)}{h} = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>
+<p><b>Step 4.</b> Hence find the value of the derivative at \( x = {@x0@} \):</p>
+<div>\( f'({@x0@}) = \) [[input:ans4]] [[validation:ans4]] [[feedback:prt4]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Step 1.</b> Expand \( f(x+h) \), being careful with the cross term in \( (x+h)^2 \):</p>
+\[
+f(x+h) = {@fxh_unexp@} = {@fxh_true@}.
+\]
+<p><b>Step 2.</b> Subtract \( f(x) \) and cancel the common factor \( h \). Every term of the numerator carries an \( h \), so the cancellation is valid because we do it <em>before</em> letting \( h \to 0 \):</p>
+\[
+\frac{f(x+h)-f(x)}{h} = \frac{{@num_collected@}}{h} = {@quot_true@}.
+\]
+<p><b>Step 3.</b> As \( h \to 0 \) the term \( {@drop_term@} \) vanishes, leaving the derivative:</p>
+\[
+f'(x) = \lim_{h \to 0}\left({@quot_true@}\right) = {@lim_true@}.
+\]
+<p><b>Step 4.</b> Substitute \( x = {@x0@} \):</p>
+\[
+f'({@x0@}) = {@lim_sub@} = {@fp_x0_true@}.
+\]
+<p>The middle term \( 2ax\,h \) comes from the cross term in \( (x+h)^2 = x^2 + 2xh + h^2 \); dropping it is the most common slip. Notice too that the constant coefficient of \( x^2 \) becomes a factor of \( 2 \) in the derivative - this is the pattern the power rule will make into a shortcut.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* f(x) = a*x^2 + b*x, a in {1,2,3}, b nonzero in [-5,5], c = 0 fixed. */
+a  : rand([1,2,3]);
+a2 : 2*a;
+b  : rand_with_prohib(-5,5,[0]);
+x0 : rand_with_prohib(-3,3,[0]);
+
+f(x) := a*x^2 + b*x;
+fexpr : f(x);
+
+/* Model answers for each step. */
+fxh_unexp     : a*(x+h)^2 + b*(x+h);                 /* Step 1 shown unexpanded */
+fxh_true      : expand(f(x+h));                       /* Step 1 target (expanded) */
+num_collected : expand(f(x+h) - f(x));                /* numerator: 2a x h + a h^2 + b h */
+quot_true     : expand(ratsimp((f(x+h) - f(x))/h));   /* Step 2: 2a x + b + a h */
+lim_true      : expand(ev(quot_true, h=0));           /* Step 3: 2a x + b */
+fp_x0_true    : ev(lim_true, x=x0);                   /* Step 4: 2a x0 + b */
+drop_term     : a*h;                                  /* the term that vanishes as h->0 */
+
+/* Misconception targets. */
+fxh_drop      : expand(a*(x^2 + h^2) + b*(x+h));      /* (x+h)^2 -> x^2+h^2 */
+fxh_rote      : x^2 + 2*x*h + h^2;                    /* rote-copied (x+h)^2 from the f(x)=x^2 example: ignores a and b */
+wrong_factor2 : a*x + b;                              /* forgot the factor of 2 */
+wrong_usedf   : ev(f(x), x=x0);                       /* evaluated f(x0), not f'(x0) */
+
+/* Consistent dropped-cross-term chain, for qtests. */
+dq_drop  : expand(ratsimp((fxh_drop - f(x))/h));      /* b + a h */
+lim_drop : expand(ev(dq_drop, h=0));                  /* b */
+fp_drop  : ev(lim_drop, x=x0);                        /* b */
+
+/* Step 4 substitution shown WITHOUT evaluating, e.g. 6*3-5 (for the worked
+   solution). Assign under simp:false so the product and sum are left unevaluated;
+   restore simp:true immediately afterwards. */
+simp:false;
+lim_sub : subst(x0, x, lim_true);
+simp:true;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( f(x)={@fexpr@};\ f(x+h)={@fxh_true@};\ f'(x)={@lim_true@};\ f'({@x0@})={@fp_x0_true@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>fxh_true</tans>
+      <boxsize>24</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>diff,limit,ratsimp,expand,factor</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>quot_true</tans>
+      <boxsize>16</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>diff,limit,ratsimp,expand,factor</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>lim_true</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>diff,limit,ratsimp,expand,factor</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>fp_x0_true</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>diff,limit,ratsimp,expand,factor</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Is f(x+h) correct in value?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>fxh_true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt1-value-ok</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Correct value - is it fully expanded?</description>
+        <answertest>Expanded</answertest>
+        <sans>ans1</sans>
+        <tans>fxh_true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-unexpanded</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>This is equal to \( f(x+h) \), but you have not multiplied it out. Expand \( (x+h)^2 = x^2 + 2xh + h^2 \) (keep the cross term \( 2xh \)) and write every term separately before moving on.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>(x+h)^2 = x^2 + h^2 bug (cross term dropped)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>fxh_drop</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-crossterm</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You expanded \( (x+h)^2 \) as \( x^2 + h^2 \) and lost the middle term. The correct expansion is \( (x+h)^2 = x^2 + 2xh + h^2 \) - the cross term \( 2xh \) is missing. Put it back before forming the difference quotient.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Rote-copied (x+h)^2 from the f(x)=x^2 example (ignored a and b)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>fxh_rote</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-rote</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the expansion of \( (x+h)^2 \), which is \( f(x+h) \) only for \( f(x) = x^2 \). The function here is \( f(x) = {@fexpr@} \). Substitute \( (x+h) \) into the <em>whole</em> of \( f(x) \) - including its linear term and its leading coefficient - then expand.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That is not \( f(x+h) \). Replace every \( x \) in \( f(x) = {@fexpr@} \) with \( (x+h) \), then expand fully.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Quotient consistent with the student's OWN f(x+h) (ECF target). */
+quot_ecf : expand(ratsimp((ans1 - f(x))/h));
+/* Form check: does the student's answer still divide by h? Inspect the literal
+   form (do NOT ratsimp first, or the h in the denominator cancels away). */
+hasq2 : is(not(freeof(h, denom(ans2))));</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Form: is the answer free of division by h?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>hasq2</sans>
+        <tans>false</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt2-noquot</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt2-stillquot-branch</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Correct simplified quotient?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>quot_true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>ECF: consistent with the student's own f(x+h)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>quot_ecf</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your simplification correctly follows from the \( f(x+h) \) you wrote in Step 1 - so you earn this step. But your Step 1 expansion was not quite right, so go back and fix it; your quotient here will then need updating to match.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Gave the limit already (dropped the +a h term)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>lim_true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-nolim</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have taken the limit too early. At this step the quotient still depends on \( h \) - keep the \( h \)-term. You should have one term containing \( h \) left over; it disappears only in Step 3.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not the simplified quotient. Compute \( f(x+h)-f(x) \), collect like terms, then cancel the common factor \( h \). See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Still-a-quotient branch: equivalent to the correct quotient?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>quot_true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-stillquot</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is equivalent to the difference quotient, but it is still written as a fraction over \( h \). Cancel the common factor \( h \) so that no \( h \) remains in the denominator.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt2-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description>Still-a-quotient AND consistent with student's f(x+h)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>quot_ecf</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-stillquot-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This follows from your Step 1, but it is still a fraction over \( h \) - cancel the common factor \( h \). Also recheck Step 1, since that expansion was not quite right.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-quotwrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your answer still divides by \( h \), and the value is not correct either. Expand the numerator fully (keep the \( 2xh \) cross term), then cancel the factor \( h \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* Limit consistent with the student's OWN quotient (ECF target). */
+lim_ecf : expand(ev(ans2, h=0));
+/* Does the student's "limit" still contain h? */
+has_h3 : is(not(freeof(h, ans3)));]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct derivative f'(x)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>lim_true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>ECF: correct limit of the student's own quotient?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>lim_ecf</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You correctly let \( h \to 0 \) in the quotient you had - so you earn this step. Go back and check the earlier working, though, as a slip there has changed this derivative.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Still contains h (did not take the limit)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>has_h3</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-keptht</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer still contains \( h \). The derivative is what remains <em>after</em> letting \( h \to 0 \): set \( h = 0 \) and the \( h \)-term disappears.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Forgot the factor of 2 (a x + b instead of 2a x + b)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>wrong_factor2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-factor2</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Close, but check the coefficient of \( x \). The cross term \( 2xh \) in the expansion of \( (x+h)^2 \) is what feeds this coefficient; leaving it out halves your result. Look again at how your Step 2 quotient was formed, then take the limit. (This doubling is exactly the pattern the power rule will capture.)</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not the derivative. Take your simplified quotient from Step 2 and let \( h \to 0 \) (set \( h = 0 \)).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Value of the student's own f'(x) at x0 (ECF target). */
+fp_ecf : ev(ans3, x=x0);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct value of f'(x0)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>fp_x0_true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt4-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>ECF: correct substitution into the student's own f'(x)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>fp_ecf</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You substituted \( x = {@x0@} \) correctly into the \( f'(x) \) you found - so you earn this step. Go back and check the earlier working, though, as a slip there has changed this value.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Evaluated f(x0) instead of f'(x0)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>wrong_usedf</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-usedf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is \( f({@x0@}) \), the value of the function, not \( f'({@x0@}) \), the value of the derivative. Substitute \( x = {@x0@} \) into your derivative \( f'(x) \) from Step 3 instead.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Substitute \( x = {@x0@} \) into your derivative \( f'(x) \). See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All four steps correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fxh_true</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>quot_true</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>lim_true</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fp_x0_true</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Step 1 correct value but left unexpanded; rest correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fxh_unexp</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>quot_true</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>lim_true</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fp_x0_true</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-unexpanded</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Dropped cross term at Step 1, propagated consistently (ECF for Steps 2-4)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fxh_drop</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>dq_drop</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>lim_drop</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fp_drop</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-crossterm</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-ecf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-ecf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Step 2 left as an uncancelled quotient over h (equivalent); rest correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fxh_true</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>(fxh_unexp-f(x))/h</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>lim_true</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fp_x0_true</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-stillquot</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Step 2 took the limit too early (dropped the +a h term)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fxh_true</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>lim_true</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>lim_true</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fp_x0_true</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-nolim</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Step 3 kept the h (did not take the limit)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fxh_true</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>quot_true</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>quot_true</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fp_x0_true</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-keptht</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Step 3 forgot the factor of 2 (a x + b)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fxh_true</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>quot_true</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>wrong_factor2</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ev(wrong_factor2,x=x0)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-factor2</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>8</testcase>
+      <description>Step 4 evaluated f(x0) instead of f'(x0)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fxh_true</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>quot_true</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>lim_true</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>wrong_usedf</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-usedf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>9</testcase>
+      <description>Step 1 rote-copied (x+h)^2 from the f(x)=x^2 example (ignored a and b)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fxh_rote</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>quot_true</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>lim_true</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fp_x0_true</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-rote</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

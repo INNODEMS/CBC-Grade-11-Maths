@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>AROC as an expression in h (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Let \( f(x) = {@fexpr@} \).</p>
+<p>Find and fully expand the average rate of change of \(f\) from \(x = a\) to \(x = a + h\), then write it with the common factor \(h\) cancelled:</p>
+<div>\( \displaystyle\dfrac{f(a+h) - f(a)}{h} = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>Now let the gap \(h\) shrink to \(0\). What value does this expression approach as \( h \to 0 \)?</p>
+<div>\( \displaystyle\lim_{h \to 0}\ \dfrac{f(a+h) - f(a)}{h} = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(This limiting value is the instantaneous rate of change of \(f\) at \(x = a\) - the slope of the tangent line there.)</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Form the difference quotient, substitute \(f\), then <b>expand the numerator</b> before cancelling:</p>
+\[
+\begin{align*}
+\frac{f(a+h) - f(a)}{h}
+   &= \frac{{@fah@} - \left({@fa@}\right)}{h} \\[4pt]
+   &= \frac{{@numExpanded@}}{h} \qquad\text{(expand }(a+h)^2 = a^2 + 2ah + h^2\text{)} \\[4pt]
+   &= \frac{{@numCollected@}}{h} \\[4pt]
+   &= {@ta1@}.
+\end{align*}
+\]
+<p>The middle term \(2ah\) comes from the cross term in \((a+h)^2\); dropping it is the most common slip. Every remaining term still has a factor \(h\), so the \(h\) in the denominator cancels cleanly - there is no division by zero because we cancel <em>before</em> letting \(h \to 0\).</p>
+<p>As \(h \to 0\), the term(s) containing \(h\) vanish and the expression approaches</p>
+\[ \lim_{h \to 0}\ \frac{f(a+h) - f(a)}{h} = {@ta2@}. \]
+<p>This is the <b>instantaneous rate of change</b> of \(f\) at \(x = a\): the slope of the tangent to the curve at that point. It is where the average rate of change is heading as the interval closes up, and it is the value the derivative will give.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Design backwards: choose the quadratic form, then the answer is fixed.
+   ftype in {1,2,3}: x^2, x^2+kk, kk*x^2. kk in [2,6] keeps forms 2/3 non-trivial. */
+ftype : rand([1,2,3]);
+kk    : rand_with_prohib(2,6,[]);
+
+/* Build f as a Maxima function so f(a+h), f(a) are exact. */
+if ftype = 1 then f(x) := x^2
+elseif ftype = 2 then f(x) := x^2 + kk
+else f(x) := kk*x^2;
+
+fexpr : f(x);                 /* what the student sees for f(x) */
+fa    : f(a);                 /* f(a) */
+fah   : f(a+h);               /* f(a+h), unexpanded shown in worked solution */
+
+/* Difference quotient pieces for the worked solution. */
+numRaw       : fah - fa;                    /* unexpanded numerator */
+numExpanded  : expand(fah) - expand(fa);   /* after expanding (a+h)^2 */
+numCollected : expand(numRaw);             /* like terms collected */
+
+/* Model answers. */
+ta1 : expand(ratsimp(numRaw/h));   /* simplified AROC, h cancelled: 2a+h or 2kk*a+kk*h */
+ta2 : expand(ev(ta1, h=0));        /* h->0 limit: 2a or 2kk*a */
+
+/* KEY misconception: (a+h)^2 = a^2 + h^2, dropping the 2ah cross term.
+   Numerator collapses to h^2 (or kk*h^2), so the cancelled answer is h (or kk*h). */
+if ftype = 3 then wrong_cross : kk*h else wrong_cross : h;
+
+/* Sign/limit slips for ans2 feedback: student keeps the +h and lets h->0 wrong,
+   or reports the whole AROC as the limit. */
+wrong_limit_keepsh : ta1;          /* forgot to let h->0, just restated AROC */
+
+/* The (a+h)^2-bug limit, in case the student carries the bug through to ans2:
+   limit of (h or kk*h) as h->0 is 0. */
+wrong_cross_limit : 0;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( f(x)={@fexpr@};\ \text{AROC}={@ta1@};\ \lim={@ta2@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>16</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint>2*a+h</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>diff,limit,ratsimp,expand,factor</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint>2*a</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>diff,limit,ratsimp,expand,factor</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Does the student's answer still divide by h? denom() returns the denominator;
+   if h is not free of it, they have left the raw quotient (or an equivalent that
+   still divides by h). We branch on this FORM property, not just value.
+   Inspect the student's LITERAL form - do NOT ratsimp first, or the h in the
+   denominator would be cancelled away and the quotient wrongly accepted. */
+hasq : is(not(freeof(h, denom(ans1))));</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Is the answer already free of division by h (form check)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>hasq</sans>
+        <tans>false</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt1-noquot</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-stillquot</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Correct value, and already free of /h.</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>(a+h)^2 = a^2 + h^2 bug: numerator collapses, answer becomes h (or kk*h).</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_cross</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-crossterm</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you expanded \((a+h)^2\) as \(a^2 + h^2\) and lost the middle term. The correct expansion is \((a+h)^2 = a^2 + 2ah + h^2\) - the cross term \(2ah\) is missing from your working. Put it back, then subtract \(f(a)\) and cancel \(h\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Restated the limit as the AROC? Or generic wrong value.</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-droppedh</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have dropped the \(h\) term too early. Before letting \(h \to 0\), the average rate of change over the interval \([a,\, a+h]\) still depends on \(h\). Keep every term when you cancel, and leave the \(h\)-term in this first answer.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrongvalue</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That is not the average rate of change. Build \(\dfrac{f(a+h)-f(a)}{h}\), expand the numerator, then cancel the factor \(h\). See the worked solution for the steps.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Still-a-quotient branch: is the value at least right (equivalent to ta1)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-quot-equiv</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is equivalent to the average rate of change, but it is still written as a fraction over \(h\). Cancel the common factor \(h\) so no \(h\) remains in the denominator, then you will have the form the question asks for.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-quot-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your answer still divides by \(h\), and the value is not correct either. Expand \((a+h)^2\) fully (including the \(2ah\) cross term), subtract \(f(a)\), then cancel the factor \(h\). See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description><![CDATA[Correct h->0 limit.]]></description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Kept the +h term: reported the whole AROC as the limit.</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>wrong_limit_keepsh</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-keepsh</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Almost - but the limit is a value, not an expression in \(h\). Substitute \(h = 0\) into your average rate of change: the term with \(h\) in it vanishes, leaving the instantaneous rate.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Limit of the (a+h)^2-bug expression (h or kk*h) is 0.</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>wrong_cross_limit</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-zero</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>A limit of \(0\) here would mean the curve is flat at \(x = a\), which is not right for this \(f\). This usually comes from losing the \(2ah\) cross term when expanding \((a+h)^2\); with the cross term kept, a non-zero term survives as \(h \to 0\). Recheck your first answer, then take the limit.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-wrongvalue</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not the value the average rate of change approaches. Take your simplified expression in \(a\) and \(h\) and let \(h \to 0\) (set \(h = 0\)): whatever is left is the limit.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct: simplified AROC and its limit</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Unsimplified quotient for ans1 (still /h) but equivalent; limit correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>numRaw/h</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-quot-equiv</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>(a+h)^2 = a^2 + h^2 bug: ans1 = h (or kk*h); limit collapses to 0</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_cross</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wrong_cross_limit</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-crossterm</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-zero</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Dropped h too early in ans1 (wrote the limit); kept +h in ans2</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-droppedh</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-keepsh</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Generic wrong value for both inputs</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta1+a+1,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(ta2+a+1,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-wrongvalue</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-wrongvalue</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Still-a-quotient AND wrong value for ans1</description>
+      <testinput>
+        <name>ans1</name>
+        <value>(numRaw+a*h)/h</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-quot-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

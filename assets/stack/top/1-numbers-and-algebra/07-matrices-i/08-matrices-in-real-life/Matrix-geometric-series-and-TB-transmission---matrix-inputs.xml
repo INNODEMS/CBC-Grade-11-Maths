@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Matrix geometric series and TB transmission - matrix inputs</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<h3>Matrix geometric series and TB transmission</h3>
+
+<p>
+Tuberculosis transmission between Nairobi and Mombasa is modelled by the matrix
+\\(
+A={@A@}.
+\\)
+If
+\\(
+x_n={@x_symbol@}
+\\)
+represents the active TB cases in generation \(n\), where the first row is Nairobi and the second row is Mombasa, then
+\\(
+x_{n+1}=Ax_n.
+\\)
+</p>
+
+<p>The initial outbreak is
+\[
+x_0={@x0@}.
+\]</p>
+
+<p><b>1.</b> Compute the next generation \(x_1=Ax_0\).</p>
+<p>Enter your answer as a column matrix, for example <code>matrix([1],[2])</code>.</p>
+<p>
+[[input:ansX1]]
+[[validation:ansX1]]
+[[feedback:prtX1]]
+</p>
+
+<p><b>2.</b> Compute the following generation \(x_2=Ax_1=A^2x_0\).</p>
+<p>
+[[input:ansX2]]
+[[validation:ansX2]]
+[[feedback:prtX2]]
+</p>
+
+<p><b>3.</b> Rearrange the lines to prove the matrix geometric series formula.</p>
+<p>
+We are proving that, if \(A^{n+1}\to 0\), then
+\[
+I+A+A^2+\cdots=(I-A)^{-1}.
+\]
+</p>
+
+[[parsons input="ansProof" height="420px" width="100%"]]
+{# parsons_encode(proof_steps) #}
+[[/parsons]]
+
+<p style="display:none;">
+[[input:ansProof]] [[validation:ansProof]] [[feedback:prtProof]]
+</p>
+
+<p><b>4.</b> Compute \(I-A\).</p>
+<p>Enter your answer as a \(2\times 2\) matrix, for example <code>matrix([1,2],[3,4])</code>.</p>
+<p>
+[[input:ansIA]]
+[[validation:ansIA]]
+[[feedback:prtIA]]
+</p>
+
+<p><b>5.</b> Compute \((I-A)^{-1}\).</p>
+<p>
+[[input:ansInv]]
+[[validation:ansInv]]
+[[feedback:prtInv]]
+</p>
+
+<p><b>6.</b> Use
+\[
+x_{\mathrm{total}}=(I-A)^{-1}x_0
+\]
+to estimate the total number of TB cases over all generations, including the initial outbreak.</p>
+<p>
+[[input:ansTot]]
+[[validation:ansTot]]
+[[feedback:prtTot]]
+</p>
+
+<p><em>You may enter exact fractions such as <code>30/11</code>, or decimals to at least 3 decimal places.</em></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<h3>Worked solution</h3>
+
+<p>The model is
+\[
+x_{n+1}=Ax_n,\qquad
+A={@A@},\qquad
+x_0={@x0@}.
+\]</p>
+
+<p><b>Next generation.</b></p>
+\[
+x_1=Ax_0
+={@A@}{@x0@}
+={@x1@}.
+\]
+
+<p><b>Second generation.</b></p>
+\[
+x_2=Ax_1
+={@A@}{@x1@}
+={@x2@}.
+\]
+
+<p><b>Matrix geometric series.</b></p>
+<p>{@proof_display(taProof, proof_steps)@}</p>
+
+<p><b>Compute \(I-A\).</b></p>
+\[
+I-A={@I2@}-{@A@}={@IA@}.
+\]
+
+<p><b>Compute the inverse.</b></p>
+\[
+(I-A)^{-1}={@IAinv@}.
+\]
+
+<p><b>Total cases.</b></p>
+\[
+x_{\mathrm{total}}
+=(I-A)^{-1}x_0
+={@IAinv@}{@x0@}
+={@xtotal@}.
+\]
+<p>So the model predicts a total of \({@xtotal[1,1]@}\) Nairobi cases and \({@xtotal[2,1]@}\) Mombasa cases over all generations.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>10</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[stack_include_contrib("prooflib.mac");
+
+
+A: matrix([1/2,1/5],[1/5,9/10]);
+I2: ident(2);
+x_symbol: matrix([N_n],[M_n]);
+x0: matrix([100],[40]);
+
+x1: ev(A.x0,simp);
+x2: ev(A.x1,simp);
+
+IA: ev(I2-A,simp);
+IAinv: ev(invert(IA),simp);
+xtotal: ev(IAinv.x0,simp);
+
+/* Sum of absolute entry errors for numerical matrix checking. */
+materr2x1(S,T) := abs(S[1,1]-T[1,1]) + abs(S[2,1]-T[2,1]);
+materr2x2(S,T) := abs(S[1,1]-T[1,1]) + abs(S[1,2]-T[1,2]) + abs(S[2,1]-T[2,1]) + abs(S[2,2]-T[2,2]);
+
+proof_steps: [
+ ["define", "We begin with the finite case. For \\(n\\geq 1\\), define \\(S_n=I+A+A^2+\\cdots+A^n\\) (1)."],
+ ["multiply", "Multiply on the left by \\(A\\): \\(AS_n=A + A^2 + A^3 + \\cdots +A^{n+1}\\) (2)."],
+ ["subtract", "To cancel most terms, subtract (2) from (1): \\(S_n - AS_n = I - A^{n+1}\\)"],
+ ["factorise", "We can factor the left by using the identity matrix \\(I\\): \\((I-A)S_n=I-A^{n+1}\\)."],
+ ["inverse", "Assuming that \\(I-A\\) is invertible, then we can left multiply by \\((I-A)^{-1}\\): \\((I-A)^{-1}(I-A)S_n=(I-A)^{-1}(I-A^{n+1})\\)."],
+ ["identity", "Since a matrix multiplied by its inverse is the identity: \\(S_n=(I-A)^{-1}(I-A^{n+1})\\)."],
+ ["limit", "As \\(n\\) grows, if \\(A^{n+1}\\to 0\\), then \\(I-A^{n+1}\\to I\\) and so \\(S_n\\to (I-A)^{-1}\\)"],
+ ["conclude", "Hence \\(I+A+A^2+\\cdots=(I-A)^{-1}\\)."]
+];
+
+taProof: proof("define","multiply","subtract", "factorise", "inverse", "identity", "conclude");
+proof_steps: random_permutation(proof_steps);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Proof order: {@map(first, proof_steps)@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>Matrix geometric series question using direct STACK matrix inputs.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>1</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>(</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ansIA</name>
+      <type>algebraic</type>
+      <tans>IA</tans>
+      <boxsize>35</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>matrix([1/2,-1/5],[-1/5,3/10])</syntaxhint>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansInv</name>
+      <type>algebraic</type>
+      <tans>IAinv</tans>
+      <boxsize>35</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>matrix([30/11,20/11],[20/11,50/11])</syntaxhint>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansProof</name>
+      <type>parsons</type>
+      <tans>[taProof, proof_steps]</tans>
+      <boxsize>20</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansTot</name>
+      <type>algebraic</type>
+      <tans>xtotal</tans>
+      <boxsize>30</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>matrix([3800/11],[4000/11])</syntaxhint>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansX1</name>
+      <type>algebraic</type>
+      <tans>x1</tans>
+      <boxsize>30</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>matrix([58],[48])</syntaxhint>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansX2</name>
+      <type>algebraic</type>
+      <tans>x2</tans>
+      <boxsize>30</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>matrix([193/5],[226/5])</syntaxhint>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtIA</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>1</name>
+        <description>I-A matrix</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>materr2x2(ansIA,IA)</sans>
+        <tans>0</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtIA-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtIA-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>Check the subtraction I-A entry by entry.</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtInv</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>1</name>
+        <description>inverse matrix</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>materr2x2(ansInv,IAinv)</sans>
+        <tans>0</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtInv-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtInv-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>Check the determinant and the 2 by 2 inverse formula.</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtProof</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sa: parsons_decode(ansProof);</text>
+      </feedbackvariables>
+      <node>
+        <name>1</name>
+        <description>Parsons proof</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>taProof</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtProof-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtProof-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>The proof is not in the correct logical order yet.</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtTot</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>1</name>
+        <description>total cases matrix</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>materr2x1(ansTot,xtotal)</sans>
+        <tans>0</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtTot-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtTot-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>Use x_total = (I-A)^(-1) x0.</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtX1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>1</name>
+        <description>x1 matrix</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>materr2x1(ansX1,x1)</sans>
+        <tans>0</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtX1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtX1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>Check your multiplication: x1 = A x0.</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtX2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>1</name>
+        <description>x2 matrix</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>materr2x1(ansX2,x2)</sans>
+        <tans>0</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtX2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtX2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>Check your multiplication: x2 = A x1.</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>123456789</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Teacher answers receive full marks.</description>
+      <testinput>
+        <name>ansIA</name>
+        <value>IA</value>
+      </testinput>
+      <testinput>
+        <name>ansInv</name>
+        <value>IAinv</value>
+      </testinput>
+      <testinput>
+        <name>ansProof</name>
+        <value>parsons_answer(taProof, proof_steps)</value>
+      </testinput>
+      <testinput>
+        <name>ansTot</name>
+        <value>xtotal</value>
+      </testinput>
+      <testinput>
+        <name>ansX1</name>
+        <value>x1</value>
+      </testinput>
+      <testinput>
+        <name>ansX2</name>
+        <value>x2</value>
+      </testinput>
+      <expected>
+        <name>prtIA</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtIA-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtInv</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtInv-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtProof</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtProof-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtTot</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtTot-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtX1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtX1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtX2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtX2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
