@@ -2,13 +2,36 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>8.0.2 (Plausible nth term 1)</text>
+      <text>quiz 2</text>
     </name>
-    <questiontext format="html">
-      <text><![CDATA[<p></p><p>Find a plausible formula for the \(n ^{th}\) term of the sequence \({@S3[1]@}, {@S3[2]@},{@S3[3]@},&nbsp;{@S3[4]@},{@S3[5]@}, \ldots\)&nbsp;</p><p>\( a_n = \) [[input:ans1]] [[validation:ans1]]</p>]]></text>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A school is preparing a square-shaped display area for a mathematics exhibition. The side length of the display area is \(\sqrt{@n@}\) cm.If the side length is doubled, express the new length in its simplest form.
+
+<p>Your answer should be written in the form \(a\sqrt{b}\), where \(b\) has no perfect-square factors.</p><p>[[input:ans1]] [[validation:ans1]][[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="html">
-      <text><![CDATA[<p>With \(u_n={@a_n@}\), we get the terms \(u_1={@S3[1]@}\), \(u_2={@S3[2]@}\), \(u_3={@S3[3]@}\), which fits the given list of terms.</p>]]></text>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[To find the new length, first double the original side length.
+
+If the original length is \(\sqrt{n}\) cm, then:
+
+\[
+\text{New length}=2\sqrt{n}.
+\]
+
+Next, look for a perfect-square factor inside \(n\). Take the square root of the perfect square outside the radical and leave the remaining factor inside the square root.
+
+For example, if the original side length is \( \sqrt{@n@} cm \):
+<p>For example, the original value is \( \sqrt{ {@n@} }\):</p>
+<p>
+\[
+\begin{array}{rl}
+\sqrt{ {@n@} } &= \sqrt{ {@(a^2)@} \times {@b@} } \\
+               &= \sqrt{ {@(a^2)@} } \times \sqrt{ {@b@} } \\
+               &= {@a@}\sqrt{ {@b@} } 
+\end{array}
+\]
+</p>
+Therefore, the final answer should have no perfect-square factors remaining inside the square root.]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -18,21 +41,18 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>k: rand([2,3,4,5,6]);
-a_n: rand([ 1/n, e^n, sqrt(n), k*n]);
-N:5;
-S1:ev(makelist(k,k,1,N),simp);
-S2:maplist(lambda([ex],ev(a_n,n=ex)),S1);
-S3:ev(S2,simp);
-ta1: a_n</text>
+      <text>a: rand([2,3,4,5,6,7]);
+b: rand([2,3,5,6,7]);
+n: (a^2)*b;
+ta1: a*sqrt(b);</text>
     </questionvariables>
     <specificfeedback format="html">
-      <text>[[feedback:prt1]]</text>
+      <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>{@a_n@} {@S3@}</text>
+    <questionnote format="html">
+      <text>{@ta1@} {@a@} {@b@} {@n@}</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
+    <questiondescription format="html">
       <text/>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
@@ -102,72 +122,29 @@ ta1: a_n</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
+        <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
-      <node>
-        <name>1</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans>ans1</sans>
-        <tans>makelist(ev(ans1,n=k),k,1,5)</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-2-T</trueanswernote>
-        <truefeedback format="html">
-          <text/>
-        </truefeedback>
-        <falsescoremode>-</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
-        <falsefeedback format="html">
-          <text><![CDATA[<p>If you evaluate the terms of your sequence, these are not the same as the ones given.</p>]]></text>
-        </falsefeedback>
-      </node>
     </prt>
-    <deployedseed>2048073475</deployedseed>
-    <deployedseed>1876193959</deployedseed>
-    <deployedseed>1633096633</deployedseed>
-    <deployedseed>826557440</deployedseed>
-    <deployedseed>189851524</deployedseed>
-    <deployedseed>1284548538</deployedseed>
-    <deployedseed>422030809</deployedseed>
-    <qtest>
-      <testcase>1</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-1-T</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>2</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1+1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-F</expectedanswernote>
-      </expected>
-    </qtest>
+    <deployedseed>8471973</deployedseed>
+    <deployedseed>913292242</deployedseed>
+    <deployedseed>1332708170</deployedseed>
+    <deployedseed>979587873</deployedseed>
+    <deployedseed>840186958</deployedseed>
+    <deployedseed>435628352</deployedseed>
+    <deployedseed>2113557173</deployedseed>
+    <deployedseed>635360188</deployedseed>
+    <deployedseed>600354468</deployedseed>
+    <deployedseed>1086009465</deployedseed>
+    <deployedseed>1412092851</deployedseed>
+    <deployedseed>1973069650</deployedseed>
+    <deployedseed>487038779</deployedseed>
+    <deployedseed>3817980</deployedseed>
+    <deployedseed>1176210072</deployedseed>
+    <deployedseed>993207567</deployedseed>
+    <deployedseed>1715103298</deployedseed>
   </question>
 </quiz>

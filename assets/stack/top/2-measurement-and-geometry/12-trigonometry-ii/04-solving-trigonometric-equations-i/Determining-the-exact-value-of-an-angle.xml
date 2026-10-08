@@ -2,13 +2,49 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>8.0.2 (Plausible nth term 1)</text>
+      <text>Determining the exact value of an angle</text>
     </name>
-    <questiontext format="html">
-      <text><![CDATA[<p></p><p>Find a plausible formula for the \(n ^{th}\) term of the sequence \({@S3[1]@}, {@S3[2]@},{@S3[3]@},&nbsp;{@S3[4]@},{@S3[5]@}, \ldots\)&nbsp;</p><p>\( a_n = \) [[input:ans1]] [[validation:ans1]]</p>]]></text>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>
+Determine the exact value of  \(\sin({@angle@}^\circ)\).
+</p>
+
+<p>Give your answer in simplest exact form.</p>
+
+<p>
+[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]
+</p>]]></text>
     </questiontext>
-    <generalfeedback format="html">
-      <text><![CDATA[<p>With \(u_n={@a_n@}\), we get the terms \(u_1={@S3[1]@}\), \(u_2={@S3[2]@}\), \(u_3={@S3[3]@}\), which fits the given list of terms.</p>]]></text>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Worked solution</h3>
+
+<p><strong>Step 1: Identify the reference angle.</strong></p>
+
+<p>The angle is negative, so it represents a clockwise rotation. We can find a positive coterminal angle by adding \(360^\circ\):</p>
+
+<p>
+\({@angle@}+360^\circ = {@angle+360@}^\circ.\)
+</p>
+
+<p>The corresponding reference angle is \(60^\circ\), \(45^\circ\), or \(30^\circ\), depending on the given angle.</p>
+
+<p><strong>Step 2: Determine the sign of sine.</strong></p>
+
+<p>The terminal arm lies in a quadrant where sine is negative. Therefore, the value of \(\sin({@angle@}^\circ)\) must be negative.</p>
+
+<p><strong>Step 3: Use the special-angle value.</strong></p>
+
+<p>Using the reference angle and the exact values of the trigonometric ratios, we obtain:</p>
+
+<p>
+\(\sin({@angle@}^\circ)={@ta@}.\)
+</p>
+
+<p><strong>Therefore, the exact value is:</strong></p>
+
+<p>
+\(\boxed{{@ta@}}\)
+</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -18,21 +54,19 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>k: rand([2,3,4,5,6]);
-a_n: rand([ 1/n, e^n, sqrt(n), k*n]);
-N:5;
-S1:ev(makelist(k,k,1,N),simp);
-S2:maplist(lambda([ex],ev(a_n,n=ex)),S1);
-S3:ev(S2,simp);
-ta1: a_n</text>
+      <text>angle: rand([-30,-45,-60,-120,-135,-150]);
+ta: sin(angle*%pi/180);
+
+/* Common mistake: ignore the negative sign */
+mistake1: sin(abs(angle)*%pi/180);</text>
     </questionvariables>
     <specificfeedback format="html">
-      <text>[[feedback:prt1]]</text>
+      <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>{@a_n@} {@S3@}</text>
+    <questionnote format="html">
+      <text>{@ta@}</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
+    <questiondescription format="html">
       <text/>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
@@ -60,19 +94,19 @@ ta1: a_n</text>
     <input>
       <name>ans1</name>
       <type>algebraic</type>
-      <tans>ta1</tans>
-      <boxsize>15</boxsize>
+      <tans>ta</tans>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>1</forbidfloat>
+      <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
@@ -85,10 +119,10 @@ ta1: a_n</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Finding the exact value of a sine angle</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ta1</tans>
+        <tans>ta</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
@@ -110,19 +144,38 @@ ta1: a_n</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Ignoring the negative sign before the equation</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>makelist(ev(ans1,n=k),k,1,5)</tans>
+        <tans>mistake1</tans>
         <testoptions/>
-        <quiet>1</quiet>
+        <quiet>0</quiet>
         <truescoremode>+</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Your answer suggests that you may have treated the negative angle as a positive angle.</p>
+
+<p>Remember that a negative angle represents a clockwise rotation. We can find a positive coterminal angle by adding \(360^\circ\):</p>
+
+<p style="text-align: center;">
+\(
+{@angle@}^\circ+360^\circ={@coterminal@}^\circ.
+\)
+</p>
+
+<p>The terminal arm therefore lies in Quadrant {@quadrant@}. Since sine is negative in Quadrants III and IV, the value of sine must be negative.</p>
+
+<p>The reference angle is {@reference@}^\circ, so</p>
+
+<p style="text-align: center;">
+\(
+\sin({@angle@}^\circ)=-\sin({@reference@}^\circ)
+={@ta@}.
+\)
+</p>]]></text>
         </truefeedback>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
@@ -130,29 +183,23 @@ ta1: a_n</text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>If you evaluate the terms of your sequence, these are not the same as the ones given.</p>]]></text>
+          <text/>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>2048073475</deployedseed>
-    <deployedseed>1876193959</deployedseed>
-    <deployedseed>1633096633</deployedseed>
-    <deployedseed>826557440</deployedseed>
-    <deployedseed>189851524</deployedseed>
-    <deployedseed>1284548538</deployedseed>
-    <deployedseed>422030809</deployedseed>
+    <deployedseed>25</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Test case assuming the teacher's input gets full marks.</description>
       <testinput>
         <name>ans1</name>
-        <value>ta1</value>
+        <value>ta</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-1-T</expectedanswernote>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
@@ -160,13 +207,13 @@ ta1: a_n</text>
       <description/>
       <testinput>
         <name>ans1</name>
-        <value>ta1+1</value>
+        <value>ta</value>
       </testinput>
       <expected>
         <name>prt1</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-F</expectedanswernote>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
       </expected>
     </qtest>
   </question>

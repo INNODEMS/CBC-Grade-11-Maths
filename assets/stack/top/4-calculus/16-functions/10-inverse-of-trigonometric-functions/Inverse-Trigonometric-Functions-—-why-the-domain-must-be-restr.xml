@@ -2,13 +2,16 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>8.0.2 (Plausible nth term 1)</text>
+      <text>Inverse Trigonometric Functions — why the domain must be restricted</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p></p><p>Find a plausible formula for the \(n ^{th}\) term of the sequence \({@S3[1]@}, {@S3[2]@},{@S3[3]@},&nbsp;{@S3[4]@},{@S3[5]@}, \ldots\)&nbsp;</p><p>\( a_n = \) [[input:ans1]] [[validation:ans1]]</p>]]></text>
+      <text><![CDATA[<p>The ordinary sine function \(\sin(x)\) is <strong>not</strong> one-to-one over all real numbers, so it cannot have a genuine inverse function unless we first restrict its domain.</p>
+<p>Which of the following best explains <em>why</em> this restriction is necessary?</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>With \(u_n={@a_n@}\), we get the terms \(u_1={@S3[1]@}\), \(u_2={@S3[2]@}\), \(u_3={@S3[3]@}\), which fits the given list of terms.</p>]]></text>
+      <text><![CDATA[<p>Since \(\sin(x)\) repeats every \(2\pi\), infinitely many different \(x\)-values (e.g. \(x=\pi/6\), \(x=5\pi/6+2\pi\), etc.) all give the same \(y\)-value. An inverse function must send each input to exactly one output, so we restrict the domain of \(\sin\) (usually to \([-\pi/2,\pi/2]\)) to make it one-to-one before inverting it.</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -18,22 +21,22 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>k: rand([2,3,4,5,6]);
-a_n: rand([ 1/n, e^n, sqrt(n), k*n]);
-N:5;
-S1:ev(makelist(k,k,1,N),simp);
-S2:maplist(lambda([ex],ev(a_n,n=ex)),S1);
-S3:ev(S2,simp);
-ta1: a_n</text>
+      <text><![CDATA[opts : [
+  ["correct", true, "Because sin(x) is periodic, many different x-values give the same y-value, so reversing the function (swapping inputs and outputs) would not give a single well-defined output for each input."],
+  ["wrong1", false, "Because sin(x) is only defined for x between -1 and 1."],
+  ["wrong2", false, "Because sin(x) is an odd function, and odd functions never have inverses."],
+  ["wrong3", false, "Because the graph of sin(x) does not pass the horizontal line test at exactly one point."]
+];
+ta : "correct";]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text>[[feedback:prt1]]</text>
-    </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>{@a_n@} {@S3@}</text>
-    </questionnote>
-    <questiondescription format="moodle_auto_format">
       <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.10 (Inverse of Trigonometric Functions). Conceptual reasoning question on why sin(x) needs a restricted domain before it can be inverted, distinguishing this from plausible-sound</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="description">Grade 11 Functions 16.10 (Inverse of Trigonometric Functions). Conceptual reasoning question on why sin(x) needs a restricted domain before it can be inverted, distinguishing this from plausible-sounding but incorrect explanations.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -49,7 +52,7 @@ ta1: a_n</text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>none</multiplicationsign>
+    <multiplicationsign>dot</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -59,8 +62,8 @@ ta1: a_n</text>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
-      <tans>ta1</tans>
+      <type>dropdown</type>
+      <tans>opts</tans>
       <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
@@ -68,7 +71,7 @@ ta1: a_n</text>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>1</forbidfloat>
+      <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -85,88 +88,47 @@ ta1: a_n</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
+        <description>Chose the correct explanation?</description>
+        <answertest>String</answertest>
         <sans>ans1</sans>
-        <tans>ta1</tans>
+        <tans>ta</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-1-T</trueanswernote>
+        <trueanswernote>prt1-correct</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-1-F</falseanswernote>
-        <falsefeedback format="html">
-          <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>1</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans>ans1</sans>
-        <tans>makelist(ev(ans1,n=k),k,1,5)</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-2-T</trueanswernote>
-        <truefeedback format="html">
-          <text/>
-        </truefeedback>
-        <falsescoremode>-</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-wrong</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>If you evaluate the terms of your sequence, these are not the same as the ones given.</p>]]></text>
+          <text>Think about what makes a function invertible: it must be one-to-one. Why does the periodicity of sin(x) break that requirement?</text>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>2048073475</deployedseed>
-    <deployedseed>1876193959</deployedseed>
-    <deployedseed>1633096633</deployedseed>
-    <deployedseed>826557440</deployedseed>
-    <deployedseed>189851524</deployedseed>
-    <deployedseed>1284548538</deployedseed>
-    <deployedseed>422030809</deployedseed>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
-        <value>ta1</value>
+        <value>ta</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-1-T</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>2</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1+1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-F</expectedanswernote>
+        <expectedanswernote>prt1-correct</expectedanswernote>
       </expected>
     </qtest>
   </question>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text><![CDATA[Relations & Functions — is this set of ordered pairs a function?]]></text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A relation is given by the set of ordered pairs</p>
+<p>\[ \{ ({@xa@},{@ya@}),\ ({@xb@},{@yb@}),\ ({@xc@},{@yc@}) \}. \]</p>
+<p><strong>(a)</strong> Is this relation a function?</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>
+<p><strong>(b)</strong> If it is a function, is it one-to-one or many-to-one? (Choose "not applicable" if it is not a function.)</p>
+<div>[[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prt1]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>A relation fails to be a function only when the <strong>same \(x\)-value</strong> is paired with two <strong>different</strong> \(y\)-values. Repeated \(y\)-values are completely fine &#8212; that just makes the function many-to-one, not "not a function".</p>
+<p>Here, the pairs are \( ({@xa@},{@ya@}) \), \( ({@xb@},{@yb@}) \), \( ({@xc@},{@yc@}) \). Checking the \(x\)-values: {@xa@}, {@xb@}, {@xc@}.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[scenario : rand(3);
+p1 : rand_with_prohib(1,9,[]);
+p2 : rand_with_prohib(1,9,[p1]);
+p3 : rand_with_prohib(1,9,[p1,p2]);
+q1 : rand_with_prohib(1,9,[]);
+q2 : rand_with_prohib(1,9,[q1]);
+q3 : rand_with_prohib(1,9,[q1,q2]);
+/* scenario 0: NOT a function (repeated x with different y)
+   scenario 1: function, many-to-one (repeated y, distinct x)
+   scenario 2: function, one-to-one (all distinct) */
+xa : p1; ya : q1;
+xb : if scenario=0 then p1 else p2;
+yb : if scenario=1 then q1 else q2;
+xc : if scenario=0 then p2 else p3;
+yc : if scenario=0 then q3 elseif scenario=1 then q2 else q3;
+is_function : if scenario=0 then false else true;
+ans1_correct : if is_function then "yes" else "no";
+ans2_correct : if scenario=0 then "na" elseif scenario=1 then "manytoone" else "onetoone";
+opts1 : [["yes", is_function, "Yes, it is a function"],["no", not is_function, "No, it is not a function"]];
+opts2 : [["onetoone", scenario=2, "One-to-one"],["manytoone", scenario=1, "Many-to-one"],["na", scenario=0, "Not applicable (not a function)"]];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.1 (Types of Relations). Tests the classic misconception that repeated y-values make a relation fail to be a function; the actual rule concerns repeated x-values.</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="description">Grade 11 Functions 16.1 (Types of Relations). Tests the classic misconception that repeated y-values make a relation fail to be a function; the actual rule concerns repeated x-values.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>dropdown</type>
+      <tans>opts1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>dropdown</type>
+      <tans>opts2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correctly identified whether it is a function?</description>
+        <answertest>String</answertest>
+        <sans>ans1</sans>
+        <tans>ans1_correct</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Classic misconception: rejected a many-to-one function because y-values repeat?</description>
+        <answertest>String</answertest>
+        <sans>ans1</sans>
+        <tans><![CDATA["no"]]></tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-manytoone-misconception</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[Repeated \(y\)-values do not stop a relation from being a function &#8212; only a repeated \(x\)-value with two different \(y\)-values does that. Check the \(x\)-values again.]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[That is not correct &#8212; check the definition of a function again: every \(x\)-value must give exactly one \(y\)-value.]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct one-to-one / many-to-one / not-applicable classification?</description>
+        <answertest>String</answertest>
+        <sans>ans2</sans>
+        <tans>ans2_correct</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text>Compare the \(x\)-values and \(y\)-values again: one-to-one means every \(x\) and every \(y\) is used exactly once; many-to-one means at least one \(y\)-value is repeated for different \(x\)-values.</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Fully correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ans1_correct</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ans2_correct</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Classic many-to-one misconception</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA["no"]]></value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ans2_correct</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-manytoone-misconception</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

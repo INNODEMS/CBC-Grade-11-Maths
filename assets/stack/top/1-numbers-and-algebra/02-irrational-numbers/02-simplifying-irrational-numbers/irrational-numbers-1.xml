@@ -2,13 +2,17 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>8.0.2 (Plausible nth term 1)</text>
+      <text>irrational numbers 1</text>
     </name>
-    <questiontext format="html">
-      <text><![CDATA[<p></p><p>Find a plausible formula for the \(n ^{th}\) term of the sequence \({@S3[1]@}, {@S3[2]@},{@S3[3]@},&nbsp;{@S3[4]@},{@S3[5]@}, \ldots\)&nbsp;</p><p>\( a_n = \) [[input:ans1]] [[validation:ans1]]</p>]]></text>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Simplify \(\sqrt{@number@}\) to the simplest form.</p>
+<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="html">
-      <text><![CDATA[<p>With \(u_n={@a_n@}\), we get the terms \(u_1={@S3[1]@}\), \(u_2={@S3[2]@}\), \(u_3={@S3[3]@}\), which fits the given list of terms.</p>]]></text>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p>To simplify \( \sqrt{ {@number@} } \), look for the largest perfect-square factor of {@number@}.</p>
+<p>Since {@number@} = {@a@} × {@b@}, and {@a@} is a perfect square:</p>
+<p>\[ \sqrt{ {@number@} } = \sqrt{ {@a@} } \times \sqrt{ {@b@} } = {@sqrt(a)@}\sqrt{ {@b@} } \]</p>
+<p><strong>Key idea:</strong> an irrational number is fully simplified when the number left under the root sign has no perfect-square factors remaining. Always check for the largest such factor first otherwise you may simplify only part-way.</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -18,21 +22,29 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>k: rand([2,3,4,5,6]);
-a_n: rand([ 1/n, e^n, sqrt(n), k*n]);
-N:5;
-S1:ev(makelist(k,k,1,N),simp);
-S2:maplist(lambda([ex],ev(a_n,n=ex)),S1);
-S3:ev(S2,simp);
-ta1: a_n</text>
+      <text>/* Perfect square factors to choose from */
+squares: [4,9,16,25];
+a: squares[rand(length(squares))+1];
+
+/* Square-free number (2-7, excluding 4) to multiply with */
+b: rand(6)+2;
+while member(b, [4]) do b: rand(6)+2;
+
+/* The number the student is asked to simplify */
+number: a * b;
+
+/* Correct fully-simplified answer, e.g. sqrt(16)*sqrt(3) = 4*sqrt(3) */
+ta1: sqrt(a) * sqrt(b);
+
+ta2: sqrt(b) * a;</text>
     </questionvariables>
     <specificfeedback format="html">
-      <text>[[feedback:prt1]]</text>
+      <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>{@a_n@} {@S3@}</text>
+    <questionnote format="html">
+      <text>{@ta1@}{@ta2@}{@a@}{@b@}</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
+    <questiondescription format="html">
       <text/>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
@@ -61,7 +73,7 @@ ta1: a_n</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>15</boxsize>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -113,16 +125,19 @@ ta1: a_n</text>
         <description/>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>makelist(ev(ans1,n=k),k,1,5)</tans>
+        <tans>ta2</tans>
         <testoptions/>
-        <quiet>1</quiet>
+        <quiet>0</quiet>
         <truescoremode>+</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>You've correctly identified the factor pair {@a@} and {@b@}, but they're the wrong way round.</p>
+<p>Remember: the <strong>perfect square</strong> ({@a@}) is the part that goes <em>under</em> the root first, so you can take its square root - it should end up <strong>outside</strong> the root sign as \( \sqrt{ {@a@} } \).</p>
+<p>The <strong>square-free</strong> number ({@b@}) is the part that <strong>stays under</strong> the root, since it has no perfect-square factor left to simplify.</p>
+<p>Try again: \( \sqrt{ {@number@} } = \sqrt{ {@a@} \times {@b@} } = \sqrt{ {@a@} } \times \sqrt{ {@b@} } \)</p>]]></text>
         </truefeedback>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
@@ -130,44 +145,20 @@ ta1: a_n</text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>If you evaluate the terms of your sequence, these are not the same as the ones given.</p>]]></text>
+          <text><![CDATA[<p>That's not correct. Check that you've found the <strong>largest</strong> perfect-square factor of {@number@}, and that your final answer is in the form \( a\sqrt{b} \), where \(\sqrt{@a@}\) is outside and {@b@} is inside the root.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>2048073475</deployedseed>
-    <deployedseed>1876193959</deployedseed>
-    <deployedseed>1633096633</deployedseed>
-    <deployedseed>826557440</deployedseed>
-    <deployedseed>189851524</deployedseed>
-    <deployedseed>1284548538</deployedseed>
-    <deployedseed>422030809</deployedseed>
-    <qtest>
-      <testcase>1</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-1-T</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>2</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1+1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-F</expectedanswernote>
-      </expected>
-    </qtest>
+    <deployedseed>1616688395</deployedseed>
+    <deployedseed>1180168136</deployedseed>
+    <deployedseed>141628609</deployedseed>
+    <deployedseed>292926003</deployedseed>
+    <deployedseed>1362244051</deployedseed>
+    <deployedseed>1072472544</deployedseed>
+    <deployedseed>1473479125</deployedseed>
+    <deployedseed>1326476696</deployedseed>
+    <deployedseed>1312653993</deployedseed>
+    <deployedseed>296209971</deployedseed>
+    <deployedseed>1903067699</deployedseed>
   </question>
 </quiz>

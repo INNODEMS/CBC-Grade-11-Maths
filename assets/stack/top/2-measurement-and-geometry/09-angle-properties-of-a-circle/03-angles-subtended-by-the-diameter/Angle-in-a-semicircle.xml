@@ -2,13 +2,26 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>8.0.2 (Plausible nth term 1)</text>
+      <text>Angle in a semicircle</text>
     </name>
-    <questiontext format="html">
-      <text><![CDATA[<p></p><p>Find a plausible formula for the \(n ^{th}\) term of the sequence \({@S3[1]@}, {@S3[2]@},{@S3[3]@},&nbsp;{@S3[4]@},{@S3[5]@}, \ldots\)&nbsp;</p><p>\( a_n = \) [[input:ans1]] [[validation:ans1]]</p>]]></text>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>\(A\), \(B\) and \(C\) are points on a circle with centre \(O\). \(AB\) is a diameter of the circle. The angle \(CAB = {@ang@}^\circ\).</p>
+<p>{@img@}</p>
+
+<p><strong>(a)</strong> Find the angle \(ACB\).</p>
+<p>[[input:ans1]] degrees [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p><strong>(b)</strong> Find the angle \(ABC\).</p>
+<p>[[input:ans2]] degrees [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="html">
-      <text><![CDATA[<p>With \(u_n={@a_n@}\), we get the terms \(u_1={@S3[1]@}\), \(u_2={@S3[2]@}\), \(u_3={@S3[3]@}\), which fits the given list of terms.</p>]]></text>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Worked solution</h3>
+
+<p><strong>(a)</strong> The angle in a semicircle is a right angle. Since \(AB\) is a diameter, the angle at \(C\) is:</p>
+\[ ACB = 90^\circ \]
+
+<p><strong>(b)</strong> The angles in triangle \(ABC\) add up to \(180^\circ\).</p>
+\[ ABC = 180^\circ - 90^\circ - {@ang@}^\circ = {@third@}^\circ \]]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -18,21 +31,31 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>k: rand([2,3,4,5,6]);
-a_n: rand([ 1/n, e^n, sqrt(n), k*n]);
-N:5;
-S1:ev(makelist(k,k,1,N),simp);
-S2:maplist(lambda([ex],ev(a_n,n=ex)),S1);
-S3:ev(S2,simp);
-ta1: a_n</text>
+      <text><![CDATA[simp:true;
+ang: rand(makelist(i,i,20,70));
+third: 90-ang;
+
+pc: float(2*ang*%pi/180);
+xC: float(cos(pc));
+yC: float(sin(pc));
+img: plot(
+  [[parametric, cos(s), sin(s), [s,0,2*%pi]],
+   [discrete, [[-1,0],[1,0],[xC,yC],[-1,0]]]],
+  [x,-1.4,1.4], [y,-1.4,1.4],
+  [box,false], [axes,false], [legend,false], [size,400,400],
+  [label, ["A",-1.2,0], ["B",1.2,0], ["C",1.15*xC,1.15*yC], ["O",0,-0.12]]
+);
+
+ta1: 90;
+ta2: third;]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text>[[feedback:prt1]]</text>
+      <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>{@a_n@} {@S3@}</text>
+    <questionnote format="html">
+      <text>{@ta1@}</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
+    <questiondescription format="html">
       <text/>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
@@ -75,6 +98,24 @@ ta1: a_n</text>
       <showvalidation>1</showvalidation>
       <options/>
     </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
     <prt>
       <name>prt1</name>
       <value>1.0000000</value>
@@ -102,72 +143,47 @@ ta1: a_n</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
+        <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
       <node>
-        <name>1</name>
+        <name>0</name>
         <description/>
         <answertest>AlgEquiv</answertest>
-        <sans>ans1</sans>
-        <tans>makelist(ev(ans1,n=k),k,1,5)</tans>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
         <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
-        <truescore>0</truescore>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-2-T</trueanswernote>
+        <trueanswernote>prt2-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>If you evaluate the terms of your sequence, these are not the same as the ones given.</p>]]></text>
+          <text/>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>2048073475</deployedseed>
-    <deployedseed>1876193959</deployedseed>
-    <deployedseed>1633096633</deployedseed>
-    <deployedseed>826557440</deployedseed>
-    <deployedseed>189851524</deployedseed>
-    <deployedseed>1284548538</deployedseed>
-    <deployedseed>422030809</deployedseed>
-    <qtest>
-      <testcase>1</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-1-T</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>2</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1+1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-F</expectedanswernote>
-      </expected>
-    </qtest>
+    <deployedseed>2074141685</deployedseed>
   </question>
 </quiz>

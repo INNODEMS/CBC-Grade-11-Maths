@@ -2,13 +2,27 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>8.0.2 (Plausible nth term 1)</text>
+      <text>fencing a square garden</text>
     </name>
-    <questiontext format="html">
-      <text><![CDATA[<p></p><p>Find a plausible formula for the \(n ^{th}\) term of the sequence \({@S3[1]@}, {@S3[2]@},{@S3[3]@},&nbsp;{@S3[4]@},{@S3[5]@}, \ldots\)&nbsp;</p><p>\( a_n = \) [[input:ans1]] [[validation:ans1]]</p>]]></text>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A square garden has an area of \({@x@}\) m². Fencing is needed around the whole garden.</p>
+<p>Find the exact length of fencing needed, in metres. Give your answer in the form \(k\sqrt{m}\), where \(m\) is as small as possible.</p>
+<p>[[input:ans1]] [[validation:ans1]]</p>
+<p>[[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="html">
-      <text><![CDATA[<p>With \(u_n={@a_n@}\), we get the terms \(u_1={@S3[1]@}\), \(u_2={@S3[2]@}\), \(u_3={@S3[3]@}\), which fits the given list of terms.</p>]]></text>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Worked solution</h3>
+
+<p><strong>Step 1:</strong> Find the side length. The side of a square is the square root of its area.</p>
+\[ \text{side} = \sqrt{@x@} \]
+
+<p><strong>Step 2:</strong> Simplify the root.</p>
+\[ \sqrt{@x@} = \sqrt{{@a2@} \times {@n@}} = \sqrt{@a2@} \times \sqrt{@n@} = {@a@}\sqrt{@n@} \]
+
+<p><strong>Step 3:</strong> The fence goes around all 4 sides, so multiply by 4.</p>
+\[ 4 \times {@a@}\sqrt{@n@} = {@c@}\sqrt{@n@} \]
+
+<p><strong>Answer:</strong> \( {@c@}\sqrt{@n@} \) metres</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -18,21 +32,22 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>k: rand([2,3,4,5,6]);
-a_n: rand([ 1/n, e^n, sqrt(n), k*n]);
-N:5;
-S1:ev(makelist(k,k,1,N),simp);
-S2:maplist(lambda([ex],ev(a_n,n=ex)),S1);
-S3:ev(S2,simp);
-ta1: a_n</text>
+      <text>simp:true;
+S: [2,3,5,6,7,10,11,13,14,15,17,19];
+n: rand(S);
+a: rand(makelist(i,i,2,12));
+a2: a^2;
+x: a2*n;
+c: 4*a;
+ta1: c*sqrt(n);</text>
     </questionvariables>
     <specificfeedback format="html">
-      <text>[[feedback:prt1]]</text>
+      <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>{@a_n@} {@S3@}</text>
+    <questionnote format="html">
+      <text>{@ta1@}{@x@}</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
+    <questiondescription format="html">
       <text/>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
@@ -102,72 +117,32 @@ ta1: a_n</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
+        <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
-      <node>
-        <name>1</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans>ans1</sans>
-        <tans>makelist(ev(ans1,n=k),k,1,5)</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-2-T</trueanswernote>
-        <truefeedback format="html">
-          <text/>
-        </truefeedback>
-        <falsescoremode>-</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
-        <falsefeedback format="html">
-          <text><![CDATA[<p>If you evaluate the terms of your sequence, these are not the same as the ones given.</p>]]></text>
-        </falsefeedback>
-      </node>
     </prt>
-    <deployedseed>2048073475</deployedseed>
-    <deployedseed>1876193959</deployedseed>
-    <deployedseed>1633096633</deployedseed>
-    <deployedseed>826557440</deployedseed>
-    <deployedseed>189851524</deployedseed>
-    <deployedseed>1284548538</deployedseed>
-    <deployedseed>422030809</deployedseed>
-    <qtest>
-      <testcase>1</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-1-T</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>2</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1+1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-F</expectedanswernote>
-      </expected>
-    </qtest>
+    <deployedseed>415455306</deployedseed>
+    <deployedseed>1422930189</deployedseed>
+    <deployedseed>113148853</deployedseed>
+    <deployedseed>814404143</deployedseed>
+    <deployedseed>179166329</deployedseed>
+    <deployedseed>226397834</deployedseed>
+    <deployedseed>475448720</deployedseed>
+    <deployedseed>1807396010</deployedseed>
+    <deployedseed>1022542102</deployedseed>
+    <deployedseed>280113982</deployedseed>
+    <deployedseed>485721944</deployedseed>
+    <deployedseed>1842442493</deployedseed>
+    <deployedseed>1546400797</deployedseed>
+    <deployedseed>1057498574</deployedseed>
+    <deployedseed>1371223358</deployedseed>
+    <deployedseed>1709904574</deployedseed>
+    <deployedseed>664491487</deployedseed>
+    <deployedseed>909183458</deployedseed>
+    <deployedseed>1461305511</deployedseed>
+    <deployedseed>1883772590</deployedseed>
   </question>
 </quiz>

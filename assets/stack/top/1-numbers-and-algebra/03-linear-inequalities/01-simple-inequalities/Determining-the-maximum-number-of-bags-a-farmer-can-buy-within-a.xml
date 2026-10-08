@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Determining the maximum number of bags a farmer can buy within a budget</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>{@fname@}, a local farmer, has a total budget of <b>KSh {@budget@}</b> to buy {@item@}. Transporting the goods to the farm costs a flat rate of <b>KSh {@transport@}</b>, regardless of the amount bought. Each bag costs <b>KSh {@cost@}</b>.</p>
+
+<p><b>(a)</b> If \(n\) represents the number of bags {@fname@} can buy, write a simple linear inequality to represent this situation.</p>
+<p><i>(Use the variable \(n\). Use <b>&lt;=</b> for \(\le\))</i></p>
+<p>Inequality: [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p><b>(b)</b> Solve the inequality to determine the <b>maximum number of whole bags</b> the farmer can buy.</p>
+<p>Max bags: [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part (a): Forming the Inequality</b></p>
+<p>The total cost consists of the flat transport fee plus the cost of the bags. Since each bag costs KSh {@cost@}, the cost of \(n\) bags is \({@cost@}n\).</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \text{Total Cost} = {@transport@} + {@cost@}n \)
+</p>
+<p>The farmer cannot spend more than their budget of KSh {@budget@}. Therefore, we combine these to write the inequality:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{{@transport@} + {@cost@}n \le {@budget@}} \)
+</p>
+
+<p><b>Part (b): Solving the Inequality</b></p>
+<p>We solve for \(n\) by isolating the variable. First, we subtract the transport fee from the total budget:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@cost@}n &\le {@budget@} - {@transport@} \\
+{@cost@}n &\le {@budget - transport@} 
+\end{aligned} \)
+</p>
+<p>Next, we divide by the cost per bag to find the maximum allowed number of bags:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+n &\le \frac{{@budget - transport@}}{{@cost@}} \\
+n &\le {@disp_raw_n@}\dots
+\end{aligned} \)
+</p>
+<p>Because you cannot buy a fraction of a bag, and buying {@ta_num + 1@} bags would exceed the total budget, we must round <b>down</b> to the nearest whole number.</p>
+<p>Hence, the maximum number of whole bags the farmer can buy is:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{{@ta_num@}} \)
+</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Local Context Names */
+names : ["Mwakidize", "Nafula", "Kiplagat", "Mutua", "Akinyi"];
+fname : rand(names);
+items : ["bags of dairy meal", "bags of planting fertilizer", "bags of chick mash"];
+item : rand(items);
+
+/* Budget Variables */
+budget_temp : rand_with_step(3000, 6000, 100);
+transport : rand_with_step(300, 600, 50);
+cost : rand_with_step(400, 750, 50);
+
+/* Force the calculation to yield a decimal to test rounding logic */
+raw_val : float((budget_temp - transport) / cost);
+budget : if is(round(raw_val) = raw_val) then budget_temp + cost/2 else budget_temp;
+
+/* Recalculate with final B */
+raw_val : float((budget - transport) / cost);
+disp_raw_n : dispdp(raw_val, 2);
+
+/* Target Answers */
+ta_num : floor(raw_val);
+ta_ineq : transport + cost*n <= budget; 
+
+/* Mistake Catchers */
+m1_ineq : cost*n <= budget;    /* Forgot transport cost */
+m_up : ceiling(raw_val); /* Rounded UP instead of DOWN, exceeding budget */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>B: {@budget@}, T: {@transport@}, C: {@cost@} | Ineq: {@ta_ineq@} | Max: {@ta_num@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Simple Inequalities (Real Life Budget)</p>
+<p id="description">Grade 11 CBE: Forming an inequality from a local word problem and interpreting the mathematical range to find the realistic whole-number limit.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta_ineq</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint><![CDATA[... <= ...]]></syntaxhint>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta_num</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta_ineq</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they forgot transport cost</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>m1_ineq</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You forgot to include the flat transport fee of KSh {@transport@} in your total cost expression.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta_num</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they rounded UP instead of down</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>m_up</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You rounded your decimal answer UP to the nearest whole number. If {@fname@} buys {@m_up@} bags, the total cost will be KSh {@transport + cost*m_up@}, which exceeds the budget of KSh {@budget@}! In this real-life scenario, you must round <b>down</b> to the nearest whole bag.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1416624440</deployedseed>
+    <deployedseed>526290242</deployedseed>
+    <deployedseed>1847022946</deployedseed>
+    <deployedseed>284985110</deployedseed>
+    <deployedseed>728693323</deployedseed>
+    <deployedseed>232431165</deployedseed>
+    <deployedseed>1688928861</deployedseed>
+    <deployedseed>1419725947</deployedseed>
+    <deployedseed>480990814</deployedseed>
+    <deployedseed>1945322367</deployedseed>
+    <deployedseed>570504550</deployedseed>
+    <deployedseed>882940547</deployedseed>
+    <deployedseed>1945782652</deployedseed>
+    <deployedseed>2136176821</deployedseed>
+    <deployedseed>357323994</deployedseed>
+    <deployedseed>1223805526</deployedseed>
+    <deployedseed>1138290659</deployedseed>
+    <deployedseed>634707506</deployedseed>
+    <deployedseed>1436947096</deployedseed>
+    <deployedseed>1702953992</deployedseed>
+    <deployedseed>453356421</deployedseed>
+    <deployedseed>1839048773</deployedseed>
+    <deployedseed>396977918</deployedseed>
+    <deployedseed>1470684646</deployedseed>
+    <deployedseed>1762154545</deployedseed>
+    <deployedseed>143578677</deployedseed>
+    <deployedseed>706108461</deployedseed>
+    <deployedseed>1628611646</deployedseed>
+    <deployedseed>1993965331</deployedseed>
+    <deployedseed>213972957</deployedseed>
+    <deployedseed>1431775522</deployedseed>
+    <deployedseed>1642685911</deployedseed>
+    <deployedseed>1016259617</deployedseed>
+    <deployedseed>2118469116</deployedseed>
+    <deployedseed>670760318</deployedseed>
+    <deployedseed>1106809222</deployedseed>
+    <deployedseed>2124036375</deployedseed>
+    <deployedseed>1085914959</deployedseed>
+    <deployedseed>1878915441</deployedseed>
+    <deployedseed>1263348459</deployedseed>
+    <deployedseed>1805451184</deployedseed>
+    <deployedseed>1252904803</deployedseed>
+    <deployedseed>1615629808</deployedseed>
+    <deployedseed>1550228816</deployedseed>
+    <deployedseed>1666032205</deployedseed>
+    <deployedseed>1816327493</deployedseed>
+    <deployedseed>1675174244</deployedseed>
+    <deployedseed>1037722798</deployedseed>
+    <deployedseed>2031159564</deployedseed>
+    <deployedseed>412020112</deployedseed>
+    <deployedseed>1872793732</deployedseed>
+    <deployedseed>981095550</deployedseed>
+    <deployedseed>1317239204</deployedseed>
+    <deployedseed>496310553</deployedseed>
+    <deployedseed>1863373303</deployedseed>
+    <deployedseed>1328946223</deployedseed>
+    <deployedseed>1034028162</deployedseed>
+    <deployedseed>1777130546</deployedseed>
+    <deployedseed>389144595</deployedseed>
+    <deployedseed>208685357</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Test case assuming the teacher's input gets full marks.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_ineq</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_num</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

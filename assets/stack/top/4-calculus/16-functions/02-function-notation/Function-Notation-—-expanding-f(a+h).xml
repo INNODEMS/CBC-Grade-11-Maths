@@ -2,13 +2,18 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>8.0.2 (Plausible nth term 1)</text>
+      <text>Function Notation — expanding f(a+h)</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p></p><p>Find a plausible formula for the \(n ^{th}\) term of the sequence \({@S3[1]@}, {@S3[2]@},{@S3[3]@},&nbsp;{@S3[4]@},{@S3[5]@}, \ldots\)&nbsp;</p><p>\( a_n = \) [[input:ans1]] [[validation:ans1]]</p>]]></text>
+      <text><![CDATA[<p>Let \( f(x) = {@p@}x^2 + {@q@}x + {@r@} \), where \(a\) and \(h\) are any two real numbers.</p>
+<p>Find and fully expand \( f(a+h) \).</p>
+<div>\( f(a+h) = \) [[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>With \(u_n={@a_n@}\), we get the terms \(u_1={@S3[1]@}\), \(u_2={@S3[2]@}\), \(u_3={@S3[3]@}\), which fits the given list of terms.</p>]]></text>
+      <text><![CDATA[<p>Substitute \(x=(a+h)\) into <strong>every</strong> occurrence of \(x\) in \(f(x)\), then expand:</p>
+\[ f(a+h) = {@p@}(a+h)^2+{@q@}(a+h)+{@r@} = {@ta@}. \]
+<p>Note that \(f(a+h) \neq f(a)+f(h)\) in general &#8212; a function does not "distribute" over addition unless it happens to be linear with no constant term.</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -18,22 +23,21 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>k: rand([2,3,4,5,6]);
-a_n: rand([ 1/n, e^n, sqrt(n), k*n]);
-N:5;
-S1:ev(makelist(k,k,1,N),simp);
-S2:maplist(lambda([ex],ev(a_n,n=ex)),S1);
-S3:ev(S2,simp);
-ta1: a_n</text>
+      <text>p : rand_with_prohib(1,5,[]);
+q : rand_with_prohib(1,9,[]);
+r : rand_with_prohib(1,9,[]);
+fx : p*x^2+q*x+r;
+ta : expand(subst(x=a+h,fx));
+wrong_linear : expand(subst(x=a,fx)) + expand(subst(x=h,fx));   /* f(a+h) = f(a)+f(h) misconception */</text>
     </questionvariables>
     <specificfeedback format="html">
-      <text>[[feedback:prt1]]</text>
-    </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>{@a_n@} {@S3@}</text>
-    </questionnote>
-    <questiondescription format="moodle_auto_format">
       <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.2 (Function Notation). Tests correct substitution and expansion of f(a+h); catches the common misconception that f(a+h) = f(a) + f(h).</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="description">Grade 11 Functions 16.2 (Function Notation). Tests correct substitution and expansion of f(a+h); catches the common misconception that f(a+h) = f(a) + f(h).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -49,7 +53,7 @@ ta1: a_n</text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>none</multiplicationsign>
+    <multiplicationsign>dot</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -60,8 +64,8 @@ ta1: a_n</text>
     <input>
       <name>ans1</name>
       <type>algebraic</type>
-      <tans>ta1</tans>
-      <boxsize>15</boxsize>
+      <tans>ta</tans>
+      <boxsize>25</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -85,17 +89,17 @@ ta1: a_n</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Is f(a+h) correctly expanded?</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ta1</tans>
+        <tans>ta</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-1-T</trueanswernote>
+        <trueanswernote>prt1-correct</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -103,70 +107,68 @@ ta1: a_n</text>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-1-F</falseanswernote>
+        <falseanswernote>prt1-0-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Used the f(a+h)=f(a)+f(h) misconception?</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>makelist(ev(ans1,n=k),k,1,5)</tans>
+        <tans>wrong_linear</tans>
         <testoptions/>
         <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-2-T</trueanswernote>
+        <trueanswernote>prt1-linearity</trueanswernote>
         <truefeedback format="html">
-          <text/>
+          <text><![CDATA[It looks like you computed \(f(a)+f(h)\) instead of \(f(a+h)\). These are not the same &#8212; you must substitute the whole expression \((a+h)\) in for \(x\) <em>before</em> expanding, not evaluate at \(a\) and \(h\) separately and add.]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-wrong</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>If you evaluate the terms of your sequence, these are not the same as the ones given.</p>]]></text>
+          <text>That is not equivalent to \(f(a+h)\). Substitute \((a+h)\) for \(x\) and expand carefully.</text>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>2048073475</deployedseed>
-    <deployedseed>1876193959</deployedseed>
-    <deployedseed>1633096633</deployedseed>
-    <deployedseed>826557440</deployedseed>
-    <deployedseed>189851524</deployedseed>
-    <deployedseed>1284548538</deployedseed>
-    <deployedseed>422030809</deployedseed>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct expansion</description>
       <testinput>
         <name>ans1</name>
-        <value>ta1</value>
+        <value>ta</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-1-T</expectedanswernote>
+        <expectedanswernote>prt1-correct</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Linearity misconception f(a)+f(h)</description>
       <testinput>
         <name>ans1</name>
-        <value>ta1+1</value>
+        <value>wrong_linear</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-F</expectedanswernote>
+        <expectedanswernote>prt1-linearity</expectedanswernote>
       </expected>
     </qtest>
   </question>

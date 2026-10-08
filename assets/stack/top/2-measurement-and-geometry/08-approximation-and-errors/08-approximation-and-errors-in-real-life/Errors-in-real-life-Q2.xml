@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Errors in real life Q2</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A roofing contractor is building a triangular roof frame. The base of the triangle is \({@base@}\) m and the height is \({@height@}\) m. Both are measured to 1 decimal place. The slanted side (called the hypotenuse) is found using this rule: \( \text{hypotenuse} = \sqrt{\text{base}^2 + \text{height}^2} \).</p>
+
+<p>(a) Find the absolute error in the hypotenuse.</p>
+<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p>(b) Find the relative error in the hypotenuse.</p>
+<p>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
+
+<p>(c) Find the percentage error in the hypotenuse.</p>
+<p>[[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p>The base was recorded as \({@base@}\) m and the height as \({@height@}\) m, both correct to 1 decimal place.</p>
+
+<p><strong>Absolute errors in the individual measurements:</strong></p>
+<p>Since each measurement is correct to 1 decimal place, the absolute error in each is half of the smallest unit (\(0.1\) m):</p>
+<p>\[ \text{Base error} = \frac{0.1}{2} = {@base_err@} \text{ m}, \qquad \text{Height error} = \frac{0.1}{2} = {@height_err@} \text{ m} \]</p>
+
+<p><strong>Important:</strong> Here, the hypotenuse gets bigger when either the base or the height gets bigger. So, to find the biggest possible hypotenuse, we use the biggest possible base and the biggest possible height together:</p>
+<p>\[ \text{Max base} = {@base@} + {@base_err@} = {@max_base@} \text{ m},\]
+\[\text{Max height} = {@height@} + {@height_err@} = {@max_height@} \text{ m} \]</p>
+
+<p>(a) <strong>Absolute error in the hypotenuse:</strong></p>
+<p>Using the recorded measurements:</p>
+<p>\[ \text{Working hypotenuse} = \sqrt{{@base@}^2 + {@height@}^2} = {@hyp@} \text{ m} \]</p>
+<p>Using the maximum base and maximum height:</p>
+<p>\[ \text{Maximum hypotenuse} = \sqrt{{@max_base@}^2 + {@max_height@}^2} = {@max_hyp@} \text{ m} \]</p>
+<p>\[ \text{Absolute error} = \text{Maximum hypotenuse} - \text{Working hypotenuse} = {@max_hyp@} - {@hyp@} = {@ta1@} \text{ m} \]</p>
+
+<p>(b) <strong>Relative error:</strong></p>
+<p>\[ \text{Relative error} = \frac{\text{Absolute error}}{\text{Working hypotenuse}} = \frac{{@ta1@}}{{@hyp@}} \approx {@ta2@} \]</p>
+
+<p>(c) <strong>Percentage error:</strong></p>
+<p>\[ \text{Percentage error} = \text{Relative error} \times 100\% = {@ta2@} \times 100\% \approx {@ta3@}\% \]</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>base_scale: 10;
+base_steps: rand(80*base_scale/10 + 1);
+base: float(3 + base_steps/base_scale);
+base_err: float(0.5/base_scale);
+
+height_scale: 10;
+height_steps: rand(40*height_scale/10 + 1);
+height: float(1.5 + height_steps/height_scale);
+height_err: float(0.5/height_scale);
+
+max_base: base + base_err;
+min_base: base - base_err;
+
+max_height: height + height_err;
+min_height: height - height_err;
+
+hyp: float(sqrt(base^2 + height^2));
+max_hyp: float(sqrt(max_base^2 + max_height^2));
+min_hyp: float(sqrt(min_base^2 + min_height^2));
+
+ta1: max_hyp - hyp;
+ta2: ta1 / hyp;
+ta3: ta2 * 100;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta1@} {@ta2@} {@ta3@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>754793954</deployedseed>
+    <deployedseed>1476063135</deployedseed>
+    <deployedseed>1507814630</deployedseed>
+    <deployedseed>878170380</deployedseed>
+    <deployedseed>13831823</deployedseed>
+    <deployedseed>1601797815</deployedseed>
+    <deployedseed>17438483</deployedseed>
+    <deployedseed>1884072561</deployedseed>
+    <deployedseed>734186236</deployedseed>
+    <deployedseed>1917172766</deployedseed>
+    <deployedseed>868912245</deployedseed>
+    <deployedseed>1196521242</deployedseed>
+    <deployedseed>741180135</deployedseed>
+    <deployedseed>801926528</deployedseed>
+    <deployedseed>1816711347</deployedseed>
+    <deployedseed>399903045</deployedseed>
+    <deployedseed>420150872</deployedseed>
+    <deployedseed>268745520</deployedseed>
+    <deployedseed>1721512737</deployedseed>
+  </question>
+</quiz>

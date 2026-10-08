@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Division of errors Q1</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>An athlete runs a measured distance of \({@distance@}\) m in a recorded time of \({@time@}\) s, both correct to the nearest whole unit. Their average speed is calculated by dividing distance by time. Find:</p>
+
+<p>(a)  The absolute error in his speed.</p>
+<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p>(b) The relative error in his speed.</p>
+<p>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
+
+<p>(c) The percentage error in his speed.</p>
+<p>[[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3> Worked Solution.</h3>
+<p>The distance was recorded as \({@distance@}\) m and the time as \({@time@}\) s, both correct to the nearest whole unit.</p>
+
+<p><strong>Absolute errors in the individual measurements:</strong></p>
+<p>Since each measurement is correct to the nearest whole unit, the absolute error in each is half of the smallest unit (1 unit):</p>
+<p>\[ \text{Distance error} = {@distance_err@} \text{ m}, \qquad \text{Time error} = {@time_err@} \text{ s} \]</p>
+
+<p><strong>Important:</strong> When dividing two measured quantities, the <em>maximum</em> possible value of the result comes from pairing the <em>largest</em> possible numerator with the <em>smallest</em> possible denominator (since dividing by a smaller number gives a larger result). So:</p>
+<p>\[ \text{Max distance} = {@distance@} + {@distance_err@} = {@max_distance@} \text{ m}, \qquad \text{Min time} = {@time@} - {@time_err@} = {@min_time@} \text{ s} \]</p>
+
+<p>(a) <strong>Absolute error in the speed:</strong></p>
+<p>Using the recorded measurements:</p>
+<p>\[ \text{Working speed} = \frac{{@distance@}}{{@time@}} = {@W_speed@} \text{ m/s} \]</p>
+<p>Using the maximum distance and minimum time:</p>
+<p>\[ \text{Maximum speed} = \frac{{@max_distance@}}{{@min_time@}} = {@max_speed@} \text{ m/s} \]</p>
+<p>\[ \text{Absolute error} = \text{Maximum speed} - \text{Working speed} = {@max_speed@} - {@W_speed@} = {@ta1@} \text{ m/s} \]</p>
+
+<p>(b) <strong>Relative error:</strong></p>
+<p>\[ \text{Relative error} = \frac{\text{Absolute error}}{\text{Working speed}} = \frac{{@ta1@}}{{@W_speed@}} \approx {@ta2@} \]</p>
+
+<p>(c) <strong>Percentage error:</strong></p>
+<p>\[ \text{Percentage error} = \text{Relative error} \times 100\% = {@ta2@} \times 100\% \approx {@ta3@}\% \]</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>distance: rand(200) + 100;
+distance_err: 0.5;
+
+time: rand(20) + 10;
+time_err: 0.5;
+
+max_distance: distance + distance_err;
+min_distance: distance - distance_err;
+
+max_time: time + time_err;
+min_time: time - time_err;
+
+W_speed: float(distance / time);
+
+max_speed: max_distance / min_time;
+min_speed: min_distance / max_time;
+
+ta1: max_speed - W_speed;
+ta2: ta1 / W_speed;
+ta3: ta2 * 100;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta1@}{@ta2@} {@ta3@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>998592683</deployedseed>
+    <deployedseed>1738490903</deployedseed>
+    <deployedseed>723373221</deployedseed>
+    <deployedseed>1579036098</deployedseed>
+    <deployedseed>548488625</deployedseed>
+    <deployedseed>1301480375</deployedseed>
+    <deployedseed>1324842612</deployedseed>
+    <deployedseed>1495849140</deployedseed>
+    <deployedseed>675136945</deployedseed>
+    <deployedseed>106949035</deployedseed>
+    <deployedseed>445335456</deployedseed>
+    <deployedseed>1473738201</deployedseed>
+    <deployedseed>343029317</deployedseed>
+    <deployedseed>1709029385</deployedseed>
+    <deployedseed>395067126</deployedseed>
+    <deployedseed>1926414021</deployedseed>
+    <deployedseed>1343285297</deployedseed>
+    <deployedseed>47980238</deployedseed>
+    <deployedseed>81006925</deployedseed>
+  </question>
+</quiz>

@@ -2,13 +2,21 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>8.0.2 (Plausible nth term 1)</text>
+      <text>Rationalizing the denominator Q2</text>
     </name>
-    <questiontext format="html">
-      <text><![CDATA[<p></p><p>Find a plausible formula for the \(n ^{th}\) term of the sequence \({@S3[1]@}, {@S3[2]@},{@S3[3]@},&nbsp;{@S3[4]@},{@S3[5]@}, \ldots\)&nbsp;</p><p>\( a_n = \) [[input:ans1]] [[validation:ans1]]</p>]]></text>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Rationalize the denominator of the following expression by multiplying by the conjugate, giving your answer in its simplest form:</p>
+<p>\[ \frac{ {@p@} }{ \sqrt{ {@a@} } + \sqrt{ {@b@} } } \]</p>
+
+<p><strong>Hint</strong>: You can type the answer of: \(\frac{2\left(\sqrt{4}-\sqrt{2}\right)}{2}\) as: <code>(2*(sqrt(4)-sqrt(2)))/2</code></p>
+
+<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="html">
-      <text><![CDATA[<p>With \(u_n={@a_n@}\), we get the terms \(u_1={@S3[1]@}\), \(u_2={@S3[2]@}\), \(u_3={@S3[3]@}\), which fits the given list of terms.</p>]]></text>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Worked Solution.</h3>
+<p>To rationalize \( \dfrac{ {@p@} }{ \sqrt{ {@a@} } + \sqrt{ {@b@} } } \), multiply top and bottom by the <strong>conjugate</strong> of the denominator, \( \sqrt{ {@a@} } - \sqrt{ {@b@} } \):</p>
+<p>\[ \frac{ {@p@} }{ \sqrt{ {@a@} } + \sqrt{ {@b@} } } \times \frac{ \sqrt{ {@a@} } - \sqrt{ {@b@} } }{ \sqrt{ {@a@} } - \sqrt{ {@b@} } } = \frac{ {@p@} (\sqrt{ {@a@} } - \sqrt{ {@b@} }) }{ {@a@} - {@b@} } \]</p>
+<p><strong>Key idea:</strong> \( (\sqrt{@a@}+\sqrt{@b@})(\sqrt{@a@}-\sqrt{@b@}) = {@a@} - {@b@} \) a difference of squares which removes both square roots from the denominator in one step.</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -18,21 +26,32 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>k: rand([2,3,4,5,6]);
-a_n: rand([ 1/n, e^n, sqrt(n), k*n]);
-N:5;
-S1:ev(makelist(k,k,1,N),simp);
-S2:maplist(lambda([ex],ev(a_n,n=ex)),S1);
-S3:ev(S2,simp);
-ta1: a_n</text>
+      <text>p: rand(8)+2;
+
+sf_options: [2,3,5,6,7,10,11,13,14,15];
+
+a: sf_options[rand(length(sf_options))+1];
+
+b: sf_options[rand(length(sf_options))+1];
+while b = a do b: sf_options[rand(length(sf_options))+1];
+
+denom_original: sqrt(a) + sqrt(b);
+conjugate: sqrt(a) - sqrt(b);
+
+new_denom: a - b;
+ta1: (p*(sqrt(a)-sqrt(b))) / (a-b);
+
+ta2: (p*(sqrt(a)+sqrt(b))) / (a+b);
+
+ta3: (p*(sqrt(a)-sqrt(b))) / (b-a);</text>
     </questionvariables>
     <specificfeedback format="html">
-      <text>[[feedback:prt1]]</text>
+      <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>{@a_n@} {@S3@}</text>
+    <questionnote format="html">
+      <text>{@ta1@}</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
+    <questiondescription format="html">
       <text/>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
@@ -102,72 +121,31 @@ ta1: a_n</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
+        <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
-      <node>
-        <name>1</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans>ans1</sans>
-        <tans>makelist(ev(ans1,n=k),k,1,5)</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-2-T</trueanswernote>
-        <truefeedback format="html">
-          <text/>
-        </truefeedback>
-        <falsescoremode>-</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
-        <falsefeedback format="html">
-          <text><![CDATA[<p>If you evaluate the terms of your sequence, these are not the same as the ones given.</p>]]></text>
-        </falsefeedback>
-      </node>
     </prt>
-    <deployedseed>2048073475</deployedseed>
-    <deployedseed>1876193959</deployedseed>
-    <deployedseed>1633096633</deployedseed>
-    <deployedseed>826557440</deployedseed>
-    <deployedseed>189851524</deployedseed>
-    <deployedseed>1284548538</deployedseed>
-    <deployedseed>422030809</deployedseed>
-    <qtest>
-      <testcase>1</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-1-T</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>2</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value>ta1+1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-F</expectedanswernote>
-      </expected>
-    </qtest>
+    <deployedseed>1686962858</deployedseed>
+    <deployedseed>285438376</deployedseed>
+    <deployedseed>705506926</deployedseed>
+    <deployedseed>168021422</deployedseed>
+    <deployedseed>973536801</deployedseed>
+    <deployedseed>1482274541</deployedseed>
+    <deployedseed>243379236</deployedseed>
+    <deployedseed>1243594016</deployedseed>
+    <deployedseed>1709692850</deployedseed>
+    <deployedseed>1601243320</deployedseed>
+    <deployedseed>796205468</deployedseed>
+    <deployedseed>2129258895</deployedseed>
+    <deployedseed>1236393058</deployedseed>
+    <deployedseed>462532131</deployedseed>
+    <deployedseed>1102599601</deployedseed>
+    <deployedseed>823846035</deployedseed>
+    <deployedseed>2064076209</deployedseed>
+    <deployedseed>1101065311</deployedseed>
+    <deployedseed>810025949</deployedseed>
   </question>
 </quiz>
