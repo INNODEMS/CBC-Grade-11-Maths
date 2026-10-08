@@ -53,7 +53,7 @@ ORPHANED_FILE = "orphaned_older.ptx"
 # ORPHANED_FILE. Leave empty to process nothing (a safety default --
 # this script intentionally will NOT touch every chapter unless you list
 # the ones you want here).
-TARGET_CHAPTERS: list[str] = ["07-matrices-i"]
+TARGET_CHAPTERS: list[str] = ["16-functions"]
 
 # ---------------------------------------------------------------------------
 
