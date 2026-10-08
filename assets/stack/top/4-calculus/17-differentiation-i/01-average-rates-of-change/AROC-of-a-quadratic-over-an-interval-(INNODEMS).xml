@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>AROC of a quadratic over an interval (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph below shows the quadratic \[ f(x) = {@fx@}. \]</p>
+<p>The points \(A\) and \(B\) lie on the curve, at \(x = {@pp@}\) and \(x = {@qq@}\). The straight line joining them is the <strong>secant line</strong> \(AB\).</p>
+<p>Find the <strong>average rate of change</strong> of \(f\) from \(x = {@pp@}\) to \(x = {@qq@}\). You may read the coordinates of \(A\) and \(B\) from the graph, or evaluate \(f\) yourself. Give an exact value (an integer or a simple fraction).</p>
+[[jsxgraph width="470px" height="420px"]]
+var b = {#bb#}, c = {#cc#};
+var p = {#pp#}, q = {#qq#};
+var fp = {#fp#}, fq = {#fq#};
+function f(x){ return x*x + b*x + c; }
+
+/* Choose a window that comfortably contains A and B with padding. */
+var xs = [p, q], ys = [fp, fq];
+var xmin = Math.min.apply(null, xs), xmax = Math.max.apply(null, xs);
+var ymin = Math.min.apply(null, ys), ymax = Math.max.apply(null, ys);
+var xpad = Math.max(3, 0.35*(xmax - xmin) + 2);
+var ypad = Math.max(2.0, 0.35*(ymax - ymin) + 2);
+var bx0 = xmin - xpad, bx1 = xmax + xpad;
+var by0 = ymin - ypad, by1 = ymax + ypad;
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [bx0, by1, bx1, by0],
+    axis: true, showCopyright: false, showNavigation: false,
+    keepaspectratio: true, pan: {enabled:false}, zoom: {enabled:false}
+});
+
+/* Draw the parabola across the FULL width of the board. With keepaspectratio the
+   visible x-range can be wider than [bx0, bx1], so read the live board edges
+   (getBoundingBox() = [xmin, ymax, xmax, ymin]) as the curve's x-limits. */
+board.create('functiongraph', [f,
+    function(){ return board.getBoundingBox()[0]; },
+    function(){ return board.getBoundingBox()[2]; }
+  ], {strokeColor:'#1565c0', strokeWidth:2, highlight:false});
+
+var A = board.create('point', [p, fp], {name:'A', size:3, fixed:true, fillColor:'#d32f2f', strokeColor:'#d32f2f', label:{offset:[-10,-14], anchorX:'right', anchorY:'top'}});
+var B = board.create('point', [q, fq], {name:'B', size:3, fixed:true, fillColor:'#d32f2f', strokeColor:'#d32f2f', label:{offset:[10,12], anchorX:'left', anchorY:'bottom'}});
+board.create('line', [A, B], {strokeColor:'#2e7d32', strokeWidth:2, straightFirst:true, straightLast:true, dash:0, highlight:false});
+
+/* Coordinate labels placed as free text away from the curve so they are always readable. */
+board.create('text', [p, fp, '(' + p + ', ' + fp + ')'], {anchorX:'right', anchorY:'top', offset:[-6,-6], fontSize:13, cssStyle:'color:#d32f2f', fixed:true});
+board.create('text', [q, fq, '(' + q + ', ' + fq + ')'], {anchorX:'left', anchorY:'bottom', offset:[6,6], fontSize:13, cssStyle:'color:#d32f2f', fixed:true});
+[[/jsxgraph]]
+<div>Average rate of change \( = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The <strong>average rate of change</strong> of \(f\) from \(x = {@pp@}\) to \(x = {@qq@}\) is the slope of the secant line \(AB\): the change in output divided by the change in input,
+\[ \text{AROC} = \frac{f({@qq@}) - f({@pp@})}{{@qq@} - {@pp@}}. \]</p>
+<p>Evaluate \(f(x) = {@fx@}\) at the two endpoints:</p>
+\[
+\begin{align*}
+f({@pp@}) &= ({@pp@})^2 + ({@bb@})({@pp@}) + ({@cc@}) = {@fp@}, \\
+f({@qq@}) &= ({@qq@})^2 + ({@bb@})({@qq@}) + ({@cc@}) = {@fq@}.
+\end{align*}
+\]
+<p>So</p>
+\[
+\text{AROC} = \frac{ {@fq@} - ({@fp@}) }{ {@qq@} - ({@pp@}) } = \frac{ {@fq-fp@} }{ {@qq-pp@} } = {@ta1@}.
+\]
+<p>Geometrically this is the slope of the green secant \(AB\). A positive value means \(f\) increases on average over the interval; a negative value means it decreases; a value of \(0\) means \(f\) ends at the same height it started, even though it is not constant in between.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Enumerate admissible (b, c, p, gap). q = p + gap, gap in {1,2,3}. */
+cands : sublist(
+  create_list([bb0, cc0, pp0, gg0], bb0,-3,3, cc0,-3,3, pp0,-3,3, gg0,1,3),
+  lambda([z], block(
+    [b:z[1], c:z[2], p:z[3], q:z[3]+z[4], fp, fq, aroc, wnum, wsign, wavg, wrecip],
+    fp : p*p + b*p + c,
+    fq : q*q + b*q + c,
+    aroc : (fq - fp)/(q - p),          /* = p + q + b, an integer */
+    wnum : fq - fp,                    /* forgot to divide by (q-p) */
+    wsign : -aroc,                     /* sign slip */
+    wavg : (fp + fq)/2,                /* averaged the outputs */
+    wrecip : if aroc = 0 then 10^6 else 1/aroc,  /* inverted ratio: run over rise = 1/AROC (guard div-by-zero) */
+    is( abs(fp) <= 18 and abs(fq) <= 18 and aroc # 0
+        and aroc # wnum and aroc # wsign and aroc # wavg and aroc # wrecip
+        and wnum # wsign and wnum # wavg and wnum # wrecip
+        and wsign # wavg and wsign # wrecip and wavg # wrecip ) )));
+
+/* The wsign # aroc clause above already forces AROC # 0 (since wsign = -aroc),
+   so every candidate has a genuinely sloping secant. Pick one at random. */
+pick : rand(cands);
+
+bb : pick[1];
+cc : pick[2];
+pp : pick[3];
+qq : pick[3] + pick[4];
+
+fx : x^2 + bb*x + cc;                 /* f(x), for display */
+fp : pp^2 + bb*pp + cc;               /* f(p) */
+fq : qq^2 + bb*qq + cc;               /* f(q) */
+
+ta1 : (fq - fp)/(qq - pp);            /* model answer: the AROC (an integer) */
+
+wrong_num   : fq - fp;                /* forgot to divide by (q - p) */
+wrong_sign  : -ta1;                   /* (f(p)-f(q))/(q-p): sign slip */
+wrong_avg   : (fp + fq)/2;            /* averaged f(p) and f(q) */
+wrong_recip : 1/ta1;                  /* inverted the ratio: run over rise = 1/AROC */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( f(x)={@fx@};\ [p,q]=[{@pp@},{@qq@}];\ f(p)={@fp@},\ f(q)={@fq@};\ \mathrm{AROC}={@ta1@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct AROC?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Gave f(q)-f(p) only (did not divide by the run)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_num</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nodivide</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the <em>change in output</em>, \(f(q)-f(p)\), on its own. The average rate of change is a <strong>slope</strong>: you still need to divide by the <em>run</em>, the change in input \(q-p\). Set it up as \(\dfrac{f(q)-f(p)}{q-p}\) and divide.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Sign slip: (f(p)-f(q))/(q-p) or divided by (p-q)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-signslip</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your value has the right size but the wrong sign. Keep the "later minus earlier" order the <em>same</em> on top and bottom: \(\dfrac{f(q)-f(p)}{q-p}\). If you subtract \(f(p)-f(q)\) on top, you must also write \(p-q\) on the bottom &mdash; the two swaps cancel.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Averaged f(p) and f(q) instead of finding the rate?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_avg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-average</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you found the <em>average of the two heights</em>, \(\tfrac12\bigl(f(p)+f(q)\bigr)\). That is the middle \(y\)-value, not a rate. A rate of change compares the <em>change</em> in height to the <em>change</em> in \(x\): \(\dfrac{f(q)-f(p)}{q-p}\), the slope of the secant \(AB\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Inverted the ratio: run over rise (q-p)/(f(q)-f(p)) = 1/AROC?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_recip</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-reciprocal</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have divided the wrong way round: this is the <em>run over the rise</em>, \(\dfrac{q-p}{f(q)-f(p)}\). The average rate of change is <strong>rise over run</strong> &mdash; the change in height divided by the change in \(x\): \(\dfrac{f(q)-f(p)}{q-p}\). Turn your fraction the other way up.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. The average rate of change is the slope of the secant \(AB\): \(\dfrac{f(q)-f(p)}{q-p}\). Read \(f(p)\) and \(f(q)\) off the graph (or evaluate \(f\)), find the change in height, and divide by the change in \(x\). Have another go &mdash; the worked solution appears after this attempt.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct AROC</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot to divide by the run: f(q)-f(p)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_num</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-nodivide</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Sign slip: -(AROC)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_sign</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-signslip</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Averaged the outputs: (f(p)+f(q))/2</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_avg</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-average</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Inverted ratio: run over rise = 1/AROC</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_recip</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-reciprocal</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Generic wrong value</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta1+100,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

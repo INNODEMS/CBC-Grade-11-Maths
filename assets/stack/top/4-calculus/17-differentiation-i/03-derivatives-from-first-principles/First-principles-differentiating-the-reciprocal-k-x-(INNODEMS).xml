@@ -1,0 +1,1034 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>First principles: differentiating the reciprocal k/x (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>You have found derivatives of polynomials from first principles by <em>expanding</em> and cancelling \(h\). Let's see how we can find the derivative of \[ f(x) = {@fdisp@} \] at the point \( x = {@a@} \).</p>
+<p><strong>Explore first.</strong> The graph plots the difference quotient
+\[ q(h) = \frac{f({@a@}+h) - f({@a@})}{h} = \frac{\ \dfrac{ {@k@} }{x+h} - \dfrac{ {@k@} }{x}\ }{h}. \]
+against \(h\). Drag the blue point along the curve toward \( h = 0 \) and watch the read-out. The small open circle marks \( h = 0 \), where \( q(h) \) is <em>not defined</em>.</p>
+[[jsxgraph width='560px' height='440px']]
+JXG.Options.text.useMathJax = true;
+var k = {#k#}, a = {#a#};
+var hmin = {#float(hmin)#}, hmax = {#float(hmax)#};
+var xL = {#float(xL)#}, xR = {#float(xR)#}, yT = {#float(yT)#}, yB = {#float(yB)#};
+var hole = {#float(holef)#};
+var g = function (h) { return -k / (a * (a + h)); };
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [xL, yT, xR, yB],
+    keepaspectratio: false,
+    axis: true,
+    showCopyright: false,
+    pan: {enabled: false},
+});
+
+// axis labels
+board.create('text', [xR - 0.15, 0, 'h'],
+    {anchorX: 'right', anchorY: 'bottom', fontSize: 15, color: '#555', fixed: true});
+board.create('text', [xL + 0.08, yT - 0.05, 'q(h)'],
+    {anchorX: 'left', anchorY: 'top', fontSize: 15, color: '#555', fixed: true});
+
+// the difference-quotient curve
+var curve = board.create('functiongraph', [g, hmin, hmax],
+    {strokeColor: '#0055bb', strokeWidth: 2.5});
+
+// faint dashed line at the limiting level (value deliberately NOT labelled)
+board.create('line', [[xL, hole], [xR, hole]],
+    {straightFirst: true, straightLast: true, strokeColor: '#c9c9c9',
+     strokeWidth: 1, dash: 2, fixed: true, highlight: false});
+
+// the removed point at h=0, drawn as an open circle
+board.create('point', [0, hole],
+    {name: '', size: 4, strokeColor: '#c62828', fillColor: '#ffffff',
+     strokeWidth: 2, fixed: true, highlight: false});
+board.create('text', [0.14, hole, 'undefined at \\(h=0\\)'],
+    {anchorX: 'left', anchorY: 'middle', fontSize: 13, color: '#c62828', fixed: true});
+
+// draggable point on the curve; the student slides it toward h=0
+var G = board.create('glider', [hmax * 0.8, g(hmax * 0.8), curve],
+    {name: '', size: 5, strokeColor: '#1565c0', fillColor: '#1565c0'});
+
+// live read-out; near h=0 the quotient is reported as undefined (0/0)
+board.create('text', [
+    function () { return board.getBoundingBox()[0] + 0.18; },
+    function () { return board.getBoundingBox()[1] - 0.18; },
+    function () {
+        var h = G.X(), q = G.Y();
+        var qstr = (Math.abs(h) < 0.015) ? 'undefined (0/0)' : q.toFixed(3);
+        return '<div style="background:rgba(255,255,255,0.92);padding:6px 10px;'
+            + 'border-radius:5px;font-size:14px;line-height:1.7;color:#222">'
+            + 'h = ' + h.toFixed(3) + '<br>'
+            + 'q(h) = ' + qstr + '</div>';
+    }
+], {useHTML: true, anchorX: 'left', anchorY: 'top', fixed: true});
+[[/jsxgraph]]
+<div>As \( h \to 0 \), the value of \( q(h) \) approaches (give your estimate to \(2\) decimal places): \( q(h) \to \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<div>Why can you <em>not</em> find the gradient by simply putting \( h = 0 \) into \( q(h) \)? [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p><strong>Now use algebra</strong>, for a general \( x \). Combine the numerator over the common denominator \( x(x+h) \), then cancel the factor of \( h \) to get:</p>
+<div>\( q(h) = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>
+<div>Take the limit as \( h \to 0 \): \( f'(x) = \) [[input:ans4]] [[validation:ans4]] [[feedback:prt4]]</div>
+<div>Hence the exact gradient at \( x = {@a@} \) is \( f'({@a@}) = \) [[input:ans5]] [[validation:ans5]] [[feedback:prt5]]</div>
+<p>Compare this exact value with the estimate you read from the graph.</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>For \( f(x) = {@fdisp@} \), form the difference quotient and combine over the common denominator \( x(x+h) \):</p>
+\[ \frac{f(x+h)-f(x)}{h} = \frac{\dfrac{ {@k@} }{x+h} - \dfrac{ {@k@} }{x}}{h} = \frac{ {@k@}\bigl(x-(x+h)\bigr)}{h\,x(x+h)} = \frac{ {@negk@}\,h}{h\,x(x+h)} = \frac{ {@negk@} }{x(x+h)}. \]
+<p>The factor of \( h \) cancels &mdash; which is exactly why you cannot put \( h = 0 \) at the start: before cancelling, that gives \( \tfrac{0}{0} \), an indeterminate form. Now let \( h \to 0 \), so \( x+h \to x \):</p>
+\[ f'(x) = \lim_{h\to 0} \frac{ {@negk@} }{x(x+h)} = \frac{ {@negk@} }{x\cdot x} = {@fpx@}. \]
+<p>At \( x = {@a@} \): \( f'({@a@}) = {@fpa@} \approx {@dispdp(holef,3)@} \), which matches the value the graph was closing in on.</p>
+<p>Notice \( f'(x) = {@fpx@} = {@negk@}\,x^{-2} \). This is the same result the <strong>power rule</strong> gives with \( n = -1 \), which you meet in the next section.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>5</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Design-backwards: f(x) = k/x chosen directly.
+   k in {-3,-2,-1,1,2,3} gives sign variety (f'>0 when k<0);
+   a in {2,3} keeps the hole legible and the asymptote (h=-a) off the drag range. */
+k : rand([-3,-2,-1,1,2,3]);
+a : rand([2,3]);
+fdisp : k/x;                  /* display of f(x) */
+negk  : -k;                   /* the numerator -k, for tidy worked-solution display */
+
+q_simp : -k/(x*(x+h));        /* simplified difference quotient (model answer ans3) */
+fpx    : -k/x^2;              /* f'(x) from first principles (model answer ans4) */
+fpa    : -k/a^2;              /* exact gradient at x=a (model answer ans5) */
+holef  : float(fpa);          /* numeric limit for the graph estimate (ans1) */
+
+/* wrong-answer variables for diagnostics and question tests */
+q_sign   : k/(x*(x+h));       /* sign slip: took x-(x+h) as +h */
+fpx_sign : k/x^2;             /* sign slip in f'(x) */
+fpa_sign : k/a^2;             /* sign slip at x=a */
+fpa_nosq : -k/a;              /* forgot to square the denominator */
+
+/* radio options: why can't we set h=0 in q(h)? */
+correctopt : 1;
+ta2 : [[1, true,  "It gives \\(\\dfrac{0}{0}\\), an indeterminate form."],
+       [2, false, "It gives \\(\\dfrac{k}{0}\\), which is infinite."],
+       [3, false, "It gives \\(0\\), so the gradient is \\(0\\)."]];
+
+/* JSXGraph geometry: h-domain and a value-window computed from the curve ends */
+hmin  : -1.3;                 /* asymptote at h=-a (a>=2), so >=0.7 clear */
+hmax  : 1.5;
+gEnd1 : float(-k/(a*(a+hmin)));
+gEnd2 : float(-k/(a*(a+hmax)));
+yvals : [gEnd1, gEnd2, holef, 0];   /* include 0 so the h-axis is on screen */
+yT : lmax(yvals) + 0.5;
+yB : lmin(yvals) - 0.5;
+xL : hmin - 0.3;
+xR : hmax + 0.3;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( f(x)={@fdisp@},\ a={@a@},\ f'(x)={@fpx@},\ f'({@a@})={@fpa@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>holef</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>radio</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>q_simp</tans>
+      <boxsize>14</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>diff</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>fpx</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>diff</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>algebraic</type>
+      <tans>fpa</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>diff</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Estimate close to the true limit?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>holef</tans>
+        <testoptions>0.02</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Yes &mdash; the quotient closes in on that value, and that is the gradient of \( f \) at \( x = {@a@} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Right magnitude but wrong sign?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>-holef</tans>
+        <testoptions>0.02</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Right size, wrong sign. Look again at whether the curve is rising or falling at \( x = {@a@} \) &mdash; is the gradient positive or negative there?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-miss</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not yet. Drag the blue point closer to \( h = 0 \) and read the value that \( q(h) \) is heading toward.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Chose 0/0 (correct)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Exactly &mdash; as \( h \to 0 \) the numerator \( f({@a@}+h)-f({@a@}) \) and the denominator \( h \) <em>both</em> go to \(0\), so you get \( \tfrac{0}{0} \), which tells you nothing until you simplify.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Chose k/0?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-inf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Not quite. The denominator \( h \to 0 \), but the numerator \( f({@a@}+h)-f({@a@}) \) also \( \to 0 \). So it is \( \tfrac{0}{0} \), not \( \tfrac{k}{0} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Chose 0?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-zero</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The numerator does \( \to 0 \), but so does the denominator \( h \). The ratio is \( \tfrac{0}{0} \) &mdash; indeterminate, not automatically \(0\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-miss</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Choose one of the options above.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>0</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Detect an un-cancelled h: if gcd(numerator, denominator) still involves h,
+   the student combined the fractions but did not cancel the common h. */
+gg : errcatch(gcd(num(ans3), denom(ans3)));
+notcancelled : if emptyp(gg) then false else not freeof(h, first(gg));
+nc : if notcancelled then 1 else 0;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Right value (equal to the simplified quotient)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>q_simp</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt3-0-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Common factor of h left un-cancelled?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nc</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-nocancel</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have combined the fractions, but a common factor of \( h \) is still on the top and bottom. Cancel it to leave a single fraction over \( x(x+h) \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Written as a single combined fraction?</description>
+        <answertest>SingleFrac</answertest>
+        <sans>ans3</sans>
+        <tans>q_simp</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Neat &mdash; combined over \( x(x+h) \) with the \( h \) cancelled.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.5</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-notsingle</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That is the right value, but write it as a <em>single</em> fraction over \( x(x+h) \).</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Sign slip (+h instead of -h in the numerator)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>q_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Sign slip. Over the common denominator the numerator is \( x-(x+h) = -h \), so the result is <em>negative</em>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-miss</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Combine \( \dfrac{ {@k@} }{x+h} - \dfrac{ {@k@} }{x} \) over the common denominator \( x(x+h) \); the numerator becomes \( -{@k@}h \), then cancel the \( h \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* lim3 = the limit of the student's own simplified quotient (carry-forward target). */
+lim3 : errcatch(limit(ans3, h, 0));
+lim3 : if emptyp(lim3) then und else first(lim3);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct derivative -k/x^2?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>fpx</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct &mdash; that is \( f'(x) \) for \( f(x) = {@fdisp@} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt4-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Carry-forward: the limit of the student's own q(h)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>lim3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-cf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have taken the limit of your own \( q(h) \) correctly, so this step earns full credit &mdash; but check \( q(h) \) above, as it was not quite right.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Stopped before the limit (same as their q(h))?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ans3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-nolimit</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have stopped one step early &mdash; this still contains \( h \). Let \( h \to 0 \) (so \( x+h \to x \)) to finish.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt4-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Sign slip in the derivative?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>fpx_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the sign. The numerator over the common denominator was \( -{@k@}h \), so \( f'(x) \) keeps that sign.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-miss</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>From the simplified quotient \( \dfrac{ {@negk@} }{x(x+h)} \), let \( h \to 0 \) to get \( f'(x) \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt5</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* sub4 = the student's own f'(x) (ans4) evaluated at x=a (carry-forward target). */
+sub4 : errcatch(ev(ans4, x=a));
+sub4 : if emptyp(sub4) then und else first(sub4);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct exact gradient at x=a?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>fpa</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Exactly &mdash; and it matches the value the graph was approaching (about \( {@dispdp(holef,3)@} \)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt5-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Carry-forward: the student's own f'(x) evaluated at x=a?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>sub4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-cf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have substituted \( x = {@a@} \) into your own \( f'(x) \) correctly, so this step earns full credit &mdash; but check \( f'(x) \) above, as it was not quite right.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt5-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Forgot to square the denominator?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>fpa_nosq</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-nosq</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Almost &mdash; substitute \( x = {@a@} \) into the \( f'(x) \) you found, and remember to <em>square</em> the denominator.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt5-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Sign slip at x=a?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>fpa_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Right size, wrong sign. Substitute \( x = {@a@} \) into \( f'(x) = {@fpx@} \), keeping the sign.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt5-miss</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Substitute \( x = {@a@} \) into the \( f'(x) \) you found in the previous step.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>holef</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>q_simp</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fpx</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>fpa</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Sign slip in q(h) carried through consistently: prt3 loses the mark, but prt4 and prt5 carry forward to full.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>-holef</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>q_sign</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fpx_sign</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>fpa_sign</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-sign</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-inf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-sign</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-cf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-cf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Forgot the limit on ans4 (left the simplified quotient).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>holef</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>q_simp</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>q_simp</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>fpa</value>
+      </testinput>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-nolimit</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description><![CDATA[MCQ misconception: chose "=0".]]></description>
+      <testinput>
+        <name>ans1</name>
+        <value>holef</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>3</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>q_simp</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fpx</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>fpa</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-zero</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Unsimplified ans3 (partial) and forgot-to-square ans5.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>holef</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>(k/(x+h) - k/x)/h</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fpx</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>fpa_nosq</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-notsingle</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-nosq</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Miss branches: off estimate and nonsense algebra (chosen so nothing carries forward).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>x</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>x^3</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-miss</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-miss</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-miss</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-miss</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Combined into one fraction but the common h is NOT cancelled (prt3-nocancel, partial).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>holef</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>-k*h/(h*x*(x+h))</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>fpx</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>fpa</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-nocancel</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-correct</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

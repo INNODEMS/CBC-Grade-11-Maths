@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Finding the time a ball will reach at a given height</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A ball is thrown vertically upwards from the top of a \({@h0@}\text{ m}\) high platform with an initial velocity of \({@vv@}\text{ m/s}\). Its height \(h\), in metres above the ground, after \(t\) seconds is given by \[ h = {@hexpr@}. \]</p>
+<p><strong>a)</strong> Find the different times at which the ball is \({@HH@}\text{ m}\) above the ground.</p>
+<p>Give the time as a set, for example \(\{a,\ b\}\):</p>
+<div>\( t = \) [[input:ans1]] seconds [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The ball is \({@HH@}\) m above the ground when \(h={@HH@}\):</p>
+\[
+\begin{align*}
+{@hexpr@} &= {@HH@}\\
+5t^2 - {@vv@}t + {@HH-h0@} &= 0\\
+t^2 - {@vv/5@}\,t + {@(HH-h0)/5@} &= 0\\
+(t-{@t1@})(t-{@t2@}) &= 0
+\end{align*}
+\]
+<p>so \(t={@t1@}\text{ s}\) or \(t={@t2@}\text{ s}\). The ball reaches \({@HH@}\) m on the way up at \(t={@t1@}\text{ s}\), and again on the way down at \(t={@t2@}\text{ s}\).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>t1 : rand_with_prohib(1,3,[]);        /* first time */
+t2 : t1 + rand_with_prohib(1,3,[]);   /* later time */
+vv : 5*(t1 + t2);                     /* initial velocity */
+h0 : rand_with_prohib(3,10,[]);       /* platform height */
+HH : h0 + 5*t1*t2;                    /* target height above ground */
+hexpr : h0 + vv*t - 5*t^2;            /* h(t) */
+ts : {t1, t2};                        /* the two times */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( h={@hexpr@}\), \(H={@HH@}\); \(t\in{@ts@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ts</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>solve</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct set of both times?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ts</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Did they give a set (both times)?</description>
+        <answertest>SameType</answertest>
+        <sans>ans1</sans>
+        <tans>ts</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-single</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The ball passes this height <em>twice</em> — once going up and once coming down. Give both times as a set, e.g. \(\{a,\ b\}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Set, but wrong values.</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ts</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Set the height equal to \({@HH@}\): \({@hexpr@}={@HH@}\). Rearrange to \(5t^2-{@vv@}t+{@HH-h0@}=0\) and solve for \(t\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>9001</deployedseed>
+    <deployedseed>9002</deployedseed>
+    <deployedseed>9003</deployedseed>
+    <deployedseed>9004</deployedseed>
+    <deployedseed>9005</deployedseed>
+    <deployedseed>9006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct set of both times</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ts</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Only one time (bare value)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>t1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-single</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Set, but wrong values</description>
+      <testinput>
+        <name>ans1</name>
+        <value>{t1, t2+1}</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-other</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

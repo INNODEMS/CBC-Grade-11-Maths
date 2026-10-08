@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Plot a factored quadratic and state the y-intercept</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A quadratic function is given by \[ y = {@qexpr@}\]</p>
+<p><strong>1) Plot it's graph</strong> by dragging the two green points along the \(x\)-axis to the \(x\)-intercepts (roots), and dragging the black point along the \(y\)-axis to the \(y\)-intercept.</p>
+[[jsxgraph input-ref-ans1="rP1" input-ref-ans2="rP2" input-ref-ans3="rP3" width="540px" height="540px"]]
+var XLO={#float(xlo)#}, XHI={#float(xhi)#}, YM={#float(ymag)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[XLO, YM, XHI, -YM], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+var P1 = brd.create('glider',[{#sp1#},0,brd.defaultAxes.x],{name:'',color:'#2ca02c',fillColor:'#2ca02c',size:5,snapToGrid:true,snapSizeX:1});
+var P2 = brd.create('glider',[{#sp2#},0,brd.defaultAxes.x],{name:'',color:'#2ca02c',fillColor:'#2ca02c',size:5,snapToGrid:true,snapSizeX:1});
+var P3 = brd.create('glider',[0,{#sp3y#},brd.defaultAxes.y],{name:'',color:'#000000',fillColor:'#000000',size:5,snapToGrid:true,snapSizeY:1});
+function Af(){ var pr=P1.X()*P2.X(); if (Math.abs(pr)<1e-6) return null; return P3.Y()/pr; }
+brd.create('functiongraph',[function(x){ var a=Af(); if (a===null) return NaN; return a*(x-P1.X())*(x-P2.X()); }, XLO, XHI],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+stack_jxg.bind_point(rP1, P1);
+stack_jxg.bind_point(rP2, P2);
+stack_jxg.bind_point(rP3, P3);
+[[/jsxgraph]]
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]] [[input:ans3]] [[validation:ans3]]</div>
+<div>[[feedback:prtPlot]]</div>
+<p><strong>2) State the \(y\)-intercept</strong> of the graph.</p>
+<div>\( y = \) [[input:ansYint]] [[validation:ansYint]] [[feedback:prtYint]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>How to plot \(y={@qexpr@}\):</strong></p>
+<ol>
+<li><p><strong>x-intercepts (roots).</strong></p>
+<p> The function is already factorised, so \(y=0\) when \(x={@r1@}\) or \(x={@r2@}\). </p>
+<p>Plot \(({@r1@},0)\) and \(({@r2@},0)\).</p></li>
+<li><p><strong>y-intercept.</strong></p>
+<p> Put \(x=0\): \[ y = {@a@}\,(0-({@r1@}))\,(0-({@r2@})) = {@cc@}. \] </p>
+<p>So the curve crosses the \(y\)-axis at \((0,\,{@cc@})\).</p></li>
+<li><p><strong>Direction &amp; vertex.</strong></p>
+<p> Since \(a={@a@}\), the parabola opens
+[[ if test="is(a>0)" ]] upwards [[ else ]] downwards [[/ if ]]; the vertex is halfway between the roots, at \(x={@vx@}\).</p></li>
+<li><p><strong>Sketch.</strong></p>
+<p> Draw a smooth parabola through the two roots and the y-intercept.</p></li>
+</ol>
+<p>The \(y\)-intercept is \({@cc@}\) and the graph is shown below.</p>
+[[jsxgraph width="500px" height="500px"]]
+var A={#a#}, R1={#r1#}, R2={#r2#}, CC={#cc#}, VX={#float(vx)#};
+var XLO={#float(xlo)#}, XHI={#float(xhi)#}, YM={#float(ymag)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[XLO, YM, XHI, -YM], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('functiongraph',[function(x){ return A*(x-R1)*(x-R2); }, XLO, XHI],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+brd.create('point',[R1,0],{name:'',fixed:true,color:'#2ca02c',fillColor:'#2ca02c',size:4});
+brd.create('point',[R2,0],{name:'',fixed:true,color:'#2ca02c',fillColor:'#2ca02c',size:4});
+brd.create('point',[0,CC],{name:'y-int',fixed:true,color:'#000000',fillColor:'#000000',size:4,label:{offset:[8,-2],cssStyle:'font-weight:bold'}});
+brd.create('point',[VX, A*(VX-R1)*(VX-R2)],{name:'',fixed:true,color:'#cc0000',fillColor:'#cc0000',size:3});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>a : rand([1,-1,2,-2]);
+r1 : rand([-3,-2,-1]);
+r2 : rand([1,2,3]);
+qexpr : a*(x-r1)*(x-r2);
+cc : a*r1*r2;
+vx : (r1+r2)/2;
+vy : a*(vx-r1)*(vx-r2);
+xlo : r1 - 2;
+xhi : r2 + 2;
+ymag : max(abs(vy), abs(cc), 6) + 3;
+sp1 : r1 - 1;
+sp2 : r2 + 1;
+sp3y : 3;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@qexpr@}\); roots \({@r1@},{@r2@}\), y-int \({@cc@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>[r1,0]</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>[r2,0]</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>[0,cc]</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansYint</name>
+      <type>numerical</type>
+      <tans>cc</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtPlot</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>x1 : round(ans1[1]); x2 : round(ans2[1]);
+p3y : round(ans3[2]);
+rootsok : if ((is(x1=r1) and is(x2=r2)) or (is(x1=r2) and is(x2=r1))) then 1 else 0;
+yiok : if is(p3y=cc) then 1 else 0;
+nplot : rootsok + yiok;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>both parts</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nplot</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtPlot-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtPlot-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>one part</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nplot</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtPlot-partial</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Part of the graph is right. The \(x\)-intercepts are at \(x={@r1@}\) and \(x={@r2@}\) (from the factors), and the \(y\)-intercept point is \((0,{@cc@})\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtPlot-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Set each factor to zero for the \(x\)-intercepts, and put \(x=0\) for the \(y\)-intercept, then drag the three points there.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtYint</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>y-intercept value</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansYint</sans>
+        <tans>cc</tans>
+        <testoptions>0.5</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtYint-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtYint-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The \(y\)-intercept is the value of \(y\) when \(x=0\): \(y={@a@}(0-({@r1@}))(0-({@r2@}))={@cc@}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>29001</deployedseed>
+    <deployedseed>29002</deployedseed>
+    <deployedseed>29003</deployedseed>
+    <deployedseed>29004</deployedseed>
+    <deployedseed>29005</deployedseed>
+    <deployedseed>29006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[r1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[r2,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[0,cc]</value>
+      </testinput>
+      <testinput>
+        <name>ansYint</name>
+        <value>cc</value>
+      </testinput>
+      <expected>
+        <name>prtPlot</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtPlot-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtYint</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtYint-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Roots right, y-intercept point wrong (partial); numeric y-int wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[r1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[r2,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[0,cc+3]</value>
+      </testinput>
+      <testinput>
+        <name>ansYint</name>
+        <value>cc+5</value>
+      </testinput>
+      <expected>
+        <name>prtPlot</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtPlot-partial</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtYint</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtYint-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Plot all wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[r1-1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[r2+1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[0,cc+4]</value>
+      </testinput>
+      <testinput>
+        <name>ansYint</name>
+        <value>cc</value>
+      </testinput>
+      <expected>
+        <name>prtPlot</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtPlot-other</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

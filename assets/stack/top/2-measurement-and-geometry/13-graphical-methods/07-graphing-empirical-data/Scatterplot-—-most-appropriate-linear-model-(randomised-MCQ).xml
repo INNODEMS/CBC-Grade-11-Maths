@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Scatterplot — most appropriate linear model (randomised MCQ)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The scatterplot below shows a set of data points.</p>
+[[jsxgraph width="520px" height="480px"]]
+var PX=[1,2,3,4,5,6];
+var PY=[{#y1#},{#y2#},{#y3#},{#y4#},{#y5#},{#y6#}];
+var XMAX=7, YMAX={#float(ymaxwin)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.6, YMAX, XMAX, -2], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[XMAX-0.1, -0.9, 'x'],{anchorX:'right',fixed:true,fontSize:14,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.12, YMAX-0.4, 'y'],{anchorX:'left',fixed:true,fontSize:14,cssStyle:'font-weight:bold;color:#333'});
+for (var i=0;i<6;i++){ brd.create('point',[PX[i],PY[i]],{name:'',fixed:true,color:'#000000',fillColor:'#000000',size:3}); }
+[[/jsxgraph]]
+<p>Which of the following equations is the most appropriate linear model for the data shown in the scatterplot?</p>
+<div>[[input:ansModel]] [[validation:ansModel]] [[feedback:prtModel]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>Read two things from the scatterplot.</strong></p>
+<ul>
+<li><strong>Direction (sign of the slope).</strong> The points are
+[[ if test="is(sgn=1)" ]] rising, so the slope is <strong>positive</strong>. [[ else ]] falling, so the slope is <strong>negative</strong>. [[/ if ]]</li>
+<li><strong>Intercept vs slope.</strong> The \(y\)-intercept (where the line meets the \(y\)-axis) is about \({@c@}\); the line changes by about \({@sm@}\) in \(y\) for each step of \(1\) in \(x\), so the slope has magnitude \({@sm@}\).</li>
+</ul>
+<p>So the most appropriate model is {#correctdisp#}: the constant is the intercept and the coefficient of \(x\) is the slope. Swapping them (using \({@sm@}\) as the intercept) or using the wrong sign gives the distractors.</p>
+[[jsxgraph width="480px" height="440px"]]
+var PX=[1,2,3,4,5,6];
+var PY=[{#y1#},{#y2#},{#y3#},{#y4#},{#y5#},{#y6#}];
+var C={#c#}, M={#float(m)#}, XMAX=7, YMAX={#float(ymaxwin)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.6, YMAX, XMAX, -2], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[XMAX-0.1, -0.9, 'x'],{anchorX:'right',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.12, YMAX-0.4, 'y'],{anchorX:'left',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[function(x){ return C + M*x; }, 0, XMAX-0.3],{strokeColor:'#cc0000', strokeWidth:2, highlight:false});
+for (var i=0;i<6;i++){ brd.create('point',[PX[i],PY[i]],{name:'',fixed:true,color:'#000000',fillColor:'#000000',size:3}); }
+brd.create('point',[0,C],{name:'',fixed:true,color:'#cc0000',size:3});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[sm : rand([2, 2.5, 3]);
+off : rand([1, 2, 3]);
+c : 6*sm + off;                 /* intercept (larger number); keeps decreasing data positive */
+sgn : rand([-1, 1]);
+m : sgn*sm;
+y1 : round(c + m*1 + rand([-1,0,1]));
+y2 : round(c + m*2 + rand([-1,0,1]));
+y3 : round(c + m*3 + rand([-1,0,1]));
+y4 : round(c + m*4 + rand([-1,0,1]));
+y5 : round(c + m*5 + rand([-1,0,1]));
+y6 : round(c + m*6 + rand([-1,0,1]));
+ymaxwin : max(c, y1, y2, y3, y4, y5, y6) + 3;
+o1 : c + sm*x;    /* right numbers, positive slope */
+o2 : c - sm*x;    /* right numbers, negative slope */
+o3 : sm + c*x;    /* swapped intercept/slope, positive */
+o4 : sm - c*x;    /* swapped, negative */
+correctexpr : c + m*x;
+wrongsign : if is(sgn=1) then o2 else o1;
+disp1 : sconcat("\\(y = ", c, " + ", sm, "x\\)");
+disp2 : sconcat("\\(y = ", c, " - ", sm, "x\\)");
+disp3 : sconcat("\\(y = ", sm, " + ", c, "x\\)");
+disp4 : sconcat("\\(y = ", sm, " - ", c, "x\\)");
+correctdisp : if is(sgn=1) then disp1 else disp2;
+mcopts : random_permutation([[o1, is(sgn=1), disp1], [o2, is(sgn=-1), disp2], [o3, false, disp3], [o4, false, disp4]]);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>c={@c@}, sm={@sm@}, sgn={@sgn@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ansModel</name>
+      <type>radio</type>
+      <tans>mcopts</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtModel</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct model?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansModel</sans>
+        <tans>correctexpr</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtModel-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtModel-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Right numbers, wrong sign?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansModel</sans>
+        <tans>wrongsign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtModel-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have the right numbers, but check the direction of the trend: the points are [[ if test="is(sgn=1)" ]] rising, so the slope should be positive [[ else ]] falling, so the slope should be negative [[/ if ]].</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtModel-swap</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>You have swapped the intercept and the slope. The \(y\)-intercept (where the line crosses the \(y\)-axis) is the constant term, and the slope (the smaller number here) multiplies \(x\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>24001</deployedseed>
+    <deployedseed>24002</deployedseed>
+    <deployedseed>24003</deployedseed>
+    <deployedseed>24004</deployedseed>
+    <deployedseed>24005</deployedseed>
+    <deployedseed>24006</deployedseed>
+    <deployedseed>24007</deployedseed>
+    <deployedseed>24008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct model</description>
+      <testinput>
+        <name>ansModel</name>
+        <value>correctexpr</value>
+      </testinput>
+      <expected>
+        <name>prtModel</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtModel-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Right numbers, wrong sign</description>
+      <testinput>
+        <name>ansModel</name>
+        <value>wrongsign</value>
+      </testinput>
+      <expected>
+        <name>prtModel</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtModel-sign</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Swapped intercept/slope</description>
+      <testinput>
+        <name>ansModel</name>
+        <value>o3</value>
+      </testinput>
+      <expected>
+        <name>prtModel</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtModel-swap</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
