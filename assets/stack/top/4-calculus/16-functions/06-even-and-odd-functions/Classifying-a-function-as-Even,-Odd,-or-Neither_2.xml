@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Classifying a function as Even, Odd, or Neither</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Consider the function</p>
+<p>\[ k(x) = \dfrac{ {@numer@} }{ {@denom@} }. \]</p>
+[[jsxgraph width="420px" height="300px"]]
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-4, 8, 4, -8],
+    axis: true,
+    showCopyright: false,
+    showNavigation: false
+});
+var f = board.jc.snippet('{#expr#}', true, 'x', true);
+board.create('functiongraph', [f, -4, 4], {strokeColor: '#1565c0', strokeWidth: 2});
+[[/jsxgraph]]
+<p><strong>(a)</strong> Find and fully simplify \(k(-x)\).</p>
+<div>\( k(-x) = \) [[input:ans1]] [[validation:ans1]]</div>
+<p><strong>(b)</strong> Hence classify \(k(x)\) as Even, Odd, or Neither.</p>
+<div>\( k(x) \) is [[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prt1]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Substituting \(-x\) for every occurrence of \(x\):</p>
+\[ k(-x) = \dfrac{ {@numer@} }{ {@denom@} }\Big|_{x \to -x} = {@fnegx@}. \]
+<p>Remember: a term with an <strong>even</strong> power of \(x\) (including a constant, which is \(x^0\)) is unchanged when \(x\to -x\), because \((-x)^{\text{even}}=x^{\text{even}}\). A term with an <strong>odd</strong> power of \(x\) changes sign, because \((-x)^{\text{odd}}=-x^{\text{odd}}\).</p>
+<p>Comparing \(k(-x)\) to \(k(x)\):</p>
+<ul>
+<li>If \(k(-x)=k(x)\), the function is <strong>Even</strong>.</li>
+<li>If \(k(-x)=-k(x)\), the function is <strong>Odd</strong>.</li>
+<li>Otherwise, it is <strong>Neither</strong>.</li>
+</ul>
+<p>In this case, \(k(x)\) is <strong>{@classlabel@}</strong>.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[a  : rand_with_prohib(1,5,[]);
+b  : rand_with_prohib(1,5,[]);
+c  : rand_with_prohib(1,5,[]);
+d  : rand_with_prohib(1,5,[]);
+ff : rand_with_prohib(1,5,[]);
+g  : rand_with_prohib(1,5,[]);
+h  : rand_with_prohib(1,5,[]);
+scenario : rand(3);                        /* 0 = even, 1 = odd, 2 = neither */
+e1 : if scenario=0 then 1 elseif scenario=1 then 0 else 1;
+e2 : if scenario=0 then 0 elseif scenario=1 then 1 else 1;
+numer : e1*(a*x^4+b*x^2+c) + e2*(d*x^3+ff*x);
+denom : g*x^2+h;
+expr : numer/denom;
+fnegx : ratsimp(subst(x=-x,expr));
+is_even : is(ratsimp(fnegx-expr)=0);
+is_odd  : is(ratsimp(fnegx+expr)=0);
+even_opt : "even"; odd_opt : "odd"; neither_opt : "neither";
+classatom  : if is_even then even_opt elseif is_odd then odd_opt else neither_opt;
+classlabel : if is_even then "Even" elseif is_odd then "Odd" else "Neither";
+classopts  : [[even_opt, is_even, "Even"],[odd_opt, is_odd, "Odd"],[neither_opt, not(is_even) and not(is_odd), "Neither"]];
+/* common wrong substitutions for part (a) */
+wrong_noflip    : expr;                                              /* forgot to substitute at all */
+wrong_overflip  : -expr;                                             /* flipped every term, even the even-power ones */
+wrong_constflip : (e1*(a*x^4+b*x^2-c)+e2*(d*x^3+ff*x))/denom;        /* wrongly flipped the sign of the constant term */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>k(x) = ({@numer@})/({@denom@}) is {@classlabel@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="description">Grade 11 Functions, Section 16.6 (Even and Odd Functions). The scenario (Even/Odd/Neither) and the model answer for k(-x) are both derived automatically by the CAS from the same general expression, so the question is self-verifying for every random variant. Tests the common misconceptions that (i) students forget to substitute -x at all, (ii) students flip the sign of every term including even powers, and (iii) students wrongly flip the sign of the constant term.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>fnegx</tans>
+      <boxsize>25</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>2</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>subst</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>dropdown</type>
+      <tans>classopts</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Is k(-x) fully and correctly simplified?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>fnegx</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-0-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Did the student forget to substitute -x at all?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_noflip</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-noflip</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is identical to \(k(x)\) &#8212; it looks like you didn't substitute \(-x\) in for \(x\) at all. Replace every \(x\) with \((-x)\) and simplify.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Did the student flip the sign of every term, including even powers?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_overflip</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-overflip</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Not every term changes sign. Only terms with an <strong>odd</strong> power of \(x\) change sign; terms with an even power (like \(x^2\), \(x^4\), or a constant) stay the same, because \((-x)^{\text{even}}=x^{\text{even}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Did the student wrongly flip the sign of the constant term?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_constflip</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-constflip</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the constant term again: a constant is \(x^0\), which has an <strong>even</strong> power, so it never changes sign under \(x \to -x\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrongvalue</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That is not equivalent to \(k(-x)\). Substitute \(-x\) for every \(x\) in \(k(x)\) and simplify carefully, term by term.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Is the Even/Odd/Neither classification correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>classatom</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Compare your simplified \(k(-x)\) from part (a) with \(k(x)\): if they are identical, the function is Even; if \(k(-x)=-k(x)\), it is Odd; otherwise it is Neither.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Fully correct: k(-x) and classification both right</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fnegx</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>classatom</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-0-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot to substitute -x (copied k(x))</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_noflip</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>classatom</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-noflip</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Flipped every term's sign, including even powers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_overflip</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>classatom</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.2000000</expectedpenalty>
+        <expectedanswernote>prt1-overflip</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Wrongly flipped the sign of the constant term</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_constflip</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>classatom</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3000000</expectedpenalty>
+        <expectedanswernote>prt1-constflip</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Correct algebra but wrong classification chosen</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fnegx</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>if classatom=even_opt then odd_opt else even_opt</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-0-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

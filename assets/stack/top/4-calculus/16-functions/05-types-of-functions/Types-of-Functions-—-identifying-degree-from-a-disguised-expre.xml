@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Types of Functions — identifying degree from a disguised expression</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Consider the expression, written in a slightly unusual form:</p>
+<p>\[ y = {@displayexpr@}. \]</p>
+<p>Once fully expanded, what <strong>type</strong> of function is this?</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Expanding fully: \( {@displayexpr@} = {@degexpr@} \).</p>
+<p>The highest power of \(x\) that appears (the degree) tells you the type: degree 1 is linear, degree 2 is quadratic, degree 3 is cubic. Here the degree is {@deg@}, so this is {@ftype_opt@}.</p>
+<p>Don't judge the type from how the expression <em>looks</em> before expanding &#8212; a product of factors can hide a lower (or higher) degree than you might expect, and terms can cancel.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[scenario : rand(3);              /* 0: linear disguised, 1: quadratic disguised, 2: cubic disguised */
+a : rand_with_prohib(1,4,[]);
+b : rand_with_prohib(1,9,[]);
+c : rand_with_prohib(1,9,[]);
+rawexpr : if scenario=0 then (a*x+b)-(a*x-c)                     /* the x^1 terms cancel! looks linear, IS constant... use a safer disguised-linear */
+          elseif scenario=1 then (x+a)*(x-a)+b*x
+          else (x+a)*(x-a)*(x+b);
+/* safer scenario 0: a genuine disguised linear (product of a linear and a constant factor) */
+rawexpr : if scenario=0 then a*(x+b)-a*x+c*x
+          elseif scenario=1 then (x+a)*(x-a)+b*x
+          else (x+a)*(x-a)*(x+b);
+degexpr : expand(rawexpr);
+deg : hipow(degexpr,x);
+ftype_opt : if deg=1 then "linear" elseif deg=2 then "quadratic" else "cubic";
+opts : [["linear", deg=1, "Linear"],["quadratic", deg=2, "Quadratic"],["cubic", deg=3, "Cubic"]];
+displayexpr : if scenario=0 then sconcat(a,"(x+",b,") - ",a,"x + ",c,"x")
+              elseif scenario=1 then sconcat("(x+",a,")(x-",a,") + ",b,"x")
+              else sconcat("(x+",a,")(x-",a,")(x+",b,")");]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.5 (Types of Functions). Classifies a function by degree after full expansion; the unexpanded form is deliberately deceptive (a difference of squares, or terms that partially canc</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="description">Grade 11 Functions 16.5 (Types of Functions). Classifies a function by degree after full expansion; the unexpanded form is deliberately deceptive (a difference of squares, or terms that partially cancel) so that judging by appearance alone leads to the wrong answer.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>dropdown</type>
+      <tans>opts</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct function type after fully expanding?</description>
+        <answertest>String</answertest>
+        <sans>ans1</sans>
+        <tans>ftype_opt</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[Expand the expression fully first, then look at the highest power of \(x\) that remains &#8212; don't judge the type from the unexpanded form.]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ftype_opt</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong type guessed from unexpanded form</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[if ftype_opt="cubic" then "quadratic" else "cubic"]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

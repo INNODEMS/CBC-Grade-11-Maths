@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Solving a linear inequality requiring a sign reversal</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Solve the following inequality for \(x\):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle {@a@} - {@b@}x > {@c@} \)
+</p>
+<p><i>(Enter your answer as an inequality. Use <b>&lt;</b> for less than and <b>&gt;</b> for greater than. For example, <code>x < 5</code>)</i></p>
+<p>Equation: [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+<p>To solve the inequality, we need to isolate \(x\).</p>
+
+<p>First, we group the constant terms on the right side by subtracting \({@a@}\) from both sides.</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+-{@b@}x &> {@c@} - ({@a@}) \\
+-{@b@}x &> {@c - a@}
+\end{aligned} \)
+</p>
+
+<p>Next, we divide both sides by \(-{@b@}\).</p>
+<p><i><b>Crucial Rule:</b> Because we are dividing by a negative number, we must <b>reverse</b> the inequality sign.</i></p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+x &< \frac{{@c - a@}}{-{@b@}} \\
+x &< {@x_val@}
+\end{aligned} \)
+</p>
+
+<p>Hence, the correct solution for this inequality is:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{x < {@x_val@}} \)
+</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Reverse engineer to ensure clean integer answers */
+x_val : rand_with_step(-5, 6, 1);
+
+/* We will use a negative coefficient to force the student to flip the inequality sign */
+b : rand_with_step(2, 6, 1); 
+a : rand_with_step(-8, 12, 1);
+
+/* We want the equation to be a - b * x > c */
+c : a - b * x_val;
+
+/* Teacher's exact answer */
+ta1 : x < x_val;
+
+/* Mistake Catchers */
+/* Mistake 1: Forgot to flip the inequality sign */
+mistake_sign : x > x_val;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>\({@a@} - {@b@}x > {@c@} \implies {@ta1@}\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Simple Inequalities (Negative Coefficients)</p>
+<p id="description">Grade 11 CBE: Solving a basic linear inequality requiring the reversal of the inequality sign when dividing by a negative coefficient.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they forgot to flip the sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>mistake_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your numerical value is correct, but you have the wrong inequality sign. <b>Remember:</b> When you divide both sides of an inequality by a negative number, you must reverse the inequality symbol.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1107759462</deployedseed>
+    <deployedseed>1503664143</deployedseed>
+    <deployedseed>512480161</deployedseed>
+    <deployedseed>796665899</deployedseed>
+    <deployedseed>2059279626</deployedseed>
+    <deployedseed>1560347183</deployedseed>
+    <deployedseed>1271833496</deployedseed>
+    <deployedseed>306026953</deployedseed>
+    <deployedseed>687842654</deployedseed>
+    <deployedseed>213613350</deployedseed>
+    <deployedseed>1761462729</deployedseed>
+    <deployedseed>992373708</deployedseed>
+    <deployedseed>1461810856</deployedseed>
+    <deployedseed>1264473645</deployedseed>
+    <deployedseed>1700829839</deployedseed>
+    <deployedseed>317780110</deployedseed>
+    <deployedseed>790853196</deployedseed>
+    <deployedseed>1257289230</deployedseed>
+    <deployedseed>2118057577</deployedseed>
+    <deployedseed>468417337</deployedseed>
+    <deployedseed>624179687</deployedseed>
+    <deployedseed>1548782377</deployedseed>
+    <deployedseed>2022090801</deployedseed>
+    <deployedseed>225840377</deployedseed>
+    <deployedseed>1245503659</deployedseed>
+    <deployedseed>2023527169</deployedseed>
+    <deployedseed>1567313491</deployedseed>
+    <deployedseed>1512489103</deployedseed>
+    <deployedseed>946205911</deployedseed>
+    <deployedseed>134033622</deployedseed>
+    <deployedseed>924628505</deployedseed>
+    <deployedseed>62385256</deployedseed>
+    <deployedseed>301539410</deployedseed>
+    <deployedseed>513196904</deployedseed>
+    <deployedseed>1678993498</deployedseed>
+    <deployedseed>968028773</deployedseed>
+    <deployedseed>299170760</deployedseed>
+    <deployedseed>1215581163</deployedseed>
+    <deployedseed>1750555755</deployedseed>
+    <deployedseed>700732584</deployedseed>
+    <deployedseed>1965363047</deployedseed>
+    <deployedseed>1080402455</deployedseed>
+    <deployedseed>1959070873</deployedseed>
+    <deployedseed>1790774961</deployedseed>
+    <deployedseed>894057654</deployedseed>
+    <deployedseed>539466804</deployedseed>
+    <deployedseed>1628091795</deployedseed>
+    <deployedseed>783116897</deployedseed>
+    <deployedseed>354325874</deployedseed>
+    <deployedseed>455946945</deployedseed>
+    <deployedseed>733694415</deployedseed>
+    <deployedseed>1102819347</deployedseed>
+    <deployedseed>1123112074</deployedseed>
+    <deployedseed>1307343539</deployedseed>
+    <deployedseed>1065230561</deployedseed>
+    <deployedseed>1609488778</deployedseed>
+    <deployedseed>1006801302</deployedseed>
+    <deployedseed>1738840898</deployedseed>
+    <deployedseed>40735041</deployedseed>
+    <deployedseed>392658147</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct Answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot to flip sign</description>
+      <testinput>
+        <name>ans1</name>
+        <value>mistake_sign</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

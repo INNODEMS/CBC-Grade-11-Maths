@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>quiz 2</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Consider the following numbers and tick the box next to every one that is <strong>irrational</strong>.</p>
+<p>[[input:ans1]][[validation:ans1]] [[feedback:prt1]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p>{@n1@} and {@n2@} are rational: one is a whole number, the other a ratio of two integers.</p>
+
+<p>\( \sqrt{ {@n3_base@}^2 } = {@n3@} \) <strong>looks</strong> irrational because of the square root symbol, but \( {@n3_base@}^2 \) is a perfect square, so it simplifies to a whole number - it is rational.</p>
+
+<p>\( \sqrt{ {@n4_base@} } \) and \( \sqrt{ {@n5_base@} } \) are irrational, because {@n4_base@} and {@n5_base@} are not perfect squares, so their square roots cannot be simplified to integers or fractions.</p>
+
+<p>\( \pi \) is irrational - it is a well-known non-repeating, non-terminating decimal.</p>
+
+<p><strong>Always simplify a number fully before deciding whether it is rational or irrational.</strong></p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>perfect_squares: [1,4,9,16,25,36,49,64,81,100];
+
+n1: rand(10)+1;
+n2: (rand(8)+1)/(rand(6)+10);
+
+n3_base: (rand(5)+2)^2;
+n3: block([simp: false], sqrt(n3_base)^2)
+
+n4_base: rand(20)+2;
+while member(n4_base, perfect_squares) do n4_base: rand(20)+2;
+n4: block([simp: false], sqrt(n4_base))
+
+n5_base: rand(20)+2;
+while member(n5_base, perfect_squares) or n5_base = n4_base do n5_base: rand(20)+2;
+n5: block([simp: false], sqrt(n5_base))
+
+n6: %pi;
+
+allpairs: [
+  [n1, false], [n2, false], [n3, false],
+  [n4, true],  [n5, true],  [n6, true]
+]
+
+shuffle_list(lst) := block(
+  [n: length(lst), l: lst, i, j, tmp],
+  for i: n thru 2 step -1 do (
+    j: rand(i)+1,
+    tmp: l[i], l[i]: l[j], l[j]: tmp
+  ),
+  l
+)
+
+ta1: shuffle_list(allpairs)
+
+/* separate variable purely for grading */
+correctvals: map(lambda([p], p[1]), sublist(allpairs, lambda([p], p[2])))</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta1@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>checkbox</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>correctvals</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>958524194</deployedseed>
+    <deployedseed>902042530</deployedseed>
+    <deployedseed>418586368</deployedseed>
+    <deployedseed>1014035468</deployedseed>
+    <deployedseed>1618645769</deployedseed>
+    <deployedseed>1018969305</deployedseed>
+    <deployedseed>831946133</deployedseed>
+    <deployedseed>536556005</deployedseed>
+    <deployedseed>192875662</deployedseed>
+    <deployedseed>2011455454</deployedseed>
+    <deployedseed>1317675472</deployedseed>
+    <deployedseed>1218757766</deployedseed>
+    <deployedseed>501482412</deployedseed>
+    <deployedseed>1832378551</deployedseed>
+    <deployedseed>1382874979</deployedseed>
+    <deployedseed>1476742659</deployedseed>
+    <deployedseed>34094860</deployedseed>
+    <deployedseed>1178662494</deployedseed>
+    <deployedseed>1617150957</deployedseed>
+    <deployedseed>496433700</deployedseed>
+  </question>
+</quiz>

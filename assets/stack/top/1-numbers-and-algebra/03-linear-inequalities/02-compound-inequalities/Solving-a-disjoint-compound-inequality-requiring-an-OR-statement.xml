@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Solving a disjoint compound inequality requiring an OR statement</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Solve each part of the following compound inequality:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle {@a@}x - {@b@} \le {@c@} \qquad \text{OR} \qquad {@d@}x + {@e@} > {@f@} \)
+</p>
+<p><i>(Enter the boundary values in the boxes below.)</i></p>
+<p>\( x \le \) [[input:ans1]] &nbsp;&nbsp;&nbsp; <b>OR</b> &nbsp;&nbsp;&nbsp; \( x > \) [[input:ans2]]</p>
+
+<div><b>First boundary:</b> [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>Second boundary:</b> [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+<p>For an "OR" compound inequality, we solve each linear inequality completely separately.</p>
+
+<p>First, we solve the left inequality:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@a@}x - {@b@} &\le {@c@} \\
+{@a@}x &\le {@c@} + {@b@} \\
+{@a@}x &\le {@c + b@} \\
+x &\le \frac{{@c + b@}}{{@a@}} \\
+x &\le {@ta1@}
+\end{aligned} \)
+</p>
+
+<p>Next, we solve the right inequality:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@d@}x + {@e@} &> {@f@} \\
+{@d@}x &> {@f@} - {@e@} \\
+{@d@}x &> {@f - e@} \\
+x &> \frac{{@f - e@}}{{@d@}} \\
+x &> {@ta2@}
+\end{aligned} \)
+</p>
+
+<p>Hence, the solution is the combination of both regions:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{x \le {@ta1@} \quad \text{OR} \quad x > {@ta2@}} \)
+</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Reverse engineer to ensure clean integer limits */
+ta1 : rand_with_step(-2, 3, 1);
+ta2 : rand_with_step(5, 10, 1);
+
+/* First Equation: ax - b <= c  => ax <= c+b => x <= ta1 */
+a : rand_with_step(2, 5, 1);
+b : rand_with_step(1, 8, 1);
+c : a * ta1 - b;
+
+/* Second Equation: dx + e > f => dx > f-e => x > ta2 */
+d : rand_with_step(2, 5, 1);
+e : rand_with_step(1, 8, 1);
+f : d * ta2 + e;
+
+/* Mistake Catchers */
+m1_ans1 : (c - b) / a; /* subbed instead of added */
+m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>\(x \le {@ta1@} \text{ OR } x > {@ta2@}\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Compound Inequalities (Disjoint "OR")</p>
+<p id="description">Grade 11 CBE: Solving a disjoint compound inequality by treating the two conditions as separate algebraic statements.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of left boundary</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check wrong sign operation</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>m1_ans1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your algebra on the left inequality. To group the constants, you must <b>add</b> \({@b@}\) to both sides, not subtract it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of right boundary</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check wrong sign operation</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>m1_ans2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your algebra on the right inequality. To group the constants, you must <b>subtract</b> \({@e@}\) from both sides, not add it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>627741962</deployedseed>
+    <deployedseed>146873967</deployedseed>
+    <deployedseed>1254265393</deployedseed>
+    <deployedseed>1244619893</deployedseed>
+    <deployedseed>441881085</deployedseed>
+    <deployedseed>1865742890</deployedseed>
+    <deployedseed>605377506</deployedseed>
+    <deployedseed>2084467803</deployedseed>
+    <deployedseed>362057514</deployedseed>
+    <deployedseed>263308590</deployedseed>
+    <deployedseed>1133281944</deployedseed>
+    <deployedseed>417341625</deployedseed>
+    <deployedseed>622346851</deployedseed>
+    <deployedseed>1610026348</deployedseed>
+    <deployedseed>983387385</deployedseed>
+    <deployedseed>1354380193</deployedseed>
+    <deployedseed>761741158</deployedseed>
+    <deployedseed>2065540881</deployedseed>
+    <deployedseed>1053456479</deployedseed>
+    <deployedseed>423794818</deployedseed>
+    <deployedseed>973101319</deployedseed>
+    <deployedseed>1201174398</deployedseed>
+    <deployedseed>975169818</deployedseed>
+    <deployedseed>1507837851</deployedseed>
+    <deployedseed>1348020450</deployedseed>
+    <deployedseed>1629976146</deployedseed>
+    <deployedseed>487983623</deployedseed>
+    <deployedseed>251264790</deployedseed>
+    <deployedseed>1914034935</deployedseed>
+    <deployedseed>1411715492</deployedseed>
+    <deployedseed>1993051095</deployedseed>
+    <deployedseed>1176353660</deployedseed>
+    <deployedseed>1960962360</deployedseed>
+    <deployedseed>286720916</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both limits correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong operations applied to the constants</description>
+      <testinput>
+        <name>ans1</name>
+        <value>m1_ans1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>m1_ans2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Generic wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

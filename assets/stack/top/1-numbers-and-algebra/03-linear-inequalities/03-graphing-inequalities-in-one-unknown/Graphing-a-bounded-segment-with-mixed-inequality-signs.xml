@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Graphing a bounded segment with mixed inequality signs</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Solve the following compound inequality for \(x\):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle {@L@} < {@a@}x - {@b@} \le {@U@} \)
+</p>
+
+<p><b>a) The algebraic Solution:</b></p>
+<p><i>(Enter the numerical bounds in the boxes below.)</i></p>
+
+<p>[[input:ans1]] \( < x \le \) [[input:ans2]]</p>
+<div><b>Lower Limit:</b> [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>Upper Limit:</b> [[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>b)</b> Represent this solution interval on the number line below. Drag the two points to the correct boundary values.</p>
+<p><i>(Note: The left boundary is a strict inequality (\(<\)), so the <b>open (unshaded) circle</b> is used. The right boundary is an inclusive inequality (\(\le\)), so the <b>closed (shaded) circle</b> is used.)</i></p>
+
+[[jsxgraph input-ref-ans3="rP1" input-ref-ans4="rP2" width="600px" height="120px"]]
+var lower_val = {#lower_val#};
+var upper_val = {#upper_val#};
+
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-8, 2, 8, -2],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+/* Draw the number line axis */
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'x', withLabel: true, label: {position: 'rt', offset: [-5, 15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [0, -15]}, insertTicks: false,
+        ticksDistance: 1, minorTicks: 0, majorHeight: 10, drawZero: true
+    }
+});
+
+/* Create an invisible track segment from -7 to 7 to prevent gliders from going past the arrows */
+var track = brd.create('segment', [[-7, 0], [7, 0]], {visible: false});
+
+/* Open circle for the strict lower bound, attached to the invisible track */
+var p1 = brd.create('glider', [lower_val - 2, 0, track], {
+    name: '', size: 5, strokeColor: '#1565c0', fillColor: '#ffffff', strokeWidth: 2, snapToGrid: true, snapSizeX: 1
+});
+
+/* Closed circle for the inclusive upper bound, attached to the invisible track */
+var p2 = brd.create('glider', [upper_val + 2, 0, track], {
+    name: '', size: 5, strokeColor: '#1565c0', fillColor: '#1565c0', strokeWidth: 2, snapToGrid: true, snapSizeX: 1
+});
+
+/* Draw the bounded segment connecting the two gliders */
+brd.create('segment', [p1, p2], {
+    strokeWidth: 4, strokeColor: '#1565c0', highlight: false
+});
+
+/* Bind the points to hidden STACK inputs */
+stack_jxg.bind_point(rP1, p1);
+stack_jxg.bind_point(rP2, p2);
+stack_jxg.starts_moved(p1);
+stack_jxg.starts_moved(p2);
+[[/jsxgraph]]
+
+<div style="display:none">
+[[input:ans3]] [[validation:ans3]]
+[[input:ans4]] [[validation:ans4]]
+</div>
+<div>[[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: The algebraic Solution</b></p>
+<p>To solve the continuous compound inequality, we isolate \(x\) by applying operations to all three parts simultaneously.</p>
+<p>First, we group the constant terms by adding \({@b@}\) to all three parts:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@L@} + {@b@} &< {@a@}x \le {@U@} + {@b@} \\
+{@L + b@} &< {@a@}x \le {@U + b@}
+\end{aligned} \)
+</p>
+<p>Next, we divide all three parts by the coefficient of \(x\), which is \({@a@}\):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+\frac{{@L + b@}}{{@a@}} &< x \le \frac{{@U + b@}}{{@a@}} \\
+{@ta1@} &< x \le {@ta2@}
+\end{aligned} \)
+</p>
+<p>Hence, the correct algebraic solution is:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{{@ta1@} < x \le {@ta2@}} \)
+</p>
+
+<p><b>Part b: Graphical Representation</b></p>
+<p>To represent this on a number line, we must match the circles to the specific inequality signs:</p>
+<ul>
+<li>For the lower limit \({@ta1@}\), the inequality is strict (\(<\)), so we use an <b>open (unshaded) circle</b>.</li>
+<li>For the upper limit \({@ta2@}\), the inequality is inclusive (\(\le\)), so we use a <b>closed (shaded) circle</b>.</li>
+</ul>
+<p>We then draw a solid line segment connecting the two circles.</p>
+
+[[jsxgraph width="600px" height="120px"]]
+var lower_val = {#lower_val#};
+var upper_val = {#upper_val#};
+
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-8, 2, 8, -2],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'x', withLabel: true, label: {position: 'rt', offset: [-5, 15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [0, -15]}, insertTicks: false,
+        ticksDistance: 1, minorTicks: 0, majorHeight: 10, drawZero: true
+    }
+});
+
+var p1 = brd.create('point', [lower_val, 0], {visible: false});
+var p2 = brd.create('point', [upper_val, 0], {visible: false});
+brd.create('segment', [p1, p2], {strokeWidth: 4, strokeColor: '#1565c0', highlight: false});
+
+brd.create('point', [lower_val, 0], {name: '', size: 5, strokeColor: '#1565c0', fillColor: '#ffffff', strokeWidth: 2, fixed: true, highlight: false});
+brd.create('point', [upper_val, 0], {name: '', size: 5, strokeColor: '#1565c0', fillColor: '#1565c0', strokeWidth: 2, fixed: true, highlight: false});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Reverse engineer to ensure clean integer limits */
+lower_val : rand_with_step(-5, -1, 1);
+upper_val : rand_with_step(1, 5, 1);
+
+a : rand_with_step(2, 5, 1);
+b : rand_with_step(1, 7, 1);
+
+/* Calculate outer bounds to form L < ax - b <= U */
+L : a * lower_val - b;
+U : a * upper_val - b;
+
+/* Target Answers */
+ta1 : lower_val;
+ta2 : upper_val;
+ta3 : [lower_val, 0]; /* The open circle glider */
+ta4 : [upper_val, 0]; /* The closed circle glider */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>\({@L@} < {@a@}x - {@b@} \le {@U@} \implies {@ta1@} < x \le {@ta2@}\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Graphing Inequalities in One Unknown (Mixed Bounds)</p>
+<p id="description">Grade 11 CBE: Solving a compound inequality and representing a bounded segment using one open circle and one closed circle.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>ta4</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of lower limit</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of upper limit</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Extract the x-coordinates. Open circle is graph_open, Closed circle is graph_closed */
+graph_open : ans3[1];
+graph_closed : ans4[1];</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if dragged points match correct boundaries exactly</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>[graph_open, graph_closed]</sans>
+        <tans>[ta1, ta2]</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your graphical representation is completely correct, with the open and closed circles placed accurately.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they swapped the circles but hit the right numbers</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>[graph_open, graph_closed]</sans>
+        <tans>[ta2, ta1]</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You graphed the segment perfectly between the correct numbers, but you swapped the circles! <b>Remember:</b> The lower limit has a strict inequality sign (\(<\)), so it needs the <b>open</b> circle. The upper limit has an inclusive sign (\(\le\)), so it needs the <b>closed</b> circle.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if graph matches their wrong algebra (Follow through)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>[graph_open, graph_closed]</sans>
+        <tans>[ans1, ans2]</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your graph matches your algebraic answers above perfectly, but because your algebraic limits are incorrect, the graph segment is drawn in the wrong place.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your segment is graphed at the wrong boundaries. Ensure the two blue points match the algebraic limits you found in Part a.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>824180129</deployedseed>
+    <deployedseed>1719665046</deployedseed>
+    <deployedseed>15472570</deployedseed>
+    <deployedseed>1895334418</deployedseed>
+    <deployedseed>1172764642</deployedseed>
+    <deployedseed>466261875</deployedseed>
+    <deployedseed>721088984</deployedseed>
+    <deployedseed>900347745</deployedseed>
+    <deployedseed>1264176201</deployedseed>
+    <deployedseed>890111435</deployedseed>
+    <deployedseed>457152142</deployedseed>
+    <deployedseed>128928935</deployedseed>
+    <deployedseed>1975702085</deployedseed>
+    <deployedseed>794957482</deployedseed>
+    <deployedseed>130060376</deployedseed>
+    <deployedseed>1655337845</deployedseed>
+    <deployedseed>696540327</deployedseed>
+    <deployedseed>2146431250</deployedseed>
+    <deployedseed>169021517</deployedseed>
+    <deployedseed>1354462863</deployedseed>
+    <deployedseed>1979005743</deployedseed>
+    <deployedseed>2035940536</deployedseed>
+    <deployedseed>1150545052</deployedseed>
+    <deployedseed>520164763</deployedseed>
+    <deployedseed>1145333769</deployedseed>
+    <deployedseed>1089066163</deployedseed>
+    <deployedseed>1713941171</deployedseed>
+    <deployedseed>331936878</deployedseed>
+    <deployedseed>1233171227</deployedseed>
+    <deployedseed>1911837725</deployedseed>
+    <deployedseed>21583255</deployedseed>
+    <deployedseed>878322073</deployedseed>
+    <deployedseed>689948387</deployedseed>
+    <deployedseed>1228765000</deployedseed>
+    <deployedseed>434586627</deployedseed>
+    <deployedseed>1799975624</deployedseed>
+    <deployedseed>2066358966</deployedseed>
+    <deployedseed>174862434</deployedseed>
+    <deployedseed>1106428777</deployedseed>
+    <deployedseed>1939600039</deployedseed>
+    <deployedseed>795477248</deployedseed>
+    <deployedseed>1746391933</deployedseed>
+    <deployedseed>764238035</deployedseed>
+    <deployedseed>803381407</deployedseed>
+    <deployedseed>1577861229</deployedseed>
+    <deployedseed>802673849</deployedseed>
+    <deployedseed>326616162</deployedseed>
+    <deployedseed>1831119976</deployedseed>
+    <deployedseed>838435405</deployedseed>
+    <deployedseed>362949675</deployedseed>
+    <deployedseed>1131252980</deployedseed>
+    <deployedseed>1364081609</deployedseed>
+    <deployedseed>1972128374</deployedseed>
+    <deployedseed>261480124</deployedseed>
+    <deployedseed>389310575</deployedseed>
+    <deployedseed>1948996734</deployedseed>
+    <deployedseed>1277211759</deployedseed>
+    <deployedseed>876278178</deployedseed>
+    <deployedseed>1335598514</deployedseed>
+    <deployedseed>1480885569</deployedseed>
+    <deployedseed>1693819392</deployedseed>
+    <deployedseed>623058905</deployedseed>
+    <deployedseed>635224888</deployedseed>
+    <deployedseed>858145456</deployedseed>
+    <deployedseed>234569141</deployedseed>
+    <deployedseed>212273588</deployedseed>
+    <deployedseed>896290296</deployedseed>
+    <deployedseed>205813970</deployedseed>
+    <deployedseed>835297684</deployedseed>
+    <deployedseed>1860534135</deployedseed>
+    <deployedseed>1716126123</deployedseed>
+    <deployedseed>1426410643</deployedseed>
+    <deployedseed>441172839</deployedseed>
+    <deployedseed>1587437065</deployedseed>
+    <deployedseed>773866365</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Swapped the circles</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

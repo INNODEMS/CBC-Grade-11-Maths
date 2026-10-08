@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Trigonometric Functions — exact value at a standard angle</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Find the exact value of \( {@fname@}({@angledeg@}^\circ) \).</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The reference angle here is \({@baseangle@}^\circ\), which gives the magnitude \( |{@fname@}({@angledeg@}^\circ)| = {@fname@}({@baseangle@}^\circ) \).</p>
+<p>The angle \({@angledeg@}^\circ\) lies in quadrant {@quadrantnum@}, where the sign of {@fname@} is {@signword@}.</p>
+<p>So \( {@fname@}({@angledeg@}^\circ) = {@ta@} \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[funcidx : rand(3);                        /* 0 sin, 1 cos, 2 tan */
+fname : if funcidx=0 then "sin" elseif funcidx=1 then "cos" else "tan";
+quadrant : rand(4);                       /* which quadrant the angle lands in, 0..3 */
+baseangle : if funcidx=2 then [30,60][rand_with_prohib(1,2,[])] else [30,60,90][rand_with_prohib(1,3,[])];
+angledeg : quadrant*90 + baseangle;
+/* reference values at 30/60/90 */
+refsin : if baseangle=30 then 1/2 elseif baseangle=60 then sqrt(3)/2 else 1;
+refcos : if baseangle=30 then sqrt(3)/2 elseif baseangle=60 then 1/2 else 0;
+reftan : if baseangle=90 then und else refsin/refcos;
+/* sign in each quadrant: Q0 (0-90) all positive; Q1 (90-180) sin+ cos- tan-;
+   Q2 (180-270) sin- cos- tan+; Q3 (270-360) sin- cos+ tan- */
+sinsign : if quadrant=0 then 1 elseif quadrant=1 then 1 elseif quadrant=2 then -1 else -1;
+cossign : if quadrant=0 then 1 elseif quadrant=1 then -1 elseif quadrant=2 then -1 else 1;
+tansign : sinsign*cossign;
+ta : if funcidx=0 then sinsign*refsin elseif funcidx=1 then cossign*refcos else tansign*reftan;
+wrong_nosign : if funcidx=0 then refsin elseif funcidx=1 then refcos else reftan;   /* forgot the sign for the quadrant */
+quadrantnum : quadrant+1;
+signword : if funcidx=0 then (if sinsign=1 then "positive" else "negative")
+           elseif funcidx=1 then (if cossign=1 then "positive" else "negative")
+           else (if tansign=1 then "positive" else "negative");]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.9 (Trigonometric Functions). Exact value of sin/cos/tan at a standard angle beyond the first quadrant; catches getting the magnitude right via the reference angle but forgetting </p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="description">Grade 11 Functions 16.9 (Trigonometric Functions). Exact value of sin/cos/tan at a standard angle beyond the first quadrant; catches getting the magnitude right via the reference angle but forgetting the sign appropriate to the quadrant.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct exact value, including the sign for the quadrant?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Got the magnitude right but forgot the sign for the quadrant?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_nosign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nosign</trueanswernote>
+        <truefeedback format="html">
+          <text>The size of your answer is right, but check the sign: which quadrant does \({@angledeg@}^\circ\) fall in, and what sign does {@fname@} have there?</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text>That is not the correct exact value. Find the reference angle first, then fix the sign using the quadrant.</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Right magnitude, wrong sign</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_nosign</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-nosign</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
