@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Estimate the gradient of a tangent by drawing it (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph shows \( f(x) = {@fdisp@} \). The point \(P\) lies on the curve at \( x = {@x0@} \), so \( P = ({@x0@},\ {@y0@}) \).</p>
+<p><strong>Drag the point \(Q\) so that the line through \(P\) and \(Q\) is the tangent to the curve at \(P\)</strong> &mdash; the straight line that just <q>kisses</q> the curve there. The dashed triangle shows the run and rise between \(P\) and \(Q\); the box shows their coordinates.</p>
+[[jsxgraph input-ref-ans1="ref_Q" width='540px' height='460px']]
+JXG.Options.text.useMathJax = true;
+var aa = {#aa#}, x0 = {#x0#}, y0 = {#y0#};
+var xmax = {#float(xmax)#}, ymax = {#float(ymax)#};
+var Qx = {#float(qix)#}, Qy = {#float(qiy)#};
+var f = function (x) { return aa * Math.sqrt(x); };
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-1, ymax, xmax, -1],
+    keepaspectratio: true,
+    axis: true,
+    grid: {majorStep: 1, minorStep: 0.5},
+    showCopyright: false,
+    pan: {enabled: false},
+});
+
+// The curve f(x) = a*sqrt(x). Draw from x = 0 (its domain start) to the LIVE right
+// edge of the board, so it spans the full visible width even though keepaspectratio
+// makes the visible x-range wider than xmax.
+board.create('functiongraph', [f, 0,
+    function () { return board.getBoundingBox()[2]; }
+  ], {strokeColor: '#0055bb', strokeWidth: 2.5, name: ''});
+board.create('text', [x0 - 0.2, y0 - 1.1, '\\(y = ' + (aa === 1 ? '' : aa) + '\\sqrt{x}\\)'],
+    {color: '#0055bb', fontSize: 15, fixed: true});
+
+// Fixed point P, given on the curve.
+var P = board.create('point', [x0, y0], {name: 'P', fixed: true, size: 4,
+    strokeColor: '#c62828', fillColor: '#c62828',
+    label: {offset: [-16, 8], color: '#c62828', fontSize: 15}});
+
+// Free draggable point Q, snapped to the 0.5 grid so its coordinates are exact.
+var Q = board.create('point', [Qx, Qy], {name: 'Q', size: 5,
+    strokeColor: '#1565c0', fillColor: '#1565c0',
+    label: {offset: [10, 10], color: '#1565c0', fontSize: 15}});
+
+// The student's line through P and Q (a full straight line).
+board.create('line', [P, Q], {strokeColor: '#2e7d32', strokeWidth: 2.5,
+    straightFirst: true, straightLast: true});
+
+// Rise/run triangle - drawn but deliberately NOT labelled with values.
+var corner = function () { return [Q.X(), P.Y()]; };
+board.create('segment', [P, corner], {strokeColor: '#888', strokeWidth: 1.5, dash: 2});
+board.create('segment', [corner, Q], {strokeColor: '#888', strokeWidth: 1.5, dash: 2});
+
+// Readout: the coordinates of P and Q only (never the slope). Top-left, in the
+// empty region under the rising curve.
+board.create('text', [
+    function () { return board.getBoundingBox()[0] + 0.3; },
+    function () { return board.getBoundingBox()[1] - 0.3; },
+    function () {
+        return '<div style="background:rgba(255,255,255,0.9);padding:7px 11px;'
+            + 'border-radius:5px;line-height:1.7;font-size:14px;color:#333">'
+            + '<span style="color:#c62828">P = (' + x0 + ', ' + y0 + ')</span><br>'
+            + '<span style="color:#1565c0">Q = (' + Q.X().toFixed(3) + ', '
+            + Q.Y().toFixed(3) + ')</span>'
+            + '</div>';
+    }
+], {useHTML: true, anchorX: 'left', anchorY: 'top', fixed: true});
+
+stack_jxg.bind_point(ref_Q, Q);
+[[/jsxgraph]]
+<div style="display:none"><p>[[input:ans1]]</p></div> 
+<div><p>[[validation:ans1]]</p></div>
+<p>Now use the coordinates of \(P\) and \(Q\) to work out the gradient of the line you drew &mdash; your estimate of the derivative \( f'({@x0@}) \). Give your answer to 3 decimal places.</p>
+<div>\( f'({@x0@}) \approx \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The gradient of the tangent at a point <em>is</em> the derivative there. For \( f(x) = {@fdisp@} = {@aa@}x^{1/2} \), the rules in later sections give \( f'(x) = \dfrac{ {@aa@} }{2\sqrt{x}} \), so at \( x = {@x0@} \)</p>
+\[ f'({@x0@}) = \frac{ {@aa@} }{2\sqrt{ {@x0@} }} = {@m@} \approx {@md3@}. \]
+<p>To estimate this from the graph without the rule: draw the tangent at \(P\), pick a second point \(Q\) on it, and compute the gradient as</p>
+\[ \frac{\text{rise}}{\text{run}} = \frac{y_Q - y_P}{x_Q - x_P}. \]
+<p>Reading the coordinates to 3 decimal places makes this precise. A well-drawn tangent gives a gradient close to \( {@md3@} \).</p>
+<p>The two marks are independent: one for <strong>drawing a good tangent</strong> (its slope close to the true value), and one for <strong>correctly computing the gradient of the line you actually drew</strong>. You can earn the computation mark even if your tangent is a little off &mdash; as long as your number matches your line.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Curated [a, x0] pairs: x0 a perfect square so P=(x0, a*sqrt(x0)) is a lattice
+   point and m = a/(2*sqrt(x0)) is a controlled fraction. Slopes span 0.25..1.5,
+   with m = 1 excluded (so the "run over rise" inverted answer never coincides
+   with the correct gradient). */
+data : [[1,1],[1,4],[2,4],[2,9],[3,4],[3,9],[3,1]];
+pr  : data[rand(length(data))+1];
+aa : pr[1];
+x0 : pr[2];
+r0 : sqrt(x0);            /* integer, since x0 is a perfect square */
+y0 : aa*r0;              /* P's y-coordinate (integer) */
+m  : aa/(2*r0);          /* true tangent slope f'(x0) - a tidy fraction */
+md3 : float(round(1000*m)/1000);   /* m to 3 d.p. for the worked solution */
+
+fdisp : if aa = 1 then sqrt(x) else aa*sqrt(x);   /* display of f(x) */
+
+/* A lattice point exactly on the tangent: stepping +-2*r0 in x moves +-aa in y.
+   Prefer the point toward the origin if it stays comfortably on-screen. */
+stp : 2*r0;
+xg : if x0 - stp >= 1 then x0 - stp else x0 + stp;
+yg : if x0 - stp >= 1 then y0 - aa else y0 + aa;
+ta1 : [xg, yg];          /* model answer for the drag: a correct Q on the tangent */
+
+/* Off-tangent point for the process-credit test (shift y by 1). */
+xb : xg;
+yb : yg + 1;
+sl_bad : (yb - y0)/(xb - x0);
+
+minv : 1/m;              /* the inverted (run/rise) wrong gradient */
+
+/* Initial Q: horizontal line through P (slope 0) - clearly not the tangent, so a
+   do-nothing submission scores zero on the drag. */
+qix : xg;
+qiy : y0;
+
+/* Board bounds: keep P and the correct Q on screen with padding. */
+xmax : max(x0, xg) + 3;
+ymax : max(y0, yg) + 3;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:prt1]]</text>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( f(x)={@fdisp@};\ P=({@x0@},{@y0@});\ f'({@x0@})={@m@}\approx{@md3@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>m</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[xq : ans1[1];
+yq : ans1[2];
+vert : is(abs(xq - x0) < 0.001);
+sl : if vert then 0 else (yq - y0)/(xq - x0);]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Is the drawn line vertical (Q directly above/below P)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>xq</sans>
+        <tans>x0</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-vertical</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your line is vertical &mdash; \(Q\) is directly above \(P\), so the "run" is \(0\) and the gradient is undefined. Drag \(Q\) sideways so the line leans along the curve and just touches it at \(P\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Is the drawn line's slope close to the true tangent slope?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>sl</sans>
+        <tans>m</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Nicely done &mdash; your line just touches the curve at \(P\), so its slope is a good estimate of the tangent's gradient.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-miss</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not a tangent yet. A tangent should <em>just touch</em> the curve at \(P\) and lean at the same steepness as the curve there &mdash; if it cuts across the curve or is too steep or too shallow, tilt \(Q\) until it grazes the curve at \(P\) only.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* Round Q's coordinates to 3 d.p. FIRST, so the slope we mark against is computed
+   from exactly the values shown in the readout (snapping is off, so the raw bound
+   coordinates carry more precision than the student can see). */
+xq : float(round(1000*ans1[1])/1000);
+yq : float(round(1000*ans1[2])/1000);
+vert : is(abs(xq - x0) < 0.001);
+sl : if vert then 0 else (yq - y0)/(xq - x0);
+invsl : if is(abs(sl) < 0.001) then 1000000 else 1/sl;]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Does the stated gradient match the slope of the line the student drew?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>sl</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct &mdash; that is exactly the gradient of the line you drew, computed as \(\dfrac{y_Q - y_P}{x_Q - x_P}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Did the student invert the ratio (run over rise)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>invsl</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-inverted</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You've divided the wrong way round &mdash; that is the <em>run over the rise</em>, \(\dfrac{x_Q - x_P}{y_Q - y_P}\). Gradient is <strong>rise over run</strong>: \(\dfrac{y_Q - y_P}{x_Q - x_P}\). Turn your fraction the other way up.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-miss</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That doesn't match the line you drew. Read the coordinates of \(P\) and \(Q\) from the box, then compute \(\dfrac{y_Q - y_P}{x_Q - x_P}\) &mdash; the change in \(y\) divided by the change in \(x\) between the two points.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>549134401</deployedseed>
+    <deployedseed>842879639</deployedseed>
+    <deployedseed>370613369</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct: tangent drawn (Q on the tangent) and gradient computed correctly.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>m</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Process credit: tangent is off, but the gradient of the drawn line is computed correctly (prt2 still full).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[xb, yb]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>sl_bad</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-miss</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Inverted computation: good tangent, but gradient given as run/rise.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>minv</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-inverted</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Vertical line: Q directly above P (undefined slope); gradient stated wrongly.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[x0, y0+2]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-vertical</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-miss</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

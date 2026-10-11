@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Derive the quadratic formula — order the steps (drag and drop)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The steps below derive the quadratic formula for \(a x^2 + b x + c = 0\) (with \(a \neq 0\)) by <strong>completing the square</strong>, but they have been shuffled.</p>
+<p>Drag each step from the right-hand list into the box on the left so that, read from top to bottom, they form a correct and logical derivation.</p>
+[[parsons input="ans1"]]
+{# parsons_encode(proof_steps) #}
+[[/parsons]]
+<div>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Each step follows from the previous one. The key idea is to reach a perfect square on the left before taking square roots.</p>
+\[
+\begin{align*}
+a x^2 + b x + c &= 0 &&\text{(standard form)}\\
+x^2 + \tfrac{b}{a}x + \tfrac{c}{a} &= 0 &&\text{(divide by } a\text{)}\\
+x^2 + \tfrac{b}{a}x &= -\tfrac{c}{a} &&\text{(move the constant)}\\
+x^2 + \tfrac{b}{a}x + \left(\tfrac{b}{2a}\right)^2 &= -\tfrac{c}{a} + \left(\tfrac{b}{2a}\right)^2 &&\text{(complete the square)}\\
+\left(x+\tfrac{b}{2a}\right)^2 &= \tfrac{b^2-4ac}{4a^2} &&\text{(factor and combine)}\\
+x + \tfrac{b}{2a} &= \pm\tfrac{\sqrt{b^2-4ac}}{2a} &&\text{(take square roots)}\\
+x &= -\tfrac{b}{2a} \pm \tfrac{\sqrt{b^2-4ac}}{2a} &&\text{(isolate } x\text{)}\\
+x &= \dfrac{-b \pm \sqrt{b^2-4ac}}{2a} &&\text{(single fraction)}
+\end{align*}
+\]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[stack_include_contrib("prooflib.mac");
+proof_steps : [
+ ["start",    "Start with the standard form \\(a x^2 + b x + c = 0\\), where \\(a \\neq 0\\)."],
+ ["divide",   "Divide every term by \\(a\\): \\[ x^2 + \\frac{b}{a}x + \\frac{c}{a} = 0. \\]"],
+ ["move",     "Move the constant term to the right-hand side: \\[ x^2 + \\frac{b}{a}x = -\\frac{c}{a}. \\]"],
+ ["complete", "Add \\(\\left(\\frac{b}{2a}\\right)^2\\) to both sides: \\[ x^2 + \\frac{b}{a}x + \\left(\\frac{b}{2a}\\right)^2 = -\\frac{c}{a} + \\left(\\frac{b}{2a}\\right)^2. \\]"],
+ ["factor",   "Write the left-hand side as a perfect square and combine the right over \\(4a^2\\): \\[ \\left(x+\\frac{b}{2a}\\right)^2 = \\frac{b^2-4ac}{4a^2}. \\]"],
+ ["root",     "Take the square root of both sides: \\[ x + \\frac{b}{2a} = \\pm\\frac{\\sqrt{b^2-4ac}}{2a}. \\]"],
+ ["isolate",  "Subtract \\(\\frac{b}{2a}\\) from both sides: \\[ x = -\\frac{b}{2a} \\pm \\frac{\\sqrt{b^2-4ac}}{2a}. \\]"],
+ ["combine",  "Write the right-hand side as a single fraction: \\[ x = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}. \\]"]
+];
+/* Shuffle only the ORDER shown to the student; the correct answer is fixed. */
+proof_steps : random_permutation(proof_steps);
+/* The teacher's answer: the correct sequence of step keys. */
+ta : proof("start","divide","move","complete","factor","root","isolate","combine");]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>{@map(first, proof_steps)@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct — that is a valid derivation of the quadratic formula.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your ordering is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Not the correct order yet.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>parsons</type>
+      <tans>[ta, proof_steps]</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sa : parsons_decode(ans1);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Is the student's ordering equivalent to the correct derivation?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not the correct order yet. Work through the logic in stages:</p>
+<ul>
+<li>first make the leading coefficient \(1\) by dividing by \(a\);</li>
+<li>then move the constant to the right so the \(x\)-terms are alone;</li>
+<li>complete the square, and only take square roots once the left-hand side is a perfect square;</li>
+<li>finally isolate \(x\) and write the result as a single fraction.</li>
+</ul>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct order</description>
+      <testinput>
+        <name>ans1</name>
+        <value>parsons_answer(ta, proof_steps)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong order (divide before writing standard form, and root before completing)</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[parsons_answer(proof("divide","start","move","root","complete","factor","isolate","combine"), proof_steps)]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

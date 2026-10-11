@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Secant-tangent theorem - find the tangent length PT (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>From an external point \(P\), a secant and a tangent are drawn to a circle. The secant meets the circle at \(A\) and \(B\), with \( PA = {@PA@} \) cm and \( AB = {@AB@} \) cm. The tangent touches the circle at \(T\). Find the length of the tangent \(PT\).</p>
+
+[[jsxgraph width="480px" height="430px"]]
+var PA = {#PA#}, PB = {#PB#}, PT = {#ta_pt#};
+
+var rad = Math.PI / 180;
+var u = [Math.cos(150 * rad), Math.sin(150 * rad)];
+var w = [Math.cos(212 * rad), Math.sin(212 * rad)];
+
+var Pp = [0, 0];
+var Ap = [PA * u[0], PA * u[1]], Bp = [PB * u[0], PB * u[1]];
+var Tp = [PT * w[0], PT * w[1]];
+
+function circum(p1, p2, p3) {
+    var x1 = p1[0], y1 = p1[1], x2 = p2[0], y2 = p2[1], x3 = p3[0], y3 = p3[1];
+    var d = 2 * (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2));
+    var cx = ((x1*x1 + y1*y1) * (y2 - y3) + (x2*x2 + y2*y2) * (y3 - y1) + (x3*x3 + y3*y3) * (y1 - y2)) / d;
+    var cy = ((x1*x1 + y1*y1) * (x3 - x2) + (x2*x2 + y2*y2) * (x1 - x3) + (x3*x3 + y3*y3) * (x2 - x1)) / d;
+    return [cx, cy];
+}
+var ctr = circum(Ap, Bp, Tp);
+var rr  = Math.hypot(ctr[0] - Ap[0], ctr[1] - Ap[1]);
+var pad = 1.2;
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [ctr[0] - rr - pad, ctr[1] + rr + pad, Math.max(ctr[0] + rr, 0) + pad + 0.6, ctr[1] - rr - pad],
+    keepaspectratio: true, axis: false, showCopyright: false, showNavigation: false
+});
+
+board.create('circle', [ctr, rr], {strokeColor: '#178a8a', strokeWidth: 1.5, fixed: true});
+board.create('segment', [Pp, Bp], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+board.create('segment', [Pp, Tp], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+
+var A = board.create('point', Ap, {name: 'A', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [2, 12], anchorX: 'left', anchorY: 'bottom'}});
+var B = board.create('point', Bp, {name: 'B', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-4, 12], anchorX: 'right', anchorY: 'bottom'}});
+var T = board.create('point', Tp, {name: 'T', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-4, -12], anchorX: 'right', anchorY: 'top'}});
+var P = board.create('point', Pp, {name: 'P', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [10, 0], anchorX: 'left', anchorY: 'middle'}});
+
+function lbl(p1, p2, dy, txt) {
+    board.create('text', [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2 + dy, txt],
+        {anchorX: 'middle', anchorY: 'middle', fontSize: 13, fixed: true, cssStyle: 'color:#333'});
+}
+lbl(Pp, Ap,  0.8, PA + ' cm');
+lbl(Ap, Bp,  0.8, PB - PA + ' cm');
+lbl(Pp, Tp, -0.8, '? cm');
+[[/jsxgraph]]
+
+<div>\( PT = \) [[input:ans1]]\(\text{ cm}\) [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>First find the whole distance along the secant from \(P\):</p>
+\[ PB = PA + AB = {@PA@} + {@AB@} = {@PB@}\text{ cm}. \]
+<p>By the <strong>secant-tangent theorem</strong>, the tangent length satisfies \( PT^2 = PA\cdot PB \), so</p>
+\[ PT^2 = {@PA@}\times{@PB@} = {@PA*PB@} \quad\Rightarrow\quad PT = \sqrt{{@PA*PB@}} = {@ta_pt@}\text{ cm}. \]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomise (PA, AB); PB = PA + AB. PT = sqrt(PA*PB) is a whole number exactly
+   when PA*PB is a perfect square, selected by integerp(sqrt(PA*PB)). */
+data : sublist(
+  create_list([pa,ab], pa,2,14, ab,2,26),
+  lambda([z], is(
+        integerp(sqrt(z[1]*(z[1]+z[2])))
+    and sqrt(z[1]*(z[1]+z[2])) >= 4 and sqrt(z[1]*(z[1]+z[2])) <= 18
+    and z[1]+z[2] <= 32 )));
+sel : rand(data);
+PA : sel[1];
+AB : sel[2];
+PB : PA + AB;
+ta_pt : sqrt(PA*PB);            /* tangent length PT */
+wrong_nosqrt : PA*PB;           /* gave PT^2 = PA*PB (forgot the square root) */
+wrong_useAB_sqrt : sqrt(PA*AB); /* used chord AB instead of PB (square root taken) */
+wrong_useAB_raw : PA*AB;        /* used AB and forgot the square root */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( PA={@PA@},\ AB={@AB@};\ PB={@PB@},\ PT={@ta_pt@} \) cm</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta_pt</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct PT = sqrt(PA*PB).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta_pt</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Gave PT^2 = PA*PB (forgot the square root).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_nosqrt</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nosqrt</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have found \(PT^2 = PA\cdot PB\). The tangent length \(PT\) is the <em>square root</em> of that. Take the square root and try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Used AB instead of PB and forgot the square root (gave PA*AB).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_useAB_raw</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-useABraw</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you worked out \(PA\times AB\). Two things to fix: use \(PB = PA + AB\) (the whole secant length) rather than the chord \(AB\); and \(PT\) is the <em>square root</em> of \(PA\cdot PB\). Try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Took the square root but used the chord AB instead of PB.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_useAB_sqrt</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-useABsqrt</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have taken a square root correctly, but used the chord \(AB\) instead of the whole secant \(PB\). The theorem is \(PT^2 = PA\cdot PB\) with \(PB = PA + AB\). Try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use the secant-tangent theorem \(PT^2 = PA\cdot PB\), remembering that \(PB = PA + AB\). Then take the square root to find \(PT\). Have another go.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct PT</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_pt</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot the square root (gave PT^2)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_nosqrt</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-nosqrt</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Used AB and forgot the square root (gave PA*AB)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_useAB_raw</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-useABraw</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Took root but used AB instead of PB</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(wrong_useAB_sqrt)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-useABsqrt</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Other wrong value (generic)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta_pt+1,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Drawing a quadratic using values from a table and using it to solve for the roots of x</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Draw the graph of \[ y = x^2 + {@p@}x + {@q@} \] for \({@xlo@} \le x \le {@xhi@}\), and use it to solve \(x^2 + {@p@}x + {@q@} =0\).</p>
+<p><strong>a)</strong> Complete the table of values.</p>
+<table border="1" cellpadding="6" style="border-collapse:collapse;text-align:center">
+<tr><th>\(x\)</th><td>\({@tx[1]@}\)</td><td>\({@tx[2]@}\)</td><td>\({@tx[3]@}\)</td><td>\({@tx[4]@}\)</td><td>\({@tx[5]@}\)</td><td>\({@tx[6]@}\)</td><td>\({@tx[7]@}\)</td></tr>
+<tr><th>\(y\)</th><td>\({@ty[1]@}\)</td><td>[[input:ansY1]] [[validation:ansY1]]</td><td>[[input:ansY2]] [[validation:ansY2]]</td><td>\({@ty[4]@}\)</td><td>[[input:ansY3]] [[validation:ansY3]]</td><td>[[input:ansY4]] [[validation:ansY4]]</td><td>\({@ty[7]@}\)</td></tr>
+</table>
+<div>[[feedback:prtY1]] [[feedback:prtY2]] [[feedback:prtY3]] [[feedback:prtY4]]</div>
+<p><strong>b)</strong> Plot the seven points from the table (drag each red point up or down to its \(y\)-value); a smooth curve is drawn through them.</p>
+[[jsxgraph input-ref-ansP1="rP1" input-ref-ansP2="rP2" input-ref-ansP3="rP3" input-ref-ansP4="rP4" input-ref-ansP5="rP5" input-ref-ansP6="rP6" input-ref-ansP7="rP7" width="560px" height="540px"]]
+var TX = {#tx#};
+var PXLO={#float(pxlo)#}, PXHI={#float(pxhi)#}, PYLO={#float(pylo)#}, PYHI={#float(pyhi)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[PXLO, PYHI, PXHI, PYLO], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+var pts = [];
+for (var i=0;i<7;i++){ pts[i] = brd.create('point',[TX[i],0],{name:'',color:'#cc0000',fillColor:'#cc0000',size:4,snapToGrid:true,snapSizeX:1,snapSizeY:1}); }
+brd.create('curve', JXG.Math.Numerics.CardinalSpline(pts, 0.5), {strokeColor:'#1f4fd8', strokeWidth:2, highlight:false});
+stack_jxg.bind_point(rP1, pts[0]);
+stack_jxg.bind_point(rP2, pts[1]);
+stack_jxg.bind_point(rP3, pts[2]);
+stack_jxg.bind_point(rP4, pts[3]);
+stack_jxg.bind_point(rP5, pts[4]);
+stack_jxg.bind_point(rP6, pts[5]);
+stack_jxg.bind_point(rP7, pts[6]);
+[[/jsxgraph]]
+<div style="display:none">[[input:ansP1]] [[validation:ansP1]] [[input:ansP2]] [[validation:ansP2]] [[input:ansP3]] [[validation:ansP3]] [[input:ansP4]] [[validation:ansP4]] [[input:ansP5]] [[validation:ansP5]] [[input:ansP6]] [[validation:ansP6]] [[input:ansP7]] [[validation:ansP7]]</div>
+<div>[[feedback:prtPlot]]</div>
+<p><strong>c)</strong> Solve for \(x^2 + {@p@}x + {@q@} =0\) using the graph.</p>
+<div>\( x = \) [[input:ansR1]] [[validation:ansR1]] and \( x = \) [[input:ansR2]] [[validation:ansR2]] [[feedback:prtRoots]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>a)</strong> Substitute each \(x\) into \(y=x^2 + {@p@}x + {@q@} \). The completed table is:</p>
+<table border="1" cellpadding="6" style="border-collapse:collapse;text-align:center">
+<tr><th>\(x\)</th><td>\({@tx[1]@}\)</td><td>\({@tx[2]@}\)</td><td>\({@tx[3]@}\)</td><td>\({@tx[4]@}\)</td><td>\({@tx[5]@}\)</td><td>\({@tx[6]@}\)</td><td>\({@tx[7]@}\)</td></tr>
+<tr><th>\(y\)</th><td>\({@ty[1]@}\)</td><td>\({@ty[2]@}\)</td><td>\({@ty[3]@}\)</td><td>\({@ty[4]@}\)</td><td>\({@ty[5]@}\)</td><td>\({@ty[6]@}\)</td><td>\({@ty[7]@}\)</td></tr>
+</table>
+<p><strong>b)</strong> Plot the points and join them with a smooth parabola (shown below).</p>
+<p><strong>c)</strong> The solutions of \(x^2 + {@p@}x + {@q@} =0\) are where the curve crosses the \(x\)-axis: \(x={@r1@}\) and \(x={@r2@}\).</p>
+[[jsxgraph width="500px" height="480px"]]
+var R1={#r1#}, R2={#r2#}, P={#p#}, Q={#q#};
+var PXLO={#float(pxlo)#}, PXHI={#float(pxhi)#}, PYLO={#float(pylo)#}, PYHI={#float(pyhi)#};
+var TX = {#tx#}, TY = {#ty#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[PXLO, PYHI, PXHI, PYLO], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('functiongraph',[function(x){ return x*x + P*x + Q; }, PXLO, PXHI],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+for (var i=0;i<7;i++){ brd.create('point',[TX[i],TY[i]],{name:'',fixed:true,color:'#000000',fillColor:'#000000',size:2}); }
+brd.create('point',[R1,0],{name:'',fixed:true,color:'#cc0000',fillColor:'#cc0000',size:4});
+brd.create('point',[R2,0],{name:'',fixed:true,color:'#cc0000',fillColor:'#cc0000',size:4});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>r1 : rand([-4,-3,-2,-1,0,1]);
+gap : rand([2,3,4,5]);
+r2 : r1 + gap;
+p : -(r1 + r2);
+q : r1*r2;
+qexpr : x^2 + p*x + q;
+xlo : floor((r1+r2)/2) - 3;
+xhi : xlo + 6;
+tx : makelist(xlo + i - 1, i, 1, 7);
+ty : makelist((tx[i]-r1)*(tx[i]-r2), i, 1, 7);
+pxlo : xlo - 1;
+pxhi : xhi + 1;
+pylo : lmin(ty) - 2;
+pyhi : lmax(ty) + 2;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@qexpr@}\); roots \({@r1@},{@r2@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ansP1</name>
+      <type>algebraic</type>
+      <tans>[tx[1],ty[1]]</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansP2</name>
+      <type>algebraic</type>
+      <tans>[tx[2],ty[2]]</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansP3</name>
+      <type>algebraic</type>
+      <tans>[tx[3],ty[3]]</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansP4</name>
+      <type>algebraic</type>
+      <tans>[tx[4],ty[4]]</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansP5</name>
+      <type>algebraic</type>
+      <tans>[tx[5],ty[5]]</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansP6</name>
+      <type>algebraic</type>
+      <tans>[tx[6],ty[6]]</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansP7</name>
+      <type>algebraic</type>
+      <tans>[tx[7],ty[7]]</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansR1</name>
+      <type>numerical</type>
+      <tans>r1</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansR2</name>
+      <type>numerical</type>
+      <tans>r2</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansY1</name>
+      <type>numerical</type>
+      <tans>ty[2]</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansY2</name>
+      <type>numerical</type>
+      <tans>ty[3]</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansY3</name>
+      <type>numerical</type>
+      <tans>ty[5]</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansY4</name>
+      <type>numerical</type>
+      <tans>ty[6]</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtPlot</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[Ps : [[tx[1],ty[1]],[tx[2],ty[2]],[tx[3],ty[3]],[tx[4],ty[4]],[tx[5],ty[5]],[tx[6],ty[6]],[tx[7],ty[7]]];
+As : [ansP1,ansP2,ansP3,ansP4,ansP5,ansP6,ansP7];
+qs : setify(makelist([round(As[i][1]), round(As[i][2])], i, 1, 7));
+ncov : (if elementp(Ps[1],qs) then 1 else 0)+(if elementp(Ps[2],qs) then 1 else 0)+(if elementp(Ps[3],qs) then 1 else 0)+(if elementp(Ps[4],qs) then 1 else 0)+(if elementp(Ps[5],qs) then 1 else 0)+(if elementp(Ps[6],qs) then 1 else 0)+(if elementp(Ps[7],qs) then 1 else 0);
+allf : if is(ncov=7) then 1 else 0;
+partf : if (is(ncov>=4) and is(ncov<7)) then 1 else 0;
+ta:1;]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>all points</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>allf</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtPlot-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtPlot-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>most points</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>partf</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtPlot-partial</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Most points are placed correctly. Make sure every point sits at its \((x,y)\) value from the table.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtPlot-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Drag each red point up or down to the \(y\)-value you found in the table.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtRoots</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>bothok : if ((is(ansR1=r1) and is(ansR2=r2)) or (is(ansR1=r2) and is(ansR2=r1))) then 1 else 0;
+oneok : if (is(ansR1=r1) or is(ansR1=r2) or is(ansR2=r1) or is(ansR2=r2)) then 1 else 0;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>both roots</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>bothok</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtRoots-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtRoots-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>one root</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>oneok</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtRoots-partial</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>One root is correct. The solutions are where the curve crosses the \(x\)-axis (where \(y=0\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtRoots-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Read where the curve crosses the \(x\)-axis: those \(x\)-values are the solutions.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtY1</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansY1</sans>
+        <tans>ty[2]</tans>
+        <testoptions>0.5</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtY1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtY1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Substitute \(x={@tx[2]@}\) into \(y={@qexpr@}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtY2</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansY2</sans>
+        <tans>ty[3]</tans>
+        <testoptions>0.5</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtY2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtY2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Substitute \(x={@tx[3]@}\) into \(y={@qexpr@}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtY3</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansY3</sans>
+        <tans>ty[5]</tans>
+        <testoptions>0.5</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtY3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtY3-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Substitute \(x={@tx[5]@}\) into \(y={@qexpr@}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtY4</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansY4</sans>
+        <tans>ty[6]</tans>
+        <testoptions>0.5</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtY4-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtY4-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Substitute \(x={@tx[6]@}\) into \(y={@qexpr@}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>31001</deployedseed>
+    <deployedseed>31002</deployedseed>
+    <deployedseed>31003</deployedseed>
+    <deployedseed>31004</deployedseed>
+    <deployedseed>31005</deployedseed>
+    <deployedseed>31006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ansP1</name>
+        <value>[tx[1],ty[1]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP2</name>
+        <value>[tx[2],ty[2]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP3</name>
+        <value>[tx[3],ty[3]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP4</name>
+        <value>[tx[4],ty[4]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP5</name>
+        <value>[tx[5],ty[5]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP6</name>
+        <value>[tx[6],ty[6]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP7</name>
+        <value>[tx[7],ty[7]]</value>
+      </testinput>
+      <testinput>
+        <name>ansR1</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ansR2</name>
+        <value>r2</value>
+      </testinput>
+      <testinput>
+        <name>ansY1</name>
+        <value>ty[2]</value>
+      </testinput>
+      <testinput>
+        <name>ansY2</name>
+        <value>ty[3]</value>
+      </testinput>
+      <testinput>
+        <name>ansY3</name>
+        <value>ty[5]</value>
+      </testinput>
+      <testinput>
+        <name>ansY4</name>
+        <value>ty[6]</value>
+      </testinput>
+      <expected>
+        <name>prtPlot</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtPlot-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtRoots</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtRoots-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtY1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtY1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>One table value wrong; roots reversed still correct</description>
+      <testinput>
+        <name>ansP1</name>
+        <value>[tx[1],ty[1]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP2</name>
+        <value>[tx[2],ty[2]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP3</name>
+        <value>[tx[3],ty[3]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP4</name>
+        <value>[tx[4],ty[4]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP5</name>
+        <value>[tx[5],ty[5]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP6</name>
+        <value>[tx[6],ty[6]]</value>
+      </testinput>
+      <testinput>
+        <name>ansP7</name>
+        <value>[tx[7],ty[7]]</value>
+      </testinput>
+      <testinput>
+        <name>ansR1</name>
+        <value>r2</value>
+      </testinput>
+      <testinput>
+        <name>ansR2</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ansY1</name>
+        <value>ty[2]+3</value>
+      </testinput>
+      <testinput>
+        <name>ansY2</name>
+        <value>ty[3]</value>
+      </testinput>
+      <testinput>
+        <name>ansY3</name>
+        <value>ty[5]</value>
+      </testinput>
+      <testinput>
+        <name>ansY4</name>
+        <value>ty[6]</value>
+      </testinput>
+      <expected>
+        <name>prtRoots</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtRoots-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtY1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtY1-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
