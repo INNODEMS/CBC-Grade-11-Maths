@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<section xml:id="sec-derivatives-from-first-principles" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <title>Derivatives from First Principles</title>
+    <objectives component="outcomes">
+        <introduction>
+            <p>
+            <dl>
+                <li>
+                    <title>Strand</title>
+                    <p>
+                        4.0 Calculus
+                    </p>
+                </li>
+                <li>
+                    <title>Sub-Strand</title>
+                    <p>
+                        4.2 Differentiation I
+                    </p>
+                </li>
+                <li>
+                    <title>Specific Learning Outcomes</title>
+                    <p>
+                        Determine the derivatives of polynomial functions
+                    </p>
+                </li>
+                <li component="lesson-plan">
+                    <title>Grade Level</title>
+                    <p>
+                        11
+                    </p>
+                </li>
+                <li component="lesson-plan">
+                    <title>Estimated Duration</title>
+                    <p>
+                        40 minutes
+                    </p>
+                </li>
+            </dl>
+            </p>
+        </introduction>
+    </objectives>
+
+    <axiom component="lesson-plan">
+        <title>Problem-Solving and Discovery</title>
+        <dl>
+            <li>
+                <title>Suggested Time</title>
+                <p>
+                    10 minutes
+                </p>
+            </li>
+            <li>
+                <title>Objective</title>
+                <p>
+                    Discover the derivative numerically — before any formula — by computing the AROC for progressively smaller values of <m>h</m> and noticing that the values converge to a fixed number.
+                </p>
+            </li>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Do not use the word "derivative" until after the activity. Let learners observe and conjecture. Ask: "What value are the AROCs getting closer to?" and "Can you write a formula that shows exactly why?" Do not discuss part (c) as a class until most groups have completed the table.
+                </p>
+            </li>
+        </dl>
+    </axiom>
+
+    <activity xml:id="activity-first-principles">
+        <title>Getting Closer and Closer</title>
+        <statement>
+            <p>
+                Consider the function <m>f(x) = x^2</m>. In the previous section we computed the average rate of change (AROC) between two points on a curve. Now let's see what happens when those two points get very close together.
+            </p>
+            <p>
+                Fix the first point at <m>x = 1</m> and let the second point be at <m>x = 1 + h</m>. Complete the table by calculating the AROC between these two points for each value of <m>h</m>.
+            </p>
+
+            <table xml:id="table-aroc-approaching-limit">
+                <title>AROC of <m>f(x)=x^2</m> at <m>x=1</m> for decreasing <m>h</m></title>
+                <tabular halign="center" top="minor" left="minor">
+                    <row header="yes" bottom="medium">
+                        <cell right="minor"><m>h</m></cell>
+                        <cell right="minor"><m>f(1+h)</m></cell>
+                        <cell right="minor"><m>f(1+h)-f(1)</m></cell>
+                        <cell right="minor"><m>\dfrac{f(1+h)-f(1)}{h}</m></cell>
+                    </row>
+                    <row bottom="minor">
+                        <cell right="minor"><m>1</m></cell>
+                        <cell right="minor"><m>4</m></cell>
+                        <cell right="minor"><m>3</m></cell>
+                        <cell right="minor"><m>3</m></cell>
+                    </row>
+                    <row bottom="minor">
+                        <cell right="minor"><m>0.5</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                    </row>
+                    <row bottom="minor">
+                        <cell right="minor"><m>0.1</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                    </row>
+                    <row bottom="minor">
+                        <cell right="minor"><m>0.01</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                    </row>
+                    <row bottom="minor">
+                        <cell right="minor"><m>0.001</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                        <cell right="minor"><m>\phantom{00}</m></cell>
+                    </row>
+                </tabular>
+            </table>
+
+            <p>
+                Use the interactive graph below to see what is happening geometrically. Drag <m>Q</m> closer and closer to <m>P</m>. Watch how the green secant line rotates toward the red tangent line, and how the secant slope approaches the tangent slope.
+            </p>
+
+            <interactive xml:id="interactive-secant-to-tangent-fp" platform="jsxgraph" width="90%" aspect="1:1" source="jsxgraph/secant-to-tangent-fp.js">
+                <slate xml:id="secant-to-tangent-fp" surface="jsxboard" aspect="1:1"/>
+                <instructions>
+                    <p> Drag <m>Q</m> toward <m>P</m> and observe how the secant slope (green) approaches the tangent slope (red).</p>
+                </instructions>
+            </interactive>
+
+            <ol marker="(a)">
+                <li>
+                    <p>
+                        Complete the table. What pattern do you notice in the final column?
+                    </p>
+                    <solution component="lesson-plan">
+                        <p>
+                           The values approach <m>2</m> from above.
+                        </p>
+                    </solution>
+                </li>
+                <li>
+                    <p>
+                        Write a simplified algebraic formula for the AROC of <m>f(x) = x^2</m> between <m>x = 1</m> and <m>x = 1 + h</m>. Use it to explain the pattern in part (a).
+                    </p>
+                    <solution component="lesson-plan">
+                        <p>
+                            <md>
+                                <mrow>\text{AROC} \amp= \frac{f(1+h)-f(1)}{h} = \frac{(1+h)^2 - 1}{h}</mrow>
+                                <mrow>\amp= \frac{1 + 2h + h^2 - 1}{h} = \frac{2h + h^2}{h} = 2 + h</mrow>
+                            </md>
+                            Since AROC <m>= 2 + h</m>, as <m>h \to 0</m> the AROC approaches <m>2</m>.
+                        </p>
+                    </solution>
+                    <note component="lesson-plan">
+                        <p>
+                            Learners who reach <m>\text{AROC} = 2 + h</m> have essentially computed the derivative. Ask: <q>So what is the <em>exact</em> slope of the tangent to <m>f(x) = x^2</m> at <m>x = 1</m>?</q>
+                        </p>
+                    </note>
+                </li>
+                <li>
+                    <p>
+                        What does this limiting value represent on the graph of <m>f</m>?
+                    </p>
+                    <solution component="lesson-plan">
+                        <p>
+                            It is the slope of the tangent to <m>f(x) = x^2</m> at the point <m>(1, 1)</m>. As <m>h \to 0</m>, the secant line through <m>(1, 1)</m> and <m>(1+h, f(1+h))</m> rotates toward the tangent — exactly the picture in the previous section.
+                        </p>
+                    </solution>
+                </li>
+            </ol>
+        </statement>
+    </activity>
+
+    <axiom component="lesson-plan">
+        <title>Structured Instruction</title>
+        <p>
+            <dl>
+                <li>
+                    <title>Suggested Time</title>
+                    <p>
+                        5 minutes
+                    </p>
+                </li>
+                <li>
+                    <title>Objective</title>
+                    <p>
+                        Formalise the limit process learners discovered in the activity as the definition of the derivative.
+                    </p>
+                </li>
+            </dl>
+        </p>
+        <paragraphs>
+            <title>Key Takeaways &amp; Teacher Connection</title>
+            <ul>
+                <li>
+                    <p>
+                        <alert>Connect to the activity:</alert> In part (c), learners found AROC <m>= 2 + h</m>. The derivative at <m>x = 1</m> is exactly what remains as <m>h \to 0</m>: the value <m>2</m>.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Replacing the specific input <m>x = 1</m> with a general <m>x</m> produces a formula that works everywhere — the derivative <em>function</em> <m>f'(x)</m>.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Stress the three-step procedure: compute <m>f(x+h)</m>, simplify <m>\frac{f(x+h)-f(x)}{h}</m>, take the limit. This is the algorithm for all examples that follow.
+                    </p>
+                </li>
+            </ul>
+        </paragraphs>
+    </axiom>
+
+    <insight xml:id="insight-first-principles-key-ideas">
+        <title>From AROC to the Derivative</title>
+        <p>
+            The activity showed that as <m>h \to 0</m>, the AROC of <m>f(x) = x^2</m> at <m>x = 1</m> converges to the value <m>2</m>. Two key observations:
+        </p>
+        <ul>
+            <li>
+                <p>
+                    This limiting value is the <term>slope of the tangent</term> to the curve at <m>x = 1</m>, the instantaneous rate of change at that point.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Repeating the process with a general input <m>x</m> instead of <m>x = 1</m> produces a <em>function</em> <m>f'(x)</m>, giving the slope at <em>every</em> point. This is the <term>derivative</term> of <m>f</m>.
+                </p>
+            </li>
+        </ul>
+    </insight>
+
+    <p>Because we are looking for the <term>slope of the tangent</term> at <m>x=a,</m> we can think of the measure of the slope of the curve of a function <m>f</m> at a given point as the rate of change at a particular instant. We call this slope the <em>instantaneous rate of change</em>, or the <em>derivative</em> of the function at <m>x=a.</m> Both can be found by finding the limit of the slope of a line connecting the point at <m>x=a</m> with a second point infinitesimally close along the curve. For a function <m>f</m> both the instantaneous rate of change of the function and the derivative of the function at <m>x=a</m> are written as <m>f'(a),</m> and we can define them as a <term>two-sided limit</term> that has the same value whether approached from the left or the right.</p>
+
+    <p>
+        <md>f'(a)=\lim_{h \to 0}\frac{f(a+h)-f(a)}{h}</md>
+    </p>
+
+    <p>The expression by which the limit is found is known as the <term>difference quotient</term>.</p>
+
+    
+
+    <insight xml:id="PRECALC-fmeXCOah2m" original="PRECALC/modules/m49455/index.cnxml" license="CC-BY-4.0">
+        <title>Definition of Instantaneous Rate of Change and Derivative</title>
+        <p>The <term>derivative</term>, or <term>instantaneous rate of change</term>, of a function <m>f</m> at <m>x=a,</m> is given by</p>
+        <p>
+            <md>f'(a)=\lim_{h \to 0}\frac{f(a+h)-f(a)}{h}</md>
+        </p>
+        <p>The expression <m>\frac{f(a+h)-f(a)}{h}</m> is called the difference quotient.</p>
+        <p>We use the difference quotient to evaluate the limit of the rate of change of the function as <m>h</m> approaches 0.</p>
+    </insight>
+
+    <insight xml:id="PRECALC-7rXzYVguNZ" original="PRECALC/modules/m49455/index.cnxml" license="CC-BY-4.0">
+        <title>Finding the Derivative</title>
+        <p>Given a function <m>f,</m> find the derivative by applying the definition of the derivative.</p>
+        <ol>
+            <li>
+                <p>Calculate <m>f(x+h).</m></p>
+            </li>
+            <li>
+                <p>Substitute and simplify <m>\dfrac{f(x+h)-f(x)}{h}.</m></p>
+            </li>
+            <li>
+                <p>Evaluate the limit: <md>f'(x)=\lim_{h \to 0}\dfrac{f(x+h)-f(x)}{h}.</md></p>
+            </li>
+        </ol>
+    </insight>
+
+    <paragraphs>
+        <title>Derivatives: Interpretations and Notation</title>
+        <p>The <term>derivative</term> of a function can be interpreted in different ways.</p>
+        <ul>
+            <li>
+                <p>The derivative of a function <m>f(x)</m> at a point <m>x=a</m> is the slope of the tangent line to the curve <m>f(x)</m> at <m>x=a.</m> The derivative of <m>f(x)</m> at <m>x=a</m> is written <m>f'(a).</m></p>
+            </li>
+            <li>
+                <p>The derivative <m>f'(a)</m> measures how the curve changes at the point <m>(a,f(a)).</m></p>
+            </li>
+            <li>
+                <p>The derivative <m>f'(a)</m> may be thought of as the instantaneous rate of change of the function <m>f(x)</m> at <m>x=a.</m></p>
+            </li>
+        </ul>
+    </paragraphs>
+
+    <insight xml:id="PRECALC-2h816Bh09j" original="PRECALC/modules/m49455/index.cnxml" license="CC-BY-4.0">
+        <title>Notations for the Derivative</title>
+        <p>The equation of the derivative of a function <m>f(x)</m> is written as <m>y'=f'(x),</m> where <m>y=f(x).</m> The notation <m>f'(x)</m> is read as "<m>f</m> prime of <m>x</m>." Alternate notations for the derivative include the following:</p>
+        <p>
+            <md>f'(x)=y'=\frac{dy}{dx}=\frac{df}{dx}=\frac{d}{dx}f(x)</md>
+        </p>
+        <p>The expression <m>f'(x)</m> is now a function of <m>x</m>; this function gives the slope of the curve <m>y=f(x)</m> at any value of <m>x.</m> The derivative of a function <m>f(x)</m> at a point <m>x=a</m> is denoted <m>f'(a).</m>
+        </p>
+    </insight>
+
+
+
+    <xi:include href="../lesson-plan-templates/example-intro.ptx" />
+
+    <example xml:id="example-fp-linear">
+        <title>Derivative of a Linear Function</title>
+        <statement>
+            <p>Find <m>f'(x)</m> from first principles for <m>f(x) = 2x + 5</m>.</p>
+        </statement>
+        <solution>
+            <p>
+                <alert>Step 1.</alert> Compute <m>f(x+h)</m>.
+                <md>
+                    <mrow> f(x+h) \amp = 2(x+h)+5  </mrow>
+                    <mrow> \amp = 2x + 2h + 5 </mrow>
+                </md>
+            </p>
+            <p>
+                <alert>Step 2.</alert> Form the difference quotient and simplify.
+                <md>
+                    <mrow>\frac{f(x+h)-f(x)}{h} \amp= \frac{(2x+2h+5)-(2x+5)}{h} </mrow>
+                    <mrow> \amp = \frac{2h}{h} </mrow> 
+                    <mrow> \amp = 2</mrow>
+                </md>
+            </p>
+            <p>
+                <alert>Step 3.</alert> Take the limit.
+                <md>f'(x) = \lim_{h \to 0}\, 2 = 2</md>
+            </p>
+            <p>
+                The derivative of a linear function equals its slope, which is constant everywhere.
+            </p>
+        </solution>
+    </example>
+
+    <example xml:id="example-fp-quadratic">
+        <title>Derivative of a Quadratic</title>
+        <statement>
+            <p>Find <m>f'(x)</m> from first principles for <m>f(x) = x^2</m>.</p>
+        </statement>
+        <solution>
+            <p>
+                <alert>Step 1.</alert> Compute <m>f(x+h)</m>.
+                <md>f(x+h) = (x+h)^2 = x^2 + 2xh + h^2</md>
+            </p>
+            <p>
+                <alert>Step 2.</alert> Form the difference quotient and simplify.
+                <md>
+                    <mrow>\frac{f(x+h)-f(x)}{h} \amp= \frac{x^2+2xh+h^2 - x^2}{h}</mrow>
+                    <mrow>\amp= \frac{2xh + h^2}{h} </mrow>
+                    <mrow>\amp= \frac{h(2x+h)}{h} </mrow>
+                    <mrow>\amp= 2x + h</mrow>
+                </md>
+            </p>
+            <p>
+                <alert>Step 3.</alert> Take the limit.
+                <md>f'(x) = \lim_{h \to 0}(2x+h) = 2x</md>
+            </p>
+        </solution>
+    </example>
+
+    <example xml:id="example-fp-poly-at-point">
+        <title>Derivative of a Polynomial, Evaluated at a Point</title>
+        <statement>
+            <p>Find <m>f'(x)</m> from first principles for <m>f(x) = x^2 - 3x</m>, and hence find <m>f'(2)</m>.</p>
+        </statement>
+        <solution>
+            <p>
+                <alert>Step 1.</alert> Compute <m>f(x+h)</m>.
+                <md>f(x+h) = (x+h)^2 - 3(x+h) = x^2 + 2xh + h^2 - 3x - 3h</md>
+            </p>
+            <p>
+                <alert>Step 2.</alert> Form the difference quotient and simplify.
+                <md>
+                    <mrow>\frac{f(x+h)-f(x)}{h} \amp= \frac{(x^2+2xh+h^2-3x-3h)-(x^2-3x)}{h}</mrow>
+                    <mrow>\amp= \frac{2xh + h^2 - 3h}{h} </mrow>
+                    <mrow>\amp= \frac{h(2x+h-3)}{h} </mrow>
+                    <mrow>\amp= 2x + h - 3</mrow>
+                </md>
+            </p>
+            <p>
+                <alert>Step 3.</alert> Take the limit.
+                <md>f'(x) = \lim_{h \to 0}(2x+h-3) = 2x - 3</md>
+            </p>
+            <p>
+                Substituting <m>x = 2</m>:
+                <md>f'(2) = 2(2) - 3 = 1</md>
+            </p>
+        </solution>
+    </example>
+
+    <xi:include href="../lesson-plan-templates/assessment-intro.ptx" />
+
+    <exercises xml:id="exercises-first-principles">
+
+        <exercise xml:id="ex-fp-1">
+            <statement>
+                <p>Find <m>f'(x)</m> from first principles for <m>f(x) = 3x - 7</m>.</p>
+            </statement>
+            <answer>
+                <p><m>f'(x) = 3</m></p>
+            </answer>
+        </exercise>
+
+        <exercise xml:id="ex-fp-2">
+            <statement>
+                <p>Find <m>f'(x)</m> from first principles for <m>f(x) = x^2 + 4</m>.</p>
+            </statement>
+            <answer>
+                <p><m>f'(x) = 2x</m></p>
+            </answer>
+        </exercise>
+
+        <exercise xml:id="ex-fp-3">
+            <statement>
+                <p>Find <m>f'(x)</m> from first principles for <m>f(x) = x^2 + 5x</m>.</p>
+            </statement>
+            <solution>
+                <p>
+                    <md>
+                        <mrow>\frac{f(x+h)-f(x)}{h} \amp= \frac{(x+h)^2+5(x+h)-(x^2+5x)}{h}</mrow>
+                        <mrow>\amp= \frac{2xh + h^2 + 5h}{h} = 2x + h + 5</mrow>
+                    </md>
+                    Taking the limit: <m>f'(x) = 2x + 5</m>.
+                </p>
+            </solution>
+        </exercise>
+
+        <exercise xml:id="ex-fp-4">
+            <statement>
+                <p>Using the definition of the derivative, find <m>f'(1)</m> for <m>f(x) = x^3</m>.</p>
+            </statement>
+            <solution>
+                <p>
+                    <md>
+                        <mrow>\frac{f(1+h)-f(1)}{h} \amp= \frac{(1+h)^3 - 1}{h}</mrow>
+                        <mrow>\amp= \frac{1 + 3h + 3h^2 + h^3 - 1}{h}</mrow>
+                        <mrow>\amp= \frac{3h + 3h^2 + h^3}{h} = 3 + 3h + h^2</mrow>
+                    </md>
+                    As <m>h \to 0</m>: <m>f'(1) = 3</m>.
+                </p>
+            </solution>
+        </exercise>
+
+        <exercise xml:id="ex-fp-5">
+            <statement>
+                <p>
+                    A stone is thrown upward and its height (in metres) after <m>t</m> seconds is <m>s(t) = 20t - 5t^2</m>.
+                    Use first principles to find its instantaneous velocity at <m>t = 1</m>.
+                </p>
+            </statement>
+            <solution>
+                <p>
+                    <md>
+                        <mrow>\frac{s(1+h)-s(1)}{h} \amp= \frac{20(1+h)-5(1+h)^2 - 15}{h}</mrow>
+                        <mrow>\amp= \frac{20+20h-5-10h-5h^2 - 15}{h}</mrow>
+                        <mrow>\amp= \frac{10h - 5h^2}{h} = 10 - 5h</mrow>
+                    </md>
+                    As <m>h \to 0</m>: instantaneous velocity <m>= 10</m> m/s.
+                </p>
+            </solution>
+        </exercise>
+
+        <exercise xml:id="ex-fp-6">
+            <statement>
+                <ol marker="(a)">
+                    <li>
+                        <p>If <m>f(x) = c</m> is a constant function, use the definition of the derivative to show that <m>f'(x) = 0</m>.</p>
+                    </li>
+                    <li>
+                        <p>What does <m>f'(a) = 0</m> mean geometrically?</p>
+                    </li>
+                </ol>
+            </statement>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Since <m>f(x+h) = c</m>, the difference quotient is
+                            <md>\frac{f(x+h)-f(x)}{h} = \frac{c - c}{h} = 0.</md>
+                            Therefore <m>f'(x) = \lim_{h \to 0} 0 = 0</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The tangent to the curve at <m>x = a</m> is horizontal — the curve is neither rising nor falling at that point.
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+
+        <exercise xml:id="ex-fp-reciprocal-extension">
+            <title>Extension: Differentiating <m>\dfrac{1}{x}</m></title>
+            <statement>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Write down the difference quotient <m>\dfrac{f(x+h)-f(x)}{h}</m> for <m>f(x) = \dfrac{1}{x}</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Combine the two fractions in the numerator over a common denominator and simplify.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Cancel the factor of <m>h</m> and hence find <m>f'(x)</m> by letting <m>h \to 0</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Find the derivative of <m>y = \dfrac{1}{x}</m> at <m>x = 2</m>.
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            <me>\frac{f(x+h)-f(x)}{h} = \frac{\dfrac{1}{x+h} - \dfrac{1}{x}}{h}.</me>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Combining over the common denominator <m>x(x+h)</m>:
+                            <md>
+                                <mrow>\frac{\dfrac{1}{x+h} - \dfrac{1}{x}}{h} \amp= \frac{\dfrac{x - (x+h)}{x(x+h)}}{h}</mrow>
+                                <mrow>\amp= \frac{x - x - h}{h \cdot x(x+h)}</mrow>
+                                <mrow>\amp= \frac{-h}{h \cdot x(x+h)}.</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Cancelling <m>h</m> (valid since <m>h \neq 0</m>):
+                            <me>\frac{-h}{h \cdot x(x+h)} = \frac{-1}{x(x+h)}.</me>
+                            As <m>h \to 0</m>:
+                            <me>f'(x) = \lim_{h \to 0} \frac{-1}{x(x+h)} = \frac{-1}{x \cdot x} = -\frac{1}{x^2}.</me>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            At <m>x = 2</m>: <m>f(2) = \tfrac{1}{2}</m> and <m>f'(2) = -\tfrac{1}{4}</m>.
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+        <exercise xml:id="ex-fp-sqrt-extension">
+            <title>Extension: Differentiating <m>\sqrt{x}</m></title>
+            <statement>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Write down the difference quotient
+                            <me>\frac{f(x+h)-f(x)}{h}</me>
+                            for <m>f(x) = \sqrt{x}</m>, and explain why you cannot simply let <m>h = 0</m> straight away.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Rationalise the <em>numerator</em> by multiplying the top and bottom of the difference quotient by <m>\bigl(\sqrt{x+h}+\sqrt{x}\bigr)</m>.
+                            Show that after simplifying you obtain
+                            <me>\frac{1}{\sqrt{x+h}+\sqrt{x}}.</me>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Hence find <m>f'(x)</m> by letting <m>h \to 0</m>.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Use your result to find the exact gradient of <m>y = \sqrt{x}</m> at <m>x = 4</m>.
+                            Does this agree with the estimate you made earlier using a table of values?
+                        </p>
+                    </li>
+                </ol>
+            </statement>
+            <solution>
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            The difference quotient is
+                            <me>\frac{\sqrt{x+h}-\sqrt{x}}{h}.</me>
+                            Setting <m>h = 0</m> immediately gives <m>\tfrac{0}{0}</m>, which is undefined, so we must simplify first.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Multiply numerator and denominator by <m>\bigl(\sqrt{x+h}+\sqrt{x}\bigr)</m>:
+                            <md>
+                                <mrow>\frac{\sqrt{x+h}-\sqrt{x}}{h} \amp= \frac{\bigl(\sqrt{x+h}-\sqrt{x}\bigr)\bigl(\sqrt{x+h}+\sqrt{x}\bigr)}{h\bigl(\sqrt{x+h}+\sqrt{x}\bigr)}</mrow>
+                                <mrow>\amp= \frac{(x+h)-x}{h\bigl(\sqrt{x+h}+\sqrt{x}\bigr)}</mrow>
+                                <mrow>\amp= \frac{h}{h\bigl(\sqrt{x+h}+\sqrt{x}\bigr)}</mrow>
+                                <mrow>\amp= \frac{1}{\sqrt{x+h}+\sqrt{x}}.</mrow>
+                            </md>
+                            The key step is that <md>\bigl(\sqrt{x+h}-\sqrt{x}\bigr)\bigl(\sqrt{x+h}+\sqrt{x}\bigr) = (x+h)-x = h</md> by the difference of squares identity.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            As <m>h \to 0</m>, the expression <m>\sqrt{x+h} \to \sqrt{x}</m>, so
+                            <me>f'(x) = \lim_{h \to 0} \frac{1}{\sqrt{x+h}+\sqrt{x}} = \frac{1}{\sqrt{x}+\sqrt{x}} = \frac{1}{2\sqrt{x}}.</me>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            At <m>x = 4</m>:
+                            <me>f'(4) = \frac{1}{2\sqrt{4}} = \frac{1}{4}.</me>
+                            The gradient of <m>y = \sqrt{x}</m> at <m>x = 4</m> is <m>\tfrac{1}{4}</m>, which matches the numerical estimate from the earlier section.
+                        </p>
+                    </li>
+                </ol>
+            </solution>
+        </exercise>
+
+    </exercises>
+
+    <!-- [LP] Add information on how to differentiate  -->
+
+    <!-- <axiom component="lesson-plan">
+        <title>Differentiation</title>
+
+        <table>
+            <title>Differentiation</title>
+            <tabular halign="left">
+                <row header="yes" bottom="minor">
+                    <cell>Learner Group</cell>
+                    <cell>Strategy &amp; Learning Experience</cell>
+                    <cell></cell>
+                </row>
+                <row>
+                    <cell>Struggling Learners (Support)</cell>
+                    <cell>
+                        XXXX
+                    </cell>
+                    <cell></cell>
+                </row>
+                <row>
+                    <cell>On-Level Learners (Core)</cell>
+                    <cell>
+                        <line>The core lesson activities as described above.</line>
+                    </cell>
+                    <cell></cell>
+                </row>
+                <row>
+                    <cell>Advanced Learners (Challenge)</cell>
+                    <cell>
+                        XXXX
+                    </cell>
+                    <cell></cell>
+                </row>
+            </tabular>
+        </table>
+    </axiom> -->
+
+    <xi:include href="../lesson-plan-templates/assessment-methods.ptx" />
+
+    <xi:include href="../lesson-plan-templates/reflection.ptx"/>
+
+    <convention>
+        <p>Parts of this section are adapted from "<url href="https://github.com/openstax/osbooks-college-algebra-bundle/tree/e10e6b91143fe884c7c60dc0ad82ef23e1be0aa5/modules/m49455/index.cnxml">Finding the Average Rate of Change of a Function</url>" in OpenStax Precalculus 2e, used under <url href="https://creativecommons.org/licenses/by/4.0/deed.en">CC-BY-4.0</url>.</p>
+    </convention>
+
+</section>
