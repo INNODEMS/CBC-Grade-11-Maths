@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Formulating proportional and capacity constraints for an organic mixture</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A group of women farmers in Makueni managing a climate-resilient greenhouse project needs to prepare a liquid organic foliar feed mixture. They combine concentrated neem extract liquid (\(x\) liters) with an aloe vera solution base (\(y\) liters).</p>
+<ul>
+<li>The mixing tank has a maximum storage capacity of <b>{@C@} liters</b>.</li>
+<li>To guarantee effective pest control efficacy, the volume of neem extract liquid (\(x\)) must be <b>at least {@R@} times</b> the volume of the aloe vera solution base (\(y\)).</li>
+</ul>
+
+<p><b>a) </b> Write the linear inequalities that model the physical capacity and the chemical proportion limitations. <i>(Use \( \le \) or \( \ge \) as appropriate. Do not include the non-negativity constraints \(x \ge 0, y \ge 0\)).</i></p>
+
+<p>Tank capacity constraint: [[input:ans1]]</p>
+<p>Mixture proportion constraint: [[input:ans2]]</p>
+
+<div><b>Capacity check:</b> [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>Proportion check:</b> [[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>b) </b> The farmers decide to pour exactly <b>{@y_val@} liters</b> of aloe vera solution (\(y\)) into the mixing tank.</p>
+<p>Based on your established inequalities, determine the allowable range for the neem extract (\(x\)):</p>
+
+<p>1. What is the absolute <b>minimum</b> volume of neem extract required to satisfy the pest control efficacy proportion?</p>
+<p>Minimum neem: [[input:ans3]] liters</p>
+<div><b>Minimum check:</b> [[validation:ans3]] [[feedback:prt3]]</div>
+
+<p>2. What is the absolute <b>maximum</b> volume of neem extract they can add without overflowing the mixing tank?</p>
+<p>Maximum neem: [[input:ans4]] liters</p>
+<div><b>Maximum check:</b> [[validation:ans4]] [[feedback:prt4]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Formulating the Constraints</b></p>
+<p>1. <b>Tank Capacity Constraint:</b> The sum of both liquids cannot exceed the maximum volumetric size of the container. "Maximum capacity" implies less than or equal to (\(\le\)):</p>
+<p style="margin-left: 20px;">\( \displaystyle \boxed{{@ta1@}} \)</p>
+
+<p>2. <b>Mixture Proportion Constraint:</b> The volume of neem (\(x\)) must be greater than or equal to \({@R@}\) times the aloe vera volume (\(y\)):</p>
+<p style="margin-left: 20px;">\( \displaystyle \boxed{{@ta2@}} \)</p>
+<p><i>(Note: This can also be correctly rearranged and written as \( x - {@R@}y \ge 0 \)).</i></p>
+
+<p><b>Part b: Evaluating Operational Limits</b></p>
+<p>We are given that \( y = {@y_val@} \). We must substitute this value into both inequalities to find the lower and upper bounds for \(x\).</p>
+
+<p><b>1. Finding the Minimum (Efficacy Constraint):</b><br>
+Substitute \( y = {@y_val@} \) into \( x \ge {@R@}y \):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+x &amp;\ge {@R@}({@y_val@}) \\
+x &amp;\ge {@ta3@}
+\end{aligned} \)
+</p>
+<p>The absolute minimum amount of neem extract required is <b>{@ta3@} liters</b>.</p>
+
+<p><b>2. Finding the Maximum (Capacity Constraint):</b><br>
+Substitute \( y = {@y_val@} \) into \( x + y \le {@C@} \):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+x + {@y_val@} &amp;\le {@C@} \\
+x &amp;\le {@C@} - {@y_val@} \\
+x &amp;\le {@ta4@}
+\end{aligned} \)
+</p>
+<p>The absolute maximum amount of neem extract that will safely fit is <b>{@ta4@} liters</b>.</p>
+
+<p>Therefore, when using {@y_val@} liters of aloe vera, the farmers must add between {@ta3@} and {@ta4@} liters of neem extract to run a successful operation.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Dynamically generate variables to yield 14,000+ variants */
+R : rand([2, 3, 4, 5, 6, 7, 8]);
+y_val : rand_with_step(5, 50, 1);
+
+/* The minimum neem required is R * y_val */
+min_neem : R * y_val;
+
+/* Generate a random buffer so the tank isn't perfectly full at the minimum ratio */
+buffer : rand_with_step(10, 100, 2);
+
+/* The maximum neem allowed is min_neem + buffer */
+max_neem : min_neem + buffer;
+
+/* Reverse-engineer the total tank capacity */
+C : max_neem + y_val;
+
+/* Define target answers */
+ta1 : x + y <= C;
+ta2 : x >= R * y;
+ta3 : min_neem;
+ta4 : max_neem;
+
+/* Predefine error-catching variants safely to avoid unescaped < > symbols in the XML */
+ta1_strict : x + y < C;
+ta1_flipped : x + y >= C;
+
+ta2_strict : x > R * y;
+ta2_flipped : x <= R * y;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Cap: {@ta1@}. Prop: {@ta2@}. y = {@y_val@} implies Min: {@ta3@}, Max: {@ta4@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Inequalities in Real Life (Proportions and Limits)</p>
+<p id="description">Grade 11 CBE: Translating agricultural capacity and mixture proportion constraints into linear inequalities, and solving for absolute bounds given a specific variable value.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>ta4</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of capacity inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct constraint. "Maximum storage capacity" limits the total sum to be less than or equal to \({@C@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they used a strict inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_strict</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The tank capacity is a maximum limit, which means the volume can perfectly equal the capacity without failing. You must use the inclusive \(\le\) symbol.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if they flipped the symbol</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_flipped</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your inequality symbol. A capacity constraint requires the total volume to be smaller than the limit, not larger.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect capacity constraint. Ensure you are adding the two volumes together (\(x + y\)) and limiting them by the tank's maximum size.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of proportion inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct constraint. The volume of \(x\) correctly scales to at least \({@R@}\) times the volume of \(y\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they used a strict inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_strict</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The requirement is "at least", meaning the ratio can perfectly equal \({@R@}\). Use the inclusive \(\ge\) symbol.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if they flipped the symbol</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_flipped</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your inequality symbol. Neem (\(x\)) must be the larger quantity relative to the scaled amount of aloe vera, so the symbol should point towards \(x\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect proportion constraint. Ensure you are directly relating the variable \(x\) to the multiplier \({@R@}\) applied to \(y\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of minimum calculation</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Substitute \(y = {@y_val@}\) directly into your proportion constraint inequality to find the lowest acceptable boundary for \(x\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of maximum calculation</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans4</sans>
+        <tans>ta4</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Substitute \(y = {@y_val@}\) directly into your tank capacity inequality to find the absolute physical limit for \(x\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1842426476</deployedseed>
+    <deployedseed>1749738280</deployedseed>
+    <deployedseed>27820878</deployedseed>
+    <deployedseed>1304417247</deployedseed>
+    <deployedseed>1294990923</deployedseed>
+    <deployedseed>1228094516</deployedseed>
+    <deployedseed>710065653</deployedseed>
+    <deployedseed>657376221</deployedseed>
+    <deployedseed>1660294578</deployedseed>
+    <deployedseed>1072977726</deployedseed>
+    <deployedseed>972265132</deployedseed>
+    <deployedseed>1400009378</deployedseed>
+    <deployedseed>1489852054</deployedseed>
+    <deployedseed>182197365</deployedseed>
+    <deployedseed>1956252251</deployedseed>
+    <deployedseed>383875591</deployedseed>
+    <deployedseed>1597466664</deployedseed>
+    <deployedseed>2012839238</deployedseed>
+    <deployedseed>758501068</deployedseed>
+    <deployedseed>89991167</deployedseed>
+    <deployedseed>1221486392</deployedseed>
+    <deployedseed>1760568900</deployedseed>
+    <deployedseed>468063904</deployedseed>
+    <deployedseed>432736609</deployedseed>
+    <deployedseed>191933650</deployedseed>
+    <deployedseed>142422994</deployedseed>
+    <deployedseed>1178596691</deployedseed>
+    <deployedseed>1426437022</deployedseed>
+    <deployedseed>1876022971</deployedseed>
+    <deployedseed>1439193203</deployedseed>
+    <deployedseed>515022522</deployedseed>
+    <deployedseed>825665062</deployedseed>
+    <deployedseed>741424031</deployedseed>
+    <deployedseed>1663655845</deployedseed>
+    <deployedseed>35813968</deployedseed>
+    <deployedseed>1766368171</deployedseed>
+    <deployedseed>2027542332</deployedseed>
+    <deployedseed>820233122</deployedseed>
+    <deployedseed>27913825</deployedseed>
+    <deployedseed>836029923</deployedseed>
+    <deployedseed>864839768</deployedseed>
+    <deployedseed>996237758</deployedseed>
+    <deployedseed>1869262700</deployedseed>
+    <deployedseed>692061195</deployedseed>
+    <deployedseed>1343901962</deployedseed>
+    <deployedseed>1229014280</deployedseed>
+    <deployedseed>2131079946</deployedseed>
+    <deployedseed>1329083827</deployedseed>
+    <deployedseed>1571246632</deployedseed>
+    <deployedseed>982149621</deployedseed>
+    <deployedseed>1310726079</deployedseed>
+    <deployedseed>1603548655</deployedseed>
+    <deployedseed>818875994</deployedseed>
+    <deployedseed>860562218</deployedseed>
+    <deployedseed>651389697</deployedseed>
+    <deployedseed>1566566158</deployedseed>
+    <deployedseed>1805560968</deployedseed>
+    <deployedseed>1930065175</deployedseed>
+    <deployedseed>1774072148</deployedseed>
+    <deployedseed>1172663764</deployedseed>
+    <deployedseed>873391060</deployedseed>
+    <deployedseed>708532016</deployedseed>
+    <deployedseed>408592137</deployedseed>
+    <deployedseed>1672445483</deployedseed>
+    <deployedseed>1861895883</deployedseed>
+    <deployedseed>713378024</deployedseed>
+    <deployedseed>1095623139</deployedseed>
+    <deployedseed>1043440493</deployedseed>
+    <deployedseed>2019732682</deployedseed>
+    <deployedseed>1534735594</deployedseed>
+    <deployedseed>1815385095</deployedseed>
+    <deployedseed>1739079843</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Used strict inequality symbols</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_strict</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_strict</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Flipped directions and wrong bounds</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_flipped</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_flipped</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3+5</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4-5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
