@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Solving a linear inequality and graphing it on a number line</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Solve the following inequality for \(x\):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle {@a@}x + {@b@} < {@c@} \)
+</p>
+
+<p><b>a) The algebraic solution:</b></p>
+<p><i>(Enter your answer as an inequality. Use <b>&lt;</b> for \(&lt;\). For example, <code>x < 5</code>)</i></p>
+<p>Inequality: [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b)</b> Represent your solution on the number line below. Drag the blue point to the correct boundary value.</p>
+<p><i>(Note: This is a strict inequality, so an open circle is used.)</i></p>
+
+[[jsxgraph input-ref-ans2="rP1" width="550px" height="120px"]]
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-7, 2, 7, -2],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+/* Draw a classic number line axis with double arrows and small ticks */
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'x', withLabel: true, label: {position: 'rt', offset: [-5, 15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [0, -15]}, insertTicks: false,
+        ticksDistance: 1, minorTicks: 0, majorHeight: 10, drawZero: true
+    }
+});
+
+/* Create the interactive glider (the boundary point) */
+var p1 = brd.create('glider', [0, 0, xaxis], {
+    name: '', size: 5, strokeColor: '#1565c0', fillColor: '#ffffff', strokeWidth: 2, snapToGrid: true, snapSizeX: 1
+});
+
+/* Draw the shaded region extending to the left border (so the arrow is visible) */
+var pLeft = brd.create('point', [-7, 0], {visible: false});
+brd.create('segment', [p1, pLeft], {
+    strokeWidth: 4, strokeColor: '#1565c0', highlight: false,
+    lastArrow: {type: 1, size: 6}
+});
+
+/* Bind the point to the hidden STACK input */
+stack_jxg.bind_point(rP1, p1);
+stack_jxg.starts_moved(p1);
+[[/jsxgraph]]
+
+<div style="display:none">[[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part 1: Algebraic Solution</b></p>
+<p>To solve the inequality, we need to isolate \(x\).</p>
+<p>First, we group the constant terms on the right side by subtracting \({@b@}\) from both sides:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@a@}x &< {@c@} - {@b@} \\
+{@a@}x &< {@c - b@}
+\end{aligned} \)
+</p>
+<p>Next, we divide both sides by the coefficient of \(x\), which is \({@a@}\):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+x &< \frac{{@c - b@}}{{@a@}} \\
+x &< {@bound@}
+\end{aligned} \)
+</p>
+<p>Hence, the correct algebraic solution is:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{x < {@bound@}} \)
+</p>
+
+<p><b>Part 2: Graphical Representation</b></p>
+<p>To represent this solution on a number line, we use an <b>open (unshaded) circle</b> at \({@bound@}\) because the inequality is strict (\(<\)). We then shade a thick line extending to the <b>left</b> to represent all numbers less than \({@bound@}\).</p>
+
+[[jsxgraph width="550px" height="120px"]]
+var bound = {#bound#};
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-7, 2, 7, -2],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+/* Draw a classic number line axis with double arrows and small ticks */
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'x', withLabel: true, label: {position: 'rt', offset: [-5, 15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [0, -15]}, insertTicks: false,
+        ticksDistance: 1, minorTicks: 0, majorHeight: 10, drawZero: true
+    }
+});
+
+/* Draw the shaded region extending to the left */
+var p1 = brd.create('point', [bound, 0], {visible: false});
+var pLeft = brd.create('point', [-7, 0], {visible: false});
+brd.create('segment', [p1, pLeft], {
+    strokeWidth: 4, strokeColor: '#1565c0', highlight: false,
+    lastArrow: {type: 1, size: 6}
+});
+
+/* Draw the open circle (drawn last so it sits perfectly on top of the line) */
+brd.create('point', [bound, 0], {name: '', size: 5, strokeColor: '#1565c0', fillColor: '#ffffff', strokeWidth: 2, fixed: true, highlight: false});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Reverse engineer to ensure clean integer answers within the [-6, 6] graph bounds */
+bound : rand_with_step(-4, 4, 1);
+
+a : rand_with_step(2, 5, 1); 
+b : rand_with_step(1, 8, 1);
+
+/* We want the equation to be a*x + b < c */
+c : a * bound + b;
+
+/* Teacher's exact answers */
+ta1 : x < bound;
+ta2 : [bound, 0]; /* The coordinate of the dragged point on the x-axis */
+
+/* Mistake Catchers for Algebra */
+wrong_sign : x > bound;
+wrong_c : c + b;
+wrong_bound : wrong_c / a;
+wrong_op : x < wrong_bound;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>\({@a@}x + {@b@} < {@c@} \implies {@ta1@} \implies Graph: {@bound@}\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Graphing Inequalities in One Unknown</p>
+<p id="description">Grade 11 CBE: Solving a linear inequality algebraically and actively graphing it on an interactive number line using a JSXGraph glider.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of algebra</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they flipped the sign unnecessarily</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your numerical boundary is correct, but you reversed the inequality sign. You only flip the sign when multiplying or dividing by a <b>negative</b> number, which was not required here.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check wrong sign operation</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_op</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your algebra in the first step. To move \(+{@b@}\) to the other side, you must <b>subtract</b> it from both sides, not add it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Extract the x-coordinate from the JS array */
+graph_x : ans2[1];</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if dragged point matches boundary</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>graph_x</sans>
+        <tans>bound</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your graphical representation is correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if dragged point matches their wrong algebra (Follow through)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans><![CDATA[x < graph_x]]></tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your graph matches your algebraic answer above, but because your algebraic answer is incorrect, the graph is placed at the wrong boundary.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your graph is placed at the wrong boundary value. Drag the point to match the boundary value calculated in Part 1.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>203314804</deployedseed>
+    <deployedseed>445654240</deployedseed>
+    <deployedseed>798626454</deployedseed>
+    <deployedseed>1853628446</deployedseed>
+    <deployedseed>157348758</deployedseed>
+    <deployedseed>252044412</deployedseed>
+    <deployedseed>626169275</deployedseed>
+    <deployedseed>1741820874</deployedseed>
+    <deployedseed>1498572533</deployedseed>
+    <deployedseed>1244740180</deployedseed>
+    <deployedseed>1728327304</deployedseed>
+    <deployedseed>765639206</deployedseed>
+    <deployedseed>295355639</deployedseed>
+    <deployedseed>1274327719</deployedseed>
+    <deployedseed>1251819177</deployedseed>
+    <deployedseed>1402768157</deployedseed>
+    <deployedseed>1991945983</deployedseed>
+    <deployedseed>868299525</deployedseed>
+    <deployedseed>1608635352</deployedseed>
+    <deployedseed>1488471567</deployedseed>
+    <deployedseed>1156376021</deployedseed>
+    <deployedseed>1251178973</deployedseed>
+    <deployedseed>578294039</deployedseed>
+    <deployedseed>803196750</deployedseed>
+    <deployedseed>1799749932</deployedseed>
+    <deployedseed>2087536817</deployedseed>
+    <deployedseed>1518413072</deployedseed>
+    <deployedseed>171766387</deployedseed>
+    <deployedseed>977821007</deployedseed>
+    <deployedseed>1768342540</deployedseed>
+    <deployedseed>782996634</deployedseed>
+    <deployedseed>2092717369</deployedseed>
+    <deployedseed>622008335</deployedseed>
+    <deployedseed>2039546120</deployedseed>
+    <deployedseed>813010628</deployedseed>
+    <deployedseed>837948782</deployedseed>
+    <deployedseed>1584994143</deployedseed>
+    <deployedseed>738184428</deployedseed>
+    <deployedseed>432800802</deployedseed>
+    <deployedseed>1862925872</deployedseed>
+    <deployedseed>1382734849</deployedseed>
+    <deployedseed>74339541</deployedseed>
+    <deployedseed>1776307753</deployedseed>
+    <deployedseed>1398102144</deployedseed>
+    <deployedseed>1696029844</deployedseed>
+    <deployedseed>1677632439</deployedseed>
+    <deployedseed>535256576</deployedseed>
+    <deployedseed>281754840</deployedseed>
+    <deployedseed>578902959</deployedseed>
+    <deployedseed>901413133</deployedseed>
+    <deployedseed>230445408</deployedseed>
+    <deployedseed>350167058</deployedseed>
+    <deployedseed>1760927782</deployedseed>
+    <deployedseed>478069796</deployedseed>
+    <deployedseed>1212874744</deployedseed>
+    <deployedseed>607186495</deployedseed>
+    <deployedseed>1321153355</deployedseed>
+    <deployedseed>837322157</deployedseed>
+    <deployedseed>724861188</deployedseed>
+    <deployedseed>159389216</deployedseed>
+    <deployedseed>288543273</deployedseed>
+    <deployedseed>2039219861</deployedseed>
+    <deployedseed>1389075197</deployedseed>
+    <deployedseed>1559447436</deployedseed>
+    <deployedseed>1689885110</deployedseed>
+    <deployedseed>1101334441</deployedseed>
+    <deployedseed>1918294971</deployedseed>
+    <deployedseed>1379347520</deployedseed>
+    <deployedseed>132306461</deployedseed>
+    <deployedseed>1514827153</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both algebra and graph correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Algebra wrong, graph follows through</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_op</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[wrong_bound, 0]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

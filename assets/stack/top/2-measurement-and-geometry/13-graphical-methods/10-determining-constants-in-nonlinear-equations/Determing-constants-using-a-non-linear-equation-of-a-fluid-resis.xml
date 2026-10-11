@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Determing constants using a non linear equation of a fluid resistance</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The fluid resistance \(R\) (N) on a sliding mass depends on velocity \(v\) (m/s) according to \[ R=\frac{v}{a v + b}, \] where \(a\) and \(b\) are constants. The data are:</p>
+<table border="1" cellpadding="6" style="border-collapse:collapse">
+<tr><th>\(v\) (m/s)</th><th>\(R\) (N)</th></tr>
+<tr><td>\({@v1@}\)</td><td>\({@dispdp(R1,3)@}\)</td></tr>
+<tr><td>\({@v2@}\)</td><td>\({@dispdp(R2,3)@}\)</td></tr>
+<tr><td>\({@v3@}\)</td><td>\({@dispdp(R3,3)@}\)</td></tr>
+</table>
+<p><strong>a)</strong> Take reciprocals to write the model in the linear form \(Y=mX+c\). Identify each part:</p>
+<div>\( Y = \) [[input:ansY]] [[validation:ansY]] [[feedback:prtY]]</div>
+<div>\( X = \) [[input:ansX]] [[validation:ansX]] [[feedback:prtX]]</div>
+<div>slope \( m = \) [[input:ansM]] [[validation:ansM]] [[feedback:prtM]]</div>
+<div>intercept \( c = \) [[input:ansC]] [[validation:ansC]] [[feedback:prtC]]</div>
+<p><strong>b)</strong> Using the data, determine the slope and intercept of the line, and hence the constants \(a\) and \(b\). Give values to 2 decimal places where appropriate.</p>
+<div>slope (numerical) \( = \) [[input:anss]] [[validation:anss]] [[feedback:prts]]</div>
+<div>intercept (numerical) \( = \) [[input:ansi]] [[validation:ansi]] [[feedback:prti]]</div>
+<div>\( a = \) [[input:ansa]] [[validation:ansa]] [[feedback:prta]]</div>
+<div>\( b = \) [[input:ansb]] [[validation:ansb]] [[feedback:prtb]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>Solution.</strong></p>
+<ol>
+<li><strong>Linearise.</strong> Take reciprocals of \(R=\dfrac{v}{av+b}\): \[ \frac{1}{R}=\frac{av+b}{v}=a+\frac{b}{v}=b\cdot\frac{1}{v}+a, \] so \(Y=\dfrac{1}{R}\) against \(X=\dfrac{1}{v}\) is a straight line with gradient \(m=b\) and intercept \(c=a\).</li>
+<li><strong>Find the gradient \(b\).</strong> \[ b=\frac{Y_1-Y_3}{X_1-X_3}=\frac{{@dispdp(qy1,2)@}-{@dispdp(qy3,2)@}}{{@dispdp(qx1,2)@}-{@dispdp(qx3,2)@}}={@bval@}. \]</li>
+<li><strong>Find the intercept.</strong> Substitute \(({@dispdp(qx1,2)@},\,{@dispdp(qy1,2)@})\) into \(Y=bX+c\): \[ c={@dispdp(qy1,2)@}-{@bval@}\times{@dispdp(qx1,2)@}={@aval@}=a. \]</li>
+<li><strong>State the values:</strong> \(a={@aval@}\) and \(b={@bval@}\).</li>
+</ol>
+<p>The graph of \(\dfrac{1}{R}\) against \(\dfrac{1}{v}\), with the gradient triangle and the intercept, is shown below.</p>
+[[jsxgraph width="470px" height="470px"]]
+var PX=[{#float(qx1)#},{#float(qx2)#},{#float(qx3)#}];
+var PY=[{#float(qy1)#},{#float(qy2)#},{#float(qy3)#}];
+var M={#float(bval)#}, C={#float(aval)#};
+var XMIN={#float(gxlo)#}, XMAX={#float(gxhi)#}, YMAX={#float(gyhi)#}, YMIN={#float(gylo)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[XMIN, YMAX, XMAX, YMIN], axis:true, showCopyright:false, showNavigation:false, grid:true, keepaspectratio:false});
+brd.create('text',[XMAX-0.03, YMIN+0.25, '1/v'],{anchorX:'right',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.03, YMAX-0.2, '1/R'],{anchorX:'left',fixed:true,fontSize:13,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[function(x){return M*x + C;}, 0, XMAX-0.05],{strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+for (var i=0;i<3;i++){ brd.create('point',[PX[i],PY[i]],{name:'',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:3}); }
+var xa=Math.min(PX[0],PX[1],PX[2]), xb=Math.max(PX[0],PX[1],PX[2]);
+var ya=M*xa+C, yb=M*xb+C;
+brd.create('segment',[[xa,ya],[xb,ya]],{dash:2,strokeColor:'#2ca02c',strokeWidth:2});
+brd.create('segment',[[xb,ya],[xb,yb]],{dash:2,strokeColor:'#2ca02c',strokeWidth:2});
+brd.create('text',[(xa+xb)/2, ya, 'run '+(xb-xa).toFixed(2)],{anchorX:'middle',anchorY:'top',fixed:true,fontSize:12,cssStyle:'color:#2ca02c'});
+brd.create('text',[xb+0.02,(ya+yb)/2,'rise '+(yb-ya).toFixed(2)],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'color:#2ca02c'});
+brd.create('point',[0,C],{name:'',fixed:true,color:'#cc0000',size:4});
+brd.create('text',[0.03, C, 'intercept = '+C.toFixed(2)],{anchorX:'left',anchorY:'bottom',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#cc0000'});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>8</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[aval : rand([1,2,3]);
+bval : rand([1,2,3,4]);
+v1 : 1; v2 : 2; v3 : 4;
+R1 : v1/(aval*v1+bval);
+R2 : v2/(aval*v2+bval);
+R3 : v3/(aval*v3+bval);
+qx1 : 1/v1; qx2 : 1/v2; qx3 : 1/v3;       /* X = 1/v */
+qy1 : 1/R1; qy2 : 1/R2; qy3 : 1/R3;       /* Y = 1/R */
+gxlo : -0.1; gxhi : qx1 + 0.15;
+gylo : min(0, aval, qy3) - 0.3;
+gyhi : max(qy1, qy2, qy3) + 0.3;
+/* dropdown option lists [value, correct, display] */
+Yopts : [[1/R, true, "\\(\\dfrac{1}{R}\\)"], [R, false, "\\(R\\)"], [1/v, false, "\\(\\dfrac{1}{v}\\)"], [v, false, "\\(v\\)"]];
+Xopts : [[1/v, true, "\\(\\dfrac{1}{v}\\)"], [v, false, "\\(v\\)"], [1/R, false, "\\(\\dfrac{1}{R}\\)"], [R, false, "\\(R\\)"]];
+Mopts : [[b, true, "\\(b\\)"], [a, false, "\\(a\\)"], [1/b, false, "\\(\\dfrac{1}{b}\\)"], [a/b, false, "\\(\\dfrac{a}{b}\\)"]];
+Copts : [[a, true, "\\(a\\)"], [b, false, "\\(b\\)"], [1/a, false, "\\(\\dfrac{1}{a}\\)"], [a*b, false, "\\(ab\\)"]];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( a={@aval@},\ b={@bval@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ansa</name>
+      <type>numerical</type>
+      <tans>aval</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansb</name>
+      <type>numerical</type>
+      <tans>bval</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansC</name>
+      <type>dropdown</type>
+      <tans>Copts</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansi</name>
+      <type>numerical</type>
+      <tans>aval</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansM</name>
+      <type>dropdown</type>
+      <tans>Mopts</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>anss</name>
+      <type>numerical</type>
+      <tans>bval</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansX</name>
+      <type>dropdown</type>
+      <tans>Xopts</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansY</name>
+      <type>dropdown</type>
+      <tans>Yopts</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prta</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>a</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansa</sans>
+        <tans>aval</tans>
+        <testoptions>0.15</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prta-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prta-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>\(a\) is the intercept \(c\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtb</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>b</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansb</sans>
+        <tans>bval</tans>
+        <testoptions>0.15</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtb-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtb-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>\(b\) is the slope \(m\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtC</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>c</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansC</sans>
+        <tans>a</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtC-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtC-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The constant term is the intercept, \(a\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prti</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>intercept</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansi</sans>
+        <tans>aval</tans>
+        <testoptions>0.15</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prti-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prti-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Intercept \(=Y-mX\) using one transformed point.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtM</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>m</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansM</sans>
+        <tans>b</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtM-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtM-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The coefficient of \(\dfrac{1}{v}\) is the slope, \(b\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prts</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>slope</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>anss</sans>
+        <tans>bval</tans>
+        <testoptions>0.15</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prts-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prts-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Slope \(=\dfrac{Y_2-Y_1}{X_2-X_1}\) with \(Y=\dfrac1R\), \(X=\dfrac1v\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtX</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>X</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansX</sans>
+        <tans>1/v</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtX-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtX-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The term \(\dfrac{b}{v}\) means \(X=\dfrac{1}{v}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtY</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Y</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansY</sans>
+        <tans>1/R</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtY-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtY-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Taking reciprocals makes the subject \(\dfrac{1}{R}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>19001</deployedseed>
+    <deployedseed>19002</deployedseed>
+    <deployedseed>19003</deployedseed>
+    <deployedseed>19004</deployedseed>
+    <deployedseed>19005</deployedseed>
+    <deployedseed>19006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ansa</name>
+        <value>aval</value>
+      </testinput>
+      <testinput>
+        <name>ansb</name>
+        <value>bval</value>
+      </testinput>
+      <testinput>
+        <name>ansC</name>
+        <value>a</value>
+      </testinput>
+      <testinput>
+        <name>ansi</name>
+        <value>aval</value>
+      </testinput>
+      <testinput>
+        <name>ansM</name>
+        <value>b</value>
+      </testinput>
+      <testinput>
+        <name>anss</name>
+        <value>bval</value>
+      </testinput>
+      <testinput>
+        <name>ansX</name>
+        <value>1/v</value>
+      </testinput>
+      <testinput>
+        <name>ansY</name>
+        <value>1/R</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prta-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtM</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtM-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtY</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtY-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Y and X swapped; m/c swapped</description>
+      <testinput>
+        <name>ansa</name>
+        <value>aval</value>
+      </testinput>
+      <testinput>
+        <name>ansb</name>
+        <value>bval</value>
+      </testinput>
+      <testinput>
+        <name>ansC</name>
+        <value>b</value>
+      </testinput>
+      <testinput>
+        <name>ansi</name>
+        <value>aval</value>
+      </testinput>
+      <testinput>
+        <name>ansM</name>
+        <value>a</value>
+      </testinput>
+      <testinput>
+        <name>anss</name>
+        <value>bval</value>
+      </testinput>
+      <testinput>
+        <name>ansX</name>
+        <value>1/R</value>
+      </testinput>
+      <testinput>
+        <name>ansY</name>
+        <value>1/v</value>
+      </testinput>
+      <expected>
+        <name>prtM</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtM-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtY</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtY-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
