@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Graphing a bounded compound inequality for a bakery's production capacity</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A local bakery in {@place@} has a maximum daily production capacity of <b>{@max_val@}</b> loaves of bread. Today, the bakery received an urgent order for <b>{@min_val@}</b> loaves that must be baked and delivered by evening.</p>
+
+<p>Let \( l \) represent the total number of loaves the bakery produces today.</p>
+
+<p><b>a)</b> Write a compound inequality to represent the number of loaves the bakery can produce today to fulfill the order without exceeding its maximum capacity.</p>
+<p><i>(Enter the numerical bounds in the boxes below.)</i></p>
+
+<p>[[input:ans1]] \( \le l \le \) [[input:ans2]]</p>
+<div><b>Lower Limit:</b> [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>Upper Limit:</b> [[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>b)</b> Represent this solution interval on the number line below. Drag the <b>two blue points</b> to the correct boundary values.</p>
+<p><i>(Note: Both constraints are inclusive (\(\le\)), so closed, shaded circles are used for both ends of the segment.)</i></p>
+
+[[jsxgraph input-ref-ans3="rP1" input-ref-ans4="rP2" width="600px" height="120px"]]
+var min_val = {#min_val#};
+var max_val = {#max_val#};
+
+var brd = JXG.JSXGraph.initBoard(divid, {
+    /* Scale the bounding box to perfectly frame the hundreds values */
+    boundingbox: [min_val - 30, 2, max_val + 30, -2],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+/* Draw the number line axis with increments of 10 */
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'l', withLabel: true, label: {position: 'rt', offset: [-5, 15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [0, -15]}, insertTicks: false,
+        ticksDistance: 10, minorTicks: 0, majorHeight: 10
+    }
+});
+
+/* Create an invisible track segment to prevent gliders from hitting the arrowheads */
+var track = brd.create('segment', [[min_val - 25, 0], [max_val + 25, 0]], {visible: false});
+
+/* Create two interactive gliders attached to the invisible track */
+var p1 = brd.create('glider', [min_val - 20, 0, track], {
+    name: '', size: 5, strokeColor: '#1565c0', fillColor: '#1565c0', strokeWidth: 2, snapToGrid: true, snapSizeX: 10
+});
+var p2 = brd.create('glider', [max_val + 20, 0, track], {
+    name: '', size: 5, strokeColor: '#1565c0', fillColor: '#1565c0', strokeWidth: 2, snapToGrid: true, snapSizeX: 10
+});
+
+/* Draw the bounded segment connecting the two gliders */
+brd.create('segment', [p1, p2], {
+    strokeWidth: 4, strokeColor: '#1565c0', highlight: false
+});
+
+/* Bind the points to hidden STACK inputs */
+stack_jxg.bind_point(rP1, p1);
+stack_jxg.bind_point(rP2, p2);
+stack_jxg.starts_moved(p1);
+stack_jxg.starts_moved(p2);
+[[/jsxgraph]]
+
+<div style="display:none">
+[[input:ans3]] [[validation:ans3]]
+[[input:ans4]] [[validation:ans4]]
+</div>
+<div>[[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: The algebraic Solution</b></p>
+<p>The bakery must produce <b>at least</b> \({@min_val@}\) loaves to satisfy the urgent order, which means \( l \ge {@min_val@} \).</p>
+<p>However, the bakery <b>cannot exceed</b> its daily capacity of \({@max_val@}\) loaves, which means \( l \le {@max_val@} \).</p>
+<p>Combining these two conditions into a single compound inequality gives:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{{@ta1@} \le l \le {@ta2@}} \)
+</p>
+
+<p><b>Part b: Graphical Representation</b></p>
+<p>To represent this on a number line, we plot a <b>closed circle</b> at \({@ta1@}\) and another <b>closed circle</b> at \({@ta2@}\). We then draw a solid line segment connecting the two circles to show that all values between \({@ta1@}\) and \({@ta2@}\) are included in the solution.</p>
+
+[[jsxgraph width="600px" height="120px"]]
+var min_val = {#min_val#};
+var max_val = {#max_val#};
+
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [min_val - 30, 2, max_val + 30, -2],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'l', withLabel: true, label: {position: 'rt', offset: [-5, 15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [0, -15]}, insertTicks: false,
+        ticksDistance: 10, minorTicks: 0, majorHeight: 10
+    }
+});
+
+var p1 = brd.create('point', [min_val, 0], {visible: false});
+var p2 = brd.create('point', [max_val, 0], {visible: false});
+brd.create('segment', [p1, p2], {strokeWidth: 4, strokeColor: '#1565c0', highlight: false});
+
+brd.create('point', [min_val, 0], {name: '', size: 5, strokeColor: '#1565c0', fillColor: '#1565c0', strokeWidth: 2, fixed: true, highlight: false});
+brd.create('point', [max_val, 0], {name: '', size: 5, strokeColor: '#1565c0', fillColor: '#1565c0', strokeWidth: 2, fixed: true, highlight: false});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Local Context */
+places : ["Githunguri", "Limuru", "Kikuyu", "Ruiru", "Kiambu"];
+place : rand(places);
+
+/* Production Variables in multiples of 10 */
+min_val : rand_with_step(120, 160, 10);
+max_val : min_val + rand_with_step(30, 60, 10);
+
+/* Target Answers */
+ta1 : min_val;
+ta2 : max_val;
+ta3 : [min_val, 0];
+ta4 : [max_val, 0];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>\({@ta1@} \le l \le {@ta2@}\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Graphing Inequalities in One Unknown (Bounded Segments)</p>
+<p id="description">Grade 11 CBE: Forming a bounded compound inequality from a localized word problem, and graphing it as a segment with two closed circles on a scaled JSXGraph number line.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>ta4</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of lower limit</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Review the problem statement to find the minimum number of loaves required for the urgent order. That is your lower boundary.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of upper limit</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Review the problem statement to find the absolute maximum capacity the bakery can produce in a day. That is your upper boundary.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Extract the x-coordinates. Order doesn't matter since they can drag either point */
+graph_min : min(ans3[1], ans4[1]);
+graph_max : max(ans3[1], ans4[1]);
+alg_min : min(ans1, ans2);
+alg_max : max(ans1, ans2);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if dragged points match correct boundaries</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>[graph_min, graph_max]</sans>
+        <tans>[ta1, ta2]</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your graphical representation is perfectly bounded.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if graph matches their wrong algebra (Follow through)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>[graph_min, graph_max]</sans>
+        <tans>[alg_min, alg_max]</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your graph matches your algebraic answer above, but because your algebraic limits are incorrect, the graph segment is drawn incorrectly.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your segment is graphed at the wrong boundaries. Ensure the two blue points match the algebraic limits you found in Part a.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1183354713</deployedseed>
+    <deployedseed>136998016</deployedseed>
+    <deployedseed>1921610350</deployedseed>
+    <deployedseed>1500557138</deployedseed>
+    <deployedseed>1941970569</deployedseed>
+    <deployedseed>261612399</deployedseed>
+    <deployedseed>431351338</deployedseed>
+    <deployedseed>697172791</deployedseed>
+    <deployedseed>845388440</deployedseed>
+    <deployedseed>702652347</deployedseed>
+    <deployedseed>1278840819</deployedseed>
+    <deployedseed>1788791299</deployedseed>
+    <deployedseed>1270044256</deployedseed>
+    <deployedseed>2069002162</deployedseed>
+    <deployedseed>1972394788</deployedseed>
+    <deployedseed>1478379213</deployedseed>
+    <deployedseed>612385909</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Algebra wrong, graph follows through</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1-10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+10</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[ta1-10, 0]</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>[ta2+10, 0]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

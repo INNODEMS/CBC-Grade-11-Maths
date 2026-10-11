@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Transverse common tangent length - interactive circles (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Two circles are shown below: the <span style="color:#1565c0"><strong>blue</strong></span> circle has centre \(A\) and radius \(r\); the <span style="color:#d32f2f"><strong>red</strong></span> circle has centre \(B\) and radius \(R\). The two <strong>transverse common tangents</strong> (the ones that cross between the circles) are drawn, and the contact points of one of them are marked \(T\) and \(T'\). The length \(L = TT'\) is highlighted.</p>
+
+<p><strong>Drag the circles around</strong> &mdash; move the centres \(A\) and \(B\), and drag the small open points to change the radii. The box keeps \(r\), \(R\) and \(d = AB\) up to date for whatever arrangement you choose.</p>
+
+[[jsxgraph input-ref-ans1="refA" input-ref-ans2="refAh" input-ref-ans3="refB" input-ref-ans4="refBh" width="620px" height="400px"]]
+var KIND = 'transverse';
+var initA = {#initA#}, initAh = {#initAh#}, initB = {#initB#}, initBh = {#initBh#};
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-10, 7.5, 14, -7.5], keepaspectratio: true, axis: false,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+
+var BLUE = '#1565c0', RED = '#d32f2f', TAN = '#1f4ed8';
+
+var A  = board.create('point', initA,  {name: 'A', size: 4, strokeColor: BLUE, fillColor: BLUE, label: {offset: [-14, -8], anchorX: 'right', anchorY: 'top'}});
+var B  = board.create('point', initB,  {name: 'B', size: 4, strokeColor: RED,  fillColor: RED, label: {offset: [12, -8], anchorX: 'left', anchorY: 'top'}});
+var Ah = board.create('point', initAh, {name: '', size: 3, strokeColor: BLUE, fillColor: '#fff'});
+var Bh = board.create('point', initBh, {name: '', size: 3, strokeColor: RED,  fillColor: '#fff'});
+
+/* dragging a centre carries its radius handle so the radius is preserved */
+function follow(c, h) {
+    var last = [c.X(), c.Y()];
+    c.on('down', function () { last = [c.X(), c.Y()]; });
+    c.on('drag', function () {
+        var ux = c.X() - last[0], uy = c.Y() - last[1];
+        h.setPositionDirectly(JXG.COORDS_BY_USER, [h.X() + ux, h.Y() + uy]);
+        last = [c.X(), c.Y()];
+        board.update();
+    });
+}
+follow(A, Ah); follow(B, Bh);
+
+function rA() { return Math.max(1, A.Dist(Ah)); }
+function rB() { return Math.max(1, B.Dist(Bh)); }
+function dist() { return A.Dist(B); }
+
+board.create('circle', [A, rA], {strokeColor: BLUE, strokeWidth: 2, fillColor: 'none', highlight: false});
+board.create('circle', [B, rB], {strokeColor: RED,  strokeWidth: 2, fillColor: 'none', highlight: false});
+board.create('line',   [A, B],  {strokeColor: '#bbb', strokeWidth: 1, dash: 2, highlight: false});
+
+/* contact points of the two transverse common tangents */
+function geo() {
+    var dx = B.X() - A.X(), dy = B.Y() - A.Y(), d = Math.hypot(dx, dy) || 1e-6, phi = Math.atan2(dy, dx);
+    var ra = rA(), rb = rB();
+    var cosv = (ra + rb) / d;
+    if (Math.abs(cosv) > 1) { return {ok: false}; }
+    var th = Math.acos(cosv);
+    function p(sign) {
+        var a = phi + sign * th;
+        return {TA: [A.X() + ra * Math.cos(a), A.Y() + ra * Math.sin(a)],
+                TB: [B.X() - rb * Math.cos(a), B.Y() - rb * Math.sin(a)]};
+    }
+    return {ok: true, a: p(1), b: p(-1)};
+}
+function gc(side, end, coord) {
+    var g = geo(); if (!g.ok) { return NaN; }
+    var s = side === 0 ? g.a : g.b; var pt = end === 0 ? s.TA : s.TB; return pt[coord];
+}
+
+var TA1 = board.create('point', [function () { return gc(0, 0, 0); }, function () { return gc(0, 0, 1); }], {visible: false});
+var TB1 = board.create('point', [function () { return gc(0, 1, 0); }, function () { return gc(0, 1, 1); }], {visible: false});
+var TA2 = board.create('point', [function () { return gc(1, 0, 0); }, function () { return gc(1, 0, 1); }], {visible: false});
+var TB2 = board.create('point', [function () { return gc(1, 1, 0); }, function () { return gc(1, 1, 1); }], {visible: false});
+
+board.create('line', [TA1, TB1], {strokeColor: '#9aa', strokeWidth: 1, highlight: false});
+board.create('line', [TA2, TB2], {strokeColor: '#9aa', strokeWidth: 1, highlight: false});
+board.create('segment', [TA1, TB1], {strokeColor: TAN, strokeWidth: 3, highlight: false});
+board.create('segment', [TA2, TB2], {strokeColor: TAN, strokeWidth: 3, highlight: false});
+board.create('point', [function () { return TA1.X(); }, function () { return TA1.Y(); }], {name: 'T', size: 2, strokeColor: TAN, fillColor: '#fff', label: {fontSize: 13}});
+board.create('point', [function () { return TB1.X(); }, function () { return TB1.Y(); }], {name: "T'", size: 2, strokeColor: TAN, fillColor: '#fff', label: {fontSize: 13}});
+
+board.create('text', [-9.6, 6.8, function () { return 'r = ' + rA().toFixed(2); }], {fontSize: 16, cssStyle: 'color:#1565c0;font-weight:bold', fixed: true, highlight: false});
+board.create('text', [-9.6, 5.8, function () { return 'R = ' + rB().toFixed(2); }], {fontSize: 16, cssStyle: 'color:#d32f2f;font-weight:bold', fixed: true, highlight: false});
+board.create('text', [-9.6, 4.8, function () { return 'd = AB = ' + dist().toFixed(2); }], {fontSize: 16, cssStyle: 'font-weight:bold', fixed: true, highlight: false});
+board.create('text', [-9.6, -6.6, function () { return geo().ok ? '' : 'The circles overlap (d is too small) - no transverse common tangent. Drag them apart.'; }], {fontSize: 13, cssStyle: 'color:#d32f2f', fixed: true, highlight: false});
+
+stack_jxg.bind_point(refA, A);
+stack_jxg.bind_point(refAh, Ah);
+stack_jxg.bind_point(refB, B);
+stack_jxg.bind_point(refBh, Bh);
+
+/* By default the binding only writes a value into the input once the point is
+   moved to a position different from its initial one, so a student who never
+   drags would submit blank inputs and the PRT would error. starts_moved() nulls
+   that protected initial value and forces the current coordinates to be written
+   straight away, making the starting configuration answerable without dragging. */
+stack_jxg.starts_moved(A);
+stack_jxg.starts_moved(Ah);
+stack_jxg.starts_moved(B);
+stack_jxg.starts_moved(Bh);
+[[/jsxgraph]]
+
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]] [[input:ans3]] [[validation:ans3]] [[input:ans4]] [[validation:ans4]]</div>
+
+<p>Read off \(r\), \(R\) and \(d\) from <em>your</em> diagram, then use the transverse common tangent length formula to work out \(L\). Give your answer to <strong>2 decimal places</strong>.</p>
+
+<div>\( L = \) [[input:ans5]] [[validation:ans5]] [[feedback:prt1]]</div>
+
+<p style="color:#555"><em>Tip: drag the circles to a new position and the question changes &mdash; try a few and check you can get each one right. Remember the circles must be fully apart for a transverse tangent to exist.</em></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>For two circles with radii \(r\) and \(R\) whose centres are a distance \(d\) apart, the length of a <strong>transverse</strong> (inverse) common tangent is</p>
+\[ L = \sqrt{d^{2} - (R + r)^{2}}. \]
+<p>This comes from the right-angled triangle in which the line of centres \(AB\) is the hypotenuse (length \(d\)), the <em>sum</em> of the radii \(R+r\) is one leg, and the tangent length \(L = TT'\) is the other leg, so \(d^2 = L^2 + (R+r)^2\). The sum appears (rather than the difference, as for a direct tangent) because the circles sit on <em>opposite</em> sides of the tangent.</p>
+/* <p>You simply read \(r\), \(R\) and \(d\) from your diagram and substitute. For example, with \(r = {@ri@}\), \(R = {@Rr@}\) and \(d = {@d0@}\),</p>
+\[ L = \sqrt{ {@d0@}^{2} - ({@Rr@} + {@ri@})^{2} } = \sqrt{ {@d0^2 - (Rr+ri)^2@} } \approx {@fr(L0t)@}. \] */]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* ---- randomised starting configuration (student is encouraged to drag) ---- */
+ri  : rand([2,3]);
+dRr : rand([1,2,3]);
+Rr  : ri + dRr;                 /* R > r in the start state; formula is symmetric */
+gap : rand([2,3,4]);
+sep : ri + Rr + gap;           /* centres this far apart: circles fully separated */
+ax  : -floor(sep/2);
+bx  : ax + sep;
+initA  : [ax, 0];
+initB  : [bx, 0];
+initAh : [ax + ri, 0];
+initBh : [bx + Rr, 0];
+/* values of the start configuration - used for the model answer and the tests */
+d0   : sep;
+L0t  : float(sqrt(d0^2 - (Rr + ri)^2));     /* correct transverse length, start config */
+ta   : L0t;
+/* wrong values for the start config (used by qtests) */
+L0diff : float(sqrt(d0^2 - (Rr - ri)^2));   /* direct formula (used R-r) */
+L0lin  : float(d0 - (Rr + ri));
+/* an overlapping configuration to exercise the invalid branch: r=3, R=4, d=5 (<7) */
+badA  : [0,0];  badAh : [3,0];
+badB  : [5,0];  badBh : [9,0];
+/* rounding helper for display in general feedback */
+fr(x) := ev(float(round(x*100)/100), simp);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>Start config: \( r={@ri@},\ R={@Rr@},\ d={@d0@},\ L\approx{@fr(L0t)@} \) (student may drag to change it)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>initA</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>initAh</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>initB</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>initBh</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>numerical</type>
+      <tans>ta</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* reconstruct r, R, d from the bound points, then round to 2 d.p. so the
+   marking uses exactly the values the student reads off the diagram (radii are
+   floored at 1, matching the JavaScript). */
+raw_r : max(1, float(sqrt((ans1[1]-ans2[1])^2 + (ans1[2]-ans2[2])^2)));
+raw_R : max(1, float(sqrt((ans3[1]-ans4[1])^2 + (ans3[2]-ans4[2])^2)));
+raw_d : float(sqrt((ans1[1]-ans3[1])^2 + (ans1[2]-ans3[2])^2));
+rr : float(round(raw_r*100)/100);
+RR : float(round(raw_R*100)/100);
+dr : float(round(raw_d*100)/100);
+disct : dr^2 - (RR + rr)^2;
+discd : dr^2 - (RR - rr)^2;
+Lc    : if is(disct > 0) then float(sqrt(disct)) else -1;
+Ldiff : if is(discd > 0) then float(sqrt(discd)) else -1;
+Llin  : float(abs(dr - (RR + rr)));]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description><![CDATA[Invalid configuration: circles overlap (d <= R+r).]]></description>
+        <answertest>NumAbsolute</answertest>
+        <sans>Lc</sans>
+        <tans>-1</tans>
+        <testoptions>0.5</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty>0</truepenalty>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-invalid</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>In your current arrangement the circles are not fully apart (\(d \le R + r\)), so there is no transverse common tangent and \(L\) is not defined. Drag the circles apart (so that \(d &gt; R + r\)) and try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Correct length L = sqrt(d^2 - (R+r)^2).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans5</sans>
+        <tans>Lc</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct &mdash; that is \(L = \sqrt{d^{2} - (R+r)^{2}}\) for your circles.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Used R-r (direct formula) instead of R+r.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans5</sans>
+        <tans>Ldiff</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-useddiff</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have used \(R - r\). That is the <em>direct</em> common tangent formula. For a <strong>transverse</strong> common tangent the circles are on opposite sides of the tangent, so use the <em>sum</em> of the radii: \(L = \sqrt{d^{2} - (R + r)^{2}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Linear subtraction d - (R+r) instead of Pythagoras.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans5</sans>
+        <tans>Llin</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-linear</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you computed \(d - (R + r)\). The radii and the line of centres form a <em>right-angled triangle</em>, so you must use Pythagoras: \(L = \sqrt{d^{2} - (R + r)^{2}}\), not a straight subtraction.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Gave d itself.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans5</sans>
+        <tans>dr</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-gaved</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is \(d\), the distance between the centres. You still need to subtract \((R+r)^2\) and take the square root: \(L = \sqrt{d^{2} - (R + r)^{2}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct for your circles. Read \(r\), \(R\) and \(d\) from the box and substitute into \(L = \sqrt{d^{2} - (R + r)^{2}}\). Remember to square, subtract, then take the square root.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Start config, correct L.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>initA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>initAh</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>initB</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>initBh</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>L0t</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Used R-r (direct formula).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>initA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>initAh</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>initB</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>initBh</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>L0diff</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-useddiff</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Linear subtraction d-(R+r).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>initA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>initAh</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>initB</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>initBh</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>L0lin</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-linear</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Gave d itself.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>initA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>initAh</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>initB</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>initBh</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>float(d0)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-gaved</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Overlapping configuration: no transverse common tangent.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>badA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>badAh</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>badB</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>badBh</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-invalid</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Generic wrong value.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>initA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>initAh</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>initB</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>initBh</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ev(L0t+1.7,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

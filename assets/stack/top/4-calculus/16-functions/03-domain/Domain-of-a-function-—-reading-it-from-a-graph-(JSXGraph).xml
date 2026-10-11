@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Domain of a function — reading it from a graph (JSXGraph)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph of \(y=f(x)\) is shown below. A <strong>filled</strong> dot means that point is <em>included</em>; an <strong>open</strong> (hollow) dot means that point is <em>excluded</em>.</p>
+[[jsxgraph width="480px" height="340px"]]
+var p = {#p#};
+var q = {#q#};
+var leftClosed = {#leftClosed#};
+var rightClosed = {#rightClosed#};
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [p - 2, 5, q + 2, -1.5],
+    axis: true,
+    showCopyright: false,
+    showNavigation: false
+});
+
+var f = board.jc.snippet('{#fx#}', true, 'x', true);
+board.create('functiongraph', [f, p, q], {strokeColor: '#1565c0', strokeWidth: 2});
+
+var yLeft  = {#yleft#};
+var yRight = {#yright#};
+
+board.create('point', [p, yLeft], {
+    name: '', size: 4, fixed: true,
+    fillColor: leftClosed ? '#1565c0' : '#ffffff',
+    strokeColor: '#1565c0', strokeWidth: 2
+});
+
+board.create('point', [q, yRight], {
+    name: '', size: 4, fixed: true,
+    fillColor: rightClosed ? '#1565c0' : '#ffffff',
+    strokeColor: '#1565c0', strokeWidth: 2
+});
+[[/jsxgraph]]
+<p>State the domain of \(f\) as a compound inequality in \(x\).</p>
+<table>
+<tr><td>Lower bound:</td><td>[[input:ans_lo]] [[input:ans_lo_type]] [[validation:ans_lo_type]]</td><td>\(x\)</td></tr>
+<tr><td>Upper bound:</td><td>\(x\)</td><td>[[input:ans_hi_type]] [[validation:ans_hi_type]] [[input:ans_hi]]</td></tr>
+</table>
+[[validation:ans_lo]] [[validation:ans_hi]]
+<div>[[feedback:prt_lo]] [[feedback:prt_hi]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>To read the domain from a graph, look at how far the curve stretches left and right along the \(x\)-axis, and check whether each end has a filled dot (included, use \(\leq\) or \(\geq\)) or a hollow dot (excluded, use \(<\) or \(>\)).</p>
+<p>The curve starts at \(x={@p@}\){@leftdotdesc@} and ends at \(x={@q@}\){@rightdotdesc@}.</p>
+<p>The domain is \( {@p@} {@lofeedbacksym@} x {@hifeedbacksym@} {@q@} \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[p : rand_with_prohib(-6,-2,[]);
+w : rand_with_prohib(4,8,[]);
+q : p+w;
+leftClosed : is(rand(2)=1);
+rightClosed : is(rand(2)=1);
+fx : 1.5*sin(0.9*(x-p))+2;              /* a decorative bounded arc; only its extent matters */
+yleft : float(1.5*sin(0.9*(p-p))+2);
+yright : float(1.5*sin(0.9*(q-p))+2);
+/* dropdown option lists: [option-atom, is-correct, label] */
+lo_le : "leq"; lo_lt : "lt";
+hi_le : "leq"; hi_lt : "lt";
+loopts : [[lo_le, leftClosed, "\\leq"], [lo_lt, not leftClosed, "<"]];
+hiopts : [[hi_le, rightClosed, "\\leq"], [hi_lt, not rightClosed, "<"]];
+ta_lo : if leftClosed then lo_le else lo_lt;
+ta_hi : if rightClosed then hi_le else hi_lt;
+lofeedbacksym : if leftClosed then "&#8804;" else "<";
+hifeedbacksym : if rightClosed then "&#8804;" else "<";
+leftdotdesc : if leftClosed then " (a filled dot, so it is included)" else " (an open dot, so it is excluded)";
+rightdotdesc : if rightClosed then " (a filled dot, so it is included)" else " (an open dot, so it is excluded)";]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Domain: {@p@} {@lofeedbacksym@} x {@hifeedbacksym@} {@q@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="description">Grade 11 Functions, Section 16.3 (Domain). Reads a bounded domain off a JSXGraph diagram, testing careful attention to open vs. closed endpoints and correct identification of the lower/upper bound values.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans_hi</name>
+      <type>numerical</type>
+      <tans>q</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans_hi_type</name>
+      <type>dropdown</type>
+      <tans>hiopts</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans_lo</name>
+      <type>numerical</type>
+      <tans>p</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans_lo_type</name>
+      <type>dropdown</type>
+      <tans>loopts</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt_hi</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Is the upper-bound value correct?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans_hi</sans>
+        <tans>q</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt_hi-value-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt_hi-value-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Is the inequality symbol (open/closed dot) correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_hi_type</sans>
+        <tans>ta_hi</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_hi-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.5</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt_hi-wrongsymbol</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Look again at the dot on the right end of the curve: is it filled (included, \(\leq\)) or open (excluded, \(<\))?</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Did the student swap the lower and upper bound?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans_hi</sans>
+        <tans>p</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_hi-swapped</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value at the <strong>left-hand</strong> end of the curve. The upper bound is where the curve ends on the right.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt_hi-wrongvalue</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That is not the \(x\)-value where the curve ends on the right. Look again at where the curve stops.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt_lo</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Is the lower-bound value correct?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans_lo</sans>
+        <tans>p</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt_lo-value-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt_lo-value-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Is the inequality symbol (open/closed dot) correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_lo_type</sans>
+        <tans>ta_lo</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_lo-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.5</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt_lo-wrongsymbol</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Look again at the dot on the left end of the curve: is it filled (included, \(\leq\)) or open (excluded, \(<\))?</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Did the student swap the lower and upper bound?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans_lo</sans>
+        <tans>q</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_lo-swapped</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value at the <strong>right-hand</strong> end of the curve. The lower bound is where the curve starts on the left.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt_lo-wrongvalue</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That is not the \(x\)-value where the curve begins on the left. Look again at where the curve starts.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Fully correct: both values and both symbols right</description>
+      <testinput>
+        <name>ans_hi</name>
+        <value>q</value>
+      </testinput>
+      <testinput>
+        <name>ans_hi_type</name>
+        <value>ta_hi</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo</name>
+        <value>p</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo_type</name>
+        <value>ta_lo</value>
+      </testinput>
+      <expected>
+        <name>prt_hi</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_hi-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_lo</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_lo-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct values but both open/closed symbols flipped</description>
+      <testinput>
+        <name>ans_hi</name>
+        <value>q</value>
+      </testinput>
+      <testinput>
+        <name>ans_hi_type</name>
+        <value>if rightClosed then hi_lt else hi_le</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo</name>
+        <value>p</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo_type</name>
+        <value>if leftClosed then lo_lt else lo_le</value>
+      </testinput>
+      <expected>
+        <name>prt_hi</name>
+        <expectedscore>0.2500000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_hi-wrongsymbol</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_lo</name>
+        <expectedscore>0.2500000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_lo-wrongsymbol</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Lower/upper bound values swapped</description>
+      <testinput>
+        <name>ans_hi</name>
+        <value>p</value>
+      </testinput>
+      <testinput>
+        <name>ans_hi_type</name>
+        <value>ta_hi</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo</name>
+        <value>q</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo_type</name>
+        <value>ta_lo</value>
+      </testinput>
+      <expected>
+        <name>prt_hi</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_hi-swapped</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_lo</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_lo-swapped</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong values</description>
+      <testinput>
+        <name>ans_hi</name>
+        <value>q+3</value>
+      </testinput>
+      <testinput>
+        <name>ans_hi_type</name>
+        <value>ta_hi</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo</name>
+        <value>p-3</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo_type</name>
+        <value>ta_lo</value>
+      </testinput>
+      <expected>
+        <name>prt_hi</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_hi-wrongvalue</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_lo</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_lo-wrongvalue</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

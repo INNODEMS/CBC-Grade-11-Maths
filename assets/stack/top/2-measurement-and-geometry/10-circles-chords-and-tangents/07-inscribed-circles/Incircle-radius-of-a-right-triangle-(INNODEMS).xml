@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Incircle radius of a right triangle (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The right-angled triangle below (right angle at \(C\)) has sides
+\(a = {@sa@}\) cm, \(b = {@sb@}\) cm and \(c = {@sc@}\) cm.</p>
+
+<p>Its <em>inscribed</em> circle (centre \(I\), in blue) is the circle inside the triangle that
+touches all three sides. Find its radius, in centimetres.</p>
+
+[[jsxgraph width='430px' height='430px']]
+var Ax=0, Ay={#sb#}, Bx={#sa#}, By=0, Cx=0, Cy=0;   // right angle at C
+var la=Math.hypot(Bx-Cx,By-Cy), lb=Math.hypot(Ax-Cx,Ay-Cy), lc=Math.hypot(Ax-Bx,Ay-By);
+var per=la+lb+lc;
+var area=Math.abs((Bx-Ax)*(Cy-Ay)-(Cx-Ax)*(By-Ay))/2, r=area/(per/2);
+var Ix=(la*Ax+lb*Bx+lc*Cx)/per, Iy=(la*Ay+lb*By+lc*Cy)/per;
+var xs=[Ax,Bx,Cx,Ix-r,Ix+r], ys=[Ay,By,Cy,Iy-r,Iy+r];
+var xmin=Math.min.apply(null,xs),xmax=Math.max.apply(null,xs),ymin=Math.min.apply(null,ys),ymax=Math.max.apply(null,ys);
+var pX=0.16*(xmax-xmin),pY=0.16*(ymax-ymin);
+var board=JXG.JSXGraph.initBoard(divid,{boundingbox:[xmin-pX,ymax+pY,xmax+pX,ymin-pY],
+  keepaspectratio:true,axis:false,showCopyright:false,showNavigation:false,pan:{enabled:false},zoom:{enabled:false}});
+var A=board.create('point',[Ax,Ay],{fixed:true,highlight:false,name:'A',size:2,label:{offset:[-12,4]}});
+var B=board.create('point',[Bx,By],{fixed:true,highlight:false,name:'B',size:2,label:{offset:[10,-8]}});
+var C=board.create('point',[Cx,Cy],{fixed:true,highlight:false,name:'C',size:2,label:{offset:[-12,-10]}});
+board.create('polygon',[A,B,C],{fixed:true,highlight:false,fillColor:'#e3f2fd',fillOpacity:0.5,
+  borders:{strokeColor:'#222',strokeWidth:2,highlight:false,fixed:true},vertices:{visible:false}});
+board.create('angle',[A,C,B],{type:'square',radius:Math.min(la,lb)*0.16,fixed:true,highlight:false, label:{visible:false}});
+board.create('circle',[[Ix,Iy],r],{strokeColor:'#1565c0',strokeWidth:1.5,fillColor:'none',fixed:true,highlight:false});
+board.create('point',[Ix,Iy],{fixed:true,highlight:false,name:'I',size:1,strokeColor:'#1565c0',fillColor:'#1565c0',label:{offset:[6,-2]}});
+var sl={fixed:true,highlight:false,fontSize:15,anchorX:'middle',anchorY:'middle'};
+var dx=0.07*(xmax-xmin),dy=0.07*(ymax-ymin);
+board.create('text',[(Bx+Cx)/2,(By+Cy)/2-dy,{#sa#}],sl);
+board.create('text',[(Cx+Ax)/2-dx,(Cy+Ay)/2,{#sb#}],sl);
+board.create('text',[(Ax+Bx)/2+2*dx,(Ay+By)/2+2*dy,{#sc#}],sl);
+[[/jsxgraph]]
+
+<div>Radius of the inscribed circle: \(r = \) [[input:ans1]] [[validation:ans1]] cm [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The inradius is the area divided by the semi-perimeter, \(r=\Delta/s\). With
+\(a={@sa@}\), \(b={@sb@}\), \(c={@sc@}\) (the legs are \(a\) and \(b\)):</p>
+\[ s = \frac{a+b+c}{2} = {@ssemi@}, \qquad \Delta = \tfrac12 a b = {@area@}, \qquad
+   r = \frac{\Delta}{s} = \frac{{@area@}}{{@ssemi@}} = {@rin@}\text{ cm}. \]
+<p>For a right triangle there is a useful shortcut that gives the same value:
+\( r = \dfrac{a+b-c}{2} = \dfrac{{@sa@}+{@sb@}-{@sc@}}{2} = {@rin@}\) cm.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>mn   : rand([[2,1],[3,1],[3,2],[4,1],[4,2],[4,3]]);
+m    : mn[1];
+nn   : mn[2];
+sa   : m^2 - nn^2;        /* leg a = BC, opposite A */
+sb   : 2*m*nn;            /* leg b = CA, opposite B */
+sc   : m^2 + nn^2;        /* hypotenuse c = AB */
+ssemi: (sa + sb + sc)/2;  /* semi-perimeter */
+area : sa*sb/2;           /* area = half product of legs */
+rin  : area/ssemi;        /* inradius = n(m-nn) = (a+b-c)/2 */
+dia  : 2*rin;             /* diameter (a common slip) */
+ta1  : rin;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\((m,n)=({@m@},{@nn@})\); \(a={@sa@}, b={@sb@}, c={@sc@}\); \(r={@rin@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: inradius</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>rin</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Diagnose: gave the diameter (2r)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>dia</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-diameter</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is twice the inradius &mdash; it looks like the <em>diameter</em>. The question asks for the radius, which is half of that.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Diagnose: gave the area; else generic</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>area</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-area</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the <em>area</em> \(\Delta\) of the triangle. The inradius still needs you to divide by the semi-perimeter: \(r=\Delta/s\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Find the area \(\Delta\) and the semi-perimeter \(s=(a+b+c)/2\), then use \(r=\Delta/s\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct inradius</description>
+      <testinput>
+        <name>ans1</name>
+        <value>rin</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Gave the diameter</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dia</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-diameter</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Gave the area</description>
+      <testinput>
+        <name>ans1</name>
+        <value>area</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-area</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong value</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(rin+100,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

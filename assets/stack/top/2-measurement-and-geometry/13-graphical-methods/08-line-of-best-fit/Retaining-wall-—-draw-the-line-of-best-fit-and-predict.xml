@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Retaining wall — draw the line of best fit and predict</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Engineers model the maximum mass of soil \(y\) (tonnes) a retaining wall can hold against its height \(x\) (metres). Data were collected for walls from \(1\) m to \(6\) m tall, plotted below.</p>
+<p><strong>1)</strong> Drag the two red points to draw a suitable line of best fit through the data.</p>
+[[jsxgraph input-ref-ans1="rP1" input-ref-ans2="rP2" width="540px" height="480px"]]
+var DX=[1,2,3,4,5,6];
+var DY=[{#py1#},{#py2#},{#py3#},{#py4#},{#py5#},{#py6#}];
+var YMAX={#float(ymaxw)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1, YMAX, 8, -3], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[7.8, -1.4, 'Height x (m)'],{anchorX:'right',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.15, YMAX-0.6, 'Soil mass y (t)'],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+for (var i=0;i<6;i++){ brd.create('point',[DX[i],DY[i]],{name:'',fixed:true,color:'#000000',fillColor:'#000000',size:3}); }
+var P1 = brd.create('point',[1,1],{name:'',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:0.5,snapSizeY:0.5});
+var P2 = brd.create('point',[6,7],{name:'',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:0.5,snapSizeY:0.5});
+brd.create('line',[P1,P2],{strokeColor:'#cc0000',strokeWidth:2,straightFirst:true,straightLast:true});
+stack_jxg.bind_point(rP1, P1);
+stack_jxg.bind_point(rP2, P2);
+[[/jsxgraph]]
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prtSlope]] [[feedback:prtInt]]</div>
+<p><strong>2)</strong> Use your line to predict the soil mass for a \({@xp@}\) m tall mega-structure wall.</p>
+<div>\( y \approx \) [[input:ansPred]] [[validation:ansPred]] \(\ \mathrm{t}\) [[feedback:prtPred]]</div>
+<p><strong>3)</strong> How reliable is this prediction?</p>
+<div>[[input:ansRel]] [[validation:ansRel]] [[feedback:prtRel]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>1)</strong> A good line of best fit for this data has the equation \[ y = {@m*x+c@}. \] (slope \(m={@m@}\) tonnes per metre, \(y\)-intercept \(c={@c@}\)). The correct line is shown in blue below.</p>
+<p><strong>2)</strong> Substituting \(x={@xp@}\): \[ y = {@m@}\times{@xp@} + ({@c@}) = {@yp@}\ \mathrm{t}. \]</p>
+<p><strong>3)</strong> The data only covers \(1\) m to \(6\) m. Predicting at \({@xp@}\) m is well outside this range &mdash; an <strong>extrapolation</strong> &mdash; so the prediction is <strong>less reliable</strong>: the linear relationship may not continue for such tall walls.</p>
+[[jsxgraph width="480px" height="440px"]]
+var DX=[1,2,3,4,5,6];
+var DY=[{#py1#},{#py2#},{#py3#},{#py4#},{#py5#},{#py6#}];
+var M={#float(m)#}, C={#float(c)#}, YMAX={#float(ymaxw)#};
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1, YMAX, 8, -3], axis:true, grid:true, keepaspectratio:false, showCopyright:false, showNavigation:false});
+brd.create('text',[7.8, -1.4, 'Height x (m)'],{anchorX:'right',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.15, YMAX-0.6, 'Soil mass y (t)'],{anchorX:'left',fixed:true,fontSize:12,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph',[function(x){ return M*x + C; }, 0, 7.5],{strokeColor:'#1f4fd8', strokeWidth:2, highlight:false});
+for (var i=0;i<6;i++){ brd.create('point',[DX[i],DY[i]],{name:'',fixed:true,color:'#000000',fillColor:'#000000',size:3}); }
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>5</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[m : rand([2.5, 3, 3.5, 4]);
+c : rand([-2, -1.5, -1, 1, 2]);
+xp : rand([9, 10, 12, 15]);
+yp : m*xp + c;
+py1 : max(0, round(m*1 + c + rand([-1,0,1])));
+py2 : max(0, round(m*2 + c + rand([-1,0,1])));
+py3 : max(0, round(m*3 + c + rand([-1,0,1])));
+py4 : max(0, round(m*4 + c + rand([-1,0,1])));
+py5 : max(0, round(m*5 + c + rand([-1,0,1])));
+py6 : max(0, round(m*6 + c + rand([-1,0,1])));
+ymaxw : round(m*6 + c) + 4;
+optR1_str : sconcat("Less reliable: ", xp, " m is far outside the data range (1 m to 6 m), so it is an extrapolation.");
+RelOpts : [[optR1, true, optR1_str],
+           [optR2, false, "Fully reliable: a straight line can be extended to any value of x."],
+           [optR3, false, "More reliable: taller walls always give more accurate predictions."],
+           [optR4, false, "Unreliable, only because the points do not lie exactly on the line."]];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@m@}x+({@c@})\); predict at \({@xp@}\to{@yp@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>[1, m+c]</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>[6, 6*m+c]</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansPred</name>
+      <type>numerical</type>
+      <tans>yp</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansRel</name>
+      <type>radio</type>
+      <tans>RelOpts</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtInt</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>p1x:ans1[1]; p1y:ans1[2]; p2x:ans2[1]; p2y:ans2[2];
+dxp : p2x - p1x;
+ms : if is(dxp=0) then 1000000 else (p2y-p1y)/dxp;
+cs : if is(dxp=0) then 1000000 else p1y - ms*p1x;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>intercept</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>cs</sans>
+        <tans>c</tans>
+        <testoptions>1.0</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtInt-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtInt-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Check where your line meets the \(y\)-axis (its intercept) &mdash; it should sit near \(y={@c@}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtPred</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>prediction</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ansPred</sans>
+        <tans>yp</tans>
+        <testoptions>0.6</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtPred-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtPred-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Substitute \(x={@xp@}\) into the equation of your line: \(y=mx+c\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtRel</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>reliability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansRel</sans>
+        <tans>optR1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtRel-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtRel-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The prediction is far outside the data range (1 m to 6 m). Predicting beyond the data is extrapolation, which is less reliable.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtSlope</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>p1x:ans1[1]; p1y:ans1[2]; p2x:ans2[1]; p2y:ans2[2];
+dxp : p2x - p1x;
+ms : if is(dxp=0) then 1000000 else (p2y-p1y)/dxp;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>slope</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ms</sans>
+        <tans>m</tans>
+        <testoptions>0.4</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtSlope-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtSlope-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The gradient of your line is too far from the trend of the points. Aim for a line that rises about \({@m@}\) tonnes for every extra metre.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>26001</deployedseed>
+    <deployedseed>26002</deployedseed>
+    <deployedseed>26003</deployedseed>
+    <deployedseed>26004</deployedseed>
+    <deployedseed>26005</deployedseed>
+    <deployedseed>26006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Line correct, prediction correct, reliability correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[1, m+c]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[6, 6*m+c]</value>
+      </testinput>
+      <testinput>
+        <name>ansPred</name>
+        <value>yp</value>
+      </testinput>
+      <testinput>
+        <name>ansRel</name>
+        <value>optR1</value>
+      </testinput>
+      <expected>
+        <name>prtInt</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtInt-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtPred</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtPred-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtRel</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtRel-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtSlope</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtSlope-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Line wrong (shallow); prediction wrong; reliability wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[1, 1]</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[6, 7]</value>
+      </testinput>
+      <testinput>
+        <name>ansPred</name>
+        <value>yp+10</value>
+      </testinput>
+      <testinput>
+        <name>ansRel</name>
+        <value>optR2</value>
+      </testinput>
+      <expected>
+        <name>prtPred</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtPred-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtRel</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtRel-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtSlope</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtSlope-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
