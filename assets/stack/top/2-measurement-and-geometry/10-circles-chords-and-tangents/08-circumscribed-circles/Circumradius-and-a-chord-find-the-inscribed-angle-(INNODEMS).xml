@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Circumradius and a chord: find the inscribed angle (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>In the circle below with centre \(O\), the chord \(BC = {@BC@}\) cm and the circumradius is \(R = {@RR@}\) cm.</p>
+<p>Using \(A\), \(B\), \(C\) on the circle as shown, find the angle \(\theta = \angle BAC\), in degrees.</p>
+[[jsxgraph width="380px" height="380px"]]
+JXG.Options.text.useMathJax = true;
+var R = {#RR#};
+var theta = {#theta#};
+var coef = {#bc_coef#};
+var rad = {#bc_rad#};
+var sfac = 3.0/R, Rd = R*sfac, d2r = Math.PI/180;
+var angB = (270-theta)*d2r, angC = (270+theta)*d2r, angA = 90*d2r;
+var O = [0,0];
+var B = [Rd*Math.cos(angB), Rd*Math.sin(angB)];
+var C = [Rd*Math.cos(angC), Rd*Math.sin(angC)];
+var A = [Rd*Math.cos(angA), Rd*Math.sin(angA)];
+var pad = 1.4;
+var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[-Rd-pad, Rd+pad, Rd+pad, -Rd-pad], keepaspectratio:true, axis:false, showCopyright:false, showNavigation:false, pan:{enabled:false}, zoom:{enabled:false}});
+board.create('circle', [O, Rd], {strokeColor:'#1565c0', strokeWidth:2, fillColor:'none', highlight:false, fixed:true});
+var pO = board.create('point', O, {name:'O', size:1, fixed:true, fillColor:'#333', strokeColor:'#333', label:{offset:[8,6], anchorX:'left', anchorY:'bottom'}});
+var pA = board.create('point', A, {name:'A', size:1.5, fixed:true, fillColor:'#333', strokeColor:'#333', label:{offset:[0,10], anchorX:'middle', anchorY:'bottom'}});
+var pB = board.create('point', B, {name:'B', size:1.5, fixed:true, fillColor:'#333', strokeColor:'#333', label:{offset:[-11,-2], anchorX:'right', anchorY:'middle'}});
+var pC = board.create('point', C, {name:'C', size:1.5, fixed:true, fillColor:'#333', strokeColor:'#333', label:{offset:[11,-2], anchorX:'left', anchorY:'middle'}});
+board.create('polygon', [pA,pB,pC], {borders:{strokeColor:'#333', strokeWidth:2, highlight:false}, fillColor:'none', highlight:false, vertices:{visible:false}});
+board.create('segment', [pO,pB], {strokeColor:'#9e9e9e', strokeWidth:1.4, highlight:false});
+board.create('segment', [pO,pC], {strokeColor:'#9e9e9e', strokeWidth:1.4, highlight:false});
+board.create('angle', [pB,pA,pC], {radius:0.95, type:'sector', fillColor:'#f39c12', fillOpacity:0.30, strokeColor:'#e67e22', name:'', label:{visible:false}, highlight:false});
+board.create('text', [A[0], A[1]-1.05, '\\(\\theta\\)'], {anchorX:'middle', anchorY:'top', fontSize:16, strokeColor:'#333', fixed:true});
+var bclabel = (rad==1) ? (''+coef) : ('\\('+coef+'\\sqrt{'+rad+'}\\)');
+board.create('text', [(B[0]+C[0])/2, (B[1]+C[1])/2-0.02, bclabel], {anchorX:'middle', anchorY:'top', fontSize:14, strokeColor:'#333', fixed:true});
+board.create('text', [(O[0]+B[0])/2-0.1, (O[1]+B[1])/2+0.1, '\\('+R+'\\)'], {anchorX:'right', anchorY:'bottom', fontSize:14, strokeColor:'#333', fixed:true});
+[[/jsxgraph]]
+<div>\(\theta = \) [[input:ans1]]\(^\circ\) [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Drop a perpendicular from the centre \(O\) to the midpoint \(M\) of the chord \(BC\). This makes a right-angled triangle \(OMB\) in which \(OB = R\), \(BM = \tfrac12 BC\), and \(\angle BOM = \theta\) (half the central angle \(\angle BOC = 2\theta\), which is itself twice the inscribed angle \(\theta\)).</p>
+[[jsxgraph width="380px" height="380px"]]
+JXG.Options.text.useMathJax = true;
+var R = {#RR#};
+var theta = {#theta#};
+var coef = {#bc_coef#};
+var rad = {#bc_rad#};
+var sfac = 3.0/R, Rd = R*sfac, d2r = Math.PI/180;
+var angB = (270-theta)*d2r, angC = (270+theta)*d2r, angA = 90*d2r;
+var O = [0,0];
+var B = [Rd*Math.cos(angB), Rd*Math.sin(angB)];
+var C = [Rd*Math.cos(angC), Rd*Math.sin(angC)];
+var A = [Rd*Math.cos(angA), Rd*Math.sin(angA)];
+var M = [(B[0]+C[0])/2, (B[1]+C[1])/2];
+var pad = 1.4;
+var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[-Rd-pad, Rd+pad, Rd+pad, -Rd-pad], keepaspectratio:true, axis:false, showCopyright:false, showNavigation:false, pan:{enabled:false}, zoom:{enabled:false}});
+board.create('circle', [O, Rd], {strokeColor:'#1565c0', strokeWidth:2, fillColor:'none', highlight:false, fixed:true});
+var pO = board.create('point', O, {name:'O', size:1, fixed:true, fillColor:'#333', strokeColor:'#333', label:{offset:[8,6], anchorX:'left', anchorY:'bottom'}});
+var pA = board.create('point', A, {name:'A', size:1.5, fixed:true, fillColor:'#333', strokeColor:'#333', label:{offset:[0,10], anchorX:'middle', anchorY:'bottom'}});
+var pB = board.create('point', B, {name:'B', size:1.5, fixed:true, fillColor:'#333', strokeColor:'#333', label:{offset:[-11,-2], anchorX:'right', anchorY:'middle'}});
+var pC = board.create('point', C, {name:'C', size:1.5, fixed:true, fillColor:'#333', strokeColor:'#333', label:{offset:[11,-2], anchorX:'left', anchorY:'middle'}});
+board.create('polygon', [pA,pB,pC], {borders:{strokeColor:'#333', strokeWidth:2, highlight:false}, fillColor:'none', highlight:false, vertices:{visible:false}});
+board.create('segment', [pO,pB], {strokeColor:'#9e9e9e', strokeWidth:1.4, highlight:false});
+board.create('segment', [pO,pC], {strokeColor:'#9e9e9e', strokeWidth:1.4, highlight:false});
+board.create('angle', [pB,pA,pC], {radius:0.95, type:'sector', fillColor:'#f39c12', fillOpacity:0.30, strokeColor:'#e67e22', name:'', label:{visible:false}, highlight:false});
+board.create('text', [A[0], A[1]-1.05, '\\(\\theta\\)'], {anchorX:'middle', anchorY:'top', fontSize:16, strokeColor:'#333', fixed:true});
+var pM = board.create('point', M, {name:'M', size:1, fixed:true, fillColor:'#0d8e8e', strokeColor:'#0d8e8e', label:{offset:[0,-10], anchorX:'middle', anchorY:'top'}});
+board.create('segment', [pO,pM], {strokeColor:'#0d8e8e', strokeWidth:1.5, dash:2, highlight:false});
+board.create('angle', [pO,pM,pB], {type:'square', radius:0.32, strokeColor:'#0d8e8e', fillColor:'#0d8e8e', fillOpacity:0.15, name:'', label:{visible:false}, highlight:false});
+board.create('angle', [pB,pO,pM], {radius:0.7, type:'sector', fillColor:'#8e44ad', fillOpacity:0.25, strokeColor:'#8e44ad', name:'', label:{visible:false}, highlight:false});
+board.create('text', [(O[0]+B[0])/2-0.1, (O[1]+B[1])/2+0.1, '\\('+R+'\\)'], {anchorX:'right', anchorY:'bottom', fontSize:14, strokeColor:'#333', fixed:true});
+[[/jsxgraph]]
+<p>From triangle \(OMB\):</p>
+\[
+\sin\theta = \frac{BM}{OB} = \frac{\tfrac12 BC}{R} = \frac{BC}{2R} = \frac{ {@BC@} }{2\cdot {@RR@}} = {@sinexact@}.
+\]
+<p>Taking the inverse sine (and reading the acute angle shown at \(A\)):</p>
+\[ \theta = {@theta@}^\circ. \]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>thetalist : [30, 45, 60];
+theta : rand(thetalist);
+RR : rand_with_step(2, 6, 1);            /* circumradius, integer 2..6 */
+bc_rad : if theta = 30 then 1 elseif theta = 45 then 2 else 3;
+bc_coef : RR;
+BC : bc_coef * sqrt(bc_rad);             /* chord, exact integer or surd */
+ta1 : theta;                             /* model answer: angle in degrees */
+sinexact : BC/(2*RR);                    /* = sin(theta): 1/2, sqrt(2)/2 or sqrt(3)/2 */
+sinval : float(sinexact);                /* decimal value of sin(theta), for a diagnostic */
+twotheta: theta * 2; /* Central angle */
+supp : 180 - theta;                      /* obtuse supplement (same sine) */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( BC={@BC@},\ R={@RR@};\ \theta={@theta@}^\circ \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct angle (degrees)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.5</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Gave the obtuse supplement 180-theta?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>supp</tans>
+        <testoptions>0.5</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-supp</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember that \(\sin\theta = \sin(180^\circ-\theta)\), so the sine value alone gives two possible angles. The triangle drawn has an <em>acute</em> angle at \(A\) &mdash; choose that one.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave sin(theta) instead of the angle?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>sinval</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-sine</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That looks like the <em>value</em> of \(\sin\theta = \dfrac{BC}{2R}\), not the angle itself. Take the inverse sine of it to find \(\theta\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Gave central angle</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>twotheta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text>That looks like the central angle \(\angle BOC\) rather than \(\theta = \angle BAC\). What's the relationship between angles at the centre and angles at the circumference?</text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Try finding \(\angle BOC\) first.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>3001</deployedseed>
+    <deployedseed>3002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>3004</deployedseed>
+    <deployedseed>3005</deployedseed>
+    <deployedseed>3006</deployedseed>
+    <deployedseed>3007</deployedseed>
+    <deployedseed>3008</deployedseed>
+    <deployedseed>3009</deployedseed>
+    <deployedseed>3010</deployedseed>
+    <deployedseed>3011</deployedseed>
+    <deployedseed>3012</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct angle</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Obtuse supplement</description>
+      <testinput>
+        <name>ans1</name>
+        <value>supp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-supp</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Gave sin(theta) not the angle</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(float(sinval),simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-sine</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong value</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(theta+5,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

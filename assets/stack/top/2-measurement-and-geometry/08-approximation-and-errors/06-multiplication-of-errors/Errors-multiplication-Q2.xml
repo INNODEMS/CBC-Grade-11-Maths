@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Errors multiplication Q2</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A farmer wants to calculate the area of a rectangular maize plot in order to determine the correct amount of fertilizer needed. Using a precision measuring tape, the length of the plot is recorded as \({@plot_length_disp@}\) m (correct to \({@length_dp@}\) decimal place(s)) and the width as \({@plot_width_disp@}\) m (correct to \({@width_dp@}\) decimal place(s)). Find:</p>
+
+<p>(a) The absolute error in the area of the plot.</p>
+<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p>(b)  The relative error in the area of the plot.</p>
+<p>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
+
+<p>(c) The percentage error in the area of the plot.</p>
+<p>[[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p>The plot length was recorded as \({@plot_length_disp@}\) m, correct to \({@length_dp@}\) decimal place(s), and the width as \({@plot_width_disp@}\) m, correct to \({@width_dp@}\) decimal place(s).</p>
+
+<p><strong>Absolute errors in the individual measurements:</strong></p>
+<p>Since the length is correct to \({@length_dp@}\) decimal place(s), its absolute error is half the smallest unit:</p>
+<p>\[ \text{Length error} = \frac{1}{2 \times {@length_scale@}} = {@plot_length_err@} \text{ m} \]</p>
+<p>Similarly, since the width is correct to \({@width_dp@}\) decimal place(s):</p>
+<p>\[ \text{Width error} = \frac{1}{2 \times {@width_scale@}} = {@plot_width_err@} \text{ m} \]</p>
+
+<p>(a) <strong>Absolute error in the area:</strong></p>
+<p>Using the recorded measurements:</p>
+<p>\[ \text{Working area} = {@plot_length_disp@} \times {@plot_width_disp@} = {@W_plot_area@} \text{ m}^2 \]</p>
+<p>Using the maximum possible length and width:</p>
+<p>\[ \text{Max length} = {@plot_length_disp@} + {@plot_length_err@} = {@max_plot_length@} \text{ m} \]</p>
+<p>\[ \text{Max width} = {@plot_width_disp@} + {@plot_width_err@} = {@max_plot_width@} \text{ m} \]</p>
+<p>\[ \text{Maximum area} = {@max_plot_length@} \times {@max_plot_width@} = {@max_plot_area@} \text{ m}^2 \]</p>
+<p>\[ \text{Absolute error} = \text{Maximum area} - \text{Working area} = {@max_plot_area@} - {@W_plot_area@} = {@ta1@} \text{ m}^2 \]</p>
+
+<p>(b) <strong>Relative error:</strong></p>
+<p>\[ \text{Relative error} = \frac{\text{Absolute error}}{\text{Working area}} = \frac{{@ta1@}}{{@W_plot_area@}} \approx {@ta2@} \]</p>
+
+<p>(c) <strong>Percentage error:</strong></p>
+<p>\[ \text{Percentage error} = \text{Relative error} \times 100\% = {@ta2@} \times 100\% \approx {@ta3@}\% \]</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>length_dp: 1 + rand(2);
+length_scale: 10^length_dp;
+length_steps: rand(400*length_scale/10 + 1);
+plot_length: float(60 + length_steps/length_scale);
+plot_length_disp: float(plot_length);
+plot_length_err: float(0.5/length_scale);
+
+width_dp: 1 + rand(2);
+width_scale: 10^width_dp;
+width_steps: rand(250*width_scale/10 + 1);
+plot_width: float(20 + width_steps/width_scale);
+plot_width_disp: float(plot_width);
+plot_width_err: float(0.5/width_scale);
+
+max_plot_length: plot_length + plot_length_err;
+min_plot_length: plot_length - plot_length_err;
+
+max_plot_width: plot_width + plot_width_err;
+min_plot_width: plot_width - plot_width_err;
+
+W_plot_area: plot_length * plot_width;
+
+max_plot_area: max_plot_length * max_plot_width;
+min_plot_area: min_plot_length * min_plot_width;
+
+ta1: max_plot_area - W_plot_area;
+ta2: ta1 / W_plot_area;
+ta3: ta2 * 100;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta1@} {@ta2@} {@ta3@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>62298214</deployedseed>
+    <deployedseed>1557216113</deployedseed>
+    <deployedseed>178130764</deployedseed>
+    <deployedseed>728281270</deployedseed>
+    <deployedseed>1207088287</deployedseed>
+    <deployedseed>2105704534</deployedseed>
+    <deployedseed>2125316419</deployedseed>
+    <deployedseed>1651902904</deployedseed>
+    <deployedseed>1151802465</deployedseed>
+    <deployedseed>778959963</deployedseed>
+    <deployedseed>1986659873</deployedseed>
+    <deployedseed>1448187446</deployedseed>
+    <deployedseed>1557943587</deployedseed>
+    <deployedseed>294792849</deployedseed>
+    <deployedseed>254547657</deployedseed>
+    <deployedseed>1417468712</deployedseed>
+    <deployedseed>591545031</deployedseed>
+    <deployedseed>1390688810</deployedseed>
+    <deployedseed>1785405687</deployedseed>
+  </question>
+</quiz>

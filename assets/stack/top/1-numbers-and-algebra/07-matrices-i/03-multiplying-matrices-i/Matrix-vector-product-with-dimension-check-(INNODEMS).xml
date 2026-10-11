@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Matrix-vector product with dimension check (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Consider the matrix \(A\) and the column vector \(\mathbf{x}\):</p>
+<p>\[ A = {@MM@} \qquad \mathbf{x} = {@vv@} \]</p>
+<p>Compute the matrix&ndash;vector product \(A\mathbf{x}\), <strong>if it is defined</strong>. If the product is <strong>not defined</strong>, enter the zero vector to indicate this.</p>
+<p><em>(The answer box has the same number of rows as \(A\).)</em></p>
+<div>\( A\mathbf{x} = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[[[ if test="is(ddef=1)" ]]
+<p>The product is defined: \(A\) is \({@m@}\times{@n@}\) and \(\mathbf{x}\) is \({@n@}\times 1\). Because the number of columns of \(A\) equals the number of entries of \(\mathbf{x}\), the product is defined and the result is \({@m@}\times 1\).</p>
+<p>Multiply each <em>row</em> of \(A\) by the column \(\mathbf{x}\): multiply entries in matching positions and add. Writing the working inside the result vector:</p>
+\[ A\mathbf{x} = {@MM@}\,{@vv@} = {@ta@}. \]
+[[/ if ]][[ if test="is(ddef=0)" ]]
+<p>The product is <strong>not defined</strong>.</p>
+<p>\(A\) is \({@m@}\times{@n@}\), so it has \({@n@}\) columns, while \(\mathbf{x}\) has \({@p@}\) entries (it is \({@p@}\times 1\)).</p>
+<p>For \(A\mathbf{x}\) to be defined, the number of columns of \(A\) must equal the number of entries of \(\mathbf{x}\). Here \({@n@}\neq{@p@}\), so the product cannot be formed. We signal this by entering the zero vector.</p>
+[[/ if ]]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* A is m x n, x is p x 1. Defined iff n = p. */
+m : rand(2)+2;                         /* rows of A: 2 or 3 */
+n : rand(2)+2;                         /* cols of A: 2 or 3 */
+defcase : rand([true,true,false]);     /* ~2/3 of variants are defined */
+p : if defcase then n else 5-n;        /* p = n (defined) or the other of 2/3 */
+
+MM  : genmatrix(lambda([i,j], rand(11)-5), m, n);   /* entries -5..5 */
+vv0 : genmatrix(lambda([i,j], rand(11)-5), p, 1);
+/* guard: if a defined product would be the zero vector, nudge x so the
+   'defined' answer is visibly non-zero (lazy if: A.vv0 only formed when defined) */
+vv : if defcase then (if zeromatrixp(MM . vv0) then vv0 + 1 else vv0) else vv0;
+
+ta   : if defcase then MM . vv else zeromatrix(m,1);   /* model answer */
+ddef : if defcase then 1 else 0;                        /* numeric flag for PRT/feedback */
+
+/* diagnostic helpers (used by the question tests on a defined variant) */
+onescol   : genmatrix(lambda([i,j], 1), m, 1);
+wrongprod : ta + onescol;              /* non-zero, != ta: an arithmetic slip */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( A:{@m@}\times{@n@},\ x:{@p@}\times1,\ \text{defined}={@ddef@},\ Ax={@ta@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>matrix</type>
+      <tans>ta</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: A.x (or the zero vector when undefined)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Did the student enter the zero vector?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>zeromatrix(m,1)</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-claimedundef</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This product <strong>is</strong> defined: \(A\) has \({@n@}\) columns and \(\mathbf{x}\) has \({@n@}\) entries, and these match. So work it out rather than entering the zero vector.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Branch on whether this variant is defined</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ddef</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-arith</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Not quite. Multiply each row of \(A\) by \(\mathbf{x}\): multiply entries in matching positions and add. Check your arithmetic against the worked solution.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-undefined</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>This product is <strong>not defined</strong>: \(A\) has \({@n@}\) columns but \(\mathbf{x}\) has \({@p@}\) entries. The product \(A\mathbf{x}\) only exists when these are equal. Enter the zero vector to indicate that it is not defined.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct answer (passes on every variant)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Defined variant: wrongly entered the zero vector</description>
+      <testinput>
+        <name>ans1</name>
+        <value>zeromatrix(m,1)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-claimedundef</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Defined variant: arithmetic slip (A.x + ones)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrongprod</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-arith</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

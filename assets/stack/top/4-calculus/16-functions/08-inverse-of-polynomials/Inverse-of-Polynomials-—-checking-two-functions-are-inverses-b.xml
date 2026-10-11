@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Inverse of Polynomials — checking two functions are inverses by composition</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Let \( f(x) = {@m@}x + {@b@} \) and \( g(x) = {@displaygx@} \).</p>
+<p><strong>(a)</strong> Find and fully simplify \( f(g(x)) \).</p>
+<div>\( f(g(x)) = \) [[input:ans1]] [[validation:ans1]]</div>
+<p><strong>(b)</strong> Hence, is \(g\) the inverse of \(f\)?</p>
+<div>[[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prt1]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>\(g\) is the inverse of \(f\) exactly when \(f(g(x))=x\) for every \(x\). Here:</p>
+\[ f(g(x)) = {@ta_composed@}. \]
+<p>{@verdicttext@}</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[m : rand_with_prohib(-6,6,[0,1,-1]);
+b : rand_with_prohib(-9,9,[0]);
+is_true_inverse : is(rand(2)=1);
+/* the correct inverse is (x-b)/m; the "fake" g is a plausible-looking but wrong alternative */
+gx : if is_true_inverse then (x-b)/m else (x+b)/m;
+displaygx : if is_true_inverse then sconcat("(x-",b,")/",m) else sconcat("(x+",b,")/",m);
+fgx : ratsimp(subst(x=gx, m*x+b));
+ta_composed : fgx;
+is_identity : is(ratsimp(fgx-x)=0);
+ans2_correct : if is_identity then "yes" else "no";
+opts2 : [["yes", is_identity, "Yes, g is the inverse of f"],["no", not is_identity, "No, g is not the inverse of f"]];
+verdicttext : if is_identity then "Since this simplifies to exactly x, g IS the inverse of f." else "Since this does NOT simplify to x, g is NOT the inverse of f (despite looking plausible).";]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.8 (Inverse of Polynomials). Uses composition f(g(x))=x to verify whether a proposed g really is the inverse of a linear f; the proposed g is sometimes a plausible-looking but inc</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="description">Grade 11 Functions 16.8 (Inverse of Polynomials). Uses composition f(g(x))=x to verify whether a proposed g really is the inverse of a linear f; the proposed g is sometimes a plausible-looking but incorrect alternative (wrong sign on b).</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta_composed</tans>
+      <boxsize>20</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>dropdown</type>
+      <tans>opts2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correctly computed and simplified f(g(x))?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta_composed</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text>Substitute the whole expression for g(x) into every x in f(x), then simplify fully.</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correctly concluded whether g is the inverse of f?</description>
+        <answertest>String</answertest>
+        <sans>ans2</sans>
+        <tans>ans2_correct</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text>g is the inverse of f only when f(g(x)) simplifies to exactly x for every x -- check your answer to part (a) again.</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct on both parts</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_composed</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ans2_correct</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct composition but wrong verdict</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_composed</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value><![CDATA[if ans2_correct="yes" then "no" else "yes"]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

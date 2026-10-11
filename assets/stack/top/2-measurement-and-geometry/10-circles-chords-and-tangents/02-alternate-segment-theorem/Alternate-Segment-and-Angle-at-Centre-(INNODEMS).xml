@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Alternate Segment and Angle at Centre (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>In the diagram, \(O\) is the centre of the circle and \(PT\) is the tangent to the circle at \(T\). The chord \(TQ\) subtends an angle of \( {@theta@}^\circ \) at the centre, that is \( \angle TOQ = {@theta@}^\circ \).</p>
+
+[[jsxgraph width="460px" height="460px"]]
+var theta = {#theta#};            // central angle TOQ (degrees), from question variables
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-3.3, 3.2, 3.3, -3.4],
+    keepaspectratio: true,
+    axis: false,
+    showCopyright: false,
+    showNavigation: false
+});
+
+var R   = 2.5;
+var rad = Math.PI / 180;
+
+var O = board.create('point', [0, 0],
+    {name: 'O', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333',
+     label: {offset: [8, 8]}});
+
+var Tang = 270 * rad;
+var T = board.create('point', [R * Math.cos(Tang), R * Math.sin(Tang)],
+    {name: 'T', size: 3, fixed: true, fillColor: '#1565c0', strokeColor: '#1565c0',
+     label: {offset: [0, -14], anchorX: 'middle', anchorY: 'top'}});
+
+var Qang = (270 + theta) * rad;
+var Q = board.create('point', [R * Math.cos(Qang), R * Math.sin(Qang)],
+    {name: 'Q', size: 3, fixed: true, fillColor: '#1565c0', strokeColor: '#1565c0',
+     label: {offset: [12, 0], anchorX: 'left', anchorY: 'middle'}});
+
+var Sang = (90 + theta / 2) * rad;     // midpoint of the major (alternate-segment) arc
+var S = board.create('point', [R * Math.cos(Sang), R * Math.sin(Sang)],
+    {name: 'S', size: 3, fixed: true, fillColor: '#1565c0', strokeColor: '#1565c0',
+     label: {offset: [-10, 10], anchorX: 'right', anchorY: 'bottom'}});
+
+board.create('circle', [O, R], {strokeColor: '#888', strokeWidth: 1.5, fixed: true});
+
+var Px = R * Math.cos(Tang) + 1.7;
+var Lx = R * Math.cos(Tang) - 1.2;
+var P = board.create('point', [Px, R * Math.sin(Tang)],
+    {name: 'P', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333',
+     label: {offset: [6, -12], anchorX: 'left', anchorY: 'top'}});
+var Lend = board.create('point', [Lx, R * Math.sin(Tang)], {visible: false, fixed: true});
+board.create('segment', [Lend, P], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+
+board.create('segment', [O, T], {strokeColor: '#aaa', strokeWidth: 1, fixed: true});
+board.create('segment', [O, Q], {strokeColor: '#aaa', strokeWidth: 1, fixed: true});
+board.create('segment', [T, Q], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+board.create('segment', [T, S], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+board.create('segment', [S, Q], {strokeColor: '#333', strokeWidth: 1.5, fixed: true});
+
+board.create('angle', [T, O, Q],
+    {radius: 0.6, type: 'sector', selection: 'minor',
+     fillColor: '#ffb74d', fillOpacity: 0.5, strokeColor: '#ef6c00',
+     name: theta + '°', fixed: true});
+
+board.create('angle', [P, T, Q],
+    {radius: 0.7, type: 'sector', selection: 'minor',
+     fillColor: '#90caf9', fillOpacity: 0.5, strokeColor: '#1565c0',
+     name: '?', fixed: true});
+[[/jsxgraph]]
+
+<div>Find \( \angle PTQ \), giving your answer in degrees: \( \angle PTQ = \) [[input:ans1]]\(^\circ\) [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Use the <strong>Alternate Segment Theorem</strong>: the angle between the tangent \(PT\) and the chord \(TQ\) equals the angle that the chord subtends in the alternate segment, namely \( \angle TSQ \).</p>
+<p>The angle at the circumference is half the angle at the centre standing on the same chord \(TQ\), so</p>
+\[ \angle TSQ = \tfrac{1}{2}\,\angle TOQ = \tfrac{1}{2}\times {@theta@}^\circ = {@ta1@}^\circ . \]
+<p>Therefore</p>
+\[ \angle PTQ = \angle TSQ = {@ta1@}^\circ . \]
+<p>(Check, via triangle \(OTQ\): it is isosceles with \(OT = OQ\), so \( \angle OTQ = \tfrac{1}{2}(180^\circ - {@theta@}^\circ) = {@wrong_baseang@}^\circ\). The radius meets the tangent at \(90^\circ\), so \( \angle PTQ = 90^\circ - {@wrong_baseang@}^\circ = {@ta1@}^\circ\), as expected.)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>theta : rand_with_step(50,140,10);
+ta1 : theta/2;
+wrong_central : theta;
+wrong_double : 2*theta;
+wrong_baseang : 90 - theta/2;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( \angle TOQ = {@theta@}^\circ,\ \angle PTQ = {@ta1@}^\circ \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: angle PTQ = theta/2.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: gave the central angle (forgot to halve).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_central</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-central</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the <em>central</em> angle \( \angle TOQ \). The tangent-chord angle equals the angle in the alternate segment, which is <strong>half</strong> the central angle &mdash; so divide by \(2\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: gave angle OTQ (isosceles base angle) instead of PTQ.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_baseang</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-base</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is \( \angle OTQ \), a base angle of the isosceles triangle \(OTQ\). The angle you want is \( \angle PTQ = 90^\circ - \angle OTQ \), since the radius \(OT\) meets the tangent at \(90^\circ\). (Equivalently, use the Alternate Segment Theorem directly.)</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: doubled the central angle instead of halving it.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_double</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-double</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You <em>doubled</em> the central angle. It is the other way round: the tangent-chord angle is <strong>half</strong> the central angle \( \angle TOQ \), so you should divide by \(2\), not multiply.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Hint: the tangent-chord angle \( \angle PTQ \) equals the inscribed angle in the alternate segment, which is half the central angle \( \angle TOQ \). See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct answer: theta/2</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Gave the central angle (forgot to halve)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_central</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-central</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Gave angle OTQ (isosceles base angle)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_baseang</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-base</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Doubled the central angle</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_double</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-double</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Other wrong value (generic incorrect)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta1+3,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-other</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

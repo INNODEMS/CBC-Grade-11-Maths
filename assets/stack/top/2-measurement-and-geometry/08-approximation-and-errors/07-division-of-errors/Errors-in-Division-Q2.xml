@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Errors in Division Q2</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A laboratory technician prepares a saline solution by dissolving \({@mass@}\) g of salt into \({@volume@}\) ml of water. The mass is recorded correct to 1 decimal place and the volume correct to 2 decimal places. The concentration of the solution is calculated by dividing the mass by the volume. Find:</p>
+
+<p>(a) The absolute error in the calculated concentration.</p>
+<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p>(b) The relative error in the concentration.</p>
+<p>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
+
+<p>(c) The percentage error in the concentration.</p>
+<p>[[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3> Worked Solution.</h3>
+<p>The mass was recorded as \({@mass@}\) g, correct to 1 decimal place, and the volume as \({@volume@}\) ml, correct to 2 decimal places.</p>
+
+<p><strong>Absolute errors in the individual measurements:</strong></p>
+<p>Since the mass is correct to 1 decimal place, its absolute error is half of the smallest unit (0.1 g):</p>
+<p>\[ \text{Mass error} = \frac{0.1}{2} = {@mass_err@} \text{ g} \]</p>
+<p>Since the volume is correct to 2 decimal places, its absolute error is half of the smallest unit (0.01 ml):</p>
+<p>\[ \text{Volume error} = \frac{0.01}{2} = {@volume_err@} \text{ ml} \]</p>
+
+<p><strong>Important:</strong> When dividing two measured quantities, the <em>maximum</em> possible value of the result comes from pairing the <em>largest</em> possible numerator with the <em>smallest</em> possible denominator (since dividing by a smaller number gives a larger result). So:</p>
+<p>\[ \text{Max mass} = {@mass@} + {@mass_err@} = {@max_mass@} \text{ g}, \qquad \text{Min volume} = {@volume@} - {@volume_err@} = {@min_volume@} \text{ ml} \]</p>
+
+<p>(a) <strong>Absolute error in the concentration:</strong></p>
+<p>Using the recorded measurements:</p>
+<p>\[ \text{Working concentration} = \frac{{@mass@}}{{@volume@}} = {@conc@} \text{ g/ml} \]</p>
+<p>Using the maximum mass and minimum volume:</p>
+<p>\[ \text{Maximum concentration} = \frac{{@max_mass@}}{{@min_volume@}} = {@max_conc@} \text{ g/ml} \]</p>
+<p>\[ \text{Absolute error} = \text{Maximum concentration} - \text{Working concentration} = {@max_conc@} - {@conc@} = {@ta1@} \text{ g/ml} \]</p>
+
+<p>(b) <strong>Relative error:</strong></p>
+<p>\[ \text{Relative error} = \frac{\text{Absolute error}}{\text{Working concentration}} = \frac{{@ta1@}}{{@conc@}} \approx {@ta2@} \]</p>
+
+<p>(c) <strong>Percentage error:</strong></p>
+<p>\[ \text{Percentage error} = \text{Relative error} \times 100\% = {@ta2@} \times 100\% \approx {@ta3@}\% \]</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>mass_scale: 10;
+mass_steps: rand(150*mass_scale/10 + 1);
+mass: float(50 + mass_steps/mass_scale);
+mass_err: float(0.5/mass_scale);
+
+volume_scale: 100;
+volume_steps: rand(80*volume_scale/10 + 1);
+volume: float(20 + volume_steps/volume_scale);
+volume_err: float(0.5/volume_scale);
+
+max_mass: mass + mass_err;
+min_mass: mass - mass_err;
+
+max_volume: volume + volume_err;
+min_volume: volume - volume_err;
+
+conc: float(mass / volume);
+
+max_conc: float(max_mass / min_volume);
+min_conc: float(min_mass / max_volume);
+
+ta1: max_conc - conc;
+ta2: ta1 / conc;
+ta3: ta2 * 100;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta1@} {@ta2@} {@ta3@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1643582061</deployedseed>
+    <deployedseed>1207777142</deployedseed>
+    <deployedseed>1033055797</deployedseed>
+    <deployedseed>92853409</deployedseed>
+    <deployedseed>514028356</deployedseed>
+    <deployedseed>467020620</deployedseed>
+    <deployedseed>1850785525</deployedseed>
+    <deployedseed>769586711</deployedseed>
+    <deployedseed>10074046</deployedseed>
+    <deployedseed>1952963675</deployedseed>
+    <deployedseed>314118324</deployedseed>
+    <deployedseed>972123583</deployedseed>
+    <deployedseed>622159846</deployedseed>
+    <deployedseed>1817735328</deployedseed>
+    <deployedseed>1903244812</deployedseed>
+    <deployedseed>1862686384</deployedseed>
+    <deployedseed>1048140263</deployedseed>
+    <deployedseed>624735532</deployedseed>
+    <deployedseed>1494805123</deployedseed>
+  </question>
+</quiz>

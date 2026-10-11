@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Solving a continuous compound inequality with three parts</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Solve the following compound inequality:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle {@L@} \le {@a@}x {@sign_b@} {@abs_b@} < {@U@} \)
+</p>
+<p><i>(Enter the lower limit and upper limit in the boxes provided.)</i></p>
+
+<p>[[input:ans1]] \( \le x < \) [[input:ans2]]</p>
+
+<div><b>Lower limit:</b> [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>Upper limit:</b> [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+<p>To solve a continuous compound inequality, we isolate \(x\) in the middle. We achieve this by applying the exact same operations to all three parts of the inequality simultaneously.</p>
+
+<p>First, we remove the constant term from the middle by {@op_word@} {@abs_b@} {@prep_word@} all three parts:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@L@} {@inv_sign@} {@abs_b@} &\le {@a@}x < {@U@} {@inv_sign@} {@abs_b@} \\
+{@L_step1@} &\le {@a@}x < {@U_step1@}
+\end{aligned} \)
+</p>
+
+<p>Next, we divide all three parts by the coefficient of \(x\), which is \({@a@}\):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+\frac{{@L_step1@}}{{@a@}} &\le x < \frac{{@U_step1@}}{{@a@}} \\
+{@ta1@} &\le x < {@ta2@}
+\end{aligned} \)
+</p>
+
+<p>Hence, the correct solution for this compound inequality is:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{{@ta1@} \le x < {@ta2@}} \)
+</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Reverse engineer to ensure clean integer limits */
+ta1 : rand_with_step(-6, 2, 1);
+ta2 : rand_with_step(3, 9, 1);
+
+/* Middle expression coefficients: ax + b */
+a : rand_with_step(2, 5, 1);
+b_val : rand([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5]);
+
+/* Calculate the outer bounds */
+L : a * ta1 + b_val;
+U : a * ta2 + b_val;
+
+/* Display helpers for the constant b */
+abs_b : abs(b_val);
+sign_b : if is(b_val > 0) then "+" else "-";
+
+/* Worked solution helpers */
+inv_sign : if is(b_val > 0) then "-" else "+";
+op_word : if is(b_val > 0) then "subtracting" else "adding";
+prep_word : if is(b_val > 0) then "from" else "to";
+L_step1 : L - b_val;
+U_step1 : U - b_val;
+
+/* Mistake Catchers */
+/* Mistake 1: Added b instead of subtracting (or vice versa) */
+m1_L : (L + b_val) / a;
+m1_U : (U + b_val) / a;
+
+/* Mistake 2: Handled b correctly, but forgot to divide by a */
+m2_L : L_step1;
+m2_U : U_step1;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>\({@L@} \le {@a@}x + {@b_val@} < {@U@} \implies {@ta1@} \le x < {@ta2@}\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Compound Inequalities (Continuous)</p>
+<p id="description">Grade 11 CBE: Solving a three-part continuous inequality by isolating the variable in the middle.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check correctness of lower limit</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check wrong sign operation</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>m1_L</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your first step on the left side. Because the middle term contains \( {@sign_b@} {@abs_b@} \), you must do the <b>opposite</b> operation ({@op_word@}) to the left side.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check forgot to divide</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>m2_L</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You handled the constant correctly on the left side, but you forgot the final step. You must divide by the coefficient of \(x\) (which is \({@a@}\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check correctness of upper limit</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check wrong sign operation</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>m1_U</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your first step for the upper limit. Because the middle term contains \( {@sign_b@} {@abs_b@} \), you must do the <b>opposite</b> operation ({@op_word@}) to the right side.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check forgot to divide</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>m2_U</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You handled the constant correctly on the right side, but you forgot the final step. You must divide by the coefficient of \(x\) (which is \({@a@}\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>2029375304</deployedseed>
+    <deployedseed>394734111</deployedseed>
+    <deployedseed>1613597869</deployedseed>
+    <deployedseed>249697864</deployedseed>
+    <deployedseed>1935350620</deployedseed>
+    <deployedseed>1066245466</deployedseed>
+    <deployedseed>409794219</deployedseed>
+    <deployedseed>774279836</deployedseed>
+    <deployedseed>1901351622</deployedseed>
+    <deployedseed>759125540</deployedseed>
+    <deployedseed>1028810823</deployedseed>
+    <deployedseed>900762592</deployedseed>
+    <deployedseed>1180694416</deployedseed>
+    <deployedseed>1717555534</deployedseed>
+    <deployedseed>972183278</deployedseed>
+    <deployedseed>564660934</deployedseed>
+    <deployedseed>682640094</deployedseed>
+    <deployedseed>141847036</deployedseed>
+    <deployedseed>273740974</deployedseed>
+    <deployedseed>826843718</deployedseed>
+    <deployedseed>324512174</deployedseed>
+    <deployedseed>392458537</deployedseed>
+    <deployedseed>168634554</deployedseed>
+    <deployedseed>1206642798</deployedseed>
+    <deployedseed>937987972</deployedseed>
+    <deployedseed>529752647</deployedseed>
+    <deployedseed>1671696309</deployedseed>
+    <deployedseed>520096374</deployedseed>
+    <deployedseed>606627622</deployedseed>
+    <deployedseed>599278882</deployedseed>
+    <deployedseed>2139795137</deployedseed>
+    <deployedseed>1784459646</deployedseed>
+    <deployedseed>1107392600</deployedseed>
+    <deployedseed>1080153630</deployedseed>
+    <deployedseed>1097778072</deployedseed>
+    <deployedseed>207029798</deployedseed>
+    <deployedseed>711776001</deployedseed>
+    <deployedseed>853202820</deployedseed>
+    <deployedseed>10507365</deployedseed>
+    <deployedseed>802874108</deployedseed>
+    <deployedseed>129983115</deployedseed>
+    <deployedseed>61332424</deployedseed>
+    <deployedseed>230877248</deployedseed>
+    <deployedseed>682280666</deployedseed>
+    <deployedseed>1133078982</deployedseed>
+    <deployedseed>432561820</deployedseed>
+    <deployedseed>744936672</deployedseed>
+    <deployedseed>2052677895</deployedseed>
+    <deployedseed>591008917</deployedseed>
+    <deployedseed>741559904</deployedseed>
+    <deployedseed>1155073969</deployedseed>
+    <deployedseed>758014573</deployedseed>
+    <deployedseed>1581233822</deployedseed>
+    <deployedseed>547517287</deployedseed>
+    <deployedseed>1593886890</deployedseed>
+    <deployedseed>1079938807</deployedseed>
+    <deployedseed>1564530900</deployedseed>
+    <deployedseed>266923753</deployedseed>
+    <deployedseed>600906644</deployedseed>
+    <deployedseed>1132823558</deployedseed>
+    <deployedseed>1532614097</deployedseed>
+    <deployedseed>1328485650</deployedseed>
+    <deployedseed>2116521922</deployedseed>
+    <deployedseed>147694460</deployedseed>
+    <deployedseed>1338695512</deployedseed>
+    <deployedseed>1167525383</deployedseed>
+    <deployedseed>1525861044</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both limits correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Lower correct, Upper wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>m1_U</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Wrong operation applied to the constant</description>
+      <testinput>
+        <name>ans1</name>
+        <value>m1_L</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>m1_U</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Forgot to divide by the coefficient</description>
+      <testinput>
+        <name>ans1</name>
+        <value>m2_L</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>m2_U</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

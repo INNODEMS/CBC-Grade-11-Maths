@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Draw the tangent at a marked point (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The blue curve is the graph of a function \(f\). The red point \(P\) is marked on the curve.</p>
+<p><strong>Drag the two blue points \(A\) and \(B\) so that the green line is the tangent to the curve at \(P\).</strong> The tangent just <em>touches</em> the curve at \(P\) and runs in the same direction as the curve there.</p>
+
+[[jsxgraph input-ref-ans1="ref_A" input-ref-ans2="ref_B" width='480px' height='480px']]
+var aa = {#float(aa)#}, pp = {#float(pp)#}, hh = {#float(hh)#}, kk = {#float(kk)#};
+var x0 = {#float(x0)#}, y0 = {#float(y0)#}, A = {#float(A)#};
+var Aix = {#float(Aix)#}, Aiy = {#float(Aiy)#};
+var Bix = {#float(Bix)#}, Biy = {#float(Biy)#};
+
+function f(x){ var t = x - hh; return aa*t*t*t + pp*t + kk; }
+
+// Fixed square window [-A,A]^2 on a square board => genuine equal x/y scale.
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-A, A, A, -A],
+    keepAspectRatio: true,
+    axis: true,
+    showCopyright: false, showNavigation: true,
+    pan: {enabled: false}, zoom: {enabled: true}
+});
+
+// The curve, drawn across the full width (exits top/bottom where steep -
+// clipped naturally). No formula label: the student reads the graph.
+board.create('functiongraph', [f, -A, A],
+    {strokeColor: '#0055bb', strokeWidth: 2.5, name: '', highlight: false});
+
+// Marked tangent point P (fixed).
+board.create('point', [x0, y0], {name: 'P', size: 2, fixed: true,
+    fillColor: '#d32f2f', strokeColor: '#d32f2f',
+    label: {offset: [8, -18], color: '#d32f2f', fontSize: 15}});
+
+// Two draggable points that define the student's line. They start as a secant
+// to the LEFT of P (clearly not the tangent), so doing nothing scores zero.
+var A = board.create('point', [Aix, Aiy], {name: 'A', size: 2,
+    strokeColor: '#1565c0', fillColor: '#1565c0', snapToGrid: false,
+    label: {offset: [-16, 8], color: '#1565c0', fontSize: 14}});
+var B = board.create('point', [Bix, Biy], {name: 'B', size: 2,
+    strokeColor: '#1565c0', fillColor: '#1565c0', snapToGrid: false,
+    label: {offset: [10, 8], color: '#1565c0', fontSize: 14}});
+
+// The student's line through A and B.
+board.create('line', [A, B], {strokeColor: '#2e7d32', strokeWidth: 2.5,
+    straightFirst: true, straightLast: true, highlight: false});
+
+// Live readout: the equation of the student's current line (their "formula").
+board.create('text', [-A + 0.3, A - 0.4, function () {
+    var ax = A.X(), ay = A.Y(), bx = B.X(), by = B.Y();
+    var eq;
+    if (Math.abs(bx - ax) < 1e-6) {
+        eq = 'x = ' + ax.toFixed(2) + '  (vertical)';
+    } else {
+        var m = (by - ay) / (bx - ax);
+        var c = ay - m * ax;
+        var cs = (c >= 0) ? ('+ ' + c.toFixed(2)) : ('− ' + Math.abs(c).toFixed(2));
+        eq = 'y = ' + m.toFixed(2) + 'x ' + cs;
+    }
+    return '<div style="background:rgba(255,255,255,0.88);padding:6px 10px;'
+        + 'border-radius:5px;font-size:14px;color:#2e7d32;border:1px solid #cfe3cf">'
+        + 'Your line:&nbsp; ' + eq + '</div>';
+}], {useHTML: true, anchorX: 'left', anchorY: 'top', fixed: true});
+
+stack_jxg.bind_point(ref_A, A);
+stack_jxg.bind_point(ref_B, B);
+[[/jsxgraph]]
+
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The <strong>tangent</strong> at \(P\) is the straight line that just touches the curve there and runs in the same direction as the curve &mdash; its slope is the value of the derivative \(f'\) at that point.</p>
+<p>Here the tangent at \(P = ({@x0@},\, {@y0@})\) has slope \(f'({@x0@}) = {@m0@}\), so its equation is
+\[ y = {@y0@} + ({@m0@})\,\bigl(x - ({@x0@})\bigr) = {@tanline@}. \]</p>
+<p>(The hidden curve is \(f(x) = {@fpoly@}\); the differentiation rules in the later sections will confirm \(f'({@x0@}) = {@m0@}\).)</p>
+[[jsxgraph width='380px' height='380px']]
+var aa = {#float(aa)#}, pp = {#float(pp)#}, hh = {#float(hh)#}, kk = {#float(kk)#};
+var x0 = {#float(x0)#}, y0 = {#float(y0)#}, m0 = {#float(m0)#}, A = {#float(A)#};
+function f(x){ var t = x - hh; return aa*t*t*t + pp*t + kk; }
+function tang(x){ return y0 + m0*(x - x0); }
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-A, A, A, -A], keepAspectRatio: true, axis: true,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+board.create('functiongraph', [f, -A, A],
+    {strokeColor: '#0055bb', strokeWidth: 2.5, name: '', highlight: false});
+board.create('functiongraph', [tang, -A, A],
+    {strokeColor: '#2e7d32', strokeWidth: 2, dash: 0, name: '', highlight: false});
+board.create('point', [x0, y0], {name: 'P', size: 4, fixed: true,
+    fillColor: '#d32f2f', strokeColor: '#d32f2f',
+    label: {offset: [8, -18], color: '#d32f2f', fontSize: 14}});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* ---- Fixed square window [-A,A]^2 on a square board => equal aspect. --------
+   Design a cubic with a SMALL leading coefficient so its full detail (two turning
+   points and the inflection) shows inside the window before it exits top/bottom:
+     f(x) = aa*(x-hh)^3 + pp*(x-hh) + kk,  turning points at hh +/- sqrt(-pp/(3 aa))
+   (so pp and aa must have opposite signs). Enumerate the admissible tuples and
+   pick one (no generate-and-hope): small |aa|; both turning points and P well
+   inside the window; |f'(x0)| in [0.6, 3.2]; P not the inflection, not the origin.
+   The tangent slope m0 = f'(x0) may be a simple fraction - fine for a read-off. */
+A : 8;
+
+cands : sublist(
+  create_list([aa0,pp0,hh0,kk0,xx0],
+      aa0, [-1/4,-1/5,-3/20,3/20,1/5,1/4],
+      pp0, [-4,-3,-2,-1,1,2,3,4],
+      hh0, [-1,0,1],
+      kk0, [-2,-1,0,1,2],
+      xx0, [-3,-2,-1,0,1,2,3]),
+  lambda([z], block(
+    [aa:z[1], pp:z[2], hh:z[3], kk:z[4], xv:z[5], dsc, tp, mm, yy, fpp0, tpv1, tpv2],
+    dsc : -pp/(3*aa),
+    if is(dsc <= 0) then return(false),          /* need real turning points */
+    tp   : sqrt(float(dsc)),
+    mm   : 3*aa*(xv-hh)^2 + pp,                  /* f'(x0) */
+    yy   : aa*(xv-hh)^3 + pp*(xv-hh) + kk,       /* f(x0) */
+    fpp0 : 6*aa*(xv-hh),                         /* f''(x0): curvature at P */
+    tpv1 : aa*tp^3 + pp*tp + kk,                 /* turning-point y-values */
+    tpv2 : -aa*tp^3 - pp*tp + kk,
+    is( xv # hh
+        and abs(float(hh+tp)) <= 6.5 and abs(float(hh-tp)) <= 6.5
+        and abs(float(tpv1)) <= 7 and abs(float(tpv2)) <= 7
+        and abs(float(mm)) >= 0.6 and abs(float(mm)) <= 3.2
+        and abs(float(yy)) <= 5.5 and abs(float(fpp0)) >= 0.5
+        and (xv # 0 or yy # 0) ) )));            /* P is never the origin */
+
+pick : rand(cands);
+aa : pick[1];  pp : pick[2];  hh : pick[3];  kk : pick[4];  x0 : pick[5];
+
+f(xx) := aa*(xx-hh)^3 + pp*(xx-hh) + kk;
+m0 : 3*aa*(x0-hh)^2 + pp;         /* f'(x0): the target tangent slope */
+y0 : f(x0);                       /* P = (x0, y0) */
+fpoly : expand(f(x));             /* standard form, for the worked solution */
+tanline : expand(y0 + m0*(x - x0));
+
+/* Fixed square window; its (constant) height normalises the through-tolerance. */
+bxlo : -A;  bxhi : A;  ylo : -A;  yhi : A;
+yspan : 2*A;
+
+/* Initial draggable points: a horizontal line below P (clearly not the tangent). */
+Aix : x0 - 3;  Aiy : y0 - 2.5;
+Bix : x0 + 3;  Biy : y0 - 2.5;
+
+/* Model answer + question-test helper points (here so <qtest> can see them). */
+tqA : float([x0, y0]);
+tqB : float([x0 + 2, y0 + 2*m0]);
+secB : ev(float([x0 + 2, y0 + 2*(m0 + 4)]), simp);      /* through P, slope m0+4 (wrong, never the normal) */
+wpA  : ev(float([x0,     y0 + 0.2*yspan]), simp);       /* right slope, misses P */
+wpB  : ev(float([x0 + 2, y0 + 0.2*yspan + 2*m0]), simp);
+nmB  : ev(float([x0 + 2, y0 + 2*(-1/m0)]), simp);       /* normal through P */
+verB : float([x0, y0 + 3]);                             /* vertical */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:prt1]]</text>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( f(x)={@fpoly@};\ P=({@x0@},{@y0@});\ f'(x_0)={@m0@};\ \text{tangent } {@tanline@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>tqA</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>tqB</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* Read the two dragged points. */
+ax : ans1[1];  ay : ans1[2];
+bx : ans2[1];  by : ans2[2];
+dxs : bx - ax;
+/* Student's line slope, guarded against a (near-)vertical line. */
+sm : if abs(dxs) > 0.05 then (by - ay)/dxs else 1000;
+/* Value of the student's line at x0, and the through-point residual at P. */
+syx0 : if abs(dxs) > 0.05 then ay + sm*(x0 - ax) else 1000;
+thr  : syx0 - y0;
+thr_n : thr / yspan;                 /* through-point residual, normalised by board height */
+nm : -1/m0;                          /* normal slope, for the diagnostic */]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Near-vertical line?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>dxs</sans>
+        <tans>0</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-vertical</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your two points share (almost) the same \(x\)-value, so the line is nearly vertical. The tangent here isn't vertical &mdash; give \(A\) and \(B\) clearly different \(x\)-coordinates.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Slope matches f'(x0)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>sm</sans>
+        <tans>m0</tans>
+        <testoptions>0.5</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Passes through P?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>thr_n</sans>
+        <tans>0</tans>
+        <testoptions>0.09</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct &mdash; your line just touches the curve at \(P\) and matches its steepness there. That slope is the derivative \(f'\) at \(P\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrongplace</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your line has about the right <em>steepness</em>, but it doesn't pass through \(P\). Slide it (keeping its slope) until it touches the curve exactly at the marked point.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Is it the normal (slope -1/f'(x0))?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>sm</sans>
+        <tans>nm</tans>
+        <testoptions>0.3</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-normal</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your line is <em>perpendicular</em> to the curve at \(P\) &mdash; that's the <strong>normal</strong>, not the tangent (the normal comes up in a later section). The tangent runs <em>along</em> the curve's direction at \(P\), not across it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Passes through P but wrong slope (a secant/chord)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>thr_n</sans>
+        <tans>0</tans>
+        <testoptions>0.09</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-secant</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your line passes through \(P\) but <em>crosses</em> the curve rather than just touching it &mdash; it's a chord joining \(P\) to another point on the curve. A tangent only touches at \(P\); rotate your line so it matches the curve's steepness right at \(P\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-miss</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not the tangent yet. It should just <em>touch</em> the curve at \(P\) and run in the same direction as the curve there. Put one point on \(P\), then rotate the other until the line hugs the curve at \(P\) &mdash; the readout shows your line's equation to help.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct tangent: two points on the line through P with slope f'(x0).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tqA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>tqB</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Secant/chord through P (right position, wrong slope).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tqA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>secB</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-secant</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Right slope but misses P (tangent shifted up).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wpA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wpB</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-wrongplace</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Normal through P (slope -1/f'(x0)).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tqA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>nmB</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-normal</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Near-vertical line (same x for both points).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tqA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>verB</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-vertical</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
