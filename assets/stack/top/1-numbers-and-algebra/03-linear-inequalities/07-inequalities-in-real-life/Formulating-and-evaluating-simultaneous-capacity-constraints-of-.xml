@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Formulating and evaluating simultaneous capacity constraints of a capentry workshop</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A community furniture workshop in Embu specializes in manufacturing wooden dining chairs (\(x\)) and wooden dining tables (\(y\)). The daily production is limited by both available materials and available labor hours.</p>
+<ul>
+<li><b>Timber:</b> Each chair requires <b>{@A@} meters</b> of timber, and each table requires <b>{@B@} meters</b> of timber. The workshop has a maximum of <b>{@W@} meters</b> of timber available per day.</li>
+<li><b>Labor:</b> Each chair requires <b>{@C_coef@} hours</b> of labor, and each table requires <b>{@D@} hours</b> of labor. The workshop staff provides a maximum of <b>{@H@} hours</b> of labor per day.</li>
+</ul>
+
+<p><b>a) </b> Write the two linear inequalities that model the daily timber and labor limitations. <i>(Use \( \le \) or \( \ge \) as appropriate. Do not include the non-negativity constraints).</i></p>
+
+<p>Timber constraint: [[input:ans1]]</p>
+<p>Labor constraint: [[input:ans2]]</p>
+
+<div><b>Timber check:</b> [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>Labor check:</b> [[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>b) </b> The workshop receives a large wholesale order and commits to producing exactly <b>{@x0@} chairs</b> today.</p>
+<p>Based on your two inequalities, what is the absolute <b>maximum number of tables</b> (\(y\)) they can also build today without exceeding <b>either</b> the timber or the labor limits?</p>
+
+<p>Maximum possible tables: [[input:ans3]]</p>
+<div><b>Check:</b> [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Formulating the System</b></p>
+<p>1. <b>Timber Constraint:</b> The total length of timber used for chairs (\({@A@}x\)) and tables (\({@B@}y\)) cannot exceed the \({@W@}\) meters available.</p>
+<p style="margin-left: 20px;">\( \displaystyle \boxed{{@ta1@}} \)</p>
+
+<p>2. <b>Labor Constraint:</b> The total hours of labor used for chairs (\({@C_coef@}x\)) and tables (\({@D@}y\)) cannot exceed the \({@H@}\) hours available.</p>
+<p style="margin-left: 20px;">\( \displaystyle \boxed{{@ta2@}} \)</p>
+
+<p><b>Part b: Evaluating the Production Bottleneck</b></p>
+<p>We are given that \( x = {@x0@} \). To find the maximum number of tables (\(y\)), we must substitute this value into <b>both</b> constraints to see which resource runs out first.</p>
+
+<p><b>1. Checking the Timber Limit:</b><br>
+Substitute \( x = {@x0@} \) into \( {@A@}x + {@B@}y \le {@W@} \):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@A@}({@x0@}) + {@B@}y &amp;\le {@W@} \\
+{@A * x0@} + {@B@}y &amp;\le {@W@} \\
+{@B@}y &amp;\le {@W - A*x0@} \\
+y &amp;\le {@limit_T@}
+\end{aligned} \)
+</p>
+<p>Based <i>only</i> on timber, they could build up to {@limit_T@} tables.</p>
+
+<p><b>2. Checking the Labor Limit:</b><br>
+Substitute \( x = {@x0@} \) into \( {@C_coef@}x + {@D@}y \le {@H@} \):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@C_coef@}({@x0@}) + {@D@}y &amp;\le {@H@} \\
+{@C_coef * x0@} + {@D@}y &amp;\le {@H@} \\
+{@D@}y &amp;\le {@H - C_coef*x0@} \\
+y &amp;\le {@limit_L@}
+\end{aligned} \)
+</p>
+<p>Based <i>only</i> on labor, they could build up to {@limit_L@} tables.</p>
+
+<p><b>Conclusion:</b><br>
+Because the workshop cannot exceed <i>either</i> limit, we must choose the most restrictive constraint (the smaller number). The production bottleneck limits the maximum number of tables to <b>{@ta3@}</b>.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>5</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Generate two strictly distinct integer limits to guarantee a clear "bottleneck" */
+y1 : rand([5, 6, 7, 8, 9]);
+y2 : rand([12, 13, 14, 15, 16]);
+
+/* Randomly assign which resource is the actual bottleneck */
+swap : rand([true, false]);
+limit_T : if swap then y1 else y2;
+limit_L : if swap then y2 else y1;
+
+/* Randomize coefficients independently (Yields 143,000+ variants) */
+x0 : rand([10, 12, 14, 15, 16, 18, 20]);
+A : rand([2, 3, 4, 5]);
+B : rand([2, 3, 4, 5]);
+C_coef : rand([2, 3, 4, 5]);
+D : rand([2, 3, 4, 5]);
+
+/* Reverse-engineer the capacity totals so the limits calculate back to perfect integers */
+W : A*x0 + B*limit_T;
+H : C_coef*x0 + D*limit_L;
+
+/* Define target answers */
+ta1 : A*x + B*y <= W;
+ta2 : C_coef*x + D*y <= H;
+ta3 : min(limit_T, limit_L);
+
+/* Define common incorrect responses to catch securely in PRT */
+ta1_wrong : A*x + B*y >= W;
+ta2_wrong : C_coef*x + D*y >= H;
+ta3_wrong : max(limit_T, limit_L);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>T_Lim: {@limit_T@}, L_Lim: {@limit_L@}. Ans: {@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Evaluating Linear Systems (Bottlenecks)</p>
+<p id="description">Grade 11 CBE: Formulating a system of two capacity inequalities and evaluating the most restrictive upper boundary (bottleneck) for a given value.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>numerical</type>
+      <tans>ta3</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of timber constraint</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Timber constraint correctly formulated.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they flipped the symbol</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>A maximum capacity requires you to use the less-than-or-equal-to symbol (\(\le\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect timber constraint. Ensure you multiply the required timber for each item by the number of items (\(x\) and \(y\)), add them together, and restrict the sum.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of labor constraint</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Labor constraint correctly formulated.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they flipped the symbol</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>A maximum capacity requires you to use the less-than-or-equal-to symbol (\(\le\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect labor constraint. Ensure you multiply the required labor for each item by the number of items (\(x\) and \(y\)), add them together, and restrict the sum.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of bottleneck</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent! You successfully identified the most restrictive production bottleneck.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they selected the larger (impossible) limit</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated a boundary correctly, but you selected the <b>larger</b> of the two limits. The workshop cannot exceed <i>either</i> constraint, so the production bottleneck is always the <b>smaller</b> number.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect limit. Substitute \( x = {@x0@} \) into BOTH inequalities, solve for \(y\) in both cases, and identify which constraint restricts you to a smaller number of tables.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>641133638</deployedseed>
+    <deployedseed>1686204828</deployedseed>
+    <deployedseed>1294790958</deployedseed>
+    <deployedseed>382494425</deployedseed>
+    <deployedseed>945423383</deployedseed>
+    <deployedseed>272863191</deployedseed>
+    <deployedseed>492869385</deployedseed>
+    <deployedseed>1723834598</deployedseed>
+    <deployedseed>1511542254</deployedseed>
+    <deployedseed>1055421915</deployedseed>
+    <deployedseed>658332832</deployedseed>
+    <deployedseed>1216750251</deployedseed>
+    <deployedseed>1224034675</deployedseed>
+    <deployedseed>575708687</deployedseed>
+    <deployedseed>1067986765</deployedseed>
+    <deployedseed>1174574160</deployedseed>
+    <deployedseed>1924339348</deployedseed>
+    <deployedseed>618081263</deployedseed>
+    <deployedseed>634974177</deployedseed>
+    <deployedseed>823324885</deployedseed>
+    <deployedseed>1576971409</deployedseed>
+    <deployedseed>778241727</deployedseed>
+    <deployedseed>924702129</deployedseed>
+    <deployedseed>382377985</deployedseed>
+    <deployedseed>294759892</deployedseed>
+    <deployedseed>858991096</deployedseed>
+    <deployedseed>1072851747</deployedseed>
+    <deployedseed>1351444344</deployedseed>
+    <deployedseed>1158929951</deployedseed>
+    <deployedseed>1993670639</deployedseed>
+    <deployedseed>427138139</deployedseed>
+    <deployedseed>302777383</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct constraints, but chose the wrong bottleneck (the higher bound)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Flipped signs, random calculation</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3+50</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

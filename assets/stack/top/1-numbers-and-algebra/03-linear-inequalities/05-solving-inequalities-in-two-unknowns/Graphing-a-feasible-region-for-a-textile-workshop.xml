@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Graphing a feasible region for a textile workshop</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A local textile workshop produces two types of high-quality garments: kitenge and kikoi. Let \( x \) represent the number of kitenge bolts and \( y \) represent the number of kikoi bolts produced per week.</p>
+<ul>
+<li>Each bolt of kitenge requires <b>{@A@} meters</b> of raw material and <b>{@D@} hours</b> of labor.</li>
+<li>Each bolt of kikoi requires <b>{@B@} meters</b> of raw material and <b>{@E@} hours</b> of labor.</li>
+<li>The workshop has a maximum of <b>{@C@} meters</b> of raw material and <b>{@F@} hours</b> of labor available per week.</li>
+</ul>
+
+<p><b>a) Algebraic Constraints:</b></p>
+<p>Formulate the two linear inequalities that model the structural limitations of the workshop. <i>(Use \( \le \) for "maximum of". Do not include the non-negativity constraints \(x \ge 0, y \ge 0\) in your answers below.)</i></p>
+
+<p>Raw material constraint: [[input:ans1]]</p>
+<p>Labor time constraint: [[input:ans2]]</p>
+
+<div><b>Material check:</b> [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>Labor check:</b> [[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>b) Graphical Representation:</b></p>
+<p>Graph the feasible production region on the Cartesian plane below:</p>
+<ul>
+<li>Drag the <b>two blue points</b> to set the boundary line for the raw material constraint.</li>
+<li>Drag the <b>two red points</b> to set the boundary line for the labor time constraint.</li>
+<li>Drag the <b>green Region Marker</b> into the overlapping feasible area that satisfies <b>all</b> constraints simultaneously (including \(x \ge 0\) and \(y \ge 0\)).</li>
+</ul>
+
+[[jsxgraph input-ref-ans3="rP1" input-ref-ans4="rP2" input-ref-ans5="rP3" input-ref-ans6="rP4" input-ref-ans7="rP5" width="600px" height="600px"]]
+var brd = JXG.JSXGraph.initBoard(divid, {
+    /* Offset bounding box to focus on the first quadrant up to 18 units */
+    boundingbox: [-2.5, 18.5, 18.5, -2.5],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'x (Kitenge)', withLabel: true, label: {position: 'rt', offset: [-30, 20]},
+    firstArrow: true, lastArrow: true, strokeWidth: 2,
+    ticks: {
+        drawLabels: true, label: {offset: [-8, -15]}, drawZero: true, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+var yaxis = brd.create('axis', [[0, 0], [0, 1]], {
+    name: 'y (Kikoi)', withLabel: true, label: {position: 'rt', offset: [15, -15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 2,
+    ticks: {
+        drawLabels: true, label: {offset: [-25, -5]}, drawZero: false, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+/* Highlight the positive axes to visually reinforce x >= 0 and y >= 0 */
+brd.create('segment', [[0,0], [18,0]], {strokeColor: '#1565c0', strokeWidth: 3, highlight: false});
+brd.create('segment', [[0,0], [0,18]], {strokeColor: '#1565c0', strokeWidth: 3, highlight: false});
+
+/* Line 1 (Material) */
+var p1 = brd.create('point', [0, 10], {
+    name: 'Material', size: 5, strokeColor: '#1565c0', fillColor: '#ffffff', strokeWidth: 3, snapToGrid: true, snapSizeX: 1, snapSizeY: 1
+});
+var p2 = brd.create('point', [10, 0], {
+    name: '', size: 5, strokeColor: '#1565c0', fillColor: '#ffffff', strokeWidth: 3, snapToGrid: true, snapSizeX: 1, snapSizeY: 1
+});
+var line1 = brd.create('line', [p1, p2], {
+    strokeWidth: 3, strokeColor: '#1565c0', dash: 0, highlight: false
+});
+
+/* Line 2 (Labor) */
+var p3 = brd.create('point', [0, 12], {
+    name: 'Labor', size: 5, strokeColor: '#c62828', fillColor: '#ffffff', strokeWidth: 3, snapToGrid: true, snapSizeX: 1, snapSizeY: 1
+});
+var p4 = brd.create('point', [12, 0], {
+    name: '', size: 5, strokeColor: '#c62828', fillColor: '#ffffff', strokeWidth: 3, snapToGrid: true, snapSizeX: 1, snapSizeY: 1
+});
+var line2 = brd.create('line', [p3, p4], {
+    strokeWidth: 3, strokeColor: '#c62828', dash: 0, highlight: false
+});
+
+/* Region Marker */
+var p5 = brd.create('point', [10, 10], {
+    name: 'Feasible Region', size: 6, strokeColor: '#2e7d32', fillColor: '#4caf50', strokeWidth: 2, snapToGrid: true, snapSizeX: 1, snapSizeY: 1
+});
+
+stack_jxg.bind_point(rP1, p1);
+stack_jxg.bind_point(rP2, p2);
+stack_jxg.bind_point(rP3, p3);
+stack_jxg.bind_point(rP4, p4);
+stack_jxg.bind_point(rP5, p5);
+
+stack_jxg.starts_moved(p1);
+stack_jxg.starts_moved(p2);
+stack_jxg.starts_moved(p3);
+stack_jxg.starts_moved(p4);
+stack_jxg.starts_moved(p5);
+[[/jsxgraph]]
+
+<div style="display:none">
+[[input:ans3]] [[validation:ans3]]
+[[input:ans4]] [[validation:ans4]]
+[[input:ans5]] [[validation:ans5]]
+[[input:ans6]] [[validation:ans6]]
+[[input:ans7]] [[validation:ans7]]
+</div>
+<div><b>Material Line Status:</b> [[feedback:prt3]]</div>
+<div><b>Labor Line Status:</b> [[feedback:prt4]]</div>
+<div><b>Region Marker Status:</b> [[feedback:prt5]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Algebraic Constraints</b></p>
+<p>We translate the word problem into mathematical inequalities. For the raw material, kitenge uses \({@A@}\)m and kikoi uses \({@B@}\)m. The total cannot exceed \({@C@}\)m:</p>
+<p style="margin-left: 20px;">\( \displaystyle \boxed{{@A@}x + {@B@}y \le {@C@}} \)</p>
+<p>For the labor time, kitenge uses \({@D@}\)h and kikoi uses \({@E@}\)h. The total cannot exceed \({@F@}\)h:</p>
+<p style="margin-left: 20px;">\( \displaystyle \boxed{{@D@}x + {@E@}y \le {@F@}} \)</p>
+
+<p><b>Part b: Graphical Representation</b></p>
+<p>To graph these inequalities, we find the axes intercepts for each boundary equation.</p>
+<p>For the <b>Material line</b> (\( {@A@}x + {@B@}y = {@C@} \)):</p>
+<ul>
+<li>Set \(x = 0 \implies {@B@}y = {@C@} \implies y = {@C/B@}\). Intercept: \((0, {@C/B@})\)</li>
+<li>Set \(y = 0 \implies {@A@}x = {@C@} \implies x = {@C/A@}\). Intercept: \(({@C/A@}, 0)\)</li>
+</ul>
+<p>For the <b>Labor line</b> (\( {@D@}x + {@E@}y = {@F@} \)):</p>
+<ul>
+<li>Set \(x = 0 \implies {@E@}y = {@F@} \implies y = {@F/E@}\). Intercept: \((0, {@F/E@})\)</li>
+<li>Set \(y = 0 \implies {@D@}x = {@F@} \implies x = {@F/D@}\). Intercept: \(({@F/D@}, 0)\)</li>
+</ul>
+<p>We plot both solid lines. The feasible production region is the area bounded by both lines and the positive axes (\(x \ge 0, y \ge 0\)), as shown by the shaded region below.</p>
+
+[[jsxgraph width="400px" height="400px"]]
+var a_val = {#A#};
+var b_val = {#B#};
+var c_val = {#C#};
+var d_val = {#D#};
+var e_val = {#E#};
+var f_val = {#F#};
+
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-2.5, 18.5, 18.5, -2.5],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'x', withLabel: true, label: {position: 'rt', offset: [-15, 20]},
+    firstArrow: true, lastArrow: true, strokeWidth: 2,
+    ticks: {
+        drawLabels: true, label: {offset: [-8, -15]}, drawZero: true, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+var yaxis = brd.create('axis', [[0, 0], [0, 1]], {
+    name: 'y', withLabel: true, label: {position: 'rt', offset: [15, -15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 2,
+    ticks: {
+        drawLabels: true, label: {offset: [-25, -5]}, drawZero: false, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+/* Draw the boundary lines */
+var p1_ws = brd.create('point', [0, c_val/b_val], {visible: false});
+var p2_ws = brd.create('point', [c_val/a_val, 0], {visible: false});
+var line1_ws = brd.create('line', [p1_ws, p2_ws], {strokeWidth: 3, strokeColor: '#1565c0', dash: 0});
+
+var p3_ws = brd.create('point', [0, f_val/e_val], {visible: false});
+var p4_ws = brd.create('point', [f_val/d_val, 0], {visible: false});
+var line2_ws = brd.create('line', [p3_ws, p4_ws], {strokeWidth: 3, strokeColor: '#c62828', dash: 0});
+
+/* Evaluate coordinates for the polygonal intersection to cleanly shade the feasible region */
+var int_x = (c_val * e_val - b_val * f_val) / (a_val * e_val - b_val * d_val);
+var int_y = (a_val * f_val - c_val * d_val) / (a_val * e_val - b_val * d_val);
+
+var poly_p1 = brd.create('point', [0, 0], {visible: false});
+var poly_p2 = brd.create('point', [Math.min(c_val/a_val, f_val/d_val), 0], {visible: false});
+var poly_p3 = brd.create('point', [int_x, int_y], {visible: false});
+var poly_p4 = brd.create('point', [0, Math.min(c_val/b_val, f_val/e_val)], {visible: false});
+
+brd.create('polygon', [poly_p1, poly_p2, poly_p3, poly_p4], {
+    fillColor: '#4caf50', fillOpacity: 0.3, 
+    borders: {strokeWidth: 0}
+});
+
+/* Marker */
+brd.create('point', [1, 1], {name: 'Feasible Region', size: 6, strokeColor: '#2e7d32', fillColor: '#4caf50', fixed: true});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>5</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* ALL tuples exclusively produce perfectly clean INTEGER intercepts and intersections to respect the 1-unit snap grid */
+tuples : [
+    [3, 2, 24, 1, 2, 16], /* Int: (4,6). M_int: (8,12). L_int: (16,8). */
+    [2, 3, 18, 2, 1, 10], /* Int: (3,4). M_int: (9,6). L_int: (5,10). */
+    [1, 1, 8, 2, 1, 12],  /* Int: (4,4). M_int: (8,8). L_int: (6,12). */
+    [1, 2, 12, 3, 2, 24]  /* Int: (6,3). M_int: (12,6). L_int: (8,12). */
+];
+tup : rand(tuples);
+A : tup[1];
+B : tup[2];
+C : tup[3];
+D : tup[4];
+E : tup[5];
+F : tup[6];
+
+/* Target Inequalities */
+ta1 : A*x + B*y <= C;
+ta2 : D*x + E*y <= F;
+
+/* Target Coordinates */
+ta3 : [0, C/B];
+ta4 : [C/A, 0];
+ta5 : [0, F/E];
+ta6 : [F/D, 0];
+
+/* Region Marker Target - [1, 1] is mathematically guaranteed to be within the feasible region for all tuples */
+ta7 : [1, 1];
+ta7_wrong : [15, 15];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>\({@A@}x + {@B@}y \le {@C@}\) and \({@D@}x + {@E@}y \le {@F@}\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Solving Systems of Linear Inequalities (Word Problems)</p>
+<p id="description">Grade 11 CBE: Translating a manufacturing word problem into algebraic inequalities and graphing the overlapping feasible region.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>ta4</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>algebraic</type>
+      <tans>ta5</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans6</name>
+      <type>algebraic</type>
+      <tans>ta6</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans7</name>
+      <type>algebraic</type>
+      <tans>ta7</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check correctness of material inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check correctness of labor inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Extract coordinates of the two blue points */
+x1 : ans3[1];
+y1 : ans3[2];
+x2 : ans4[1];
+y2 : ans4[2];</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if points are distinct</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is((x1-x2)^2 + (y1-y2)^2 > 0)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>You have dragged both blue points to the exact same location! A line requires two distinct points.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if P1 is on Material Line</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(abs(A*x1 + B*y1 - C) < 0.5)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>1</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your solid blue Material boundary line is placed incorrectly.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if P2 is on Material Line</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(abs(A*x2 + B*y2 - C) < 0.5)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your solid blue Material boundary line is placed correctly.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>1</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your solid blue Material boundary line is placed incorrectly.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Extract coordinates of the two red points */
+x3 : ans5[1];
+y3 : ans5[2];
+x4 : ans6[1];
+y4 : ans6[2];</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if points are distinct</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is((x3-x4)^2 + (y3-y4)^2 > 0)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt4-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>You have dragged both red points to the exact same location! A line requires two distinct points.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if P1 is on Labor Line</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(abs(D*x3 + E*y3 - F) < 0.5)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt4-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>1</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your solid red Labor boundary line is placed incorrectly.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if P2 is on Labor Line</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(abs(D*x4 + E*y4 - F) < 0.5)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your solid red Labor boundary line is placed correctly.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>1</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your solid red Labor boundary line is placed incorrectly.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt5</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Extract coordinate of the green region marker */
+rx : ans7[1];
+ry : ans7[2];</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if marker satisfies all constraints</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(A*rx + B*ry <= C + 0.1 and D*rx + E*ry <= F + 0.1 and rx >= -0.1 and ry >= -0.1)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your feasible region is perfectly identified.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt5-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your green region marker is placed incorrectly. It must be inside the overlap of <b>both</b> constraints.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1378401749</deployedseed>
+    <deployedseed>1932675337</deployedseed>
+    <deployedseed>738038382</deployedseed>
+    <deployedseed>1016683876</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct constraints, but wrong region</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt5-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Wrong inequalities, wrong graphs</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[A*x + B*y > C]]></value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value><![CDATA[D*x + E*y > F]]></value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[0, C/B + 1]</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>[C/A + 1, 0]</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>[0, F/E + 1]</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>[F/D + 1, 0]</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

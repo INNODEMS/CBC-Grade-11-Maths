@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Solving a system of linear inequalities and finding the intersection</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Solve the following system of linear inequalities graphically:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle y \le {@eq1@} \)<br>
+\( \displaystyle y > {@eq2@} \)
+</p>
+
+<p><b>a)</b> Find the exact coordinate point where the two boundary lines \( y = {@eq1@} \) and \( y = {@eq2@} \) intersect.</p>
+<p><i>(Enter the numerical values for the coordinates below.)</i></p>
+
+<p>\(x\)-coordinate: \( x = \) [[input:ans1]]</p>
+<p>\(y\)-coordinate: \( y = \) [[input:ans2]]</p>
+
+<div><b>\(x\)-coordinate check:</b> [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>\(y\)-coordinate check:</b> [[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>b)</b> Graph the system of inequalities on the Cartesian plane below:</p>
+<ul>
+<li>Drag the <b>two blue points</b> to set the boundary line for \( y \le {@eq1@} \). <i>(This line is solid)</i>.</li>
+<li>Drag the <b>two red points</b> to set the boundary line for \( y > {@eq2@} \). <i>(This line is dashed)</i>.</li>
+<li>Drag the <b>green Region Marker</b> strictly into the overlapping feasible region that satisfies both inequalities.</li>
+</ul>
+
+[[jsxgraph input-ref-ans3="rP1" input-ref-ans4="rP2" input-ref-ans5="rP3" input-ref-ans6="rP4" input-ref-ans7="rP5" width="600px" height="600px"]]
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-11, 11, 11, -11],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'x', withLabel: true, label: {position: 'rt', offset: [-15, 20]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [-8, -15]}, drawZero: true, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+var yaxis = brd.create('axis', [[0, 0], [0, 1]], {
+    name: 'y', withLabel: true, label: {position: 'rt', offset: [15, -15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [-25, -5]}, drawZero: false, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+/* Line 1 (Blue, Solid) */
+var p1 = brd.create('point', [-5, 8], {
+    name: 'L1', size: 5, strokeColor: '#1565c0', fillColor: '#ffffff', strokeWidth: 3, snapToGrid: true, snapSizeX: 1, snapSizeY: 1
+});
+var p2 = brd.create('point', [-2, 8], {
+    name: 'L1', size: 5, strokeColor: '#1565c0', fillColor: '#ffffff', strokeWidth: 3, snapToGrid: true, snapSizeX: 1, snapSizeY: 1
+});
+var line1 = brd.create('line', [p1, p2], {
+    strokeWidth: 3, strokeColor: '#1565c0', dash: 0, highlight: false
+});
+
+/* Line 2 (Red, Dashed) */
+var p3 = brd.create('point', [5, -8], {
+    name: 'L2', size: 5, strokeColor: '#c62828', fillColor: '#ffffff', strokeWidth: 3, snapToGrid: true, snapSizeX: 1, snapSizeY: 1
+});
+var p4 = brd.create('point', [2, -8], {
+    name: 'L2', size: 5, strokeColor: '#c62828', fillColor: '#ffffff', strokeWidth: 3, snapToGrid: true, snapSizeX: 1, snapSizeY: 1
+});
+var line2 = brd.create('line', [p3, p4], {
+    strokeWidth: 3, strokeColor: '#c62828', dash: 2, highlight: false
+});
+
+/* Region Marker (Green) */
+var p5 = brd.create('point', [8, 8], {
+    name: 'Feasible Region', size: 6, strokeColor: '#2e7d32', fillColor: '#4caf50', strokeWidth: 2, snapToGrid: true, snapSizeX: 1, snapSizeY: 1
+});
+
+stack_jxg.bind_point(rP1, p1);
+stack_jxg.bind_point(rP2, p2);
+stack_jxg.bind_point(rP3, p3);
+stack_jxg.bind_point(rP4, p4);
+stack_jxg.bind_point(rP5, p5);
+
+stack_jxg.starts_moved(p1);
+stack_jxg.starts_moved(p2);
+stack_jxg.starts_moved(p3);
+stack_jxg.starts_moved(p4);
+stack_jxg.starts_moved(p5);
+[[/jsxgraph]]
+
+<div style="display:none">
+[[input:ans3]] [[validation:ans3]]
+[[input:ans4]] [[validation:ans4]]
+[[input:ans5]] [[validation:ans5]]
+[[input:ans6]] [[validation:ans6]]
+[[input:ans7]] [[validation:ans7]]
+</div>
+<div><b>Solid Line (L1) Status:</b> [[feedback:prt3]]</div>
+<div><b>Dashed Line (L2) Status:</b> [[feedback:prt4]]</div>
+<div><b>Region Marker Status:</b> [[feedback:prt5]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: The Algebraic Intersection</b></p>
+<p>To find the exact point where the boundary lines intersect, we equate the two linear expressions.</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@eq1@} &= {@eq2@} \\
+{@m1@}x - {@m2@}x &= {@c2@} - {@c1@} \\
+{@m1 - m2@}x &= {@c2 - c1@} \\
+x &= {@ta1@}
+\end{aligned} \)
+</p>
+<p>We substitute this \(x\)-value back into either boundary equation to find the corresponding \(y\)-coordinate.</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+y &= {@m1@}({@ta1@}) + {@c1@} \\
+y &= {@ta2@}
+\end{aligned} \)
+</p>
+<p>The two boundary lines intersect exactly at \(({@ta1@}, {@ta2@})\).</p>
+
+<p><b>Part b: Graphical Representation</b></p>
+<p>We plot the two boundary lines on the Cartesian plane. The blue line for \( y \le {@eq1@} \) is solid, and we shade the region below it. The red line for \( y &gt; {@eq2@} \) is dashed, and we shade the region above it.</p>
+<p>The feasible region is the specific area where these two shaded regions overlap. Testing a coordinate point in each quadrant formed by the intersection confirms the correct overlapping area.</p>
+
+[[jsxgraph width="400px" height="400px"]]
+var m1 = {#m1#};
+var c1 = {#c1#};
+var m2 = {#m2#};
+var c2 = {#c2#};
+var rx = {#ta7[1]#};
+var ry = {#ta7[2]#};
+
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-11, 11, 11, -11],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'x', withLabel: true, label: {position: 'rt', offset: [-15, 20]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [-8, -15]}, drawZero: true, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+var yaxis = brd.create('axis', [[0, 0], [0, 1]], {
+    name: 'y', withLabel: true, label: {position: 'rt', offset: [15, -15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [-25, -5]}, drawZero: false, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+/* Plot Line 1 (Blue, Solid, Shade Below) */
+var p1_ws = brd.create('point', [0, c1], {visible: false});
+var p2_ws = brd.create('point', [1, m1 + c1], {visible: false});
+var line1_ws = brd.create('line', [p1_ws, p2_ws], {strokeWidth: 3, strokeColor: '#1565c0', dash: 0});
+var ineq1 = brd.create('inequality', [line1_ws], {fillColor: '#1565c0', fillOpacity: 0.2, inverse: false});
+
+/* Plot Line 2 (Red, Dashed, Shade Above) */
+var p3_ws = brd.create('point', [0, c2], {visible: false});
+var p4_ws = brd.create('point', [1, m2 + c2], {visible: false});
+var line2_ws = brd.create('line', [p3_ws, p4_ws], {strokeWidth: 3, strokeColor: '#c62828', dash: 2});
+var ineq2 = brd.create('inequality', [line2_ws], {fillColor: '#c62828', fillOpacity: 0.2, inverse: true});
+
+/* Feasible Region Marker */
+brd.create('point', [rx, ry], {name: 'Feasible Region', size: 6, strokeColor: '#2e7d32', fillColor: '#4caf50', fixed: true});
+[[/jsxgraph]]]]></text>
+    </generalfeedback>
+    <defaultgrade>5</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize the intersection point */
+x0 : rand_with_step(-4, 4, 1);
+y0 : rand_with_step(-4, 4, 1);
+
+/* Randomize distinct slopes */
+m1 : rand([-2, -1, 1, 2]);
+m2 : rand(listify(setdifference({-3, -2, -1, 1, 2, 3}, {m1})));
+
+/* Calculate y-intercepts to force the intersection at (x0, y0) */
+c1 : y0 - m1*x0;
+c2 : y0 - m2*x0;
+
+/* Define the algebraic equations */
+eq1 : m1*x + c1;
+eq2 : m2*x + c2;
+
+/* Target Answers for Part a */
+ta1 : x0;
+ta2 : y0;
+
+/* Graph Line 1 Targets */
+ta3 : [x0, y0];
+ta4 : [x0 + 1, y0 + m1];
+
+/* Graph Line 2 Targets */
+ta5 : [x0, y0];
+ta6 : [x0 + 1, y0 + m2];
+
+/* Safely compute a point inside the feasible region */
+dx : if m1 > m2 then 2 else -2;
+rx : x0 + dx;
+ry : if m1 > m2 then y0 + m1 + m2 else y0 - m1 - m2;
+
+ta7 : [rx, ry];
+ta7_wrong : [rx, ry + 15];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>L1: \(y \le {@eq1@}\), L2: \(y > {@eq2@}\) \(\implies\) Intersect: \(({@ta1@}, {@ta2@})\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Solving Systems of Linear Inequalities (Intersection)</p>
+<p id="description">Grade 11 CBE: Finding the algebraic intersection of two boundary lines and plotting the overlapping feasible region on a Cartesian grid.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>ta4</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>algebraic</type>
+      <tans>ta5</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans6</name>
+      <type>algebraic</type>
+      <tans>ta6</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans7</name>
+      <type>algebraic</type>
+      <tans>ta7</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of x-coord</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of y-coord</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Extract coordinates of the two blue points */
+x1 : ans3[1];
+y1 : ans3[2];
+x2 : ans4[1];
+y2 : ans4[2];</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if points are distinct</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is((x1-x2)^2 + (y1-y2)^2 > 0)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>You have dragged both blue points to the exact same location! A line requires two distinct points.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if P1 is on L1</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(abs(y1 - (m1*x1 + c1)) < 0.5)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>1</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your solid blue boundary line is placed incorrectly.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if P2 is on L1</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(abs(y2 - (m1*x2 + c1)) < 0.5)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your solid blue boundary line is placed correctly.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>1</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your solid blue boundary line is placed incorrectly.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Extract coordinates of the two red points */
+x3 : ans5[1];
+y3 : ans5[2];
+x4 : ans6[1];
+y4 : ans6[2];</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if points are distinct</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is((x3-x4)^2 + (y3-y4)^2 > 0)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt4-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>You have dragged both red points to the exact same location! A line requires two distinct points.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if P1 is on L2</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(abs(y3 - (m2*x3 + c2)) < 0.5)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt4-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>1</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your dashed red boundary line is placed incorrectly.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if P2 is on L2</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(abs(y4 - (m2*x4 + c2)) < 0.5)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your dashed red boundary line is placed correctly.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>1</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your dashed red boundary line is placed incorrectly.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt5</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* Extract coordinate of the green region marker */
+rx : ans7[1];
+ry : ans7[2];</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if marker satisfies both inequalities</description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[is(ry <= m1*rx + c1 + 0.1 and ry > m2*rx + c2 - 0.1)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your feasible region is perfectly identified.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt5-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your green region marker is placed incorrectly. It must satisfy <b>both</b> inequalities simultaneously.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>701862856</deployedseed>
+    <deployedseed>1755746938</deployedseed>
+    <deployedseed>1350111308</deployedseed>
+    <deployedseed>1796681748</deployedseed>
+    <deployedseed>902949519</deployedseed>
+    <deployedseed>1218745854</deployedseed>
+    <deployedseed>469589068</deployedseed>
+    <deployedseed>764422031</deployedseed>
+    <deployedseed>1722110283</deployedseed>
+    <deployedseed>1952096444</deployedseed>
+    <deployedseed>667649446</deployedseed>
+    <deployedseed>1290220972</deployedseed>
+    <deployedseed>1040901690</deployedseed>
+    <deployedseed>157504818</deployedseed>
+    <deployedseed>378725799</deployedseed>
+    <deployedseed>76264621</deployedseed>
+    <deployedseed>704146018</deployedseed>
+    <deployedseed>1784686785</deployedseed>
+    <deployedseed>1267605861</deployedseed>
+    <deployedseed>1371328295</deployedseed>
+    <deployedseed>372894135</deployedseed>
+    <deployedseed>875231752</deployedseed>
+    <deployedseed>1023897149</deployedseed>
+    <deployedseed>140322647</deployedseed>
+    <deployedseed>808076879</deployedseed>
+    <deployedseed>1954504482</deployedseed>
+    <deployedseed>1676209367</deployedseed>
+    <deployedseed>725316047</deployedseed>
+    <deployedseed>177698452</deployedseed>
+    <deployedseed>390453702</deployedseed>
+    <deployedseed>1117789980</deployedseed>
+    <deployedseed>677836712</deployedseed>
+    <deployedseed>2031793028</deployedseed>
+    <deployedseed>2048596858</deployedseed>
+    <deployedseed>1902264690</deployedseed>
+    <deployedseed>1520760359</deployedseed>
+    <deployedseed>1665482875</deployedseed>
+    <deployedseed>952752813</deployedseed>
+    <deployedseed>1503927197</deployedseed>
+    <deployedseed>965823954</deployedseed>
+    <deployedseed>924946878</deployedseed>
+    <deployedseed>1923438735</deployedseed>
+    <deployedseed>1289068131</deployedseed>
+    <deployedseed>1733744393</deployedseed>
+    <deployedseed>518108003</deployedseed>
+    <deployedseed>1913645930</deployedseed>
+    <deployedseed>2133107468</deployedseed>
+    <deployedseed>585966463</deployedseed>
+    <deployedseed>694561723</deployedseed>
+    <deployedseed>721832268</deployedseed>
+    <deployedseed>580749294</deployedseed>
+    <deployedseed>262929105</deployedseed>
+    <deployedseed>1396844503</deployedseed>
+    <deployedseed>2119637781</deployedseed>
+    <deployedseed>512286791</deployedseed>
+    <deployedseed>758096341</deployedseed>
+    <deployedseed>771900273</deployedseed>
+    <deployedseed>168301327</deployedseed>
+    <deployedseed>823144342</deployedseed>
+    <deployedseed>204063694</deployedseed>
+    <deployedseed>1468334585</deployedseed>
+    <deployedseed>1768550284</deployedseed>
+    <deployedseed>1698452617</deployedseed>
+    <deployedseed>127250880</deployedseed>
+    <deployedseed>389754884</deployedseed>
+    <deployedseed>1391618081</deployedseed>
+    <deployedseed>1102896713</deployedseed>
+    <deployedseed>863374408</deployedseed>
+    <deployedseed>1721214236</deployedseed>
+    <deployedseed>2023095369</deployedseed>
+    <deployedseed>1372931663</deployedseed>
+    <deployedseed>1768367595</deployedseed>
+    <deployedseed>1635222493</deployedseed>
+    <deployedseed>46580585</deployedseed>
+    <deployedseed>544196540</deployedseed>
+    <deployedseed>821036754</deployedseed>
+    <deployedseed>146367516</deployedseed>
+    <deployedseed>1074814655</deployedseed>
+    <deployedseed>1892241215</deployedseed>
+    <deployedseed>1907299169</deployedseed>
+    <deployedseed>1964608647</deployedseed>
+    <deployedseed>1035771903</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct lines, but wrong region</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt5-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Wrong intersection and wrong lines</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[x0, y0+1]</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>[x0+1, y0+m1+1]</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>[x0, y0+1]</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>[x0+1, y0+m2+1]</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
