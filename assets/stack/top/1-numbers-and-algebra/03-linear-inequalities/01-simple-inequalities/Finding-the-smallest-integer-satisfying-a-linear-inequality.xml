@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Finding the smallest integer satisfying a linear inequality</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p><b>(a)</b> Solve the following inequality for \(x\):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle {@a@}x - {@b@} \ge {@c@}x + {@d@} \)
+</p>
+<p><i>(Enter your answer as an inequality. Use <b>&gt;=</b> for \(\ge\). Leave any decimals as simplified fractions.)</i></p>
+<p>Inequality: [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p><b>(b)</b> Based on your solution, what is the <b>smallest integer value</b> of \(x\) that makes this inequality true?</p>
+<p>\(x = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part (a): Solving the Inequality</b></p>
+<p>First, we group the terms with \(x\) on the left side and the constant terms on the right side.</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@a@}x - {@c@}x &\ge {@d@} + {@b@} \\
+{@a - c@}x &\ge {@d + b@} \\
+x &\ge \frac{{@d + b@}}{{@a - c@}}
+\end{aligned} \)
+</p>
+<p>If we evaluate the fraction, we get \( x \ge {@disp_dec@} \).</p>
+
+<p>Hence, the simplified inequality is:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{x \ge {@frac@}} \)
+</p>
+
+<p><b>Part (b): Smallest Integer</b></p>
+<p>The inequality states that \(x\) must be greater than or equal to \({@disp_dec@}\). The integers that are greater than \({@disp_dec@}\) are \({@ta2@}, {@ta2+1@}, {@ta2+2@}, \dots\)</p>
+
+<p>Hence, the <b>smallest</b> integer in this set is:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{{@ta2@}} \)
+</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomise parameters */
+a : rand_with_step(5, 9, 1);
+c : rand_with_step(1, 3, 1);
+b : rand_with_step(3, 9, 1);
+d : rand_with_step(2, 8, 1);
+
+num : d + b;
+den : a - c;
+
+/* Ensure the result is a fraction to force the integer rounding logic */
+d : if is(mod(num, den) = 0) then d + 1 else d;
+num : d + b;
+
+frac : num / den;
+disp_dec : dispdp(float(frac), 2);
+
+ta1 : x >= frac;
+
+/* Since it is >=, the smallest integer is the ceiling of the fraction */
+ta2 : ceiling(float(frac));
+
+/* Mistake catchers */
+wrong_int : floor(float(frac));]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>\({@a@}x - {@b@} \ge {@c@}x + {@d@} \implies {@ta1@} \implies int: {@ta2@}\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Simple Inequalities (Variables Both Sides & Integer Limits)</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint><![CDATA[x >= ?]]></syntaxhint>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they rounded down</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>wrong_int</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You rounded the decimal down. However, the inequality states that \(x\) must be <b>greater than or equal to</b> the fraction. The integer \({@wrong_int@}\) is less than the fraction, so it does not satisfy the inequality. You need the next integer up.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>268315918</deployedseed>
+    <deployedseed>497616083</deployedseed>
+    <deployedseed>1019995834</deployedseed>
+    <deployedseed>1994592542</deployedseed>
+    <deployedseed>1133465297</deployedseed>
+    <deployedseed>320392506</deployedseed>
+    <deployedseed>528271491</deployedseed>
+    <deployedseed>826806240</deployedseed>
+    <deployedseed>144774941</deployedseed>
+    <deployedseed>190314436</deployedseed>
+    <deployedseed>1684262882</deployedseed>
+    <deployedseed>1096137280</deployedseed>
+    <deployedseed>2028184429</deployedseed>
+    <deployedseed>1203996632</deployedseed>
+    <deployedseed>457321831</deployedseed>
+    <deployedseed>1896542791</deployedseed>
+    <deployedseed>1710006345</deployedseed>
+    <deployedseed>1503078474</deployedseed>
+    <deployedseed>1496319819</deployedseed>
+    <deployedseed>1757701389</deployedseed>
+    <deployedseed>1634116058</deployedseed>
+    <deployedseed>1720833688</deployedseed>
+    <deployedseed>1909637388</deployedseed>
+    <deployedseed>1178611386</deployedseed>
+    <deployedseed>318209874</deployedseed>
+    <deployedseed>190495937</deployedseed>
+    <deployedseed>290493531</deployedseed>
+    <deployedseed>1012540320</deployedseed>
+    <deployedseed>297710718</deployedseed>
+    <deployedseed>79115318</deployedseed>
+    <deployedseed>696111986</deployedseed>
+    <deployedseed>239819645</deployedseed>
+    <deployedseed>1924079209</deployedseed>
+    <deployedseed>2033788394</deployedseed>
+    <deployedseed>788268875</deployedseed>
+    <deployedseed>1408970000</deployedseed>
+    <deployedseed>1775362203</deployedseed>
+    <deployedseed>502179166</deployedseed>
+    <deployedseed>847872873</deployedseed>
+    <deployedseed>1265693499</deployedseed>
+    <deployedseed>1748905856</deployedseed>
+    <deployedseed>736207104</deployedseed>
+    <deployedseed>589360569</deployedseed>
+    <deployedseed>1795110697</deployedseed>
+    <deployedseed>889588046</deployedseed>
+    <deployedseed>1183468181</deployedseed>
+    <deployedseed>1120637075</deployedseed>
+    <deployedseed>341849168</deployedseed>
+    <deployedseed>1082754342</deployedseed>
+    <deployedseed>876854616</deployedseed>
+    <deployedseed>143094223</deployedseed>
+    <deployedseed>1754710975</deployedseed>
+    <deployedseed>1431943624</deployedseed>
+    <deployedseed>252219481</deployedseed>
+    <deployedseed>2018122063</deployedseed>
+    <deployedseed>1527422322</deployedseed>
+    <deployedseed>796044599</deployedseed>
+    <deployedseed>1167196407</deployedseed>
+    <deployedseed>1060316045</deployedseed>
+    <deployedseed>182472222</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Test case assuming the teacher's input gets full marks.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
