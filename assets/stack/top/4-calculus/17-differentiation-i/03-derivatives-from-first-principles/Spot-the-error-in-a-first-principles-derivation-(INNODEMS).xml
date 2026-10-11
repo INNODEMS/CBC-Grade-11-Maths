@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Spot the error in a first-principles derivation (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A student differentiates \( f(x) = {@fexpr@} \) <b>from first principles</b>. Their working contains exactly <b>one</b> mistake. Read each line carefully.</p>
+<p><b>Line 1:</b>&nbsp; \( f(x+h) = {@D1@} \)</p>
+<p><b>Line 2:</b>&nbsp; \( f(x+h) - f(x) = {@D2@} \)</p>
+<p><b>Line 3:</b>&nbsp; \( \displaystyle\dfrac{f(x+h) - f(x)}{h} = {@D3@} \)</p>
+<p><b>Line 4:</b>&nbsp; \( \displaystyle f'(x) = \lim_{h \to 0}\dfrac{f(x+h) - f(x)}{h} = {@D4@} \)</p>
+<p>Which line contains the <b>first</b> mistake?</p>
+<div>[[input:wl]] [[validation:wl]] [[feedback:prtwl]]</div>
+<p>Now write the <b>corrected</b> right-hand side of that line:</p>
+<div>\( \phantom{x} = \) [[input:fix]] [[validation:fix]] [[feedback:prtfix]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The first mistake is on <b>Line {@first_wrong@}</b>: {@err_name@}</p>
+<p>The correct working from first principles is:</p>
+\[
+\begin{align*}
+f(x+h) &= {@C1@} \\[2pt]
+f(x+h) - f(x) &= {@C2@} \\[2pt]
+\frac{f(x+h) - f(x)}{h} &= {@C3@} \\[2pt]
+f'(x) = \lim_{h \to 0}\left({@C3@}\right) &= {@C4@}.
+\end{align*}
+\]
+<p>A good habit: re-derive each line yourself and compare. The first line that disagrees with your own working is where the error is - even if a later line (or the final answer) happens to look correct.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* f(x) = x^2 + b*x, b nonzero in [-5,5]; one of four planted errors. */
+b       : rand_with_prohib(-5,5,[0]);
+errtype : rand([1,2,3,4]);
+
+f(x) := x^2 + b*x;
+fexpr : f(x);
+
+/* This question runs with simplification OFF (see <questionsimplify>0 above) so the
+   displayed lines keep their natural, as-written term order  x^2 + 2xh + h^2 + bx +
+   bh . With simp ON, Maxima re-sorts the sum (and re-sorts again when the castext
+   renders {@C1@}), dropping the linear terms in among the quadratic ones. is(...)
+   is used in the branch conditions because a bare "=" is not a boolean while simp
+   is off. Marking is unaffected: each PRT sets autosimplify, so AlgEquiv still
+   simplifies both sides and ignores term order. */
+
+/* Correct right-hand side of each line (reference), in natural order. */
+C1 : x^2 + 2*x*h + h^2 + b*x + b*h;
+C2 : 2*x*h + h^2 + b*h;
+C3 : 2*x + h + b;
+C4 : 2*x + b;
+
+/* Displayed lines D1..D4 (error + consistent propagation), the first wrong line,
+   and the correct fix for that line. */
+if is(errtype = 1) then (
+  D1 : x^2 + h^2 + b*x + b*h,
+  D2 : h^2 + b*h,
+  D3 : h + b,
+  D4 : b,
+  first_wrong : 1,
+  correct_fix : C1,
+  err_name : "Line 1 expands (x+h)^2 as x^2 + h^2 and drops the cross term 2xh. The correct expansion is (x+h)^2 = x^2 + 2xh + h^2."
+) elseif is(errtype = 2) then (
+  D1 : C1,
+  D2 : 2*x*h + h^2 - b*h,
+  D3 : 2*x + h - b,
+  D4 : 2*x - b,
+  first_wrong : 2,
+  correct_fix : C2,
+  err_name : "Line 2 has a sign slip when subtracting f(x): the term in b should be added, not subtracted."
+) elseif is(errtype = 3) then (
+  D1 : C1,
+  D2 : C2,
+  D3 : 2*x + h^2 + b,
+  D4 : 2*x + b,
+  first_wrong : 3,
+  correct_fix : C3,
+  err_name : "Line 3 cancels h incorrectly: dividing h^2 by h gives h, not h^2. (Notice the final answer still came out right, but the working is invalid.)"
+) else (
+  D1 : C1,
+  D2 : C2,
+  D3 : C3,
+  D4 : 2*x + h + b,
+  first_wrong : 4,
+  correct_fix : C4,
+  err_name : "Line 4 forgets to take the limit: as h approaches 0 the term containing h must vanish, so it cannot remain in f'(x)."
+);
+
+/* The right-hand side actually shown on the first wrong line. */
+buggy_line : [D1,D2,D3,D4][first_wrong];
+
+/* Dropdown options: which line is the first mistake. */
+wl_ta : [[1, is(first_wrong=1), "Line 1"],
+         [2, is(first_wrong=2), "Line 2"],
+         [3, is(first_wrong=3), "Line 3"],
+         [4, is(first_wrong=4), "Line 4"]];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( f(x)={@fexpr@} \); errtype {@errtype@}; first wrong = Line {@first_wrong@}; fix \( = {@correct_fix@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>0</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>fix</name>
+      <type>algebraic</type>
+      <tans>correct_fix</tans>
+      <boxsize>24</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>diff,limit,ratsimp,expand,factor</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>wl</name>
+      <type>dropdown</type>
+      <tans>wl_ta</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prtfix</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Corrected line matches the correct RHS?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>fix</sans>
+        <tans>correct_fix</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtfix-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtfix-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Re-typed the buggy line unchanged?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>fix</sans>
+        <tans>buggy_line</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtfix-unchanged</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the line exactly as the student wrote it - you need to <em>correct</em> the mistake, not copy it. Work out what that right-hand side should be.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtfix-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>That is not the correct right-hand side for this line. Re-derive it carefully from the previous (correct) line.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtwl</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* Did the student blame a line that is actually still correct (too early)? */
+too_early : is(wl < first_wrong);]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct first-wrong line?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>wl</sans>
+        <tans>first_wrong</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtwl-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtwl-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Blamed an earlier (still-correct) line?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>too_early</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtwl-tooearly</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Not quite - the line you chose is actually correct. Check it against your own working, then look <em>further down</em> for the first line that goes wrong.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtwl-toolate</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Look again - there is an <em>earlier</em> line that already contains a mistake. Re-derive each line yourself, starting from Line 1, and stop at the first one that disagrees.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct: right line identified and correctly fixed</description>
+      <testinput>
+        <name>fix</name>
+        <value>correct_fix</value>
+      </testinput>
+      <testinput>
+        <name>wl</name>
+        <value>first_wrong</value>
+      </testinput>
+      <expected>
+        <name>prtfix</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtfix-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtwl</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtwl-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Right line, but re-typed the buggy line unchanged</description>
+      <testinput>
+        <name>fix</name>
+        <value>buggy_line</value>
+      </testinput>
+      <testinput>
+        <name>wl</name>
+        <value>first_wrong</value>
+      </testinput>
+      <expected>
+        <name>prtfix</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtfix-unchanged</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtwl</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtwl-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Right line, wrong correction</description>
+      <testinput>
+        <name>fix</name>
+        <value>correct_fix+x+1</value>
+      </testinput>
+      <testinput>
+        <name>wl</name>
+        <value>first_wrong</value>
+      </testinput>
+      <expected>
+        <name>prtfix</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtfix-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtwl</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtwl-correct</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

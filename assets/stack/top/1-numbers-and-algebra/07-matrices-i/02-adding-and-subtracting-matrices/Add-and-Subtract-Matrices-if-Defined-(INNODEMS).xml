@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Add and Subtract Matrices if Defined (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Given the matrices</p>
+<p>\[ X = {@X@}, \qquad Y = {@Y@}, \]</p>
+<p>\[ W = {@W@}, \qquad Z = {@Z@}. \]</p>
+<p>Compute each expression. If an expression is <strong>not defined</strong>, enter the zero matrix.</p>
+<div><b>(a)</b> \( X + W = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>(b)</b> \( Y + Z - W = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<div><b>(c)</b> \( Y - Z = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>
+<div><b>(d)</b> \( X - Y = \) [[input:ans4]] [[validation:ans4]] [[feedback:prt4]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Matrices can be added or subtracted only when they have the <strong>same size</strong>; you then work entry by entry.</p>
+<p><b>(a)</b> \(X\) and \(W\) are both \({@r1@}\times{@c1@}\), so \(X+W\) is defined:</p>
+\[ X+W = {@X@}+{@W@} = {@stepA@} = {@ansA@}. \]
+<p><b>(b)</b> \(Y+Z\) is defined (both \({@r2@}\times{@c2@}\)) and equals \({@YpZ@}\). But \(W\) is \({@r1@}\times{@c1@}\), so \((Y+Z)-W\) subtracts matrices of different sizes &mdash; <strong>not defined</strong>.</p>
+<p><b>(c)</b> \(Y\) and \(Z\) are both \({@r2@}\times{@c2@}\), so \(Y-Z\) is defined:</p>
+\[ Y-Z = {@Y@}-{@Z@} = {@stepC@} = {@ansC@}. \]
+<p><b>(d)</b> \(X\) is \({@r1@}\times{@c1@}\) and \(Y\) is \({@r2@}\times{@c2@}\): different sizes, so \(X-Y\) is <strong>not defined</strong>.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Two distinct shapes; X,W use shape1, Y,Z use shape2. */
+shapes : [[2,2],[2,3],[3,2],[3,3]];
+s1 : rand(shapes);
+s2 : rand(delete(s1, shapes));      /* a different shape */
+r1 : s1[1];  c1 : s1[2];
+r2 : s2[1];  c2 : s2[2];
+
+X : genmatrix(lambda([i,j], rand(13)-4), r1, c1);   /* entries -4..8 */
+W : genmatrix(lambda([i,j], rand(13)-4), r1, c1);
+Y : genmatrix(lambda([i,j], rand(13)-4), r2, c2);
+Z : genmatrix(lambda([i,j], rand(13)-4), r2, c2);
+ones1 : genmatrix(lambda([i,j], 1), r1, c1);
+ones2 : genmatrix(lambda([i,j], 1), r2, c2);
+
+/* keep the defined results visibly non-zero (so 'defined' is never confusable
+   with the not-defined zero matrix) */
+if zeromatrixp(X + W) then X : X + ones1;
+if zeromatrixp(Y - Z) then Y : Y + ones2;
+
+/* model answers */
+ansA : X + W;                 /* (a) defined            */
+ansB : zeromatrix(r2, c2);    /* (b) not defined        */
+ansC : Y - Z;                 /* (c) defined            */
+ansD : zeromatrix(r1, c1);    /* (d) not defined        */
+
+/* misconception / helper matrices */
+YpZ : Y + Z;                  /* the defined part of (b); also 'added' error in (c) */
+XmW : X - W;                  /* subtracted instead of added, in (a) */
+ZmY : Z - Y;                  /* reversed order, in (c) */
+genA : ansA + ones1;          /* generic wrong (a) */
+genB : YpZ + ones2;           /* generic wrong (b) */
+
+/* worked-solution step matrices: entries kept UNEVALUATED (simp:false) so each
+   shows e.g. 2+7 or 7-(-2); adapts to the shapes and entries automatically. */
+stepA : block([simp:false], genmatrix(lambda([i,j], X[i,j] + W[i,j]), r1, c1));
+stepC : block([simp:false], genmatrix(lambda([i,j], Y[i,j] - Z[i,j]), r2, c2));</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( X,W:{@r1@}\times{@c1@},\ Y,Z:{@r2@}\times{@c2@},\ X+W={@ansA@},\ Y-Z={@ansC@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>matrix</type>
+      <tans>ansA</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>matrix</type>
+      <tans>ansB</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>matrix</type>
+      <tans>ansC</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>matrix</type>
+      <tans>ansD</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>(a) correct: X+W</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ansA</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>(a) wrongly said not defined</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>zeromatrix(r1,c1)</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-claimedundef</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>\(X+W\) <strong>is</strong> defined: \(X\) and \(W\) are both \({@r1@}\times{@c1@}\). Add them entry by entry.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>(a) subtracted instead of added</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>XmW</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-subtracted</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you computed \(X-W\). Part (a) asks for the sum \(X+W\); add the matching entries.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Add \(X\) and \(W\) entry by entry. See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>(b) correct: not defined (zero matrix)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ansB</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>(b) computed Y+Z, ignoring the size clash with W</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>YpZ</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-partialYZ</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You computed \(Y+Z\) correctly, but then \((Y+Z)-W\) subtracts a \({@r2@}\times{@c2@}\) matrix and a \({@r1@}\times{@c1@}\) matrix &mdash; different sizes, so the expression is not defined. Enter the zero matrix.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Double check if \(Y+Z\) is defined: do the two matrices have the same dimensions?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>(c) correct: Y-Z</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ansC</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>(c) wrongly said not defined</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>zeromatrix(r2,c2)</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-claimedundef</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>\(Y-Z\) <strong>is</strong> defined: \(Y\) and \(Z\) are both \({@r2@}\times{@c2@}\). Subtract them entry by entry.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>(c) reversed order: Z-Y</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ZmY</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-reversed</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You computed \(Z-Y\). The question asks for \(Y-Z\), so each entry is (entry of \(Y\)) \(-\) (entry of \(Z\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>(c) added instead of subtracted</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>YpZ</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-added</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you computed \(Y+Z\). Part (c) asks for the difference \(Y-Z\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Subtract \(Z\) from \(Y\) entry by entry. See the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>(d) correct: not defined (zero matrix)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ansD</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-undefined</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Double check if \(X - Y\) is defined: do the two matrices have the same dimensions?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All four correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ansA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ansB</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ansC</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ansD</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>(a) zero, (b) Y+Z, (c) zero, (d) non-zero</description>
+      <testinput>
+        <name>ans1</name>
+        <value>zeromatrix(r1,c1)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>YpZ</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>zeromatrix(r2,c2)</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ones1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-claimedundef</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-partialYZ</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt3-claimedundef</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt4-undefined</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>(a) X-W, (b) generic, (c) Z-Y, (d) correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>XmW</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>genB</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ZmY</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ansD</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-subtracted</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt3-reversed</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>(a) generic, (b) correct, (c) Y+Z, (d) non-zero</description>
+      <testinput>
+        <name>ans1</name>
+        <value>genA</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ansB</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>YpZ</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ones1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt3-added</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt4-undefined</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

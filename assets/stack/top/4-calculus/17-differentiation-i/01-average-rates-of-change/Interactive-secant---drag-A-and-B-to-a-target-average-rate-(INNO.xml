@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Interactive secant - drag A and B to a target average rate (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A stone is thrown straight up. Its height above the ground after \(t\) seconds is
+\[ s(t) = {@v@}\,t - 5\,t^2 \text{ metres.} \]</p>
+
+<p>The two points \(A\) and \(B\) sit on the curve. Dragging one moves it along the curve, choosing a start time \(a\) and an end time \(b\); the green line is the <strong>secant</strong> joining them, and its slope is the average rate of change
+\[ \frac{\Delta s}{\Delta t} = \frac{s(b)-s(a)}{b-a}. \]</p>
+
+<p><strong>Drag \(A\) and \(B\) so that the average rate of change over \([a,\,b]\) equals \({@targ@}\) m/s.</strong> The live readout shows \(\Delta t\), \(\Delta s\) and the current average rate. There is more than one interval that works.</p>
+
+[[jsxgraph input-ref-ans1="ref_A" input-ref-ans2="ref_B" width='520px' height='430px']]
+var vv = {#v#}, tmax = {#float(tmax)#}, targ = {#targ#};
+var Astart = {#float(a0)#}, Bstart = {#float(b0)#};
+var s = function (t) { return vv * t - 5 * t * t; };
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-0.7, {#float(ytop)#}, tmax + 0.9, {#float(ybot)#}],
+    keepAspectRatio: false,
+    axis: true,
+    grid: {majorStep: 1, minorStep: 0.5},
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false},
+    defaultAxes: {
+        x: {ticks: {insertTicks: false, ticksDistance: 1, minorticks: 4},
+            name: 't', withLabel: true, label: {position: 'rt', offset: [10, 12]}},
+        y: {ticks: {insertTicks: false, ticksDistance: 5, minorticks: 4},
+            name: 's', withLabel: true, label: {position: 'rt', offset: [12, 0]}}
+    }
+});
+
+// The stone's path (visible) and an invisible copy used as the rail.
+board.create('functiongraph', [s, 0, tmax], {strokeColor: '#0055bb', strokeWidth: 2.5, name: ''});
+var rail = board.create('functiongraph', [s, 0, tmax], {visible: false});
+
+board.create('text', [0.15, {#float(ytop-1.6)#}, 's(t) = ' + vv + 't − 5t²'],
+    {color: '#0055bb', fontSize: 15, fixed: true});
+
+// Draggable gliders on the curve. snapX keeps the x-coordinate on a 0.1 grid so
+// the exact target rate is reachable.
+var A = board.create('glider', [Astart, s(Astart), rail], {
+    name: 'A', size: 5, strokeColor: '#1565c0', fillColor: '#1565c0',
+    snapToGrid: false, snapX: 0.1,
+    label: {offset: [-14, 10], color: '#1565c0', fontSize: 14}
+});
+var B = board.create('glider', [Bstart, s(Bstart), rail], {
+    name: 'B', size: 5, strokeColor: '#1565c0', fillColor: '#1565c0',
+    snapToGrid: false, snapX: 0.1,
+    label: {offset: [10, 10], color: '#1565c0', fontSize: 14}
+});
+
+// Snap x to the nearest 0.1 after each drag (robust across JSXGraph builds).
+function snapGlider(P) {
+    var xr = Math.round(P.X() * 10) / 10;
+    if (xr < 0) { xr = 0; } if (xr > tmax) { xr = tmax; }
+    P.setPositionDirectly(JXG.COORDS_BY_USER, [xr, s(xr)]);
+    board.update();
+}
+A.on('up', function () { snapGlider(A); });
+B.on('up', function () { snapGlider(B); });
+
+// Green secant (its slope IS the average rate).
+board.create('line', [A, B], {strokeColor: '#2e7d32', strokeWidth: 2.5,
+    straightFirst: true, straightLast: true});
+
+// Grey slope triangle: run Delta t and rise Delta s.
+var corner = function () { return [B.X(), A.Y()]; };
+board.create('segment', [A, corner], {strokeColor: '#777', strokeWidth: 1.5, dash: 2});
+board.create('segment', [corner, B], {strokeColor: '#777', strokeWidth: 1.5, dash: 2});
+board.create('text', [function () { return (A.X() + B.X()) / 2; },
+    function () { return A.Y() - 1.4; }, function () { return 'Δt'; }],
+    {color: '#555', fontSize: 13, fixed: true, anchorX: 'middle'});
+board.create('text', [function () { return B.X() + 0.12; },
+    function () { return (A.Y() + B.Y()) / 2; }, function () { return 'Δs'; }],
+    {color: '#555', fontSize: 13, fixed: true, anchorX: 'left'});
+
+// Live readout: a, b, Δt, Δs and the average rate Δs/Δt (the secant slope). No
+// target-hit indicator, so the student judges for themselves whether they've met
+// the target rather than being told by a tick. Centred horizontally on the
+// parabola's axis of symmetry (t = v/10, the peak) and sitting just above the x-axis.
+var axisSym = vv / 10;   // axis of symmetry / vertex of s(t) = v t - 5 t^2
+board.create('text', [
+    axisSym,
+    0.4,
+    function () {
+        var a = A.X(), b = B.X(), sa = s(a), sb = s(b);
+        var dt = b - a, ds = sb - sa;
+        var rateTxt = Math.abs(dt) > 1e-6
+            ? '<span style="color:#2e7d32">' + (ds / dt).toFixed(2) + ' m/s</span>'
+            : '<span style="color:#c62828">undefined (a = b)</span>';
+        return '<div style="background:rgba(255,255,255,0.85);padding:7px 11px;'
+            + 'border-radius:5px;line-height:1.7;font-size:13px;color:#333">'
+            + 'a = ' + a.toFixed(1) + ' s,&nbsp; b = ' + b.toFixed(1) + ' s<br>'
+            + '<span style="color:#555">Δt = ' + dt.toFixed(1) + ' s,&nbsp; '
+            + 'Δs = ' + ds.toFixed(1) + ' m</span><br>'
+            + 'average rate = Δs/Δt = ' + rateTxt
+            + '</div>';
+    }
+], {useHTML: true, anchorX: 'middle', anchorY: 'bottom', fixed: true});
+
+// Bind the two gliders to the hidden inputs: ans1 = [a, s(a)], ans2 = [b, s(b)].
+stack_jxg.bind_point(ref_A, A);
+stack_jxg.bind_point(ref_B, B);
+[[/jsxgraph]]
+
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The average rate of change of \(s(t) = {@v@}t - 5t^2\) over \([a,b]\) is the slope of the secant line:
+\[ \frac{s(b)-s(a)}{b-a}. \]
+For this parabola it works out to \({@v@} - 5(a+b)\), so <em>any</em> interval whose two times add up to \(a+b = \dfrac{{@v@}-({@targ@})}{5} = {@apb@}\) gives an average rate of \({@targ@}\) m/s. That is why more than one position of \(A\) and \(B\) scores full marks &mdash; for example \(a = {@a_ta@}\), \(b = {@b_ta@}\).</p>
+{@extranote@}]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Design backwards: curated [throw speed v, target rate targ] pairs. AROC over
+   [a,b] for s(t)=v t-5 t^2 is v-5(a+b); a valid interval needs a+b=(v-targ)/5,
+   and every pair below leaves room for one strictly inside [0, tmax], tmax=v/5.
+   Dimensions of variation: v in {20,25,30}; targ in {0,+-5,+-10,+-15}, with
+   targ=0 the headline net-displacement case. */
+data : [[20,0],[20,5],[20,-5],[20,10],[20,-10],[20,15],[20,-15],
+        [25,0],[25,5],[25,-5],[25,10],[25,-10],[25,15],[25,-15],
+        [30,0],[30,5],[30,-5],[30,10],[30,-10],[30,15],[30,-15]];
+row  : data[rand(length(data))+1];
+v    : row[1];              /* throw speed (m/s) */
+targ : row[2];              /* target average rate the student must hit */
+tmax : v/5;                 /* landing time; domain of the model is [0, tmax] */
+
+apb  : (v - targ)/5;        /* required a+b for a correct interval */
+
+/* One sample correct interval, symmetric about apb/2, snapped to the 0.1 grid.
+   Used only in the worked solution and question tests - marking checks a property. */
+a_ta : (apb/2) - 1/2;
+b_ta : (apb/2) + 1/2;
+
+/* Sign-flipped sample interval (average rate = -targ): the mirror of the correct
+   interval across the peak, so it also lies inside [0, tmax]. Used only by the
+   "missed the negative" question test. */
+a_sf : ((v + targ)/5)/2 - 1/2;
+b_sf : ((v + targ)/5)/2 + 1/2;
+
+/* Model-answer point coordinates for the two hidden inputs. */
+ta1 : [a_ta, v*a_ta - 5*a_ta^2];   /* [a, s(a)] */
+ta2 : [b_ta, v*b_ta - 5*b_ta^2];   /* [b, s(b)] */
+
+/* Board bounds derived from v (peak height is v^2/20 at t=v/10). */
+peak : v^2/20;
+ytop : peak + 3;
+ybot : -3;
+
+/* Initial glider positions: an interval whose average rate is NOT the target
+   (so doing nothing scores zero). Shift the sample interval by 1 s; if that
+   would fall off the domain, shift the other way. Its rate is targ-5 or targ+5. */
+a0 : if b_ta + 1 <= tmax then a_ta + 1 else a_ta - 1;
+b0 : if b_ta + 1 <= tmax then b_ta + 1 else b_ta - 1;
+
+/* Worked-solution note: the zero-target case gets the net-displacement insight. */
+extranote : if targ = 0
+  then "<p>Because the target is \\(0\\) m/s, the stone ends the interval at exactly the height it started &mdash; the <em>net</em> displacement is zero. This does <strong>not</strong> mean the stone was still: it is rising at \\(t=a\\) and falling at \\(t=b\\), moving the whole time. The flat secant records only that it came back to the same height, which is why an average rate can hide what happens inside the interval.</p>"
+  else "<p>A positive target means the stone is higher at \\(b\\) than at \\(a\\) on average (rising); a negative target means it is lower (falling). The steeper the secant, the larger the average rate.</p>";]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:prt1]]</text>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( s(t)={@v@}t-5t^2 \); target \({@targ@}\) m/s; need \(a+b={@apb@}\); sample \([{@a_ta@},{@b_ta@}]\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* Read the x-coordinates the student chose off the two bound points. */
+sax : ans1[1];               /* a = start time */
+sbx : ans2[1];               /* b = end time */
+dt  : sbx - sax;             /* Delta t (may be 0 if same time twice) */
+/* Average rate over the student's interval, guarded against Delta t = 0 so the
+   feedback variables never divide by zero (the degenerate case is caught first). */
+srate : if abs(dt) > 0.001
+          then ((v*sbx - 5*sbx^2) - (v*sax - 5*sax^2)) / dt
+          else 0;
+/* Correct-answer feedback text. When the target is zero, append the
+   net-displacement insight from the "stone in flight" activity. */
+hitmsg : if targ = 0
+  then "<p>Correct &mdash; the secant is flat, so the average rate is \\(0\\) m/s. Notice the stone is <em>not</em> still: it is rising at \\(t=a\\) and falling at \\(t=b\\). The average rate is zero only because the stone returns to the same height, giving zero <strong>net</strong> displacement over the interval.</p>"
+  else "<p>Correct &mdash; the slope of your green secant is the average rate of change over your interval, and it matches the target. Notice that other intervals would give the same average rate.</p>";
+/* Sign diagnostic: a student can reach the right magnitude but the wrong sign
+   (e.g. +5 m/s when the target is -5 m/s) - "missing the negative". */
+negtarg : -targ;
+signhint : if targ < 0
+  then "slide your interval to the <em>right</em> of the peak, where the stone is coming back down"
+  elseif targ > 0
+  then "keep your interval to the <em>left</em> of the peak, where the stone is still rising"
+  else "widen or shift the interval by dragging \\(A\\) and \\(B\\)";]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Degenerate check: are the two times the same (Delta t = 0)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>dt</sans>
+        <tans>0</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-degenerate</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Right now \(A\) and \(B\) are at the <strong>same time</strong>, so \(\Delta t = 0\) and the average rate \(\dfrac{\Delta s}{\Delta t}\) is undefined. You need two <em>different</em> times: drag \(A\) and \(B\) apart so the interval \([a,b]\) has some width.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Property check: does the average rate equal the target?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>srate</sans>
+        <tans>targ</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text>{@hitmsg@}</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Sign diagnostic: right magnitude but opposite sign (missed the negative)?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>srate</sans>
+        <tans>negtarg</tans>
+        <testoptions>0.05</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-signmiss</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>So close &mdash; your secant has the right <em>steepness</em>, but it slopes the wrong way. Its average rate is about \({@negtarg@}\) m/s, the opposite sign to the target \({@targ@}\) m/s. A rate is <strong>negative</strong> when the stone is <em>falling</em> (\(B\) lower than \(A\)), and <strong>positive</strong> when it is <em>rising</em> (\(B\) higher than \(A\)). To hit \({@targ@}\) m/s, {@signhint@}.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-miss</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your interval has a valid width, but its average rate is not \({@targ@}\) m/s yet. The average rate is the <em>slope of the green secant</em> &mdash; tilt it by dragging \(A\) and \(B\) until the readout shows \({@targ@}\) m/s. Making the interval wider or narrower, or sliding it left or right, changes the slope.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Passing instance: the sample correct interval [a_ta, b_ta] hits the target.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>A DIFFERENT valid interval also scores: a narrower interval with the same midpoint keeps a+b (hence the same average rate) and is always inside the domain.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([a_ta+3/10, v*(a_ta+3/10)-5*(a_ta+3/10)^2],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([b_ta-3/10, v*(b_ta-3/10)-5*(b_ta-3/10)^2],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Degenerate: A and B at the same time (a = b), Delta t = 0.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-degenerate</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Wrong rate: a valid-width interval whose average rate is not the target (initial start positions).</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([a0, v*a0-5*a0^2],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([b0, v*b0-5*b0^2],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-miss</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Missed the negative: right magnitude, opposite sign (average rate = -targ). Meaningful only for a non-zero target - on a targ=0 variant there is no opposite sign, so run this against a non-zero-target seed.</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([a_sf, v*a_sf-5*a_sf^2],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([b_sf, v*b_sf-5*b_sf^2],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-signmiss</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
