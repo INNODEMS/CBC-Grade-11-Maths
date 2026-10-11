@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Using a Distance-time graph to find average rate of change</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph below shows the distance \(d\), in kilometres, travelled by a vehicle over time \(t\), in hours. The graph passes through the points \(A({@t1@},{@d1@})\), \(B({@t2@},{@d2@})\) and \(C({@t3@},{@d3@})\).</p>
+[[jsxgraph input-ref-ans3="ref_pA" input-ref-ans4="ref_pB" input-ref-ans5="ref_pC" width="540px" height="540px"]]
+var T1={#t1#}, T2={#t2#}, T3={#t3#}, D1={#d1#}, D2={#d2#}, D3={#d3#};
+var XMIN={#float(xminv)#}, XMAX={#float(xmaxv)#}, YMAX={#float(ymaxv)#}, YMIN={#float(yminv)#};
+var DLO={#float(dlo)#}, DHI={#float(dhi)#};
+function dfun(t){ return D1*(t-T2)*(t-T3)/((T1-T2)*(T1-T3)) + D2*(t-T1)*(t-T3)/((T2-T1)*(T2-T3)) + D3*(t-T1)*(t-T2)/((T3-T1)*(T3-T2)); }
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[XMIN, YMAX, XMAX, YMIN], axis:true, showCopyright:false, showNavigation:false, grid:true, keepaspectratio:false});
+brd.defaultAxes.x.setAttribute({ticks:{majorHeight:8, drawLabels:true, label:{fontSize:11}}});
+brd.defaultAxes.y.setAttribute({ticks:{majorHeight:8, drawLabels:true, label:{fontSize:11}}});
+brd.create('text',[XMAX-0.15, 0.6, 't (hours)'],{anchorX:'right',fixed:true,fontSize:14,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.35, YMAX-0.15, 'd (km)'],{anchorX:'left',fixed:true,fontSize:14,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph', [dfun, DLO, DHI], {strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+brd.create('point',[T1,D1],{name:'A',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:4,label:{offset:[-16,8],fontSize:16,cssStyle:'font-weight:bold;color:#1f4fd8'}});
+brd.create('point',[T2,D2],{name:'B',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:4,label:{offset:[-16,8],fontSize:16,cssStyle:'font-weight:bold;color:#1f4fd8'}});
+brd.create('point',[T3,D3],{name:'C',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:4,label:{offset:[-16,8],fontSize:16,cssStyle:'font-weight:bold;color:#1f4fd8'}});
+var p1 = brd.create('point',[T1,0],{name:'1',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[8,0],fontSize:14,cssStyle:'font-weight:bold;color:#cc0000'}});
+var p2 = brd.create('point',[T2,0],{name:'2',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[8,0],fontSize:14,cssStyle:'font-weight:bold;color:#cc0000'}});
+var p3 = brd.create('point',[T3,0],{name:'3',color:'#cc0000',fillColor:'#cc0000',size:5,snapToGrid:true,snapSizeX:1,snapSizeY:1,label:{offset:[8,0],fontSize:14,cssStyle:'font-weight:bold;color:#cc0000'}});
+brd.create('segment',[p1,p2],{strokeColor:'#cc0000',strokeWidth:2});
+brd.create('segment',[p2,p3],{strokeColor:'#cc0000',strokeWidth:2});
+stack_jxg.bind_point(ref_pA, p1);
+stack_jxg.bind_point(ref_pB, p2);
+stack_jxg.bind_point(ref_pC, p3);
+[[/jsxgraph]]
+<div style="display:none">[[input:ans3]] [[validation:ans3]] [[input:ans4]] [[validation:ans4]] [[input:ans5]] [[validation:ans5]]</div>
+<p><strong>a)</strong> Calculate the average rate of change of distance (in km/h) between:</p>
+<div><strong>i.</strong> \(t={@t1@}\) and \(t={@t2@}\): [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<div><strong>ii.</strong> \(t={@t2@}\) and \(t={@t3@}\): [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p><strong>b)</strong> Draw the two secant lines on the graph above: drag the three red points onto \(A\), \(B\) and \(C\). The middle point is shared by both secants, so place it on \(B\).</p>
+<div>[[feedback:prt3]]</div>
+<p><strong>c)</strong> Which interval has the greater average rate of change?</p>
+<div>[[input:ansc]] [[validation:ansc]] [[feedback:prt4]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>a)</strong> The average rate of change over an interval is \(\dfrac{\text{change in distance}}{\text{change in time}}\).</p>
+\[
+\text{i. } \frac{{@d2@}-{@d1@}}{{@t2@}-{@t1@}} = \frac{{@d2-d1@}}{{@t2-t1@}} = {@r1@}\text{ km/h}, \qquad
+\text{ii. } \frac{{@d3@}-{@d2@}}{{@t3@}-{@t2@}} = \frac{{@d3-d2@}}{{@t3-t2@}} = {@r2@}\text{ km/h}.
+\]
+<p><strong>b)</strong> The first secant joins \(A\) and \(B\); the second joins \(B\) and \(C\). The gradient of each secant equals the average rate of change on that interval. The two secants are shown in red below.</p>
+[[jsxgraph width="470px" height="470px"]]
+var T1={#t1#}, T2={#t2#}, T3={#t3#}, D1={#d1#}, D2={#d2#}, D3={#d3#};
+var XMIN={#float(xminv)#}, XMAX={#float(xmaxv)#}, YMAX={#float(ymaxv)#}, YMIN={#float(yminv)#};
+var DLO={#float(dlo)#}, DHI={#float(dhi)#};
+function dfun(t){ return D1*(t-T2)*(t-T3)/((T1-T2)*(T1-T3)) + D2*(t-T1)*(t-T3)/((T2-T1)*(T2-T3)) + D3*(t-T1)*(t-T2)/((T3-T1)*(T3-T2)); }
+var brd = JXG.JSXGraph.initBoard(divid, {boundingbox:[XMIN, YMAX, XMAX, YMIN], axis:true, showCopyright:false, showNavigation:false, grid:true, keepaspectratio:false});
+brd.create('text',[XMAX-0.15, 0.6, 't (hours)'],{anchorX:'right',fixed:true,fontSize:14,cssStyle:'font-weight:bold;color:#333'});
+brd.create('text',[0.35, YMAX-0.15, 'd (km)'],{anchorX:'left',fixed:true,fontSize:14,cssStyle:'font-weight:bold;color:#333'});
+brd.create('functiongraph', [dfun, DLO, DHI], {strokeColor:'#1f4fd8', strokeWidth:2.5, highlight:false});
+brd.create('segment',[[T1,D1],[T2,D2]],{strokeColor:'#cc0000',strokeWidth:2.5});
+brd.create('segment',[[T2,D2],[T3,D3]],{strokeColor:'#cc0000',strokeWidth:2.5});
+brd.create('point',[T1,D1],{name:'A',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:4,label:{offset:[-16,8],fontSize:16,cssStyle:'font-weight:bold;color:#1f4fd8'}});
+brd.create('point',[T2,D2],{name:'B',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:4,label:{offset:[-16,8],fontSize:16,cssStyle:'font-weight:bold;color:#1f4fd8'}});
+brd.create('point',[T3,D3],{name:'C',fixed:true,color:'#1f4fd8',fillColor:'#1f4fd8',size:4,label:{offset:[-16,8],fontSize:16,cssStyle:'font-weight:bold;color:#1f4fd8'}});
+[[/jsxgraph]]
+<p><strong>c)</strong> The interval \({@clabel@}\) has the greater average rate of change (\({@rmax@}\) km/h versus \({@rmin@}\) km/h).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[g  : rand_with_prohib(1,2,[]);        /* equal time gap */
+t1 : rand_with_prohib(1,2,[]);        /* first time */
+t2 : t1 + g;
+t3 : t1 + 2*g;
+r1 : rand_with_prohib(3,12,[]);       /* average rate on [t1,t2] */
+r2 : rand_with_prohib(3,12,[r1]);     /* average rate on [t2,t3], different */
+d1 : rand_with_prohib(2,8,[]);        /* distance at t1 */
+d2 : d1 + r1*g;
+d3 : d2 + r2*g;
+Apt : [t1, d1];
+Bpt : [t2, d2];
+Cpt : [t3, d3];
+/* dropdown for part (c) */
+lbl1 : sconcat("t = ", t1, " to t = ", t2);
+lbl2 : sconcat("t = ", t2, " to t = ", t3);
+copts : [[optI1, is(r1 > r2), lbl1], [optI2, is(r2 > r1), lbl2]];
+ta_c  : if r1 > r2 then optI1 else optI2;
+clabel : if r1 > r2 then lbl1 else lbl2;
+rmax : max(r1, r2);
+rmin : min(r1, r2);
+/* board window (distance and time have different units, so no square scaling) */
+xminv : min(t1, 0) - 1;
+xmaxv : t3 + 1;
+yminv : min(d1, 0) - 2;
+ymaxv : d3 + 3;
+dlo : t1 - 0.3;
+dhi : t3 + 0.3;
+tans1 : Apt;
+tans2 : Bpt;
+tans3 : Cpt;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( A({@t1@},{@d1@}),B({@t2@},{@d2@}),C({@t3@},{@d3@})\); rates \({@r1@},{@r2@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>r1</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>r2</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>tans1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>tans2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>algebraic</type>
+      <tans>tans3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ansc</name>
+      <type>dropdown</type>
+      <tans>copts</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct average rate on [t1,t2]?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>r1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Reciprocal (time over distance)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>1/r1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-recip</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided the change in time by the change in distance. Average rate \(=\dfrac{\text{change in distance}}{\text{change in time}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Average rate \(=\dfrac{d(t={@t2@})-d(t={@t1@})}{{@t2@}-{@t1@}}=\dfrac{{@d2@}-{@d1@}}{{@t2@}-{@t1@}}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct average rate on [t2,t3]?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>r2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Reciprocal (time over distance)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>1/r2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-recip</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided the change in time by the change in distance. Average rate \(=\dfrac{\text{change in distance}}{\text{change in time}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Average rate \(=\dfrac{d(t={@t3@})-d(t={@t2@})}{{@t3@}-{@t2@}}=\dfrac{{@d3@}-{@d2@}}{{@t3@}-{@t2@}}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>q1 : [round(ans3[1]), round(ans3[2])];
+q2 : [round(ans4[1]), round(ans4[2])];
+q3 : [round(ans5[1]), round(ans5[2])];
+midok : if is(q2 = Bpt) then 1 else 0;
+endok : if ((is(q1 = Apt) and is(q3 = Cpt)) or (is(q1 = Cpt) and is(q3 = Apt))) then 1 else 0;
+allok : midok*endok;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Both secants correct (B in the middle, A and C on the ends)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>allok</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Middle point on B, but ends wrong?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>midok</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-mid</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The shared middle point is correctly on \(B\). Now drag the outer two points onto \(A\) and \(C\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Drag the three red points onto \(A\), \(B\) and \(C\). The middle point is shared by both secants, so place it on \(B\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct interval chosen?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansc</sans>
+        <tans>ta_c</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Compare your two average rates from part (a): the larger value identifies the interval with the greater average rate of change.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>13001</deployedseed>
+    <deployedseed>13002</deployedseed>
+    <deployedseed>13003</deployedseed>
+    <deployedseed>13004</deployedseed>
+    <deployedseed>13005</deployedseed>
+    <deployedseed>13006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All parts correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>Cpt</value>
+      </testinput>
+      <testinput>
+        <name>ansc</name>
+        <value>ta_c</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>a-i reciprocal</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1/r1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>Cpt</value>
+      </testinput>
+      <testinput>
+        <name>ansc</name>
+        <value>ta_c</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-recip</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>b: middle on B but ends wrong (partial)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[t1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>[t3,0]</value>
+      </testinput>
+      <testinput>
+        <name>ansc</name>
+        <value>ta_c</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-mid</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>b: all three misplaced</description>
+      <testinput>
+        <name>ans1</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[t1,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>[t2,0]</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>[t3,0]</value>
+      </testinput>
+      <testinput>
+        <name>ansc</name>
+        <value>ta_c</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-other</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>c: wrong interval chosen</description>
+      <testinput>
+        <name>ans1</name>
+        <value>r1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>Apt</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>Bpt</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>Cpt</value>
+      </testinput>
+      <testinput>
+        <name>ansc</name>
+        <value><![CDATA[if r1 > r2 then optI2 else optI1]]></value>
+      </testinput>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
