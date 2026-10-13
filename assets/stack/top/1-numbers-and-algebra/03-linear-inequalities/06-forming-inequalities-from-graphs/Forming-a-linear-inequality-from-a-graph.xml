@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Forming a linear inequality from a graph</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Examine the coordinate plane graph below. Determine the algebraic inequality represented by this shaded region.</p>
+
+[[jsxgraph width="600px" height="600px"]]
+var m_val = {#m#};
+var c_val = {#c#};
+var x_int = {#x_int#};
+var is_solid = {#is_solid_js#};
+var is_above = {#is_above_js#};
+
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-10.5, 10.5, 10.5, -10.5],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'x', withLabel: true, label: {position: 'rt', offset: [-15, 20]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [-8, -15]}, drawZero: true, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+var yaxis = brd.create('axis', [[0, 0], [0, 1]], {
+    name: 'y', withLabel: true, label: {position: 'rt', offset: [15, -15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [-25, -5]}, drawZero: false, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+/* Draw the boundary line */
+var p1 = brd.create('point', [0, c_val], {visible: false});
+var p2 = brd.create('point', [1, m_val + c_val], {visible: false});
+var boundary = brd.create('line', [p1, p2], {
+    strokeWidth: 3, 
+    strokeColor: '#000000', 
+    dash: is_solid ? 0 : 2, 
+    highlight: false
+});
+
+/* Shade the region. For a line pointing right (x=0 to x=1), inverse: true shades above. */
+var ineq = brd.create('inequality', [boundary], {
+    fillColor: '#673ab7', 
+    fillOpacity: 0.15, 
+    inverse: is_above
+});
+
+/* Explicitly mark the intercept points as shown in the textbook */
+brd.create('point', [0, c_val], {
+    name: '(0, ' + c_val + ')', 
+    size: 4, strokeColor: '#000000', fillColor: '#000000', fixed: true,
+    label: {offset: [10, 15]}
+});
+brd.create('point', [x_int, 0], {
+    name: '(' + x_int + ', 0)', 
+    size: 4, strokeColor: '#000000', fillColor: '#000000', fixed: true,
+    label: {offset: [10, 15]}
+});
+[[/jsxgraph]]
+
+<p><b>a) </b> Identify the \(y\)-intercept from the graph, and calculate the slope of the boundary line.</p>
+<p>\(y\)-intercept: \( y = \) [[input:ans1]]</p>
+<p>Slope (\(m\)): [[input:ans2]]</p>
+
+<div><b>\(y\)-intercept check:</b> [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>Slope check:</b> [[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>b) </b> Determine the correct inequality symbol based on the line style and the shaded region. Write the complete algebraic inequality represented by the graph. <i>(You may write your answer in slope-intercept form \(y = mx + c\) or standard form).</i></p>
+<p>Inequality: [[input:ans3]]</p>
+
+<div><b>Inequality check:</b> [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>To form the inequality from the graph, we follow four systematic steps:</p>
+
+<p><b>1. Identify the boundary line equation</b></p>
+<p>The graph explicitly shows the \(y\)-intercept at \( (0, {@c@}) \) and the \(x\)-intercept at \( ({@x_int@}, 0) \). We use these two coordinate points to calculate the mathematical slope (\(m\)):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle m = \frac{y_2 - y_1}{x_2 - x_1} = \frac{0 - ({@c@})}{{@x_int@} - 0} = {@m@} \)
+</p>
+<p>Using the slope-intercept form (\(y = mx + c\)), the boundary line equation is \( y = {@line_expr@} \).</p>
+
+<p><b>2. Determine the inequality symbol</b></p>
+<p>The boundary line is drawn as a <b>{@style_str@}</b> line, meaning the relationship is {@inclusive_str@}. We will use either \( {@symbol_opt1@} \) or \( {@symbol_opt2@} \).</p>
+
+<p><b>3. Identify the shaded region</b></p>
+<p>The shaded area is situated <b>{@region_str@}</b> the boundary line. This implies that the \(y\)-values in the valid region are {@value_str@} than those on the line itself. This corresponds to the \( {@final_symbol@} \) symbol.</p>
+<p>Therefore, the proposed inequality is:</p>
+<p style="margin-left: 20px;">\( \displaystyle \boxed{{@ta3@}} \)</p>
+
+<p><b>4. Verify with a test point</b></p>
+<p>We choose a point clearly located inside the shaded region, such as the origin \((0,0)\). Substituting \(x = 0\) and \(y = 0\) into our inequality:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+0 &{@final_symbol@} {@m@}(0) + ({@c@}) \\
+0 &{@final_symbol@} {@c@}
+\end{aligned} \)
+</p>
+<p>This statement is <b>true</b>, confirming our algebraic inequality is perfectly correct.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize intercepts to ensure clean integer slopes (m = -c / x_int) */
+c : rand([-6, -4, -2, 2, 4, 6]);
+x_int : if abs(c)=6 then rand([-3, -2, 2, 3]) else rand([-2, 2]);
+
+m : -c / x_int;
+
+/* Let Maxima handle the algebraic formatting of the equation natively */
+line_expr : m*x + c;
+
+/* Determine graph style and shading randomly */
+is_solid : rand([true, false]);
+is_above : rand([true, false]);
+
+/* Variables passed to JSXGraph */
+is_solid_js : if is_solid then 1 else 0;
+is_above_js : if is_above then 1 else 0;
+
+/* Define target answers */
+ta1 : c;
+ta2 : m;
+
+/* Carefully assemble the target inequality based on randomized rules */
+ta3_ge : y >= m*x + c;
+ta3_g  : y > m*x + c;
+ta3_le : y <= m*x + c;
+ta3_l  : y < m*x + c;
+
+ta3 : if is_above then (if is_solid then ta3_ge else ta3_g) else (if is_solid then ta3_le else ta3_l);
+
+/* Text string variables for the worked solution */
+style_str : if is_solid then "solid" else "dashed";
+inclusive_str : if is_solid then "inclusive" else "exclusive (strict)";
+symbol_opt1 : if is_solid then "\\le" else "&lt;";
+symbol_opt2 : if is_solid then "\\ge" else "&gt;";
+region_str : if is_above then "above" else "below";
+value_str : if is_above then "greater" else "less";
+final_symbol : if is_above then (if is_solid then "\\ge" else "&gt;") else (if is_solid then "\\le" else "&lt;");]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Line: y = {@m@}x + {@c@}. Solid: {@is_solid@}. Above: {@is_above@}. Ans: {@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Forming Inequalities From Graphs</p>
+<p id="description">Grade 11 CBE: Deriving a linear inequality from a pre-shaded Cartesian graph by identifying intercepts, slope, line style, and region direction.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of y-int</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of slope</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of the entire inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your inequality correctly defines the shaded region!</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your inequality is incorrect. Double-check your boundary line equation, and ensure you selected the correct symbol (\(&lt;, &gt;, \le, \ge\)) based on the line style and shading.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>300387692</deployedseed>
+    <deployedseed>977920121</deployedseed>
+    <deployedseed>990793549</deployedseed>
+    <deployedseed>955677274</deployedseed>
+    <deployedseed>1199620922</deployedseed>
+    <deployedseed>178724896</deployedseed>
+    <deployedseed>1065237180</deployedseed>
+    <deployedseed>122123169</deployedseed>
+    <deployedseed>1594332546</deployedseed>
+    <deployedseed>1723705773</deployedseed>
+    <deployedseed>882749968</deployedseed>
+    <deployedseed>1208482712</deployedseed>
+    <deployedseed>2145414836</deployedseed>
+    <deployedseed>783546929</deployedseed>
+    <deployedseed>1336504731</deployedseed>
+    <deployedseed>1234450625</deployedseed>
+    <deployedseed>1861756101</deployedseed>
+    <deployedseed>1503119744</deployedseed>
+    <deployedseed>1428162183</deployedseed>
+    <deployedseed>989988849</deployedseed>
+    <deployedseed>1260753832</deployedseed>
+    <deployedseed>908348770</deployedseed>
+    <deployedseed>980502418</deployedseed>
+    <deployedseed>1111256146</deployedseed>
+    <deployedseed>1074642962</deployedseed>
+    <deployedseed>988779633</deployedseed>
+    <deployedseed>1839937484</deployedseed>
+    <deployedseed>929195860</deployedseed>
+    <deployedseed>197684870</deployedseed>
+    <deployedseed>707939282</deployedseed>
+    <deployedseed>833628550</deployedseed>
+    <deployedseed>155985070</deployedseed>
+    <deployedseed>1236750899</deployedseed>
+    <deployedseed>1722334367</deployedseed>
+    <deployedseed>945562057</deployedseed>
+    <deployedseed>1166458050</deployedseed>
+    <deployedseed>976849755</deployedseed>
+    <deployedseed>1633695816</deployedseed>
+    <deployedseed>128276302</deployedseed>
+    <deployedseed>1223613086</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct slope/intercept, but inequality symbol is flipped</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>if is_above then (if is_solid then ta3_le else ta3_l) else (if is_solid then ta3_ge else ta3_g)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Wrong slope, wrong intercept, wrong inequality</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+2</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value><![CDATA[y > (ta2+2)*x + (ta1+2)]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
