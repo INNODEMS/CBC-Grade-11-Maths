@@ -19,7 +19,7 @@
                     </p>
                 </li>
                 <li>
-                    <title>Specific Learning Outcomes</title> 
+                    <title>Specific Learning Outcomes</title>
                     <p>
                         Solve trigonometric equations involving trigonometric ratios across the range 0 to 360 degrees
                     </p>
@@ -41,161 +41,540 @@
         </introduction>
     </objectives>
 
-    <!-- [LP] Add guidance on activity -->
-
-    <!-- <axiom component="lesson-plan">
-            <title>Problem-Solving and Discovery</title>
-            <dl>
-                <li>
-                    <title>Suggested Time</title>
-                    <p>
-                        XX minutes
-                    </p>
-                </li>
-                <li>
-                    <title>Objective</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-                <li>
-                    <title>Teacher's Role</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-            </dl>
-        </axiom> -->
-
-    <!-- Add Activity -->
-
-    <!-- <activity>
-        <statement>
-        </statement>
-    </activity> -->
-
-    <!-- [LP] Add guidance on structured lesson plan-->
-
-    <!-- <axiom component="lesson-plan">
-        <title>Structured Instruction</title>
-        <p>
-            <dl>
+    <axiom component="lesson-plan">
+        <title>Problem-Solving and Discovery</title>
+        <dl>
             <li>
                 <title>Suggested Time</title>
                 <p>
-                    XX minutes
+                    10 minutes
                 </p>
             </li>
             <li>
                 <title>Objective</title>
                 <p>
-                    To formalize the concepts and properties learners discovered in the anchor task.
+                    To discover that trig equations can have more than two solutions when the range extends beyond <m>360°</m>, motivating the need for new strategies.
                 </p>
             </li>
-            </dl>
-        </p>
-        <paragraphs>
-            <title>Key Takeaways &amp; Teacher Connection</title>
-            <ol>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Pose the problem straight away without setup: <q>You already know how to solve <m>\tan\theta = \sqrt{3}</m> for <m>\theta \in (0°, 360°]</m>. Now try <m>\theta \in (0°, 720°]</m>. Work in groups.</q> Circulate and ask groups: <q>Why do you get more solutions? Where do they come from?</q>
+                </p>
+            </li>
+        </dl>
+    </axiom>
+
+    <activity xml:id="activity-solve-for-more">
+        <title>Solve for More</title>
+        <statement>
+            <p>
+                Work through the following questions in your group.
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Recall that solving <m>\tan\theta = \sqrt{3}</m> for <m>\theta \in (0°, 360°]</m> gives <m>\theta = 60°</m> and <m>\theta = 240°</m>. Now solve <m>\tan\theta = \sqrt{3}</m> for <m>\theta \in (0°, 720°]</m>. How many solutions are there?
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                Four solutions: <m>60°,\ 240°,\ 420°,\ 600°</m>. Tangent repeats every <m>180°</m>, so each extra <m>180°</m> of range produces one more solution. From <m>360°</m> to <m>720°</m> we add <m>360°</m>, giving two extra.
+                            </p>
+                        </solution>
+                    </li>
+                    <li>
+                        <p>
+                            Now solve <m>\sin\theta = \frac{1}{2}</m> for <m>\theta \in [0°, 720°]</m>. How many solutions? What pattern do you notice between the solutions in <m>[0°, 360°]</m> and those in <m>[360°, 720°]</m>?
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                Four solutions: <m>30°,\ 150°,\ 390°,\ 510°</m>. The second pair is exactly <m>360°</m> more than the first pair — sine repeats every <m>360°</m>, so doubling the range doubles the number of solutions.
+                            </p>
+                        </solution>
+                    </li>
+                </ol>
+            </p>
+        </statement>
+    </activity>
+
+    <!-- TODO: Add a JSXGraph interactive showing the graph of y = sin θ (or y = tan θ) with
+         a draggable right endpoint on the θ-axis, so learners can see extra intersections
+         with a horizontal line appear as the range extends beyond 360°. -->
+
+    <axiom component="lesson-plan">
+        <title>Structured Instruction</title>
+        <dl>
+            <li>
+                <title>Suggested Time</title>
+                <p>
+                    10 minutes
+                </p>
+            </li>
+            <li>
+                <title>Objective</title>
+                <p>
+                    To connect the activity's discovery to two new solving techniques: substitution for compound arguments and algebraic manipulation for reducible equations.
+                </p>
+            </li>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Ask: <q>In part (a) of the activity you solved <m>\tan(2\theta) = \sqrt{3}</m> — oh wait, you didn't! You solved <m>\tan\theta = \sqrt{3}</m> in a wider range. How is that related to solving <m>\tan(2\theta) = \sqrt{3}</m> for <m>\theta \in [0°, 360°]</m>?</q> Let learners discuss before working through the theory together.
+                </p>
+            </li>
+        </dl>
+    </axiom>
+
+    <p>
+        The previous section covered equations of the form <m>\sin\theta = k</m>, <m>\cos\theta = k</m>, and <m>\tan\theta = k</m> directly. This section extends to two harder types.
+    </p>
+
+    <p>
+        <term>Type 1: Compound arguments</term> — equations like <m>\sin(2\theta) = k</m> or <m>\cos\!\left(\frac{\theta}{2}\right) = k</m>, where the argument is a multiple or fraction of <m>\theta</m>. The strategy is <em>substitution</em>:
+        <ol>
+            <li>
+                <p>
+                    Let <m>u</m> equal the argument (e.g. <m>u = 2\theta</m> or <m>u = \frac{\theta}{2}</m>).
+                </p>
+            </li>
+            <li>
+                <p>
+                    Determine the range of <m>u</m>. If <m>\theta \in [0°, 360°]</m> and <m>u = 2\theta</m>, then <m>u \in [0°, 720°]</m>; if <m>u = \frac{\theta}{2}</m>, then <m>u \in [0°, 180°]</m>.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Solve <m>\sin u = k</m> (or equivalent) in that adjusted range, finding all solutions including those from extra periods.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Convert back: divide (or multiply) each solution to find <m>\theta</m>.
+                </p>
+            </li>
+        </ol>
+    </p>
+
+    <p>
+        <term>Type 2: Reducible equations</term> — equations where both sides involve different trig functions, such as <m>\sin\theta = \cos\theta</m> or <m>2\sin^2\theta - \sin\theta = 0</m>. The strategy is to <em>rearrange algebraically</em> into standard form:
+        <ul>
+            <li>
+                <p>
+                    <em>Divide by a trig function:</em> <m>\sin\theta = \cos\theta</m> — divide both sides by <m>\cos\theta</m> to get <m>\tan\theta = 1</m>, then solve as usual. (Check that you are not dividing by zero.)
+                </p>
+            </li>
+            <li>
+                <p>
+                    <em>Factorise:</em> <m>2\sin^2\theta - \sin\theta = 0</m> — treat <m>\sin\theta</m> as a variable, factorise as <m>\sin\theta(2\sin\theta - 1) = 0</m>, then solve each factor separately.
+                </p>
+            </li>
+        </ul>
+    </p>
+
+    <insight>
+        <p>
+            Two strategies for harder trigonometric equations:
+            <ul>
                 <li>
                     <p>
-                        <alert>Connecting to Learner Work:</alert> XXXX
+                        <em>Compound argument</em> (<m>\sin(2\theta) = k</m>, <m>\cos(\theta/2) = k</m>, etc.): substitute <m>u</m> for the argument, find the correct range for <m>u</m>, solve in that range, then convert back.
                     </p>
                 </li>
-            </ol>
-        </paragraphs>
-    </axiom> -->
-
-    <!-- Add insight / key takeaway directly related to activity / learner experience -->
-
-    <!-- <insight>
-    </insight> -->
-
-    <!-- Add further instruction (not in a block) to develop ideas as needed -->
+                <li>
+                    <p>
+                        <em>Reducible</em> (<m>\sin\theta = \cos\theta</m>, factored forms, etc.): use algebra — divide by a trig function or factorise — to reduce to one or more standard equations, then solve each.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        In both cases: keep track of the range and collect <em>all</em> solutions — there may be more than two.
+                    </p>
+                </li>
+            </ul>
+        </p>
+    </insight>
 
     <xi:include href="../lesson-plan-templates/example-intro.ptx" />
 
-    <!-- Add at least 3 examples -->
-
-    <!-- <example>
+    <example>
+        <title>Compound Argument: <m>\sin(2\theta) = \frac{\sqrt{3}}{2}</m></title>
         <statement>
+            <p>
+                Find all <m>\theta \in [0°, 360°]</m> satisfying <m>\sin(2\theta) = \dfrac{\sqrt{3}}{2}</m>.
+            </p>
         </statement>
         <solution>
+            <p>
+                Let <m>u = 2\theta</m>. Since <m>\theta \in [0°, 360°]</m>, we have <m>u \in [0°, 720°]</m>. The equation becomes <m>\sin u = \dfrac{\sqrt{3}}{2}</m>.
+            </p>
+            <p>
+                The reference angle is <m>\alpha = 60°</m>. Since <m>k &gt; 0</m>, sine is positive in Q1 and Q2:
+                <md>
+                    <mrow>\text{Q1:} \quad u \amp= 60° \quad\text{and}\quad u = 60° + 360° = 420°</mrow>
+                    <mrow>\text{Q2:} \quad u \amp= 120° \quad\text{and}\quad u = 120° + 360° = 480°</mrow>
+                </md>
+                Dividing each by 2 to recover <m>\theta</m>:
+                <md>
+                    \theta = 30°,\quad 60°,\quad 210°,\quad 240°
+                </md>
+            </p>
         </solution>
     </example>
 
     <example>
+        <title>Compound Argument: <m>\cos\!\left(\dfrac{\theta}{2}\right) = \dfrac{\sqrt{3}}{2}</m></title>
         <statement>
+            <p>
+                Find all <m>\theta \in [0°, 360°]</m> satisfying <m>\cos\!\left(\dfrac{\theta}{2}\right) = \dfrac{\sqrt{3}}{2}</m>.
+            </p>
         </statement>
         <solution>
+            <p>
+                Let <m>u = \dfrac{\theta}{2}</m>. Since <m>\theta \in [0°, 360°]</m>, we have <m>u \in [0°, 180°]</m>. The equation becomes <m>\cos u = \dfrac{\sqrt{3}}{2}</m>.
+            </p>
+            <p>
+                The reference angle is <m>\alpha = 30°</m>. Cosine is positive in Q1 and Q4, but the range <m>[0°, 180°]</m> only contains Q1 and Q2. In this range, only the Q1 solution lies:
+                <md>
+                    <mrow>u = 30°</mrow>
+                </md>
+                Multiplying by 2: <m>\theta = 60°</m>.
+            </p>
         </solution>
     </example>
 
     <example>
+        <title>Reducible: <m>\sin\theta = \cos\theta</m></title>
         <statement>
+            <p>
+                Find all <m>\theta \in [0°, 360°]</m> satisfying <m>\sin\theta = \cos\theta</m>.
+            </p>
         </statement>
         <solution>
+            <p>
+                Divide both sides by <m>\cos\theta</m> (noting that <m>\cos\theta \neq 0</m>):
+                <md>
+                    <mrow>\frac{\sin\theta}{\cos\theta} = 1 \qquad\Longrightarrow\qquad \tan\theta = 1</mrow>
+                </md>
+            </p>
+            <p>
+                The reference angle is <m>\alpha = 45°</m>. Since <m>k = 1 &gt; 0</m>, tangent is positive in Q1 and Q3:
+                <md>
+                    <mrow>\theta \amp= 45° \quad\text{and}\quad \theta = 225°</mrow>
+                </md>
+                We should verify that <m>\cos 45° \neq 0</m> and <m>\cos 225° \neq 0</m> — both are <m>\pm\dfrac{\sqrt{2}}{2}</m>, so neither is zero. Both solutions are valid.
+            </p>
         </solution>
-    </example> -->
+    </example>
+
+    <example>
+        <title>Reducible: <m>2\sin^2\theta - \sin\theta = 0</m></title>
+        <statement>
+            <p>
+                Find all <m>\theta \in [0°, 360°]</m> satisfying <m>2\sin^2\theta - \sin\theta = 0</m>.
+            </p>
+        </statement>
+        <solution>
+            <p>
+                Factorise by taking out <m>\sin\theta</m>:
+                <md>
+                    <mrow>\sin\theta\,(2\sin\theta - 1) = 0</mrow>
+                </md>
+                So either <m>\sin\theta = 0</m> or <m>2\sin\theta - 1 = 0</m>, i.e. <m>\sin\theta = \dfrac{1}{2}</m>.
+            </p>
+            <p>
+                <em>Case 1:</em> <m>\sin\theta = 0</m>: <m>\theta = 0°</m> and <m>\theta = 180°</m>.
+            </p>
+            <p>
+                <em>Case 2:</em> <m>\sin\theta = \dfrac{1}{2}</m>: reference angle <m>30°</m>, sine positive in Q1 and Q2, so <m>\theta = 30°</m> and <m>\theta = 150°</m>.
+            </p>
+            <p>
+                The four solutions are <m>\theta = 0°,\ 30°,\ 150°,\ 180°</m>.
+            </p>
+        </solution>
+    </example>
 
     <xi:include href="../lesson-plan-templates/assessment-intro.ptx" />
 
-    <!-- If STACK questions are included, uncomment this: -->
+    <exercises>
 
-    <!-- <xi:include href="../lesson-plan-templates/checkpoint.ptx" /> -->
+        <exercise xml:id="trig-equations-ii-double-angle">
+            <statement>
+                <p>
+                    Solve each equation for <m>\theta \in [0°, 360°]</m>.
+                    <ol marker="(a)" cols="2">
+                        <li><p><m>\sin(2\theta) = \dfrac{1}{2}</m></p></li>
+                        <li><p><m>\cos(2\theta) = 0</m></p></li>
+                        <li><p><m>\tan(2\theta) = 1</m></p></li>
+                        <li><p><m>\sin(2\theta) = -1</m></p></li>
+                    </ol>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <ol marker="(a)">
+                        <li>
+                            <p>
+                                <m>u = 2\theta \in [0°, 720°]</m>, <m>\sin u = \frac{1}{2}</m>, <m>\alpha = 30°</m>. Q1: <m>u = 30°, 390°</m>; Q2: <m>u = 150°, 510°</m>. So <m>\theta = 15°, 75°, 195°, 255°</m>.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <m>\cos u = 0</m>: <m>u = 90°, 270°, 450°, 630°</m>. So <m>\theta = 45°, 135°, 225°, 315°</m>.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <m>\tan u = 1</m>, <m>\alpha = 45°</m>. Q1 and Q3 each twice in <m>[0°, 720°]</m>: <m>u = 45°, 225°, 405°, 585°</m>. So <m>\theta = 22.5°, 112.5°, 202.5°, 292.5°</m>.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <m>\sin u = -1</m>: <m>u = 270°, 630°</m>. So <m>\theta = 135°, 315°</m>.
+                            </p>
+                        </li>
+                    </ol>
+                    <figure xml:id="fig-sin-double-angle-graph">
+                    <caption>Graph of <m>y = \sin(2\theta)</m> over <m>[0°, 360°]</m>. The dashed line <m>y = \tfrac{1}{2}</m> crosses the curve at four points, corresponding to the solutions of part (a).</caption>
+                    <image width="75%">
+                        <latex-image>
+                            \pgfplotsset{compat=newest}
+                            \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis lines=left,
+                                    xlabel={$\theta$},
+                                    ylabel={$y$},
+                                    xmin=0, xmax=375,
+                                    ymin=-1.3, ymax=1.4,
+                                    xtick={0,90,180,270,360},
+                                    xticklabels={$0°$,$90°$,$180°$,$270°$,$360°$},
+                                    ytick={-1,-0.5,0,0.5,1},
+                                    yticklabels={$-1$,$-\tfrac{1}{2}$,$0$,$\tfrac{1}{2}$,$1$},
+                                    width=9cm, height=5.5cm,
+                                    domain=0:360,
+                                    samples=300,
+                                    tick label style={font=\small},
+                                    clip=false,
+                                ]
+                                    \addplot[blue!70!black, thick] {sin(2*x)};
+                                    \addplot[red!70!black, dashed, thick, domain=0:360] {0.5};
+                                    \node[red!70!black, right, font=\small] at (axis cs:363,0.5) {$\tfrac{1}{2}$};
+                                    \addplot[blue!70!black, only marks, mark=*, mark size=2.5pt]
+                                        coordinates {(15,0.5) (75,0.5) (195,0.5) (255,0.5)};
+                                    \node[above, font=\tiny] at (axis cs:15,0.5)  {$15°$};
+                                    \node[above, font=\tiny] at (axis cs:75,0.5)  {$75°$};
+                                    \node[below, font=\tiny] at (axis cs:195,0.5) {$195°$};
+                                    \node[below, font=\tiny] at (axis cs:255,0.5) {$255°$};
+                                \end{axis}
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+                </p>
+            </answer>
+        </exercise>
 
-    <!-- Add STACK exercises if made -->
+        <exercise xml:id="trig-equations-ii-half-angle">
+            <statement>
+                <p>
+                    Solve each equation for <m>\theta \in [0°, 360°]</m>.
+                    <ol marker="(a)" cols="2">
+                        <li><p><m>\sin\!\left(\dfrac{\theta}{2}\right) = \dfrac{1}{2}</m></p></li>
+                        <li><p><m>\cos\!\left(\dfrac{\theta}{2}\right) = 0</m></p></li>
+                        <li><p><m>\tan\!\left(\dfrac{\theta}{2}\right) = 1</m></p></li>
+                    </ol>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <ol marker="(a)">
+                        <li>
+                            <p>
+                                <m>u = \theta/2 \in [0°, 180°]</m>, <m>\sin u = \frac{1}{2}</m>, <m>\alpha = 30°</m>. Both Q1 (<m>u = 30°</m>) and Q2 (<m>u = 150°</m>) lie in the range. So <m>\theta = 60°</m> and <m>\theta = 300°</m>.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <m>\cos u = 0</m>, <m>u \in [0°, 180°]</m>: <m>u = 90°</m>. So <m>\theta = 180°</m>.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <m>\tan u = 1</m>, <m>\alpha = 45°</m>, <m>u \in [0°, 180°]</m>: only Q1 applies, <m>u = 45°</m>. So <m>\theta = 90°</m>.
+                            </p>
+                        </li>
+                    </ol>
+                </p>
+            </answer>
+        </exercise>
 
-    <!-- Add static exercises -->
+        <exercise xml:id="trig-equations-ii-reducible-divide">
+            <statement>
+                <p>
+                    Solve each equation for <m>\theta \in [0°, 360°]</m>.
+                    <ol marker="(a)" cols="2">
+                        <li><p><m>\sin\theta = \cos\theta</m></p></li>
+                        <li><p><m>3\sin\theta = \cos\theta</m></p></li>
+                        <li><p><m>\sin\theta + \cos\theta = 0</m></p></li>
+                    </ol>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <ol marker="(a)">
+                        <li><p><m>\tan\theta = 1</m>, <m>\alpha = 45°</m>, Q1 and Q3: <m>\theta = 45°</m> and <m>225°</m>.</p></li>
+                        <li><p><m>\tan\theta = \frac{1}{3}</m>, <m>\alpha = \tan^{-1}(1/3) \approx 18.4°</m>, Q1 and Q3: <m>\theta \approx 18.4°</m> and <m>198.4°</m>.</p></li>
+                        <li><p><m>\sin\theta = -\cos\theta \Rightarrow \tan\theta = -1</m>, <m>\alpha = 45°</m>, Q2 and Q4: <m>\theta = 135°</m> and <m>315°</m>.</p></li>
+                    </ol>
+                    <figure xml:id="fig-sin-cos-equal-circle">
+                    <caption>The solutions to <m>\sin\theta = \cos\theta</m> are the points where the unit circle meets the line <m>y = x</m>: at <m>P_1</m> (<m>\theta = 45°</m>) and <m>P_2</m> (<m>\theta = 225°</m>).</caption>
+                    <image width="50%">
+                        <latex-image>
+                            \begin{tikzpicture}
+                                \pgfmathsetmacro{\rr}{2.2}
+                                \pgfmathsetmacro{\pAx}{\rr*cos(45)}
+                                \pgfmathsetmacro{\pAy}{\rr*sin(45)}
+                                \pgfmathsetmacro{\pBx}{\rr*cos(225)}
+                                \pgfmathsetmacro{\pBy}{\rr*sin(225)}
+                                \pgfmathsetmacro{\axlen}{1.2*\rr}
+                                \draw[thick] (0,0) circle (\rr);
+                                \draw[-&gt;] (-\axlen,0) -- (\axlen,0) node[right] {$x$};
+                                \draw[-&gt;] (0,-\axlen) -- (0,\axlen) node[above] {$y$};
+                                \draw[red!60!black, dashed, thick]
+                                    (-0.85*\rr,-0.85*\rr) -- (0.92*\rr,0.92*\rr)
+                                    node[above right, font=\small] {$y=x$};
+                                \draw[blue!70!black, thick] (0,0) -- (\pAx,\pAy);
+                                \draw[orange!80!black, thick] (0,0) -- (\pBx,\pBy);
+                                \draw[blue!70!black] (0.5,0) arc (0:45:0.5);
+                                \node[blue!70!black, font=\footnotesize] at (22.5:0.78) {$45°$};
+                                \node[orange!80!black, font=\footnotesize] at (225:1.15) {$225°$};
+                                \filldraw[blue!70!black]   (\pAx,\pAy) circle (2.5pt) node[above right, font=\small] {$P_1$};
+                                \filldraw[orange!80!black] (\pBx,\pBy) circle (2.5pt) node[below left,  font=\small] {$P_2$};
+                                \node[below left, font=\small] at (0,0) {$O$};
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+                </p>
+            </answer>
+        </exercise>
 
-    <!-- <exercises>
-        <exercise>
-            <statement>   
+        <exercise xml:id="trig-equations-ii-factorise">
+            <statement>
+                <p>
+                    Solve each equation for <m>\theta \in [0°, 360°]</m>.
+                    <ol marker="(a)">
+                        <li><p><m>\sin\theta\,(2\cos\theta - \sqrt{3}) = 0</m></p></li>
+                        <li><p><m>2\cos^2\theta + \cos\theta = 0</m></p></li>
+                        <li><p><m>2\sin^2\theta + 3\sin\theta - 2 = 0</m></p></li>
+                    </ol>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <ol marker="(a)">
+                        <li>
+                            <p>
+                                <m>\sin\theta = 0</m> → <m>\theta = 0°, 180°</m>; or <m>\cos\theta = \dfrac{\sqrt{3}}{2}</m>, <m>\alpha = 30°</m>, Q1 and Q4 → <m>\theta = 30°, 330°</m>. Solutions: <m>0°, 30°, 180°, 330°</m>.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Factorise: <m>\cos\theta\,(2\cos\theta + 1) = 0</m>. <m>\cos\theta = 0</m> → <m>90°, 270°</m>; <m>\cos\theta = -\dfrac{1}{2}</m> → <m>120°, 240°</m>. Solutions: <m>90°, 120°, 240°, 270°</m>.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Let <m>s = \sin\theta</m>: <m>2s^2 + 3s - 2 = (2s-1)(s+2) = 0</m>. So <m>s = \dfrac{1}{2}</m> (gives <m>30°, 150°</m>) or <m>s = -2</m> (impossible). Solutions: <m>30°, 150°</m>.
+                            </p>
+                        </li>
+                    </ol>
+                </p>
+            </answer>
+        </exercise>
 
-            </statement>   
-            <solution>
+        <exercise xml:id="trig-equations-ii-extended-range">
+            <statement>
+                <p>
+                    Solve <m>\sin\theta = -\dfrac{1}{2}</m> for <m>\theta \in [0°, 720°]</m>. State all solutions and explain how the solutions in <m>[360°, 720°]</m> relate to those in <m>[0°, 360°]</m>.
+                </p> 
+            </statement>
+            <answer>
+                <p>
+                    In <m>[0°, 360°]</m>: reference angle <m>30°</m>, sine negative in Q3 and Q4: <m>\theta = 210°</m> and <m>330°</m>. Adding <m>360°</m> gives the solutions in <m>[360°, 720°]</m>: <m>\theta = 570°</m> and <m>690°</m>. The four solutions are <m>210°, 330°, 570°, 690°</m>.
+                </p>
+                <figure xml:id="fig-sin-extended-range-graph">
+                    <caption>Graph of <m>y = \sin\theta</m> over <m>[0°, 720°]</m>. The dashed line <m>y = -\tfrac{1}{2}</m> intersects the curve four times — once in each half-period where sine is negative.</caption>
+                    <image width="85%">
+                        <latex-image>
+                            \pgfplotsset{compat=newest}
+                            \begin{tikzpicture}
+                                \begin{axis}[
+                                    axis lines=left,
+                                    xlabel={$\theta$},
+                                    ylabel={$y$},
+                                    xmin=0, xmax=748,
+                                    ymin=-1.3, ymax=1.4,
+                                    xtick={0,180,360,540,720},
+                                    xticklabels={$0°$,$180°$,$360°$,$540°$,$720°$},
+                                    ytick={-1,-0.5,0,0.5,1},
+                                    yticklabels={$-1$,$-\tfrac{1}{2}$,$0$,$\tfrac{1}{2}$,$1$},
+                                    width=11cm, height=5cm,
+                                    domain=0:720,
+                                    samples=400,
+                                    tick label style={font=\small},
+                                    clip=false,
+                                ]
+                                    \addplot[blue!70!black, thick] {sin(x)};
+                                    \addplot[red!70!black, dashed, thick, domain=0:720] {-0.5};
+                                    \node[red!70!black, right, font=\small] at (axis cs:724,-0.5) {$-\tfrac{1}{2}$};
+                                    \addplot[blue!70!black, only marks, mark=*, mark size=2.5pt]
+                                        coordinates {(210,-0.5) (330,-0.5) (570,-0.5) (690,-0.5)};
+                                    \node[below, font=\tiny] at (axis cs:210,-0.5) {$210°$};
+                                    \node[below, font=\tiny] at (axis cs:330,-0.5) {$330°$};
+                                    \node[below, font=\tiny] at (axis cs:570,-0.5) {$570°$};
+                                    \node[below, font=\tiny] at (axis cs:690,-0.5) {$690°$};
+                                \end{axis}
+                            \end{tikzpicture}
+                        </latex-image>
+                    </image>
+                </figure>
+            </answer>
+        </exercise>
 
-            </solution>             
-        </exercise>        
-    </exercises> -->
+        <exercise xml:id="trig-equations-ii-identity-or-equation">
+            <statement>
+                <p>
+                    The angles <m>A</m>, <m>B</m>, and <m>C</m> are the interior angles of a triangle, so <m>A + B + C = 180°</m>. For each expression below, decide whether it is an <em>identity</em> (true for all valid triangles) or an <em>equation</em> (true only for specific values of <m>A</m>, <m>B</m>, or <m>C</m>). Justify your answer.
+                    <ol marker="(a)">
+                        <li><p><m>\sin(90° - A) = \cos A</m></p></li>
+                        <li><p><m>\tan(A + B) = -\tan C</m></p></li>
+                        <li><p><m>\sin^2\!A - \cos^2\!B = 1</m></p></li>
+                    </ol>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <ol marker="(a)">
+                        <li>
+                            <p>
+                                <em>Identity.</em> <m>\sin(90° - A) = \cos A</m> is the complementary angle rule, true for all <m>A</m>.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <em>Identity.</em> Since <m>A + B + C = 180°</m>, we have <m>A + B = 180° - C</m>, so <m>\tan(A+B) = \tan(180°-C) = -\tan C</m>. This holds for all triangles.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <em>Equation</em> with no solution in a triangle. Rearranging: <m>\sin^2\!A = 1 + \cos^2\!B \geq 1</m>. So we need <m>\sin^2\!A = 1</m> (i.e. <m>A = 90°</m>) and <m>\cos^2\!B = 0</m> (i.e. <m>B = 90°</m>). But then <m>A + B = 180°</m>, leaving <m>C = 0°</m>, which is impossible in a triangle.
+                            </p>
+                        </li>
+                    </ol>
+                </p>
+            </answer>
+        </exercise>
 
-    <!-- [LP] Add information on how to differentiate  -->
-
-    <!-- <axiom component="lesson-plan">
-        <title>Differentiation</title>
-
-        <table>
-            <title>Differentiation</title>
-            <tabular halign="left">
-                <row header="yes" bottom="minor">
-                    <cell>Learner Group</cell>
-                    <cell>Strategy &amp; Learning Experience</cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>Struggling Learners (Support)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>On-Level Learners (Core)</cell>
-                    <cell>
-                        <line>The core lesson activities as described above.</line>
-                    </cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>Advanced Learners (Challenge)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
-                </row>
-            </tabular>
-        </table>
-    </axiom> -->
+    </exercises>
 
     <xi:include href="../lesson-plan-templates/assessment-methods.ptx" />
 

@@ -19,7 +19,7 @@
                     </p>
                 </li>
                 <li>
-                    <title>Specific Learning Outcomes</title> 
+                    <title>Specific Learning Outcomes</title>
                     <p>
                         Convert angles from degrees to radians and vice versa in different situations
                     </p>
@@ -41,161 +41,576 @@
         </introduction>
     </objectives>
 
-    <!-- [LP] Add guidance on activity -->
-
-    <!-- <axiom component="lesson-plan">
-            <title>Problem-Solving and Discovery</title>
-            <dl>
-                <li>
-                    <title>Suggested Time</title>
-                    <p>
-                        XX minutes
-                    </p>
-                </li>
-                <li>
-                    <title>Objective</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-                <li>
-                    <title>Teacher's Role</title>
-                    <p>
-                        XXX
-                    </p>
-                </li>
-            </dl>
-        </axiom> -->
-
-    <!-- Add Activity -->
-
-    <!-- <activity>
-        <statement>
-        </statement>
-    </activity> -->
-
-    <!-- [LP] Add guidance on structured lesson plan-->
-
-    <!-- <axiom component="lesson-plan">
-        <title>Structured Instruction</title>
-        <p>
-            <dl>
+    <axiom component="lesson-plan">
+        <title>Problem-Solving and Discovery</title>
+        <dl>
             <li>
                 <title>Suggested Time</title>
                 <p>
-                    XX minutes
+                    10 minutes
                 </p>
             </li>
             <li>
                 <title>Objective</title>
                 <p>
-                    To formalize the concepts and properties learners discovered in the anchor task.
+                    To discover that the radius of a circle fits naturally as a unit of arc length, motivating the definition of a radian.
                 </p>
             </li>
-            </dl>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Give each pair of learners a piece of string and ask them to draw a circle. Pose: <q>We always measure angles in degrees — but is there a more <em>natural</em> unit? What if we used the radius itself as the unit?</q> Let learners work through the experiment before formalising.
+                </p>
+            </li>
+        </dl>
+    </axiom>
+
+    <activity xml:id="activity-string-experiment">
+        <title>The String Experiment</title>
+        <statement>
+            <p>
+                You will need a pencil, a piece of string, a ruler, and paper.
+                <ol marker="(a)">
+                    <li>
+                        <p>
+                            Draw a circle of any radius <m>r</m>. Cut a piece of string exactly equal in length to <m>r</m>. Place one end of the string at a point on the circumference and curve the string along the edge of the circle. Mark where the other end lands. Estimate the size of the central angle between your two marks.
+                        </p>
+                        <note component="lesson-plan">
+                            <p>
+                                The arc of length <m>r</m> subtends about <m>57.3°</m>. Learners don't need this number yet — just observe that the angle is less than <m>90°</m>, and encourage them to be as precise as possible with their estimate.
+                            </p>
+                        </note>
+                    </li>
+                    <li>
+                        <p>
+                            Keep placing the string end-to-end around the circumference, marking each new position. How many string-lengths fit around the full circle? Is it a whole number?
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                About <m>6.28 \approx 2\pi</m> string-lengths fit around — always the same regardless of the radius chosen, since circumference <m>= 2\pi r</m>.
+                            </p>
+                        </solution>
+                    </li>
+                    <li>
+                        <p>
+                            Each string-length corresponds to an arc equal to the radius <m>r</m>, and the angle it subtends is called <em>1 radian</em>. Since <m>2\pi</m> string-lengths fit around the full circle, how many radians make a complete turn of <m>360°</m>?
+                        </p>
+                        <solution component="lesson-plan">
+                            <p>
+                                <m>2\pi</m> radians <m>= 360°</m>, so <m>\pi</m> radians <m>= 180°</m> and <m>1</m> radian <m>\approx 57.3°</m>.
+                            </p>
+                        </solution>
+                    </li>
+                </ol>
+            </p>
+        </statement>
+    </activity>
+
+    <figure xml:id="fig-one-radian-arc">
+        <caption>An arc of length <m>r</m> subtends an angle of exactly 1 radian at the centre.</caption>
+        <image width="52%">
+            <latex-image>
+                \begin{tikzpicture}
+                    \pgfmathsetmacro{\R}{2.5}
+                    \pgfmathsetmacro{\onerad}{57.296}
+                    \pgfmathsetmacro{\endx}{\R*cos(\onerad)}
+                    \pgfmathsetmacro{\endy}{\R*sin(\onerad)}
+                    \pgfmathsetmacro{\midang}{\onerad/2}
+                    % Shaded sector
+                    \fill[blue!10] (0,0) -- (\R,0) arc (0:\onerad:\R) -- cycle;
+                    % Circle
+                    \draw[thick] (0,0) circle (\R);
+                    % Axes
+                    \draw[-&gt;] (-0.4,0) -- ({1.15*\R},0) node[right] {$x$};
+                    \draw[-&gt;] (0,-0.4) -- (0,{1.15*\R}) node[above] {$y$};
+                    % Bounding radii
+                    \draw[blue!70!black, thick] (0,0) -- (\R,0)
+                        node[midway, below, font=\small] {$r$};
+                    \draw[blue!70!black, thick] (0,0) -- (\endx,\endy)
+                        node[midway, above left, font=\small] {$r$};
+                    % Arc label outside circle at midpoint of arc
+                    \node[font=\small] at ({(\R+0.55)*cos(\midang)},{(\R+0.55)*sin(\midang)})
+                        {arc $= r$};
+                    % Central angle arc and label
+                    \draw[red!70!black, -&gt;] (0.75,0) arc (0:\onerad:0.75);
+                    \node[red!70!black, font=\small] at ({\midang}:1.2) {$1$ rad};
+                    % Origin
+                    \node[below left, font=\small] at (0,0) {$O$};
+                \end{tikzpicture}
+            </latex-image>
+        </image>
+    </figure>
+
+    <axiom component="lesson-plan">
+        <title>Structured Instruction</title>
+        <dl>
+            <li>
+                <title>Suggested Time</title>
+                <p>
+                    10 minutes
+                </p>
+            </li>
+            <li>
+                <title>Objective</title>
+                <p>
+                    To formalise the radian definition and derive the conversion formulas from <m>\pi \text{ rad} = 180°</m>.
+                </p>
+            </li>
+            <li>
+                <title>Teacher's Role</title>
+                <p>
+                    Write <m>\pi \text{ rad} = 180°</m> on the board. Ask: <q>How would you rearrange this to convert degrees to radians, and vice versa?</q> Let learners derive the formulas themselves before writing them up.
+                </p>
+            </li>
+        </dl>
+    </axiom>
+
+    <p>
+        A <term>radian</term> is the angle subtended at the centre of a circle by an arc whose length equals the radius. Since the full circumference is <m>2\pi r</m>, there are exactly <m>2\pi</m> radii in one full revolution:
+        <md>2\pi \text{ rad} = 360° \qquad\Longrightarrow\qquad \pi \text{ rad} = 180°</md>
+    </p>
+    <p>
+        Dividing both sides of <m>\pi \text{ rad} = 180°</m> gives the two conversion formulas:
+        <md>
+            <mrow>\text{radians} \amp= \text{degrees} \times \frac{\pi}{180}</mrow>
+            <mrow>\text{degrees} \amp= \text{radians} \times \frac{180}{\pi}</mrow>
+        </md>
+    </p>
+    <p>
+        The table below shows the exact radian equivalents of common angles. These are worth memorising.
+    </p>
+
+    <table xml:id="table-common-radian-values">
+        <title>Common angles in degrees and radians</title>
+        <tabular halign="center" top="minor" left="minor">
+            <row header="yes" bottom="medium">
+                <cell right="minor">Degrees</cell>
+                <cell right="minor"><m>0°</m></cell>
+                <cell right="minor"><m>30°</m></cell>
+                <cell right="minor"><m>45°</m></cell>
+                <cell right="minor"><m>60°</m></cell>
+                <cell right="minor"><m>90°</m></cell>
+                <cell right="minor"><m>120°</m></cell>
+                <cell right="minor"><m>135°</m></cell>
+                <cell right="minor"><m>150°</m></cell>
+                <cell right="minor"><m>180°</m></cell>
+                <cell right="minor"><m>270°</m></cell>
+                <cell right="minor"><m>360°</m></cell>
+            </row>
+            <row bottom="minor">
+                <cell right="minor">Radians</cell>
+                <cell right="minor"><m>0</m></cell>
+                <cell right="minor"><m>\dfrac{\pi}{6}</m></cell>
+                <cell right="minor"><m>\dfrac{\pi}{4}</m></cell>
+                <cell right="minor"><m>\dfrac{\pi}{3}</m></cell>
+                <cell right="minor"><m>\dfrac{\pi}{2}</m></cell>
+                <cell right="minor"><m>\dfrac{2\pi}{3}</m></cell>
+                <cell right="minor"><m>\dfrac{3\pi}{4}</m></cell>
+                <cell right="minor"><m>\dfrac{5\pi}{6}</m></cell>
+                <cell right="minor"><m>\pi</m></cell>
+                <cell right="minor"><m>\dfrac{3\pi}{2}</m></cell>
+                <cell right="minor"><m>2\pi</m></cell>
+            </row>
+        </tabular>
+    </table>
+
+    <insight>
+        <p>
+            <ul>
+                <li><p><m>\pi \text{ rad} = 180°</m>, so <m>1 \text{ rad} \approx 57.3°</m>.</p></li>
+                <li><p><em>Degrees to radians:</em> multiply by <m>\dfrac{\pi}{180}</m>.</p></li>
+                <li><p><em>Radians to degrees:</em> multiply by <m>\dfrac{180}{\pi}</m>.</p></li>
+                <li><p>Key values: <m>\dfrac{\pi}{6}=30°</m>, <m>\dfrac{\pi}{4}=45°</m>, <m>\dfrac{\pi}{3}=60°</m>, <m>\dfrac{\pi}{2}=90°</m>, <m>\pi=180°</m>.</p></li>
+            </ul>
         </p>
-        <paragraphs>
-            <title>Key Takeaways &amp; Teacher Connection</title>
-            <ol>
-                <li>
-                    <p>
-                        <alert>Connecting to Learner Work:</alert> XXXX
-                    </p>
-                </li>
-            </ol>
-        </paragraphs>
-    </axiom> -->
+    </insight>
 
-    <!-- Add insight / key takeaway directly related to activity / learner experience -->
-
-    <!-- <insight>
-    </insight> -->
-
-    <!-- Add further instruction (not in a block) to develop ideas as needed -->
+    <figure xml:id="fig-unit-circle-radians">
+        <caption>Common angles on the unit circle, labelled in degrees and radians.</caption>
+        <image width="88%">
+            <latex-image>
+                \begin{tikzpicture}
+                    \def\R{2.2}
+                    \def\RL{3.5}
+                    % Circle and axes
+                    \draw[thick] (0,0) circle (\R);
+                    \draw[-&gt;] (-\RL-0.5, 0) -- (\RL+0.5, 0) node[right] {$x$};
+                    \draw[-&gt;] (0, -\RL-0.5) -- (0, \RL+0.5) node[above] {$y$};
+                    \node[below left, font=\small] at (0,0) {$O$};
+                    % Dots and labels for all key angles
+                    \foreach \ang/\rlabel in {
+                        0/{$0$},
+                        30/{$\frac{\pi}{6}$},
+                        45/{$\frac{\pi}{4}$},
+                        60/{$\frac{\pi}{3}$},
+                        90/{$\frac{\pi}{2}$},
+                        120/{$\frac{2\pi}{3}$},
+                        135/{$\frac{3\pi}{4}$},
+                        150/{$\frac{5\pi}{6}$},
+                        180/{$\pi$},
+                        210/{$\frac{7\pi}{6}$},
+                        225/{$\frac{5\pi}{4}$},
+                        240/{$\frac{4\pi}{3}$},
+                        270/{$\frac{3\pi}{2}$},
+                        300/{$\frac{5\pi}{3}$},
+                        315/{$\frac{7\pi}{4}$},
+                        330/{$\frac{11\pi}{6}$}
+                    }{
+                        \filldraw[blue!70!black]
+                            ({\R*cos(\ang)},{\R*sin(\ang)}) circle (1.5pt);
+                        \node[font=\scriptsize] at ({\RL*cos(\ang)},{\RL*sin(\ang)})
+                            {\shortstack{$\ang^\circ$\\\rlabel}};
+                    }
+                \end{tikzpicture}
+            </latex-image>
+        </image>
+    </figure>
 
     <xi:include href="../lesson-plan-templates/example-intro.ptx" />
 
-    <!-- Add at least 3 examples -->
-
-    <!-- <example>
+    <example>
+        <title>Converting Degrees to Radians (Exact)</title>
         <statement>
+            <p>
+                Convert:
+                <ol>
+                    <li>
+                        <p>
+                            <m>135°</m> to radians, giving exact answer. 
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <m>315°</m> to radians, giving exact answer.
+                        </p>
+                    </li>
+                </ol>
+            </p>
         </statement>
         <solution>
+            <p>
+                Multiply each angle by <m>\dfrac{\pi}{180}</m>.
+                <ol>
+                    <li>
+                        <p>
+                            <md>
+                              <mrow>135° \times \dfrac{\pi}{180} \amp= \dfrac{135\pi}{180} = \dfrac{3\pi}{4}</mrow>
+                           </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>
+                              <mrow>315° \times \dfrac{\pi}{180} \amp= \dfrac{315\pi}{180} = \dfrac{7\pi}{4}</mrow>
+                            </md>
+                        </p>
+                    </li>
+                </ol>
+            </p>
         </solution>
     </example>
 
     <example>
+        <title>Converting Radians to Degrees (Exact)</title>
         <statement>
+            <p>
+                Convert:
+                <ol>
+                    <li>
+                        <p>
+                            <m>\dfrac{3\pi}{4}</m> to degrees
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <m>\dfrac{7\pi}{6}</m> to degrees
+                        </p>
+                    </li>
+                </ol>
+            </p>
         </statement>
         <solution>
+            <p>
+                Multiply each angle by <m>\dfrac{180}{\pi}</m>.
+                <ol>
+                    <li>
+                        <p>
+                            <md>
+                              <mrow>\dfrac{3\pi}{4} \times \dfrac{180}{\pi} \amp= \dfrac{3 \times 180}{4} = 135°</mrow>
+                            </md>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <md>
+                              <mrow>\dfrac{7\pi}{6} \times \dfrac{180}{\pi} \amp= \dfrac{7 \times 180}{6} = 210°</mrow>
+                            </md>
+                        </p>
+                    </li>
+                </ol>
+            </p>
         </solution>
     </example>
 
     <example>
+        <title>Converting to Radians (Decimal)</title>
         <statement>
+            <p>
+                Convert <m>50°</m> to radians. Give your answer to 3 significant figures.
+            </p>
         </statement>
         <solution>
+            <p>
+                <md>
+                  <mrow>50° \times \frac{\pi}{180} \amp= \frac{50\pi}{180} \approx 0.873 \text{ rad}</mrow>
+                </md>
+            </p>
         </solution>
-    </example> -->
+    </example>
+
+    <example>
+        <title>Converting to Degrees (Decimal)</title>
+        <statement>
+            <p>
+                Convert <m>2.4</m> radians to degrees. Give your answer to 1 decimal place.
+            </p>
+        </statement>
+        <solution>
+            <p>
+                <md>
+                  <mrow>2.4 \times \frac{180}{\pi} \amp\approx 137.5°</mrow>
+                </md>
+            </p>
+        </solution>
+    </example>
+
+    <example>
+        <title>Evaluating a Trig Expression in Radians</title>
+        <statement>
+            <p>
+                Find the exact value of <m>\sin\!\left(\dfrac{\pi}{6}\right) + \cos\!\left(\dfrac{\pi}{3}\right)</m>.
+            </p>
+        </statement>
+        <solution>
+            <p>
+                Convert to degrees: <m>\dfrac{\pi}{6} = 30°</m> and <m>\dfrac{\pi}{3} = 60°</m>. Then:
+                <md>
+                  <mrow>\sin\!\left(\frac{\pi}{6}\right) + \cos\!\left(\frac{\pi}{3}\right) \amp= \sin 30° + \cos 60° = \frac{1}{2} + \frac{1}{2} = 1</mrow>
+                </md>
+            </p>
+        </solution>
+    </example>
+
+    <example>
+        <title>Trig Values with CAST and Radian Angles</title>
+        <statement>
+            <p>
+                Find the exact value of <m>\sin\!\left(\dfrac{2\pi}{3}\right) \times \cos\!\left(\dfrac{\pi}{6}\right)</m>.
+            </p>
+        </statement>
+        <solution>
+            <p>
+                Convert to degrees: <m>\dfrac{2\pi}{3} = 120°</m> and <m>\dfrac{\pi}{6} = 30°</m>.
+            </p>
+            <p>
+                <m>\sin 120°</m> is in Q2 with reference angle <m>60°</m>, so <m>\sin 120° = \sin 60° = \dfrac{\sqrt{3}}{2}</m>.
+            </p>
+            <p>
+                <m>\cos 30° = \dfrac{\sqrt{3}}{2}</m>.
+            </p>
+            <p>
+                Therefore:
+                <md>
+                  <mrow>\sin\!\left(\frac{2\pi}{3}\right) \times \cos\!\left(\frac{\pi}{6}\right) \amp= \frac{\sqrt{3}}{2} \times \frac{\sqrt{3}}{2} = \frac{3}{4}</mrow>
+                </md>
+            </p>
+        </solution>
+    </example>
 
     <xi:include href="../lesson-plan-templates/assessment-intro.ptx" />
 
-    <!-- If STACK questions are included, uncomment this: -->
+    <exercises>
 
-    <!-- <xi:include href="../lesson-plan-templates/checkpoint.ptx" /> -->
+        <exercise xml:id="radians-deg-to-rad-exact">
+            <statement>
+                <p>
+                    Convert each angle to radians, giving exact answers in terms of <m>\pi</m>.
+                    <ol marker="(a)" cols="3">
+                        <li><p><m>30°</m></p></li>
+                        <li><p><m>60°</m></p></li>
+                        <li><p><m>120°</m></p></li>
+                        <li><p><m>240°</m></p></li>
+                        <li><p><m>300°</m></p></li>
+                        <li><p><m>330°</m></p></li>
+                    </ol>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <ol marker="(a)" cols="3">
+                        <li><p><m>\dfrac{\pi}{6}</m></p></li>
+                        <li><p><m>\dfrac{\pi}{3}</m></p></li>
+                        <li><p><m>\dfrac{2\pi}{3}</m></p></li>
+                        <li><p><m>\dfrac{4\pi}{3}</m></p></li>
+                        <li><p><m>\dfrac{5\pi}{3}</m></p></li>
+                        <li><p><m>\dfrac{11\pi}{6}</m></p></li>
+                    </ol>
+                </p>
+            </answer>
+        </exercise>
 
-    <!-- Add STACK exercises if made -->
+        <exercise xml:id="radians-rad-to-deg-exact">
+            <statement>
+                <p>
+                    Convert the following radians to degrees.
+                    <ol marker="(a)" cols="3">
+                        <li><p><m>\dfrac{\pi}{6}</m> radians</p></li>
+                        <li><p><m>\dfrac{2\pi}{3}</m> radians</p></li>
+                        <li><p><m>\dfrac{5\pi}{4}</m> radians</p></li>
+                        <li><p><m>\dfrac{7\pi}{6}</m> radians</p></li>
+                        <li><p><m>\dfrac{4\pi}{3}</m> radians</p></li>
+                        <li><p><m>\dfrac{11\pi}{6}</m> radians</p></li>
+                    </ol>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <ol marker="(a)" cols="3">
+                        <li><p><m>30°</m></p></li>
+                        <li><p><m>120°</m></p></li>
+                        <li><p><m>225°</m></p></li>
+                        <li><p><m>210°</m></p></li>
+                        <li><p><m>240°</m></p></li>
+                        <li><p><m>330°</m></p></li>
+                    </ol>
+                </p>
+            </answer>
+        </exercise>
 
-    <!-- Add static exercises -->
+        <exercise xml:id="radians-decimal-conversions">
+            <statement>
+                <p>
+                    Convert each angle as indicated.
+                    <ol marker="(a)">
+                        <li><p>Convert <m>73°</m> to radians (3 significant figures).</p></li>
+                        <li><p>Convert <m>1.8</m> radians to degrees (1 decimal place).</p></li>
+                        <li><p>Convert <m>255°</m> to radians (3 significant figures).</p></li>
+                        <li><p>Convert <m>0.65</m> radians to degrees (1 decimal place).</p></li>
+                    </ol>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <ol marker="(a)">
+                        <li><p><m>73 \times \dfrac{\pi}{180} \approx 1.27</m> rad</p></li>
+                        <li><p><m>1.8 \times \dfrac{180}{\pi} \approx 103.1°</m></p></li>
+                        <li><p><m>255 \times \dfrac{\pi}{180} \approx 4.45</m> rad</p></li>
+                        <li><p><m>0.65 \times \dfrac{180}{\pi} \approx 37.2°</m></p></li>
+                    </ol>
+                </p>
+            </answer>
+        </exercise>
 
-    <!-- <exercises>
+        <exercise xml:id="radians-reference-table">
+            <statement>
+                <p>
+                    Complete the table by filling in the missing radian equivalents.
+                </p>
+                <tabular halign="center" top="minor" left="minor">
+                    <row header="yes" bottom="medium">
+                        <cell right="minor">Degrees</cell>
+                        <cell right="minor"><m>0°</m></cell>
+                        <cell right="minor"><m>45°</m></cell>
+                        <cell right="minor"><m>90°</m></cell>
+                        <cell right="minor"><m>180°</m></cell>
+                        <cell right="minor"><m>270°</m></cell>
+                        <cell right="minor"><m>360°</m></cell>
+                    </row>
+                    <row bottom="minor">
+                        <cell right="minor">Radians</cell>
+                        <cell right="minor"></cell>
+                        <cell right="minor"></cell>
+                        <cell right="minor"></cell>
+                        <cell right="minor"></cell>
+                        <cell right="minor"></cell>
+                        <cell right="minor"></cell>
+                    </row>
+                </tabular>
+            </statement>
+            <answer>
+                <p>
+                    <m>0,\quad \dfrac{\pi}{4},\quad \dfrac{\pi}{2},\quad \pi,\quad \dfrac{3\pi}{2},\quad 2\pi</m>
+                </p>
+            </answer>
+        </exercise>
+
         <exercise>
-            <statement>   
+            <statement>
+                <p>
+                    Convert the following into radians
+                    <ol>
+                        <li>
+                            <p>
+                               <m> sin (\dfrac{\pi}{6}) </m> 
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                               <m> cos (\dfrac{\pi}{3}) </m> 
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                               <m> tan (\dfrac{\pi}{4}) </m> 
+                            </p>
+                        </li>
+                    </ol>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <ol>
+                        <li>
+                            <p>
+                               <m> sin (30°) = \dfrac{1}{2} </m> 
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                               <m> cos (60°) = \dfrac{1}{2} </m> 
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                               <m> tan (45°) = 1 </m> 
+                            </p>
+                        </li>
+                    </ol>
+                </p>
+            </answer>
+        </exercise>
 
-            </statement>   
-            <solution>
+        <exercise xml:id="radians-arc-length-applied">
+            <statement>
+                <p>
+                    A robot arm of length <m>40</m> cm rotates through an angle of <m>\dfrac{3\pi}{4}</m> radians.
+                    <ol marker="(a)">
+                        <li><p>Convert <m>\dfrac{3\pi}{4}</m> radians to degrees.</p></li>
+                        <li><p>The arc length traced by the tip of the arm is <m>s = r\theta</m>, where <m>r</m> is the arm length and <m>\theta</m> is in radians. Find <m>s</m>. Give your answer in terms of <m>\pi</m> and as a decimal (1 d.p.).</p></li>
+                    </ol>
+                </p>
+            </statement>
+            <answer>
+                <p>
+                    <ol marker="(a)">
+                        <li><p><m>\dfrac{3\pi}{4} \times \dfrac{180}{\pi} = 135°</m></p></li>
+                        <li><p><m>s = 40 \times \dfrac{3\pi}{4} = 30\pi \approx 94.2</m> cm</p></li>
+                    </ol>
+                </p>
+            </answer>
+        </exercise>
 
-            </solution>             
-        </exercise>        
-    </exercises> -->
-
-    <!-- [LP] Add information on how to differentiate  -->
-
-    <!-- <axiom component="lesson-plan">
-        <title>Differentiation</title>
-
-        <table>
-            <title>Differentiation</title>
-            <tabular halign="left">
-                <row header="yes" bottom="minor">
-                    <cell>Learner Group</cell>
-                    <cell>Strategy &amp; Learning Experience</cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>Struggling Learners (Support)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>On-Level Learners (Core)</cell>
-                    <cell>
-                        <line>The core lesson activities as described above.</line>
-                    </cell>
-                    <cell></cell>
-                </row>
-                <row>
-                    <cell>Advanced Learners (Challenge)</cell>
-                    <cell>
-                        XXXX
-                    </cell>
-                    <cell></cell>
-                </row>
-            </tabular>
-        </table>
-    </axiom> -->
+    </exercises>
 
     <xi:include href="../lesson-plan-templates/assessment-methods.ptx" />
 
