@@ -1,0 +1,821 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Determining Kits Using Inverse Matrix (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A tech club sells two types of kits: <b>Basic</b> and <b>Pro</b>.</p>
+<ul>
+<li>On the first day they sell \({@n11@}\) Basic and \({@n12@}\) Pro kits and collect <b>Ksh {@R1@}</b>.</li>
+<li>On another day they sell \({@n21@}\) Basic and \({@n22@}\) Pro kits and collect <b>Ksh {@R2@}</b>.</li>
+</ul>
+<p>Let \(b\) be the price (in Ksh) of a Basic kit and \(p\) the price of a Pro kit.</p>
+
+<p><b>(a)</b> Complete the matrix equation that models this situation as \(Mx = c\) (fill in the coefficient matrix and the right-hand side):</p>
+<p style="margin-left:1em;">[[input:ans1]] \(\left[\begin{array}{c} b \\ p \end{array}\right] \;=\;\) [[input:ans2]]</p>
+<p>[[validation:ans1]] [[feedback:prt1]] </p>
+<p>[[validation:ans2]] [[feedback:prt2]]</p>
+
+<p><b>(b)</b> The inverse of the coefficient matrix \(M\) exists provided its determinant is non-zero. Compute the determinant of the coefficient matrix:</p>
+<p style="margin-left:1em;">\(\det(M) =\) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</p>
+
+<p><b>(c)</b> Using the inverse of the \(2\times 2\) matrix, find the price of each kit.</p>
+<p style="margin-left:1em;">Basic kit: Ksh [[input:ans4]] [[validation:ans4]] </p>
+<p style="margin-left:1em;">Pro kit: Ksh [[input:ans5]] [[validation:ans5]] [[feedback:prt4]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>(a)</b> Each row is one day. The number of Basic and Pro kits sold multiply the unknown prices \(b\) and \(p\) to give that day's takings:</p>
+\[ {@ta_M@}\left[\begin{array}{c} b \\ p \end{array}\right] = {@ta_rev@}. \]
+
+<p><b>(b)</b> For a \(2\times2\) matrix \(\left[\begin{array}{cc}a&b\\c&d\end{array}\right]\) the determinant is \(ad-bc\):</p>
+\[ \det M = ({@n11@})({@n22@}) - ({@n12@})({@n21@}) = {@det_ta@}. \]
+<p>Since the determinant is non-zero, \(M^{-1}\) exists and the system has a unique solution.</p>
+
+<p><b>(c)</b> For \(M=\left[\begin{array}{cc}a&b\\c&d\end{array}\right]\), \(M^{-1}=\dfrac{1}{ad-bc}\left[\begin{array}{cc}d&-b\\-c&a\end{array}\right]\). Here</p>
+\[ M^{-1} = \frac{1}{ {@det_ta@} }\,{@adj_M@}. \]
+<p>Multiplying the inverse by the takings vector gives the prices:</p>
+\[ \left[\begin{array}{c} b \\ p \end{array}\right] = M^{-1}{@ta_rev@} = \frac{1}{ {@det_ta@} }{@ev(adj_M . ta_rev, simp)@} = {@price@}. \]
+<p>So a Basic kit costs <b>Ksh {@pb@}</b> and a Pro kit costs <b>Ksh {@pp@}</b>.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>5</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* --- Prices: Basic (pb) and Pro (pp), Ksh 2000..5000 in steps of 100, distinct. --- */
+pb : 100*rand_with_prohib(20,50,[]);
+pp : 100*rand_with_prohib(20,50,[pb/100]);
+/* --- Quantities: a curated 2x2 matrix with positive determinant, no zero
+       entries and non-proportional rows (so the inverse method always applies). --- */
+Mq : rand([
+  matrix([6,4],[3,7]),
+  matrix([5,2],[3,4]),
+  matrix([7,3],[2,5]),
+  matrix([4,3],[2,5]),
+  matrix([8,5],[3,4]),
+  matrix([5,4],[2,6]),
+  matrix([7,2],[4,5]),
+  matrix([6,5],[2,7]),
+  matrix([5,3],[4,7]),
+  matrix([8,3],[5,4]),
+  matrix([6,2],[5,7])
+]);
+n11 : Mq[1,1];
+n12 : Mq[1,2];
+n21 : Mq[2,1];
+n22 : Mq[2,2];
+/* --- Compute the takings from quantities x prices (design backwards). --- */
+price  : matrix([pb],[pp]);
+ta_rev : Mq . price;          /* model right-hand side (revenue vector) */
+R1 : ta_rev[1,1];
+R2 : ta_rev[2,1];
+/* --- Model answers. --- */
+ta_M   : Mq;                  /* (a) coefficient matrix */
+det_ta : determinant(Mq);     /* (b) determinant (positive integer) */
+adj_M  : matrix([n22,-n12],[-n21,n11]);  /* adjugate, for the worked solution */
+ta_pb  : pb;                  /* (c) Basic price */
+ta_pp  : pp;                  /* (c) Pro price */
+/* --- Wrong-answer variables for misconception feedback. --- */
+wrong_Mt      : transpose(Mq);          /* (a) used days as rows, products as columns */
+wrong_rev_swap: matrix([R2],[R1]);      /* (a) listed the days in the wrong order */
+wrong_det_add : n11*n22 + n12*n21;      /* (b) added the diagonal products */
+wrong_det_neg : n12*n21 - n11*n22;      /* (b) subtracted the wrong way round (= -det) */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( M={@ta_M@},\ b={@pb@},\ p={@pp@},\ \det={@det_ta@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>matrix</type>
+      <tans>ta_M</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>matrix</type>
+      <tans>ta_rev</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>numerical</type>
+      <tans>det_ta</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>numerical</type>
+      <tans>ta_pb</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>numerical</type>
+      <tans>ta_pp</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Coefficient matrix correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta_M</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Transpose misconception (days as rows mixed up)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_Mt</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-transpose</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your matrix is the transpose of the coefficient matrix. Each <em>row</em> should be one day's sales: \([\,\text{Basic qty}\ \ \text{Pro qty}\,]\), so that the row multiplied by \(\left[\begin{array}{c}b\\p\end{array}\right]\) gives that day's takings.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The coefficient matrix holds the quantities sold: row 1 is day 1 \((\,{@n11@},\ {@n12@}\,)\) and row 2 is day 2 \((\,{@n21@},\ {@n22@}\,)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Right-hand side correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta_rev</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Days listed in the wrong order (day 2 first, day 1 second)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>wrong_rev_swap</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-swap</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have the two days in the wrong order. The first row of the right-hand side should be day 1, but you have it as day 2.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The right-hand side is each day's total takings.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Determinant correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>det_ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Added the diagonal products instead of subtracting?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>wrong_det_add</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-add</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added the two products. The determinant <em>subtracts</em>: \(ad-bc\), not \(ad+bc\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Subtracted the wrong way round (sign error)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>wrong_det_neg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-reversed</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Right size, wrong sign. The determinant is (top-left \(\times\) bottom-right) \(-\) (top-right \(\times\) bottom-left): \(({@n11@})({@n22@})-({@n12@})({@n21@})\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. For \(\left[\begin{array}{cc}a&b\\c&d\end{array}\right]\) the determinant is \(ad-bc\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Basic price correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ta_pb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt4-basic-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>+</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt4-basic-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Basic box holds the Pro price (swapped)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ta_pp</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt4-basic-swap</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the <em>Pro</em> price &mdash; it looks like you have the two prices swapped. The first component of \(M^{-1}\) times the takings is the Basic price \(b\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>+</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt4-basic-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The Basic price is not correct &mdash; see the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Pro price correct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>ta_pp</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-pro-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>+</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt4-pro-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Pro box holds the Basic price (swapped)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>ta_pb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-pro-swap</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the <em>Basic</em> price &mdash; it looks like you have the two prices swapped.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>+</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-pro-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The Pro price is not correct &mdash; see the worked solution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Fully correct answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_M</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_rev</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>det_ta</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_pb</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_pp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-pro-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>(a) coefficient matrix transposed</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_Mt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_rev</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>det_ta</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_pb</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_pp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-transpose</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>(a) takings vector with the days in the wrong order</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_M</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wrong_rev_swap</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>det_ta</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_pb</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_pp</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-swap</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>(b) added diagonal products</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_M</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_rev</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>wrong_det_add</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_pb</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_pp</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt3-add</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>(b) determinant sign reversed</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_M</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_rev</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>wrong_det_neg</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_pb</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_pp</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt3-reversed</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>(c) prices swapped</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_M</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_rev</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>det_ta</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_pp</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_pb</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt4-pro-swap</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>(c) only Basic price correct (partial credit)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_M</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_rev</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>det_ta</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_pb</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ev(ta_pp+100,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt4-pro-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>8</testcase>
+      <description>(b) generic wrong determinant</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_M</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_rev</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ev(det_ta+1,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_pb</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_pp</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt3-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

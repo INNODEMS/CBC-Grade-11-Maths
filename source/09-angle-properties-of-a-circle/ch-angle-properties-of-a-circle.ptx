@@ -11,12 +11,12 @@
   </p>
   <p>
     In this strand, we will investigate the consistent geometric rules that 
-    govern how angles behave within a circular boundary, covering center-angle 
+    govern how angles behave within a circle, covering center-angle 
     relationships, cyclic quadrilaterals, and real-world applications.
   </p>
 
   <p>
-    Before we can unlock these geometric properties, we must first master the 
+    Before we can understand these geometric properties, we must first learn the 
     vocabulary of a circle's anatomy. When straight lines intersect or boundaries 
     are divided, three fundamental elements emerge:
   </p>
@@ -26,10 +26,40 @@
       <li>
         <p>
           <strong>Chords:</strong> A <em>chord</em> is a straight line segment whose 
-          endpoints both lie on the circular boundary. Think of it as a straight 
+          endpoints both lie on the circumference of the circle. Think of it as a straight 
           bridge crossing from one side of the circle to the other. The longest 
           possible chord in any circle is the one that passes directly through the 
           centre—this special chord is known as the <strong>diameter</strong>.
+          <figure xml:id="figure-circle-chord">
+    <caption>A circle with centre O showing a chord BA</caption>
+    <image width="50%">
+        <latex-image>
+            \begin{tikzpicture}
+            % --- Define the Centre ---
+            \tkzDefPoint(0,0){O}
+            
+            % --- Define two points on the circumference to create a chord ---
+            \tkzDefPointOnCircle[R = center O angle 30 radius 2.5]\tkzGetPoint{A}
+            \tkzDefPointOnCircle[R = center O angle 150 radius 2.5]\tkzGetPoint{B}
+
+            % --- Draw the Circle ---
+            \tkzDrawCircle[thick](O,A)
+
+            % --- Draw the Chord (in blue for emphasis) ---
+            \tkzDrawSegment[thick, color=blue](A,B)
+
+            % --- Label the chord line text midway ---
+            \path (A) -- (B) node[midway, below=2pt, color=blue] {Chord};
+
+            % --- Draw Points and Labels ---
+            \tkzDrawPoints[size=4,fill=black](O,A,B)
+            \tkzLabelPoint[below](O){$O$}
+            \tkzLabelPoint[right](A){$A$}
+            \tkzLabelPoint[left](B){$B$}
+            \end{tikzpicture}
+        </latex-image>
+    </image>
+</figure>
         </p>
       </li>
       <li>
@@ -40,6 +70,38 @@
           <strong>minor arc</strong>, while the longer path around the other side is 
           called the <strong>major arc</strong>. If the two points lie exactly on 
           opposite ends of a diameter, the resulting arc is a <strong>semicircle</strong>.
+          <figure xml:id="figure-circle-arc">
+    <caption>A circle with centre O showing a highlighted arc BA</caption>
+    <image width="50%">
+        <latex-image>
+            \begin{tikzpicture}
+            % --- Define the Centre ---
+            \tkzDefPoint(0,0){O}
+            
+            % --- Define the endpoints of the arc on the circumference ---
+            % Radius is 2.5 cm. Arc runs counter-clockwise from 30 to 120 degrees.
+            \tkzDefPointOnCircle[R = center O angle 30 radius 2.5]\tkzGetPoint{A}
+            \tkzDefPointOnCircle[R = center O angle 120 radius 2.5]\tkzGetPoint{B}
+
+            % --- Draw the background Circle ---
+            \tkzDrawCircle[thick](O,A)
+
+            % --- Highlight the Arc BA in a bold color ---
+            \tkzDrawArc[ultra thick, color=red](O,A)(B)
+
+            % --- Place a label text dynamically near the center of the arc ---
+            \tkzDefPointOnCircle[R = center O angle 75 radius 2.8]\tkzGetPoint{ArcLabel}
+            \node[color=red] at (ArcLabel) {Arc $AB$};
+
+            % --- Draw Points and Labels ---
+            \tkzDrawPoints[size=4,fill=black](O,A,B)
+            \tkzLabelPoint[below](O){$O$}
+            \tkzLabelPoint[right](A){$A$}
+            \tkzLabelPoint[above left](B){$B$}
+            \end{tikzpicture}
+        </latex-image>
+    </image>
+</figure>
         </p>
       </li>
       <li>
@@ -50,6 +112,44 @@
           a segment is created by a single straight cut across the circle. Just like 
           arcs, segments are classified as <strong>minor segments</strong> (the smaller area) 
           or <strong>major segments</strong> (the larger area).
+          <figure xml:id="figure-circle-segment">
+    <caption>A circle with centre O showing a highlighted minor segment</caption>
+    <image width="50%">
+        <latex-image>
+            \begin{tikzpicture}
+            % --- Define the Centre ---
+            \tkzDefPoint(0,0){O}
+            
+            % --- Define endpoints on the circumference ---
+            \tkzDefPointOnCircle[R = center O angle 30 radius 2.5]\tkzGetPoint{A}
+            \tkzDefPointOnCircle[R = center O angle 150 radius 2.5]\tkzGetPoint{B}
+
+            % --- Fill the Segment region ---
+            % This fills the area from point A along the arc to B, then closes back to A via the chord
+            \fill[fill=red!25] (A) arc[start angle=30, end angle=150, radius=2.5] -- cycle;
+
+            % --- Draw the background Circle ---
+            \tkzDrawCircle[thick](O,A)
+
+            % --- Draw the Chord boundary ---
+            \tkzDrawSegment[thick, color=blue!80!black](A,B)
+
+            % --- Draw the Arc boundary ---
+            \tkzDrawArc[thick, color=blue!80!black](O,A)(B)
+
+            % --- Label the Segment region ---
+            \tkzDefPointOnCircle[R = center O angle 90 radius 1.7]\tkzGetPoint{SegLabel}
+            \node[color=red!80!black, font=\small] at (SegLabel) {Segment};
+
+            % --- Draw Points and Labels ---
+            \tkzDrawPoints[size=4,fill=black](O,A,B)
+            \tkzLabelPoint[below](O){$O$}
+            \tkzLabelPoint[right](A){$A$}
+            \tkzLabelPoint[left](B){$B$}
+            \end{tikzpicture}
+        </latex-image>
+    </image>
+</figure>
         </p>
       </li>
     </ul>
@@ -63,6 +163,7 @@
     sections that follow.
   </p>
  </introduction>
+ <!--  -->
  <!-- <introduction>
   <p>
     The circle is one of the most fundamental and symmetric shapes in geometry. 

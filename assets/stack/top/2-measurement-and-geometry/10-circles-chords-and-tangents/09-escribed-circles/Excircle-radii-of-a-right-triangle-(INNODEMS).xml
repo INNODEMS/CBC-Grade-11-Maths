@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Excircle radii of a right triangle (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The right-angled triangle below (right angle at \(C\)) has sides
+\(a = {@sa@}\) cm, \(b = {@sb@}\) cm and \(c = {@sc@}\) cm.</p>
+
+<p>Each side has an <em>excircle</em>: a circle lying <em>outside</em> the triangle that
+is tangent to that side and to the extensions of the other two sides. The three excircles
+\(J_a, J_b, J_c\) are drawn in blue. Find the radius of each one, in centimetres.</p>
+
+[[jsxgraph width='480px' height='430px']]
+var la = {#sa#};            // side a = BC (opposite A), drawn horizontal
+var lb = {#sb#};            // side b = CA (opposite B), drawn vertical
+var lc = Math.sqrt(la*la + lb*lb);
+var Ax = 0, Ay = lb, Bx = la, By = 0, Cx = 0, Cy = 0;   // right angle at C
+function exc(wA, wB, wC) {   // excentre = weighted vertex average, opp side negated
+  var d = wA + wB + wC;
+  return [(wA*Ax + wB*Bx + wC*Cx)/d, (wA*Ay + wB*By + wC*Cy)/d];
+}
+var JA = exc(-la, lb, lc), JB = exc(la, -lb, lc), JC = exc(la, lb, -lc);
+var rA = Math.abs(JA[1]), rB = Math.abs(JB[0]);
+var rC = Math.abs((Bx-Ax)*(Ay-JC[1]) - (Ax-JC[0])*(By-Ay)) / lc;
+var xs = [Cx,Bx,Ax,JA[0]-rA,JA[0]+rA,JB[0]-rB,JB[0]+rB,JC[0]-rC,JC[0]+rC];
+var ys = [Cy,By,Ay,JA[1]-rA,JA[1]+rA,JB[1]-rB,JB[1]+rB,JC[1]-rC,JC[1]+rC];
+var xmin = Math.min.apply(null,xs), xmax = Math.max.apply(null,xs);
+var ymin = Math.min.apply(null,ys), ymax = Math.max.apply(null,ys);
+var pX = 0.1*(xmax-xmin), pY = 0.1*(ymax-ymin);
+var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[xmin-pX, ymax+pY, xmax+pX, ymin-pY],
+  keepaspectratio:true, axis:false, showCopyright:false, showNavigation:false,
+  pan:{enabled:false}, zoom:{enabled:false}});
+var A = board.create('point',[Ax,Ay],{fixed:true,highlight:false,name:'A',size:2,label:{offset:[-12,4]}});
+var B = board.create('point',[Bx,By],{fixed:true,highlight:false,name:'B',size:2,label:{offset:[10,-8]}});
+var C = board.create('point',[Cx,Cy],{fixed:true,highlight:false,name:'C',size:2,label:{offset:[-12,-10]}});
+board.create('polygon',[A,B,C],{fixed:true,highlight:false,fillOpacity:0,
+  borders:{strokeColor:'#222',strokeWidth:2,highlight:false,fixed:true},vertices:{visible:false}});
+board.create('angle',[A,C,B],{type:'square',radius:Math.min(la,lb)*0.18,fixed:true,highlight:false});
+var ext = {straightFirst:true,straightLast:true,dash:2,strokeColor:'#999',strokeWidth:1,fixed:true,highlight:false};
+board.create('line',[B,C],ext); board.create('line',[C,A],ext); board.create('line',[A,B],ext);
+var co = {strokeColor:'#1565c0',strokeWidth:1.5,fillColor:'none',fixed:true,highlight:false};
+board.create('circle',[JA,rA],co); board.create('circle',[JB,rB],co); board.create('circle',[JC,rC],co);
+board.create('point',JA,{fixed:true,highlight:false,name:'J_a',size:1,strokeColor:'#1565c0',fillColor:'#1565c0',label:{offset:[-6,-10]}});
+board.create('point',JB,{fixed:true,highlight:false,name:'J_b',size:1,strokeColor:'#1565c0',fillColor:'#1565c0',label:{offset:[-18,0]}});
+board.create('point',JC,{fixed:true,highlight:false,name:'J_c',size:1,strokeColor:'#1565c0',fillColor:'#1565c0',label:{offset:[8,0]}});
+var sl = {fixed:true,highlight:false,fontSize:15,anchorX:'middle',anchorY:'middle'};
+board.create('text',[(Bx+Cx)/2,(By+Cy)/2-0.03*(ymax-ymin),la],sl);
+board.create('text',[(Ax+Cx)/2-0.06*(xmax-xmin),(Ay+Cy)/2,lb],sl);
+board.create('text',[(Ax+Bx)/2+0.04*(xmax-xmin),(Ay+By)/2,lc],sl);
+[[/jsxgraph]]
+
+<div>Radius of \(J_a\) (the excircle tangent to side \(BC={@sa@}\)): \(r_a = \) [[input:ans1]] [[validation:ans1]] cm [[feedback:prt1]]</div>
+<div>Radius of \(J_b\) (the excircle tangent to side \(CA={@sb@}\)): \(r_b = \) [[input:ans2]] [[validation:ans2]] cm [[feedback:prt2]]</div>
+<div>Radius of \(J_c\) (the excircle tangent to side \(AB={@sc@}\)): \(r_c = \) [[input:ans3]] [[validation:ans3]] cm [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Label the sides \(a={@sa@}\), \(b={@sb@}\), \(c={@sc@}\). The semi-perimeter is
+\[ s = \frac{a+b+c}{2} = \frac{{@sa@}+{@sb@}+{@sc@}}{2} = {@ssemi@}, \]
+and since the legs are \(a\) and \(b\) the area is
+\[ \Delta = \tfrac12\, a\, b = \tfrac12\times{@sa@}\times{@sb@} = {@area@}. \]
+The radius of the excircle tangent to a side equals the area divided by \(s\) minus that side:</p>
+\[
+\begin{align*}
+r_a &= \frac{\Delta}{s-a} = \frac{{@area@}}{{@ssemi@}-{@sa@}} = {@ra@}\text{ cm}, \\[2pt]
+r_b &= \frac{\Delta}{s-b} = \frac{{@area@}}{{@ssemi@}-{@sb@}} = {@rb@}\text{ cm}, \\[2pt]
+r_c &= \frac{\Delta}{s-c} = \frac{{@area@}}{{@ssemi@}-{@sc@}} = {@rc@}\text{ cm}.
+\end{align*}
+\]
+<p>(For contrast, the <em>inscribed</em> circle of this triangle has radius
+\(r = \Delta/s = {@rin@}\) cm &mdash; smaller than every excircle, and inside the triangle.)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>mn   : rand([[2,1],[3,1],[3,2],[4,1],[4,2],[4,3]]);
+m    : mn[1];
+nn   : mn[2];
+sa   : m^2 - nn^2;        /* side a = BC, opposite A (a leg) */
+sb   : 2*m*nn;            /* side b = CA, opposite B (a leg) */
+sc   : m^2 + nn^2;        /* side c = AB, the hypotenuse */
+ssemi: (sa + sb + sc)/2;  /* semi-perimeter */
+area : sa*sb/2;           /* right-triangle area = half product of legs */
+ra   : area/(ssemi - sa); /* exradius opposite A = m(m-nn) */
+rb   : area/(ssemi - sb); /* exradius opposite B = nn(m+nn) */
+rc   : area/(ssemi - sc); /* exradius opposite C = m(m+nn) */
+rin  : area/ssemi;        /* inscribed-circle radius (a common wrong answer) */
+ta1  : ra;
+ta2  : rb;
+ta3  : rc;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\((m,n)=({@m@},{@nn@})\); \(a={@sa@}, b={@sb@}, c={@sc@}\); \(r_a={@ra@}, r_b={@rb@}, r_c={@rc@}\)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>numerical</type>
+      <tans>ta3</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: r_a</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ra</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Diagnose: inscribed-circle radius</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>rin</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-inradius</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the radius of the <em>inscribed</em> circle (inside the triangle), not an excircle. An excircle sits <em>outside</em>, tangent to one side.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Diagnose: gave r_b instead</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>rb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-permute-b</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is a valid exradius of this triangle, but for a different side. Check which side \(J_a\) is the excircle <em>tangent to</em>, and which length goes in \(s-\text{side}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Diagnose: gave r_c instead; else generic</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>rc</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-permute-c</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is a valid exradius of this triangle, but for a different side. Check which side \(J_a\) is the excircle <em>tangent to</em>, and which length goes in \(s-\text{side}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>What's the formula for the exradius in terms of the semi-perimeter, triangle area, and side length?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: r_b</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>rb</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Diagnose: inscribed-circle radius</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>rin</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-inradius</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the radius of the <em>inscribed</em> circle (inside the triangle), not an excircle. An excircle sits <em>outside</em>, tangent to one side. Use the exradius rule, dividing the area by \(s\) minus the relevant side.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Diagnose: gave r_a instead</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ra</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-permute-a</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is a valid exradius of this triangle, but for a different side. Check which side \(J_b\) is the excircle <em>tangent to</em>, and which length goes in \(s-\text{side}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Diagnose: gave r_c instead; else generic</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>rc</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-permute-c</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is a valid exradius of this triangle, but for a different side. Check which side \(J_b\) is the excircle <em>tangent to</em>, and which length goes in \(s-\text{side}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>What's the formula for the exradius in terms of the semi-perimeter, triangle area, and side length?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: r_c</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>rc</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Diagnose: inscribed-circle radius</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>rin</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-inradius</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the radius of the <em>inscribed</em> circle (inside the triangle), not an excircle. An excircle sits <em>outside</em>, tangent to one side. Use the exradius rule, dividing the area by \(s\) minus the relevant side.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Diagnose: gave r_a instead</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ra</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-permute-a</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is a valid exradius of this triangle, but for a different side. The excircle \(J_c\) is tangent to the hypotenuse &mdash; check which length you should subtract from \(s\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Diagnose: gave r_b instead; else generic</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>rb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-permute-b</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is a valid exradius of this triangle, but for a different side. The excircle \(J_c\) is tangent to the hypotenuse &mdash; check which length you should subtract from \(s\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>What's the formula for the exradius in terms of the semi-perimeter, triangle area, and side length?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>194560364</deployedseed>
+    <deployedseed>1486237054</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All three correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ra</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>rb</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>rc</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Inscribed-circle radius in every box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>rin</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>rin</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>rin</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-inradius</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-inradius</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-inradius</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Right values, wrong sides (permutation)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>rb</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>rc</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ra</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-permute-b</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-permute-c</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-permute-a</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong values</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ra+100,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(rb+100,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ev(rc+100,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

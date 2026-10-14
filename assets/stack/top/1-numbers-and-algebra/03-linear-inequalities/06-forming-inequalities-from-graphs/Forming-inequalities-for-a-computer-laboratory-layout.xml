@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Forming inequalities for a computer laboratory layout</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A computer laboratory space at Mtwapa Technical school in Mombasa restricts its layout based on two simple physical boundaries. Let \(x\) represent the horizontal floor width (in meters) and \(y\) represent the vertical floor length (in meters).</p>
+
+<p>Examine the graphical layout below. Formulate the two linear inequalities that perfectly model the shaded permissible zone for computer placement.</p>
+
+[[jsxgraph width="600px" height="600px"]]
+var x_val = {#x_val#};
+var y_val = {#y_val#};
+var vert_solid = {#is_vert_solid_js#};
+var horiz_solid = {#is_horiz_solid_js#};
+var shade_right = {#is_shade_right_js#};
+var shade_above = {#is_shade_above_js#};
+
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-2, 12, 12, -2],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+var xaxis = brd.create('axis', [[0, 0], [1, 0]], {
+    name: 'x (Width in m)', withLabel: true, label: {position: 'rt', offset: [-45, 20]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [-8, -15]}, drawZero: true, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+var yaxis = brd.create('axis', [[0, 0], [0, 1]], {
+    name: 'y (Length in m)', withLabel: true, label: {position: 'rt', offset: [15, -15]},
+    firstArrow: true, lastArrow: true, strokeWidth: 1.5,
+    ticks: {
+        drawLabels: true, label: {offset: [-25, -5]}, drawZero: false, insertTicks: false,
+        ticksDistance: 2, minorTicks: 1,
+        majorHeight: -1, minorHeight: -1,
+        strokeColor: '#a0a0a0', strokeOpacity: 0.5, strokeWidth: 1,
+        minorStrokeColor: '#e0e0e0', minorStrokeOpacity: 0.5, minorStrokeWidth: 1
+    }
+});
+
+/* Draw the vertical boundary line */
+var v_line = brd.create('line', [[x_val, 0], [x_val, 1]], {
+    strokeWidth: 3, strokeColor: '#1565c0', dash: vert_solid ? 0 : 2, highlight: false
+});
+
+/* Draw the horizontal boundary line */
+var h_line = brd.create('line', [[0, y_val], [1, y_val]], {
+    strokeWidth: 3, strokeColor: '#c62828', dash: horiz_solid ? 0 : 2, highlight: false
+});
+
+/* Shade the permissible intersection zone */
+var px = shade_right ? 15 : -5;
+var py = shade_above ? 15 : -5;
+brd.create('polygon', [[x_val, y_val], [px, y_val], [px, py], [x_val, py]], {
+    fillColor: '#673ab7', fillOpacity: 0.15, borders: {strokeWidth: 0}
+});
+
+/* Explicitly label the equations of the lines as shown in the textbook */
+brd.create('text', [x_val + 0.3, 10, 'x = ' + x_val], {fontSize: 16, strokeColor: '#1565c0'});
+brd.create('text', [10, y_val + 0.4, 'y = ' + y_val], {fontSize: 16, strokeColor: '#c62828'});
+[[/jsxgraph]]
+
+<p> Analyze the line styles and shading directions to write the two independent inequalities.</p>
+<p>Vertical boundary constraint (\(x\)): [[input:ans1]]</p>
+<p>Horizontal boundary constraint (\(y\)): [[input:ans2]]</p>
+
+<div><b>Vertical constraint check:</b> [[validation:ans1]] [[feedback:prt1]]</div>
+<div><b>Horizontal constraint check:</b> [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>By analyzing the geometric boundaries independently:</p>
+
+<p><b>1. The Vertical Boundary</b><br>
+The vertical blue line is plotted exactly at \( x = {@x_val@} \).<br>
+It is drawn as a <b>{@v_style@}</b> line, and the shaded permissible zone lies to the <b>{@v_shade@}</b> of this line. This indicates that the valid \(x\)-values are strictly {@v_val_str@} than the boundary.<br>
+Therefore, the vertical constraint is:<br>
+<span style="font-size: 1.2em;">\( \displaystyle \boxed{{@ta1@}} \)</span></p>
+
+<p><b>2. The Horizontal Boundary</b><br>
+The horizontal red line is plotted exactly at \( y = {@y_val@} \).<br>
+It is drawn as a <b>{@h_style@}</b> line, and the shaded permissible zone lies <b>{@h_shade@}</b> this line. This indicates that the valid \(y\)-values are {@h_val_str@} than the boundary.<br>
+Therefore, the horizontal constraint is:<br>
+<span style="font-size: 1.2em;">\( \displaystyle \boxed{{@ta2@}} \)</span></p>
+
+<p>The combined system of linear inequalities defining the computer lab layout is \( {@ta1@} \) and \( {@ta2@} \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize intercept positions */
+x_val : rand([2, 3, 4, 5, 6, 7]);
+y_val : rand([2, 3, 4, 5, 6, 7]);
+
+/* Randomize line styles and shading directions */
+vert_solid : rand([true, false]);
+horiz_solid : rand([true, false]);
+shade_right : rand([true, false]);
+shade_above : rand([true, false]);
+
+/* Variables passed to JSXGraph */
+is_vert_solid_js : if vert_solid then 1 else 0;
+is_horiz_solid_js : if horiz_solid then 1 else 0;
+is_shade_right_js : if shade_right then 1 else 0;
+is_shade_above_js : if shade_above then 1 else 0;
+
+/* Determine the target vertical inequality */
+ta1_ge : x >= x_val;
+ta1_g  : x > x_val;
+ta1_le : x <= x_val;
+ta1_l  : x < x_val;
+ta1 : if shade_right then (if vert_solid then ta1_ge else ta1_g) else (if vert_solid then ta1_le else ta1_l);
+ta1_wrong : if shade_right then (if vert_solid then ta1_g else ta1_ge) else (if vert_solid then ta1_l else ta1_le);
+
+/* Determine the target horizontal inequality */
+ta2_ge : y >= y_val;
+ta2_g  : y > y_val;
+ta2_le : y <= y_val;
+ta2_l  : y < y_val;
+ta2 : if shade_above then (if horiz_solid then ta2_ge else ta2_g) else (if horiz_solid then ta2_le else ta2_l);
+ta2_wrong : if shade_above then (if horiz_solid then ta2_g else ta2_ge) else (if horiz_solid then ta2_l else ta2_le);
+
+/* Text variables for the worked solution */
+v_style : if vert_solid then "solid" else "dashed";
+h_style : if horiz_solid then "solid" else "dashed";
+v_shade : if shade_right then "right" else "left";
+h_shade : if shade_above then "above" else "below";
+v_val_str : if shade_right then (if vert_solid then "greater than or equal to" else "greater than") else (if vert_solid then "less than or equal to" else "less than");
+h_val_str : if shade_above then (if horiz_solid then "greater than or equal to" else "greater than") else (if horiz_solid then "less than or equal to" else "less than");]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Vertical: {@ta1@}. Horizontal: {@ta2@}.</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Forming Systems of Inequalities From Graphs (Computer Lab Layout)</p>
+<p id="description">Grade 11 CBE: Visually analyzing two intersecting orthogonal boundary lines (one vertical, one horizontal) to extract a system of inequalities.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of the vertical inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The vertical boundary constraint is perfectly correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they flipped the inclusion symbol</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your inequality direction is correct, but you used the wrong symbol type. Look closely at whether the blue line is <b>solid</b> (inclusive) or <b>dashed</b> (exclusive).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect vertical constraint. Ensure you are using the variable \(x\), check the intercept value, and verify your shading direction.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of the horizontal inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The horizontal boundary constraint is perfectly correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they flipped the inclusion symbol</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your inequality direction is correct, but you used the wrong symbol type. Look closely at whether the red line is <b>solid</b> (inclusive) or <b>dashed</b> (exclusive).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect horizontal constraint. Ensure you are using the variable \(y\), check the intercept value, and verify your shading direction.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>38981227</deployedseed>
+    <deployedseed>1000074646</deployedseed>
+    <deployedseed>1545415966</deployedseed>
+    <deployedseed>1569940284</deployedseed>
+    <deployedseed>16842442</deployedseed>
+    <deployedseed>1653789557</deployedseed>
+    <deployedseed>149258866</deployedseed>
+    <deployedseed>1026663069</deployedseed>
+    <deployedseed>85882331</deployedseed>
+    <deployedseed>831738130</deployedseed>
+    <deployedseed>118111824</deployedseed>
+    <deployedseed>424783941</deployedseed>
+    <deployedseed>423901253</deployedseed>
+    <deployedseed>1777164825</deployedseed>
+    <deployedseed>1944673381</deployedseed>
+    <deployedseed>1666372957</deployedseed>
+    <deployedseed>1109524688</deployedseed>
+    <deployedseed>1249506752</deployedseed>
+    <deployedseed>349997487</deployedseed>
+    <deployedseed>221435315</deployedseed>
+    <deployedseed>1258279205</deployedseed>
+    <deployedseed>262259667</deployedseed>
+    <deployedseed>626175728</deployedseed>
+    <deployedseed>2120933936</deployedseed>
+    <deployedseed>1293249578</deployedseed>
+    <deployedseed>2067449129</deployedseed>
+    <deployedseed>2067171450</deployedseed>
+    <deployedseed>593094819</deployedseed>
+    <deployedseed>2116746364</deployedseed>
+    <deployedseed>1551500856</deployedseed>
+    <deployedseed>1679712916</deployedseed>
+    <deployedseed>174356063</deployedseed>
+    <deployedseed>873683726</deployedseed>
+    <deployedseed>686682146</deployedseed>
+    <deployedseed>577692913</deployedseed>
+    <deployedseed>499316510</deployedseed>
+    <deployedseed>1303798457</deployedseed>
+    <deployedseed>582405803</deployedseed>
+    <deployedseed>1705831256</deployedseed>
+    <deployedseed>965131545</deployedseed>
+    <deployedseed>890915996</deployedseed>
+    <deployedseed>1621942628</deployedseed>
+    <deployedseed>2102101216</deployedseed>
+    <deployedseed>1968458574</deployedseed>
+    <deployedseed>2127348723</deployedseed>
+    <deployedseed>1434693222</deployedseed>
+    <deployedseed>190576378</deployedseed>
+    <deployedseed>732478643</deployedseed>
+    <deployedseed>1243405784</deployedseed>
+    <deployedseed>2094021789</deployedseed>
+    <deployedseed>1132206067</deployedseed>
+    <deployedseed>534281363</deployedseed>
+    <deployedseed>1706874160</deployedseed>
+    <deployedseed>1330483158</deployedseed>
+    <deployedseed>1323258463</deployedseed>
+    <deployedseed>2047039222</deployedseed>
+    <deployedseed>1304531835</deployedseed>
+    <deployedseed>1023784100</deployedseed>
+    <deployedseed>29370114</deployedseed>
+    <deployedseed>108676783</deployedseed>
+    <deployedseed>1864215074</deployedseed>
+    <deployedseed>325767735</deployedseed>
+    <deployedseed>1048824180</deployedseed>
+    <deployedseed>576121283</deployedseed>
+    <deployedseed>1789896309</deployedseed>
+    <deployedseed>1843830064</deployedseed>
+    <deployedseed>418797146</deployedseed>
+    <deployedseed>6742247</deployedseed>
+    <deployedseed>1457691649</deployedseed>
+    <deployedseed>1594001232</deployedseed>
+    <deployedseed>402271816</deployedseed>
+    <deployedseed>1726409734</deployedseed>
+    <deployedseed>1243773292</deployedseed>
+    <deployedseed>1162860652</deployedseed>
+    <deployedseed>607270620</deployedseed>
+    <deployedseed>1457103244</deployedseed>
+    <deployedseed>603371928</deployedseed>
+    <deployedseed>470471034</deployedseed>
+    <deployedseed>1071816654</deployedseed>
+    <deployedseed>129646767</deployedseed>
+    <deployedseed>1714447590</deployedseed>
+    <deployedseed>1630584031</deployedseed>
+    <deployedseed>277899805</deployedseed>
+    <deployedseed>2090588525</deployedseed>
+    <deployedseed>425701331</deployedseed>
+    <deployedseed>1006386521</deployedseed>
+    <deployedseed>1841987496</deployedseed>
+    <deployedseed>977908452</deployedseed>
+    <deployedseed>1096094260</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Both symbols flipped inclusive/exclusive</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Wrong variable and wrong value</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[y > x_val + 2]]></value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value><![CDATA[x < y_val + 2]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

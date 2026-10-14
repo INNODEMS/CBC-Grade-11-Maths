@@ -1,0 +1,9 @@
+ var board = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-5, 2, 5, -2],keepAspectRatio:true, showCopyright:false, showNavigation:false });
+ var p = board.create('point',[-2,0],{name:"A"});
+ var q = board.create('point',[1,1.5],{name:"B"});
+ var r = board.create('point',[1,-1],{name:"C"});
+ var line1 = board.create('line',[p,q]);
+ var line2 = board.create('line',[p,r]);
+ var angle1 = board.create('angle',[r, p, q], {radius:2});
+ var angle2 = board.create('angle',[line2,line1,-1,-1], {radius:1,color:'green'});
+ var angle3 = board.create('angle',[line2,line1,1,1], {radius:1,color:'blue'});

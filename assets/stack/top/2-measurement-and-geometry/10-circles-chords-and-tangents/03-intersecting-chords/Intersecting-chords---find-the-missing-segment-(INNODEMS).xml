@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Intersecting chords - find the missing segment (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>In the figure, the chords \(AB\) and \(CD\) of the circle intersect at \(P\). You are given</p>
+\[ AP = {@AP@}\text{ cm}, \qquad PB = {@PB@}\text{ cm}, \qquad CP = {@CP@}\text{ cm}, \]
+<p>and the length \(PD = x\) cm is unknown. Find \(PD\).</p>
+
+[[jsxgraph width="470px" height="470px"]]
+var AP = {#AP#}, PB = {#PB#}, CP = {#CP#}, PD = {#PD#};
+
+var rad = Math.PI / 180;
+var aAB = 20 * rad;
+var aCD = 75 * rad;
+var ux = Math.cos(aAB), uy = Math.sin(aAB);
+var vx = Math.cos(aCD), vy = Math.sin(aCD);
+
+var Ap = [-AP * ux, -AP * uy];
+var Bp = [ PB * ux,  PB * uy];
+var Cp = [-CP * vx, -CP * vy];
+var Dp = [ PD * vx,  PD * vy];
+
+function circum(p1, p2, p3) {
+    var x1 = p1[0], y1 = p1[1], x2 = p2[0], y2 = p2[1], x3 = p3[0], y3 = p3[1];
+    var d = 2 * (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2));
+    var cx = ((x1*x1 + y1*y1) * (y2 - y3) + (x2*x2 + y2*y2) * (y3 - y1) + (x3*x3 + y3*y3) * (y1 - y2)) / d;
+    var cy = ((x1*x1 + y1*y1) * (x3 - x2) + (x2*x2 + y2*y2) * (x1 - x3) + (x3*x3 + y3*y3) * (x2 - x1)) / d;
+    return [cx, cy];
+}
+var ctr = circum(Ap, Bp, Cp);
+var rr  = Math.hypot(ctr[0] - Ap[0], ctr[1] - Ap[1]);
+var pad = 1.6;
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [ctr[0] - rr - pad, ctr[1] + rr + pad, ctr[0] + rr + pad, ctr[1] - rr - pad],
+    keepaspectratio: true, axis: false, showCopyright: false, showNavigation: false
+});
+
+board.create('circle', [ctr, rr], {strokeColor: '#888', strokeWidth: 1.5, fixed: true});
+
+var A = board.create('point', Ap, {name: 'A', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-12, -2], anchorX: 'right', anchorY: 'middle'}});
+var B = board.create('point', Bp, {name: 'B', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [10, 8], anchorX: 'left', anchorY: 'bottom'}});
+var C = board.create('point', Cp, {name: 'C', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [-10, -8], anchorX: 'right', anchorY: 'top'}});
+var D = board.create('point', Dp, {name: 'D', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [0, 12], anchorX: 'middle', anchorY: 'bottom'}});
+var P = board.create('point', [0, 0], {name: 'P', size: 2, fixed: true, fillColor: '#333', strokeColor: '#333', label: {offset: [9, -4], anchorX: 'left', anchorY: 'top'}});
+
+board.create('segment', [A, B], {strokeColor: '#1565c0', strokeWidth: 2.5, fixed: true});
+board.create('segment', [C, D], {strokeColor: '#d32f2f', strokeWidth: 2.5, fixed: true});
+
+var nAB = [-uy, ux], nCD = [-vy, vx], off = 0.55;
+function lbl(p1, p2, n, sgn, txt) {
+    board.create('text',
+        [(p1[0] + p2[0]) / 2 + sgn * off * n[0], (p1[1] + p2[1]) / 2 + sgn * off * n[1], txt],
+        {anchorX: 'middle', anchorY: 'middle', fontSize: 13, fixed: true, cssStyle: 'color:#333'});
+}
+lbl(Ap, [0, 0], nAB,  1, AP + ' cm');
+lbl([0, 0], Bp, nAB, -1, PB + ' cm');
+lbl(Cp, [0, 0], nCD,  1, CP + ' cm');
+lbl([0, 0], Dp, nCD,  1, 'x cm');
+[[/jsxgraph]]
+
+<div>\( PD = \) [[input:ans1]]\(\text{ cm}\) [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>When two chords intersect inside a circle, the product of the two parts of one chord equals the product of the two parts of the other:</p>
+\[ AP \cdot PB = CP \cdot PD. \]
+<p>Substituting the given lengths,</p>
+\[ {@AP@} \cdot {@PB@} = {@CP@} \cdot PD \;\;\Longrightarrow\;\; PD = \frac{{@AP@} \cdot {@PB@}}{{@CP@}} = \frac{{@AP*PB@}}{{@CP@}} = {@ta1@}. \]
+<p>So \(PD = {@ta1@}\) cm.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Design backwards via the factor parametrisation
+       AP = p*r,  PB = q*s,  CP = p*s,  PD = q*r,
+   which makes  AP*PB = CP*PD = p*q*r*s  hold automatically for ANY p,q,r,s.
+   Build the set of admissible (p,q,r,s) on the fly from the constraints, then pick
+   one at random. Constraints: p#q and r#s (so each given length and the answer are
+   distinct, and the additive distractor differs from the answer); AP#PB (the two
+   mispairing distractors stay distinct); CP#PD (answer not equal to CP); all four
+   parts in [2,12]; chord totals <= 15. Over this whole space the answer and the
+   three distractors are pairwise distinct, so marking is deterministic. */
+params : sublist(
+  create_list([p,q,r,s], p,1,4, q,1,4, r,2,5, s,2,5),
+  lambda([z], is(
+        z[1]#z[2] and z[3]#z[4]
+    and z[1]*z[3]#z[2]*z[4] and z[1]*z[4]#z[2]*z[3]
+    and z[1]*z[3]>=2 and z[1]*z[3]<=12 and z[2]*z[4]>=2 and z[2]*z[4]<=12
+    and z[1]*z[4]>=2 and z[1]*z[4]<=12 and z[2]*z[3]>=2 and z[2]*z[3]<=12
+    and z[1]*z[3]+z[2]*z[4]<=15 and z[1]*z[4]+z[2]*z[3]<=15 )));
+sel : rand(params);
+AP : sel[1]*sel[3];
+PB : sel[2]*sel[4];
+CP : sel[1]*sel[4];
+PD : sel[2]*sel[3];
+ta1 : PD;
+wrong_add : AP + PB - CP;    /* additive slip: AP + PB = CP + PD */
+wrong_cross : CP*PB/AP;      /* mispairing: AP*PD = CP*PB  (paired AP with PD) */
+wrong_pair : AP*CP/PB;       /* mispairing: AP*CP = PD*PB  (paired AP with CP) */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( AP={@AP@},\ PB={@PB@},\ CP={@CP@},\ PD={@ta1@} \) cm</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct: PD = AP*PB/CP.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Additive slip: used AP + PB = CP + PD.</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_add</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-additive</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you combined the lengths by adding. For two chords meeting inside a circle it is the <em>products</em> of the two parts that are equal, not the sums. Set up \( AP\cdot PB = CP\cdot PD \) and try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Mispairing AP*PD = CP*PB (paired AP with PD).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_cross</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-cross</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you set \( AP\cdot PD = CP\cdot PB \), pairing \(AP\) with \(PD\). But each product should multiply the two parts of the <em>same</em> chord: \( AP\cdot PB \) for chord \(AB\), and \( CP\cdot PD \) for chord \(CD\). Set those equal and try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Mispairing AP*CP = PD*PB (paired AP with CP).</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_pair</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-mispair</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you set \( AP\cdot CP = PD\cdot PB \), pairing \(AP\) with \(CP\) &mdash; but those are parts of <em>different</em> chords. Use \( AP\cdot PB \) for chord \(AB\) and \( CP\cdot PD \) for chord \(CD\), then solve.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Use the intersecting-chords relationship: the product of the two parts of one chord equals the product of the two parts of the other. Form an equation in \(PD\) and solve it. Have another go.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Additive misconception</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_add</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-additive</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Mispairing AP*PD = CP*PB</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_cross</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-cross</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Mispairing AP*CP = PD*PB</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_pair</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-mispair</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Other wrong value (generic)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(ta1+100,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-other</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
