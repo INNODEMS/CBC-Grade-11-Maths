@@ -1,5 +1,5 @@
 const board = JXG.JSXGraph.initBoard('jsxgraph-completing-square', {
-    boundingbox: [-1.5, 12, 11.5, -3.5],
+    boundingbox: [-1.5, 13, 13, -6.5],
     axis: false,
     grid: false,
     showNavigation: false,
