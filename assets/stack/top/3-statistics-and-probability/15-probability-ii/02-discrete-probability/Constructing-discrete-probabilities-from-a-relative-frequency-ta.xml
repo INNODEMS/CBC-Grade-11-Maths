@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Constructing discrete probabilities from a relative frequency table</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A traffic enumerator at a busy junction in Mombasa records the number of heavy cargo trucks (\(X\)) that pass through during a 10-minute window. They collect data over many days and compile the frequency table below:</p>
+
+<table style="width: 50%; text-align: center; border-collapse: collapse; margin-bottom: 20px;" border="1" cellpadding="5">
+  <tbody>
+    <tr style="background-color: #eceff1;">
+      <td><b>Number of trucks (\(X\))</b></td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td><b>Frequency (Days)</b></td>
+      <td>{@f0@}</td>
+      <td>{@f1@}</td>
+      <td>{@f2@}</td>
+      <td>{@f3@}</td>
+      <td>{@f4@}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><b>a) </b> Calculate the total number of 10-minute windows (days) recorded in this study.</p>
+<p>\(\text{Total} =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> If a single 10-minute window is selected at random from the study, estimate the probability that <b>exactly 3 trucks</b> pass by.</p>
+<p><i>(Enter your answer as a fraction).</i></p>
+<p>\(P =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Estimate the probability that <b>strictly fewer than 3 trucks</b> pass during a randomly selected window.</p>
+<p><i>(Enter your answer as a fraction).</i></p>
+<p>\(P =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Total Observations</b><br>
+The total number of recorded windows is the sum of all the frequencies in the table:</p>
+<p style="margin-left: 20px;">\( \displaystyle \text{Total} = {@f0@} + {@f1@} + {@f2@} + {@f3@} + {@f4@} = {@ta1@} \)</p>
+
+<p><b>Part b: Relative Frequency</b><br>
+To estimate the discrete probability, we convert the raw frequency into a relative frequency by dividing by the total number of observations:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X = 3) = \frac{\text{Frequency of } X=3}{\text{Total}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X = 3) = \frac{{@f3@}}{{@ta1@}} } \)</p>
+
+<p><b>Part c: Cumulative Probability</b><br>
+The phrase "strictly fewer than 3" translates to the mathematical inequality \(X < 3\). This means we must include the outcomes for \(X = 0\), \(X = 1\), and \(X = 2\), but we <b>do not</b> include \(X = 3\).</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X < 3) = P(X=0) + P(X=1) + P(X=2) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X < 3) = \frac{{@f0@}}{{@ta1@}} + \frac{{@f1@}}{{@ta1@}} + \frac{{@f2@}}{{@ta1@}} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X < 3) = \frac{{@f0@} + {@f1@} + {@f2@}}{{@ta1@}} = \frac{{@f0 + f1 + f2@}}{{@ta1@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X < 3) = {@ta3@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize frequencies using explicit lists to generate over 10,000 unique variants */
+f0 : rand([2, 3, 4, 5, 6, 7, 8]);
+f1 : rand([10, 12, 14, 16, 18, 20]);
+f2 : rand([22, 24, 26, 28, 30, 32]);
+f3 : rand([11, 13, 15, 17, 19, 21]);
+f4 : rand([3, 4, 5, 6, 7, 8, 9]);
+
+/* Total observations */
+tot : f0 + f1 + f2 + f3 + f4;
+
+/* Calculate probabilities */
+p_eq_3 : f3 / tot;
+
+/* P(X < 3) means X = 0, 1, 2 */
+p_less_3 : (f0 + f1 + f2) / tot;
+
+/* Distractor for P(X <= 3) which incorrectly includes 3 */
+p_less_eq_3 : (f0 + f1 + f2 + f3) / tot;
+
+/* Target answers */
+ta1 : tot;
+ta2 : p_eq_3;
+ta3 : p_less_3;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Frequencies: {@f0@}, {@f1@}, {@f2@}, {@f3@}, {@f4@}. Total: {@ta1@}. P(X=3) = {@ta2@}. P(X<3) = {@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Discrete Probability (Relative Frequency)</p>
+<p id="description">Grade 11 CBE: Converting raw frequency data into discrete and cumulative probabilities using relative frequency.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of total</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully summed the frequencies to find the total sample size.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Add all the values in the "Frequency" row together.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of relative probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully converted the frequency into a discrete probability.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they just entered the raw frequency</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>f3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered the raw frequency (the number of days). To find the <b>probability</b>, you must divide this frequency by the total number of observations you calculated in part (a).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. The relative probability is the frequency of the event divided by the total number of observations.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of cumulative probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly summed the probabilities for \(X=0, 1,\) and \(2\), while properly excluding \(X=3\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they incorrectly included X=3</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>p_less_eq_3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.3</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability for \(X \le 3\) by including the frequency for 3 trucks. The question asked for <b>strictly fewer</b> than 3 trucks (\(X < 3\)), so you must only sum the probabilities for 0, 1, and 2.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Identify all outcomes where the number of trucks is strictly less than 3, sum their frequencies, and divide by the total observations.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1091162276</deployedseed>
+    <deployedseed>484166494</deployedseed>
+    <deployedseed>1408768899</deployedseed>
+    <deployedseed>388550403</deployedseed>
+    <deployedseed>879065601</deployedseed>
+    <deployedseed>458963740</deployedseed>
+    <deployedseed>1421598131</deployedseed>
+    <deployedseed>1024568147</deployedseed>
+    <deployedseed>1692662857</deployedseed>
+    <deployedseed>1136088072</deployedseed>
+    <deployedseed>368550208</deployedseed>
+    <deployedseed>1469826482</deployedseed>
+    <deployedseed>702444738</deployedseed>
+    <deployedseed>1227868583</deployedseed>
+    <deployedseed>1201457108</deployedseed>
+    <deployedseed>334606597</deployedseed>
+    <deployedseed>1868536971</deployedseed>
+    <deployedseed>651066638</deployedseed>
+    <deployedseed>1191782071</deployedseed>
+    <deployedseed>1793562339</deployedseed>
+    <deployedseed>304431824</deployedseed>
+    <deployedseed>463624641</deployedseed>
+    <deployedseed>655998670</deployedseed>
+    <deployedseed>845624145</deployedseed>
+    <deployedseed>1824754358</deployedseed>
+    <deployedseed>694811719</deployedseed>
+    <deployedseed>2114780096</deployedseed>
+    <deployedseed>349400532</deployedseed>
+    <deployedseed>1094907835</deployedseed>
+    <deployedseed>2130253252</deployedseed>
+    <deployedseed>490239729</deployedseed>
+    <deployedseed>712125625</deployedseed>
+    <deployedseed>1737946960</deployedseed>
+    <deployedseed>63301833</deployedseed>
+    <deployedseed>1829803323</deployedseed>
+    <deployedseed>953378165</deployedseed>
+    <deployedseed>1272686474</deployedseed>
+    <deployedseed>821095125</deployedseed>
+    <deployedseed>1115650938</deployedseed>
+    <deployedseed>478434959</deployedseed>
+    <deployedseed>831410345</deployedseed>
+    <deployedseed>290721944</deployedseed>
+    <deployedseed>1418892173</deployedseed>
+    <deployedseed>15160026</deployedseed>
+    <deployedseed>1527038732</deployedseed>
+    <deployedseed>1740871462</deployedseed>
+    <deployedseed>1193493103</deployedseed>
+    <deployedseed>255337324</deployedseed>
+    <deployedseed>54068706</deployedseed>
+    <deployedseed>900390573</deployedseed>
+    <deployedseed>902796014</deployedseed>
+    <deployedseed>2119329581</deployedseed>
+    <deployedseed>25257545</deployedseed>
+    <deployedseed>996510507</deployedseed>
+    <deployedseed>1108112235</deployedseed>
+    <deployedseed>969596441</deployedseed>
+    <deployedseed>1350701109</deployedseed>
+    <deployedseed>147993618</deployedseed>
+    <deployedseed>2014886394</deployedseed>
+    <deployedseed>476119063</deployedseed>
+    <deployedseed>191686258</deployedseed>
+    <deployedseed>1276167464</deployedseed>
+    <deployedseed>906192297</deployedseed>
+    <deployedseed>1299053860</deployedseed>
+    <deployedseed>435848321</deployedseed>
+    <deployedseed>355399975</deployedseed>
+    <deployedseed>649119209</deployedseed>
+    <deployedseed>1034102468</deployedseed>
+    <deployedseed>137568563</deployedseed>
+    <deployedseed>1003058116</deployedseed>
+    <deployedseed>191255273</deployedseed>
+    <deployedseed>759741692</deployedseed>
+    <deployedseed>1784266841</deployedseed>
+    <deployedseed>1842496651</deployedseed>
+    <deployedseed>264203187</deployedseed>
+    <deployedseed>1226474102</deployedseed>
+    <deployedseed>384901571</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Entered raw frequency for part b, included X=3 in part c</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>f3</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>p_less_eq_3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.3000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3 + 10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

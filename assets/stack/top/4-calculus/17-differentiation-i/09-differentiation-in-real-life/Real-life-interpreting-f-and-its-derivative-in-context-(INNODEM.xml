@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Real life: interpreting f and its derivative in context (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Let \( {@fs@}({@vs@}) \) be {@fdesc@}, where \( {@vs@} \) is the number of {@xpl@} {@xafter@}.</p>
+<p>You are told that</p>
+\[ {@fs@}({@bb@}) = {@fb@}, \qquad {@fs@}'({@bb@}) = {@dfb@}, \qquad {@fs@}'({@cc2@}) = 0. \]
+<p>(a) What are the units of \( {@fs@}'({@vs@}) \)?</p>
+<div>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Which statement correctly interprets \( {@fs@}'({@bb@}) = {@dfb@} \)?</p>
+<div>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(c) Which statement correctly interprets \( {@fs@}'({@cc2@}) = 0 \)?</p>
+<div>[[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The derivative \( {@fs@}'({@vs@}) \) is the <strong>instantaneous rate of change</strong> of {@qshort@}.</p>
+<p><strong>(a)</strong> Its units are always \( \dfrac{\text{units of the output}}{\text{unit of the input}} \): here, <strong>{@fpl@} per {@xsg@}</strong>.</p>
+<p><strong>(b)</strong> \( {@fs@}'({@bb@}) = {@dfb@} \) is {@if dfb > 0 then "positive" else "negative"@}, so at \( {@vs@} = {@bb@} \) {@qshort@} is <strong>{@if dfb > 0 then "increasing" else "decreasing"@}</strong> at a rate of {@abs(dfb)@} {@fpl@} per {@xsg@}. The value \( {@fs@}({@bb@}) = {@fb@} \) is a different fact: it tells you how much there is at that instant, not how fast it is changing.</p>
+<p><strong>(c)</strong> \( {@fs@}'({@cc2@}) = 0 \) means that at \( {@vs@} = {@cc2@} \) {@qshort@} is momentarily neither increasing nor decreasing: the tangent to the graph is horizontal there. It does <em>not</em> mean that the quantity itself is zero.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Each context: [symbol, description, input variable, input plural, 'after' phrase,
+   output plural, output singular, input singular, short name, typical value]. */
+ctxs : [
+  [V, "the volume of water, in litres, in a school water tank", t, "minutes", "after noon", "litres", "litre", "minute", "the volume of water in the tank", 600],
+  [P, "the population of a town", t, "years", "after 2020", "people", "person", "year", "the population", 52000],
+  [T, "the temperature of a cup of tea, in degrees Celsius", t, "minutes", "after it was poured", "degrees Celsius", "degree Celsius", "minute", "the temperature of the tea", 64],
+  [B, "the balance, in KSh, of a chama savings account", t, "months", "after it was opened", "KSh", "shilling", "month", "the balance", 15000],
+  [H, "the height, in metres, of a weather balloon above the ground", t, "seconds", "after release", "metres", "metre", "second", "the height of the balloon", 450]];
+cx : rand(ctxs);
+fs : cx[1];
+fdesc : cx[2];
+vs : cx[3];
+xpl : cx[4];
+xafter : cx[5];
+fpl : cx[6];
+fsg : cx[7];
+xsg : cx[8];
+qshort : cx[9];
+fb : cx[10];
+bb : rand([10, 20, 30, 40]);
+cc2 : bb + rand([5, 15, 25]);
+dfb : rand([-1, 1])*rand([3, 5, 8, 12, 20]);
+dirw : if dfb > 0 then "increasing" else "decreasing";
+odirw : if dfb > 0 then "decreasing" else "increasing";
+/* Key 1 is correct in every dropdown. */
+opts1 : random_permutation([
+  [1, true,  sconcat(fpl, " per ", xsg)],
+  [2, false, fpl],
+  [3, false, xpl],
+  [4, false, sconcat(xpl, " per ", fsg)]]);
+opts2 : random_permutation([
+  [1, true,  sconcat("At ", vs, " = ", bb, ", ", qshort, " is ", dirw, " at a rate of ", abs(dfb), " ", fpl, " per ", xsg, ".")],
+  [2, false, sconcat("At ", vs, " = ", bb, ", ", qshort, " is ", dfb, " ", fpl, ".")],
+  [3, false, sconcat("At ", vs, " = ", bb, ", ", qshort, " is ", odirw, " at a rate of ", abs(dfb), " ", fpl, " per ", xsg, ".")],
+  [4, false, sconcat("Between ", vs, " = 0 and ", vs, " = ", bb, ", ", qshort, " changed by ", dfb, " ", fpl, " altogether.")]]);
+opts3 : random_permutation([
+  [1, true,  sconcat("At ", vs, " = ", cc2, ", ", qshort, " is momentarily neither increasing nor decreasing.")],
+  [2, false, sconcat("At ", vs, " = ", cc2, ", ", qshort, " is zero.")],
+  [3, false, sconcat(qshort, " never changes.")],
+  [4, false, sconcat("At ", vs, " = ", cc2, ", ", qshort, " is changing at its fastest rate.")]]);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( {@fs@}({@vs@}),\ {@fs@}'({@bb@})={@dfb@},\ {@fs@}'({@cc2@})=0 \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>1</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>dropdown</type>
+      <tans>opts1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>dropdown</type>
+      <tans>opts2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>dropdown</type>
+      <tans>opts3</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: outputonly</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-outputonly</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Those are the units of \( {@fs@} \) itself. A rate of change compares a change in output to a change in input: (output units) per (input unit).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: inverted</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-inverted</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is upside down. \( {@fs@}' \) measures how much the <em>output</em> changes for each one-unit change in the <em>input</em>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. The units of a derivative are (units of the output) per (unit of the input).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: value</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-value</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This confuses the derivative with the function. \( {@fs@}({@bb@}) = {@fb@} \) is the amount; \( {@fs@}'({@bb@}) \) is how fast it is changing.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the sign of \( {@dfb@} \). A positive derivative means increasing, and a negative one means decreasing.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: total</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-total</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That describes a <em>total change</em> over an interval. The derivative is an <em>instantaneous</em> rate at the single moment \( {@vs@} = {@bb@} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: valuezero</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-valuezero</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>A zero <em>derivative</em> does not mean a zero <em>value</em>. It means the quantity has momentarily stopped changing, like a ball at the top of its flight.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: never</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-never</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>\( {@fs@}'({@cc2@}) = 0 \) is about the single instant \( {@vs@} = {@cc2@} \) only. At other times \( {@fs@}' \) can be non-zero (for example \( {@fs@}'({@bb@}) = {@dfb@} \)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: fastest</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-fastest</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>When the rate of change is \( 0 \) the quantity is not changing at all at that instant, which is the opposite of changing fastest.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Value confusions</description>
+      <testinput>
+        <name>ans1</name>
+        <value>2</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-outputonly</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-value</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-valuezero</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Units of input only / sign / never</description>
+      <testinput>
+        <name>ans1</name>
+        <value>3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>3</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-sign</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-never</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Inverted / total / fastest</description>
+      <testinput>
+        <name>ans1</name>
+        <value>4</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>4</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-inverted</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-total</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-fastest</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

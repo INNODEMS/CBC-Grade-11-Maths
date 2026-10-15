@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>What does it mean when a parabola and a line do not intersect?</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graphs of the following two equations are drawn on the grid.</p>
+\[ \color{red}{ {#eq1tex#} } \qquad \text{and} \qquad \color{blue}{ {#eq2tex#} } \]
+[[jsxgraph width="560px" height="560px"]]
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-8.8, 8.8, 8.8, -8.8],
+    axis: false, grid: false, keepaspectratio: true,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+/* labelled square grid, one line per whole number */
+var gi;
+for (gi = -9; gi != 10; gi++) {
+    board.create('line', [ [gi, 0], [gi, 1] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+    board.create('line', [ [0, gi], [1, gi] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+board.create('axis', [ [0,0], [1,0] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('axis', [ [0,0], [0,1] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('text', [8.6, 0.5, 'x'], {fixed: true, anchorX: 'right', fontSize: 16});
+board.create('text', [0.3, 8.6, 'y'], {fixed: true, anchorY: 'top', fontSize: 16});
+board.create('text', [-0.12, -0.1, '0'], {fixed: true, anchorX: 'right', anchorY: 'top', fontSize: 12});
+var aa = ({#aa#}), pp = ({#pp#}), qq = ({#qq#}), mm = ({#mm#}), nn = ({#nn#});
+var parab = board.create('functiongraph', [function(t) { return aa * t * t + pp * t + qq; }, -8.8, 8.8],
+    {strokeColor: '#c62828', strokeWidth: 3, fixed: true, highlight: false});
+var L1 = board.create('point', [0, nn],      {visible: false, withLabel: false, name: ''});
+var L2 = board.create('point', [1, mm + nn], {visible: false, withLabel: false, name: ''});
+var ln = board.create('line', [L1, L2], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false});
+[[/jsxgraph]]
+<p><strong>(a)</strong> Look carefully at the two graphs. What does this tell you about the solutions of the simultaneous equations?</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>
+<p><strong>(b)</strong> Select <em>all</em> the statements that are true for these simultaneous equations.</p>
+<div>[[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>What “solving simultaneous equations” means on a graph.</strong> A solution is a pair \( (x, y) \) that makes <em>both</em> equations true at once. A point on the red curve satisfies the first equation and a point on the blue line satisfies the second, so a solution is a point that lies on <em>both</em> graphs: an <strong>intersection point</strong>. The number of intersection points is the number of solutions.</p>
+[[jsxgraph width="560px" height="560px"]]
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-8.8, 8.8, 8.8, -8.8],
+    axis: false, grid: false, keepaspectratio: true,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+/* labelled square grid, one line per whole number */
+var gi;
+for (gi = -9; gi != 10; gi++) {
+    board.create('line', [ [gi, 0], [gi, 1] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+    board.create('line', [ [0, gi], [1, gi] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+board.create('axis', [ [0,0], [1,0] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('axis', [ [0,0], [0,1] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('text', [8.6, 0.5, 'x'], {fixed: true, anchorX: 'right', fontSize: 16});
+board.create('text', [0.3, 8.6, 'y'], {fixed: true, anchorY: 'top', fontSize: 16});
+board.create('text', [-0.12, -0.1, '0'], {fixed: true, anchorX: 'right', anchorY: 'top', fontSize: 12});
+var aa = ({#aa#}), pp = ({#pp#}), qq = ({#qq#}), mm = ({#mm#}), nn = ({#nn#});
+var parab = board.create('functiongraph', [function(t) { return aa * t * t + pp * t + qq; }, -8.8, 8.8],
+    {strokeColor: '#c62828', strokeWidth: 3, fixed: true, highlight: false});
+var L1 = board.create('point', [0, nn],      {visible: false, withLabel: false, name: ''});
+var L2 = board.create('point', [1, mm + nn], {visible: false, withLabel: false, name: ''});
+var ln = board.create('line', [L1, L2], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false});
+
+/* smallest vertical gap: a short dashed segment between the two graphs at x = xs */
+var xs = ({#xs#}), yp = ({#ypar#}), yl = ({#ylin#});
+board.create('segment', [ [xs, yp], [xs, yl] ], {strokeColor: '#2e7d32', strokeWidth: 3, dash: 2, fixed: true, highlight: false});
+board.create('point', [xs, yp], {name: '', size: 4, strokeColor: '#2e7d32', fillColor: '#2e7d32', fixed: true});
+board.create('point', [xs, yl], {name: '', size: 4, strokeColor: '#2e7d32', fillColor: '#2e7d32', fixed: true});
+/* put the label in the emptiest direction: furthest (in pixels) from both graphs, the axes and the board edge */
+function clearAt(x, y) {
+    var u = board.unitX, v = board.unitY;
+    var dPar = Math.abs(y - (aa * x * x + pp * x + qq)) * v / Math.sqrt(1 + Math.pow((2 * aa * x + pp) * v / u, 2));
+    var dLin = Math.abs(y - mm * x - nn) * v / Math.sqrt(1 + Math.pow(mm * v / u, 2));
+    return Math.min(dPar, dLin, Math.abs(x) * u - 18, Math.abs(y) * v - 18, (8.8 - Math.abs(x)) * u, (8.8 - Math.abs(y)) * v);
+}
+var mx = xs, my = (yp + yl) / 2, cands = [], k;
+for (k = 0; k != 24; k++) { cands.push(k * Math.PI / 12); }
+var sc = cands.map(function(t) {
+    var cx = mx + 64 * Math.cos(t) / board.unitX, cy = my + 64 * Math.sin(t) / board.unitY;
+    return Math.min(clearAt(cx, cy), clearAt(cx - 34 / board.unitX, cy), clearAt(cx + 34 / board.unitX, cy));
+});
+var bt = cands[sc.indexOf(Math.max.apply(null, sc))];
+board.create('text', [mx + 64 * Math.cos(bt) / board.unitX, my + 64 * Math.sin(bt) / board.unitY, 'gap = {#gaptxt#}'],
+    {anchorX: 'middle', anchorY: 'middle', fontSize: 14, fixed: true, highlight: false});
+[[/jsxgraph]]
+<p><strong>Reading this graph.</strong> The red curve \( {#eq1tex#} \) and the blue line \( {#eq2tex#} \) never touch or cross. The green segment marks where the vertical gap between them is smallest: at \( x={@xs@} \) it is still {#gaptxt#} units, and everywhere else it is bigger. A gap that never becomes zero means there is no point on both graphs, so <strong>the simultaneous equations have no real solution</strong>. (They are called <em>inconsistent</em>: no values of \( x \) and \( y \) make both equations true together.)</p>
+<p><strong>Why the part of the plane we cannot see does not matter.</strong> The grid shows only a small part of the plane, so we confirm with algebra that the graphs never meet anywhere. At an intersection both equations give the same \( y \), so set the two expressions equal:</p>
+\[ {#rhs1#} = {#rhs2#} \quad\Longrightarrow\quad {#quad#} = 0. \]
+<p>A quadratic equation \( ax^2+bx+c=0 \) has real solutions only if its discriminant \( b^2-4ac \) is not negative. Here \( a={@aa@},\ b={@cq@},\ c={@cr@} \), so</p>
+\[ b^2-4ac = ({@cq@})^2-4({@aa@})({@cr@}) = {@dd@} &lt; 0. \]
+<p>The discriminant is negative, so the equation has no real roots: there is no real \( x \) at which the curve and the line meet, and therefore no real solution to the simultaneous equations.</p>
+<p><strong>Why the other options in (a) are wrong.</strong> “Exactly one solution” would need the line to just touch the curve (a tangent), but here there is always a gap. “Two solutions” would need the line to cut the curve twice. “Infinitely many” would need the two graphs to be the same. And a solution cannot be hiding outside the picture, because the algebra above shows that the graphs do not meet anywhere on the plane.</p>
+<p><strong>Part (b).</strong> The true statements are: no point satisfies both equations; the quadratic obtained by equating the two expressions has a negative discriminant (no real roots); and the equations are inconsistent. The line is <em>not</em> a tangent (a tangent would touch the curve once), and extending the grid would not make the graphs meet.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* ---------- DESIGN BACKWARDS: a parabola and a line that NEVER meet ----------
+   parabola  y = a(x-h)^2 + k   (a = 1, -1, 2 or -2: opens up or down, wide or narrow)
+   line      y = m x + n
+   Their difference is  D(x) = a x^2 + (p-m) x + (q-n)  with  p = -2ah,  q = ah^2 + k.
+   D has no real root exactly when n lies strictly on the "outside" of the tangent value
+        n0 = k - m h - m^2/(4a):   below n0 when the parabola opens up, above n0 when it opens down.
+   So n = floor(n0) - s (a>0) or ceiling(n0) + s (a<0) with s = 1 or 2 gives a vertical gap of at least 1 everywhere,
+   i.e. discriminant < 0, so there is no intersection ANYWHERE on the plane, not just on the grid.
+   The pool [a,h,k,m,s] is vetted so that the smallest vertical gap lies inside the 16 x 16 window and the
+   perpendicular distance from the parabola to the line is at least 0.9 (so it never looks like touching). */
+pool : [
+    [2,-2,1,-2,2],
+    [-2,-3,4,-2,2],
+    [-2,1,-2,2,2],
+    [-2,1,-3,-2,2],
+    [2,-3,4,-2,2],
+    [-2,0,1,1,1],
+    [-1,1,-1,1,2],
+    [-1,0,-2,1,2],
+    [2,-1,-1,-1,2],
+    [-1,3,3,0,1],
+    [-2,0,-2,0,1],
+    [2,-2,-4,2,2],
+    [-1,1,-3,0,2],
+    [-1,2,-2,1,1],
+    [1,0,-3,0,2],
+    [-1,-2,-2,-1,2],
+    [1,1,2,1,1],
+    [2,1,1,-2,2],
+    [-2,0,-1,0,1],
+    [2,-1,-2,1,2],
+    [1,-1,1,1,1],
+    [1,-2,2,-1,2],
+    [-2,2,-2,2,2],
+    [2,-2,2,-1,1],
+    [2,2,-3,0,2],
+    [1,0,-1,-1,1],
+    [-2,1,-4,-2,2],
+    [2,-2,0,1,2],
+    [2,0,2,2,2],
+    [1,0,-4,1,1],
+    [-2,0,3,1,2],
+    [-2,1,-3,0,1],
+    [-2,1,-2,-1,2],
+    [-2,2,4,0,1],
+    [-2,1,-1,-1,2],
+    [-1,1,-1,-1,2],
+    [-1,0,3,-1,2],
+    [2,1,-2,1,2],
+    [-2,-1,-4,2,2],
+    [-1,-2,-1,1,2],
+    [1,0,3,-1,1],
+    [2,-1,-2,2,2],
+    [1,-1,2,0,1],
+    [1,0,1,-1,2],
+    [2,1,0,2,2],
+    [-1,-1,-1,1,2],
+    [-2,3,1,-1,1],
+    [-2,2,-4,-2,2],
+    [2,-1,3,-2,2],
+    [-2,0,1,-1,1],
+    [-1,-1,-1,0,1],
+    [1,-2,-1,-1,2],
+    [2,3,-1,-1,1],
+    [-1,2,-4,0,2],
+    [-2,2,2,-1,1],
+    [-2,-1,3,1,1],
+    [-2,0,0,1,1],
+    [2,3,-1,0,1],
+    [2,-1,4,-1,2],
+    [2,3,3,0,1],
+    [1,3,1,1,2],
+    [1,-1,1,0,1],
+    [1,-3,3,-1,1],
+    [1,3,-1,1,1]
+];
+cfg : rand(pool);
+aa : cfg[1];  hh : cfg[2];  kk : cfg[3];  mm : cfg[4];  ss : cfg[5];
+pp : -2*aa*hh;
+qq : aa*hh^2 + kk;
+n0 : kk - mm*hh - mm^2/(4*aa);
+nn : if is(aa>0) then floor(n0) - ss else ceiling(n0) + ss;
+
+/* what the solution needs */
+cq   : pp - mm;                     /* coefficient of x in  a x^2 + (p-m) x + (q-n) = 0 */
+cr   : qq - nn;                     /* constant term */
+dd   : cq^2 - 4*aa*cr;              /* discriminant: always negative here */
+xs   : -cq/(2*aa);                  /* x where the graphs are closest */
+ypar : aa*xs^2 + pp*xs + qq;
+ylin : mm*xs + nn;
+gap  : abs(ypar - ylin);
+
+/* readable equations */
+sgnterm(c) := if is(c<0) then sconcat(" - ", string(-c)) else sconcat(" + ", string(c));
+tm(c,v) := if is(c=0) then "" else if is(c=1) then sconcat(" + ",v) else if is(c=-1) then sconcat(" - ",v) else if is(c<0) then sconcat(" - ",string(-c),v) else sconcat(" + ",string(c),v);
+cn(c) := if is(c=0) then "" else sgnterm(c);
+lead(c,v) := if is(c=1) then v else if is(c=-1) then sconcat("-",v) else sconcat(string(c),v);
+rhs1 : sconcat(lead(aa,"x^2"), tm(pp,"x"), cn(qq));
+rhs2 : if is(mm=0) then string(nn) else sconcat(lead(mm,"x"), cn(nn));
+quad : sconcat(lead(aa,"x^2"), tm(cq,"x"), cn(cr));
+eq1tex : sconcat("y = ", rhs1);
+eq2tex : sconcat("y = ", rhs2);
+xstxt  : if is(xs=floor(xs)) then string(xs) else string(float(xs));
+gaptxt : if is(gap=floor(gap)) then string(gap) else string(float(round(100*gap)/100));
+
+/* part (a): radio, exactly one correct option; part (b): checkbox, statements 1, 2 and 5 are true.
+   The order of the options is randomised with random_permutation (STACK shows them in the order of the list). */
+ta1 : random_permutation([[1, true,  "There is no real solution, because there is no point that lies on both graphs."],
+       [2, false, sconcat("There is exactly one solution, where the graphs are closest, at x = ", xstxt, ".")],
+       [3, false, "There are two solutions, one on each side of the place where the graphs are closest."],
+       [4, false, "There are infinitely many solutions."],
+       [5, false, "There is a solution, but it lies outside the part of the plane that is drawn."]]);
+ta2 : random_permutation([[1, true,  "No point (x, y) satisfies both equations at the same time."],
+       [2, true,  "If the two expressions for y are set equal, the resulting quadratic equation has no real roots (its discriminant is negative)."],
+       [3, false, "The line is a tangent to the parabola."],
+       [4, false, "The graphs would meet if the grid were extended far enough."],
+       [5, true,  "The two equations are inconsistent: they cannot both be true for the same x and y."]]);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( {#eq1tex#}, \; {#eq2tex#} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>radio</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>checkbox</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>correct option: no real solution</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>closest point mistaken for a solution</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-closest</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The place where the graphs are <em>closest</em> is not a solution. A solution must lie <em>on</em> both graphs, and here there is still a gap between them.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>two solutions</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-two</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Two solutions would mean that the line crosses the curve in two places. Look again: do these graphs cross anywhere?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>infinitely many</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-inf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Infinitely many solutions would need every point of one graph to lie on the other, i.e. the two equations would describe the same graph. A parabola and a line are never the same graph.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>outside the picture</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>5</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-outside</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The graphs do not meet anywhere on the plane, not only inside the picture. (The worked solution shows why using algebra.)</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-other</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sel : setify(ans2);
+truth : {1, 2, 5};
+nc : 5 - cardinality(symmdifference(sel, truth));</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>all five statements classified correctly</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nc</sans>
+        <tans>5</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-all</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>exactly one wrong: half marks</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nc</sans>
+        <tans>4</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-almost</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Almost: exactly one of the statements is classified wrongly (a true statement left out, or a false one ticked). Think again about what it means for a point to be a solution.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Several of the statements are classified wrongly. Remember: a solution is a point that lies on <em>both</em> graphs. Do these graphs have any point in common?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>3000</deployedseed>
+    <deployedseed>3044</deployedseed>
+    <deployedseed>3090</deployedseed>
+    <deployedseed>3138</deployedseed>
+    <deployedseed>3188</deployedseed>
+    <deployedseed>3240</deployedseed>
+    <deployedseed>3294</deployedseed>
+    <deployedseed>3350</deployedseed>
+    <deployedseed>3408</deployedseed>
+    <deployedseed>3468</deployedseed>
+    <deployedseed>3530</deployedseed>
+    <deployedseed>3594</deployedseed>
+    <deployedseed>3660</deployedseed>
+    <deployedseed>3728</deployedseed>
+    <deployedseed>3798</deployedseed>
+    <deployedseed>3870</deployedseed>
+    <deployedseed>3944</deployedseed>
+    <deployedseed>4020</deployedseed>
+    <deployedseed>4098</deployedseed>
+    <deployedseed>4178</deployedseed>
+    <deployedseed>4260</deployedseed>
+    <deployedseed>4344</deployedseed>
+    <deployedseed>4430</deployedseed>
+    <deployedseed>4518</deployedseed>
+    <deployedseed>4608</deployedseed>
+    <deployedseed>4700</deployedseed>
+    <deployedseed>4794</deployedseed>
+    <deployedseed>4890</deployedseed>
+    <deployedseed>4988</deployedseed>
+    <deployedseed>5088</deployedseed>
+    <deployedseed>5190</deployedseed>
+    <deployedseed>5294</deployedseed>
+    <deployedseed>5400</deployedseed>
+    <deployedseed>5508</deployedseed>
+    <deployedseed>5618</deployedseed>
+    <deployedseed>5730</deployedseed>
+    <deployedseed>5844</deployedseed>
+    <deployedseed>5960</deployedseed>
+    <deployedseed>6078</deployedseed>
+    <deployedseed>6198</deployedseed>
+    <deployedseed>6320</deployedseed>
+    <deployedseed>6444</deployedseed>
+    <deployedseed>6570</deployedseed>
+    <deployedseed>6698</deployedseed>
+    <deployedseed>6828</deployedseed>
+    <deployedseed>6960</deployedseed>
+    <deployedseed>7094</deployedseed>
+    <deployedseed>7230</deployedseed>
+    <deployedseed>7368</deployedseed>
+    <deployedseed>7508</deployedseed>
+    <deployedseed>7650</deployedseed>
+    <deployedseed>7794</deployedseed>
+    <deployedseed>7940</deployedseed>
+    <deployedseed>8088</deployedseed>
+    <deployedseed>8238</deployedseed>
+    <deployedseed>8390</deployedseed>
+    <deployedseed>8544</deployedseed>
+    <deployedseed>8700</deployedseed>
+    <deployedseed>8858</deployedseed>
+    <deployedseed>9018</deployedseed>
+    <deployedseed>9180</deployedseed>
+    <deployedseed>9344</deployedseed>
+    <deployedseed>9510</deployedseed>
+    <deployedseed>9678</deployedseed>
+    <deployedseed>9848</deployedseed>
+    <deployedseed>10020</deployedseed>
+    <deployedseed>10194</deployedseed>
+    <deployedseed>10370</deployedseed>
+    <deployedseed>10548</deployedseed>
+    <deployedseed>10728</deployedseed>
+    <deployedseed>10910</deployedseed>
+    <deployedseed>11094</deployedseed>
+    <deployedseed>11280</deployedseed>
+    <deployedseed>11468</deployedseed>
+    <deployedseed>11658</deployedseed>
+    <deployedseed>11850</deployedseed>
+    <deployedseed>12044</deployedseed>
+    <deployedseed>12240</deployedseed>
+    <deployedseed>12438</deployedseed>
+    <deployedseed>12638</deployedseed>
+    <deployedseed>12840</deployedseed>
+    <deployedseed>13044</deployedseed>
+    <deployedseed>13250</deployedseed>
+    <deployedseed>13458</deployedseed>
+    <deployedseed>13668</deployedseed>
+    <deployedseed>13880</deployedseed>
+    <deployedseed>14094</deployedseed>
+    <deployedseed>14310</deployedseed>
+    <deployedseed>14528</deployedseed>
+    <deployedseed>14748</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[1,2,5]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Radio: closest point mistaken for a solution</description>
+      <testinput>
+        <name>ans1</name>
+        <value>2</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[1,2,5]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-closest</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Radio: two solutions</description>
+      <testinput>
+        <name>ans1</name>
+        <value>3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[1,2,5]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-two</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Radio: infinitely many</description>
+      <testinput>
+        <name>ans1</name>
+        <value>4</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[1,2,5]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-inf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Radio: solution outside the picture</description>
+      <testinput>
+        <name>ans1</name>
+        <value>5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[1,2,5]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-outside</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Checkbox: one true statement missed</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[1,2]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-almost</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Checkbox: one false statement ticked</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[1,2,3,5]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-almost</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>8</testcase>
+      <description>Checkbox: mostly wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[3,4]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-wrong</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

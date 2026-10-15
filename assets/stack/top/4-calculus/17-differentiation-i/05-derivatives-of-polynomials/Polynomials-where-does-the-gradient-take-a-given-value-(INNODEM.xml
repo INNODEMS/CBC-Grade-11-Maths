@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Polynomials: where does the gradient take a given value (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Consider the curve \( y = {@fx@}. \)</p>
+
+<p>(a) Find \( \dfrac{dy}{dx} \).</p>
+<div>\( \dfrac{dy}{dx} = \) [[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>
+<p>(b) Find <strong>all</strong> the values of \( x \) at which the gradient of the curve is \( {@mg@} \).</p>
+<p>Enter your answer as a set of numbers in curly brackets, for example <code>{-2, 5}</code>.</p>
+<div>\( x \in \) [[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p><strong>(a)</strong> Differentiating term by term,</p>
+\( \frac{dy}{dx} = {@dfx@}. \)
+<p><strong>(b)</strong> The gradient is \( {@mg@} \) where \( \dfrac{dy}{dx} = {@mg@} \):</p>
+\[
+\begin{align*}
+{@dfx@} &= {@mg@} \\
+{@dfx - mg@} &= 0 \\
+3\,{@factor(expand((dfx - mg)/3))@} &= 0,
+\end{align*}
+\]
+<p>so \( x = {@rr1@} \) or \( x = {@rr2@} \). A cubic curve can have the same gradient at two different points, so both values must be given: \( x \in {@ta2@} \).</p>
+<p>Check: substituting each value into \( \dfrac{dy}{dx} \) gives \( {@subst(rr1, x, dfx)@} \) and \( {@subst(rr2, x, dfx)@} \), both equal to \( {@mg@} \) as required.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Choose the two x-values r1 < r2 first, then build the cubic so that
+   dy/dx - m = 3(x - r1)(x - r2).  r1 + r2 even keeps every coefficient an integer. */
+cands : sublist(create_list([u1, u2, u3], u1, -4, 3, u2, -3, 4, u3, -6, 6),
+  lambda([z], is(z[1] < z[2] and evenp(z[1] + z[2]) and z[1] + z[2] # 0 and z[3] # 0 and 3*z[1]*z[2] + z[3] # 0)));
+pick : rand(cands);
+rr1 : pick[1];
+rr2 : pick[2];
+mg  : pick[3];                         /* the target gradient m */
+bq  : -3*(rr1 + rr2)/2;
+cq  : 3*rr1*rr2 + mg;
+dq  : rand_with_prohib(-5, 5, [0]);
+fx  : x^3 + bq*x^2 + cq*x + dq;
+dfx : diff(fx, x);                     /* model answer (a) */
+ta2 : {rr1, rr2};                      /* model answer (b) */
+w_sign : {-rr1, -rr2};                 /* sign slip when factorising */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@fx@},\ m={@mg@},\ x\in{@ta2@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>dfx</tans>
+      <boxsize>20</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>dfx</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Differentiate each term using \( \frac{d}{dx}(c\,x^{n}) = n\,c\,x^{\,n-1} \); the constant term gives \( 0 \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[sa : if setp(ans2) then ans2 else if listp(ans2) then setify(ans2) else {ans2};
+nsa : length(sa);
+okall : is(nsa > 0 and every(lambda([z], is(radcan(expand(subst(z, x, dfx) - mg)) = 0)), listify(sa)));
+zero0 : is(nsa > 0 and every(lambda([z], is(radcan(expand(subst(z, x, dfx))) = 0)), listify(sa)));]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: onlyone</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>okall</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-onlyone</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Each value you gave is correct, but you have not found them all. Setting \( \dfrac{dy}{dx} = {@mg@} \) gives a <em>quadratic</em> equation, which here has two solutions.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: solvedzero</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>zero0</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-solvedzero</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your values make the gradient equal to \( 0 \). The question asks where the gradient equals \( {@mg@} \): solve \( \dfrac{dy}{dx} = {@mg@} \), not \( \dfrac{dy}{dx} = 0 \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>w_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your signs. If the quadratic factorises as \( 3(x-p)(x-q) = 0 \), the solutions are \( x = p \) and \( x = q \) &mdash; the signs change when you read the solutions from the brackets.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Set your derivative equal to \( {@mg@} \), rearrange to the form \( (\ldots) = 0 \), and solve the quadratic.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dfx</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Answer as a list is accepted</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dfx</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>[rr2, rr1]</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Only one value</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dfx</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>{rr1}</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-onlyone</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Single number entered</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dfx</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>rr2</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-onlyone</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Sign slip</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dfx</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>w_sign</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-sign</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(dfx+x,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>{100, 101}</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

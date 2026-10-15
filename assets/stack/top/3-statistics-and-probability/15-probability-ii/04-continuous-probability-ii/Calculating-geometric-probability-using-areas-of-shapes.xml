@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating geometric probability using areas of shapes</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A chicken wanders randomly around a square yard with side length <b>{@s@} m</b>. It is equally likely to be at any point in the yard at any moment.</p>
+<p>The farmer has drawn a circle of radius <b>{@r@} m</b> centred in the middle of the yard. There is also a small rectangular corner pen located at the top right, with a width of <b>{@w@} m</b> and a height of <b>{@h@} m</b>.</p>
+
+[[jsxgraph width="400px" height="400px"]]
+var s = {#s#};
+var r = {#r#};
+var w = {#w#};
+var h_pen = {#h#};
+
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-1.5, s + 1.5, s + 1.5, -1.5],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+/* Draw the main square yard */
+var yard = brd.create('polygon', [[0, 0], [s, 0], [s, s], [0, s]], {
+    fixed: true, fillColor: '#e0e0e0', fillOpacity: 0.5, 
+    borders: {strokeWidth: 2, strokeColor: '#424242'},
+    vertices: {visible: false}
+});
+
+/* Draw the central circular region */
+var center = brd.create('point', [s/2, s/2], {fixed: true, visible: true, name: '', size: 2, color: '#0d47a1'});
+var circle = brd.create('circle', [center, r], {
+    fixed: true, fillColor: '#bbdefb', fillOpacity: 0.7, 
+    strokeWidth: 2, strokeColor: '#1976d2'
+});
+
+/* Draw the rectangular corner pen */
+var pen = brd.create('polygon', [[s-w, s-h_pen], [s, s-h_pen], [s, s], [s-w, s]], {
+    fixed: true, fillColor: '#ffe0b2', fillOpacity: 0.8, 
+    borders: {strokeWidth: 2, strokeColor: '#f57c00'},
+    vertices: {visible: false}
+});
+
+/* Add labels directly to the canvas */
+brd.create('text', [s/2, -0.6, s.toString() + ' m'], {fixed: true, anchorX: 'middle', anchorY: 'middle', fontSize: 14, strokeColor: '#424242'});
+brd.create('text', [-0.6, s/2, s.toString() + ' m'], {fixed: true, anchorX: 'middle', anchorY: 'middle', fontSize: 14, strokeColor: '#424242', display: 'internal', rotate: 90});
+brd.create('text', [s/2, s/2 - r*0.4, 'circle'], {fixed: true, anchorX: 'middle', anchorY: 'middle', fontSize: 14, strokeColor: '#0d47a1'});
+brd.create('text', [s - w/2, s - h_pen/2, 'pen'], {fixed: true, anchorX: 'middle', anchorY: 'middle', fontSize: 14, strokeColor: '#e65100'});
+
+/* Draw radius line */
+brd.create('segment', [[s/2, s/2], [s/2 + r, s/2]], {fixed: true, strokeColor: '#1976d2', strokeWidth: 1});
+brd.create('text', [s/2 + r/2, s/2 + 0.3, r.toString() + ' m'], {fixed: true, anchorX: 'middle', anchorY: 'bottom', fontSize: 12, strokeColor: '#1976d2'});
+[[/jsxgraph]]
+
+<p><b>a) </b> What is the total area of the yard?</p>
+<p>\(\text{Total Area} =\) [[input:ans1]] \(\text{m}^2\)</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> What is the exact area of the circular region? <i>(Leave your answer in terms of \(\pi\). Type <b>pi</b> to enter \(\pi\)).</i></p>
+<p>\(\text{Circle Area} =\) [[input:ans2]] \(\text{m}^2\)</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Since the chicken is equally likely to be anywhere, what is the probability that at a random moment the chicken is inside the <b>circular region</b>?</p>
+<p><i>(Enter your answer as an exact fraction involving \(\pi\). Type <b>pi</b> to enter \(\pi\)).</i></p>
+<p>\(P(\text{inside circle}) =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Total Area</b><br>
+The yard is a square with side length \(s = {@s@}\) m. The area of a square is \(s^2\).</p>
+<p style="margin-left: 20px;">\(\text{Total Area} = {@s@} \times {@s@} = {@ta1@}\text{ m}^2\)</p>
+
+<p><b>Part b: Favourable Area</b><br>
+The circular region has a radius \(r = {@r@}\) m. The area of a circle is \(\pi r^2\).</p>
+<p style="margin-left: 20px;">\(\text{Circle Area} = \pi \times {@r@}^2 = {@r^2@}\pi\text{ m}^2\)</p>
+
+<p><b>Part c: Geometric Probability</b><br>
+Geometric probability is calculated as the ratio of the favourable area to the total area:</p>
+<p style="margin-left: 20px;">\( \displaystyle P = \frac{\text{Area of favourable region}}{\text{Total area}} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{inside circle}) = \frac{{@r^2@}\pi}{{@ta1@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P = {@ta3@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomize dimensions for massive variance */
+s : rand([10, 12, 14, 15, 16, 18, 20]);
+
+/* Ensure radius strictly fits well within the square without overlapping logic */
+r : rand([2, 3, 4]);
+
+/* Dimensions for the rectangular pen */
+w : rand([2, 3, 4]);
+h : rand([2, 3, 4]);
+
+/* Calculate target answers */
+ta1 : s^2;
+ta2 : pi * r^2;
+ta3 : ta2 / ta1;
+
+/* Distractor for part b: multiplying by 2 instead of squaring */
+ta2_wrong : 2 * pi * r;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Square: s={@s@}, Area={@ta1@}. Circle: r={@r@}, Area={@ta2@}. P(circle)={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Geometric Probability</p>
+<p id="description">Grade 11 CBE: Calculating probability by finding the ratio of a specific geometric area (circle) to a total bounding area (square).</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of total area</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. The total area of the square yard is \({@s@}^2\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they found the perimeter instead</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>4*s</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the <i>perimeter</i> of the square. The probability depends on the total <i>area</i> (\(\text{side} \times \text{side}\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. The area of a square is calculated by squaring the side length.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of circle area</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly used the formula \(A = \pi r^2\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they calculated circumference</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the <i>circumference</i> of the circle (\(2\pi r\)). You need to find the <i>area</i> using the formula \(A = \pi r^2\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Ensure you are using the area formula \(A = \pi r^2\) and entering \(\pi\) as <code>pi</code>.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of geometric probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. Geometric probability is found by dividing the favourable area by the total area.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they inverted the ratio</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta1 / ta2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You inverted the ratio. Probability must be between 0 and 1. It is the area of the smaller favourable region <i>divided by</i> the larger total area.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Divide your answer from part (b) by your answer from part (a).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Perimeter instead of area, circumference instead of area, inverted probability</description>
+      <testinput>
+        <name>ans1</name>
+        <value>4*s</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta1 / ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 5</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3 + 5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

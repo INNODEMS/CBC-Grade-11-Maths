@@ -1,0 +1,1518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Solve simultaneous equations graphically (cubic and line)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p><strong>Solve the following simultaneous equations graphically</strong>, for \( {@xlo@} \le x \le {@xhi@} \).</p>
+\[ {#eq1tex#} \qquad \text{and} \qquad {#eq2tex#} \]
+<p><strong>(a)</strong> Plot both graphs on the grid. Use a table of values to find two points on the curve \( {#eq1tex#} \) and drag the two <span style="color:#c62828"><strong>red points</strong></span> onto them; the curve is drawn through your two points. (Choose points whose \( x \)-values are not opposites of each other, such as 2 and \( -2 \).) Then drag the two <span style="color:#1565c0"><strong>blue points</strong></span> (at different positions) to place the straight line \( {#eq2tex#} \). The points snap to the grid.</p>
+[[jsxgraph input-ref-ans1="refQ1" input-ref-ans2="refQ2" input-ref-ans3="refP1" input-ref-ans4="refP2" width="640px" height="560px"]]
+var xlo = {#xlo#}, xhi = {#xhi#}, ymin = {#ymin#}, ymax = {#ymax#};
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [xlo - 0.8, ymax + 1.2, xhi + 0.8, ymin - 1.2],
+    axis: false, grid: false, keepaspectratio: false,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+/* labelled square grid, one line per whole number */
+var gi;
+for (gi = xlo - 1; gi != xhi + 2; gi++) {
+    board.create('line', [ [gi, 0], [gi, 1] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+for (gi = ymin - 2; gi != ymax + 3; gi++) {
+    board.create('line', [ [0, gi], [1, gi] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+board.create('axis', [ [0,0], [1,0] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('axis', [ [0,0], [0,1] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('text', [xhi + 0.7, 0.5, 'x'], {fixed: true, anchorX: 'right', fontSize: 16});
+board.create('text', [0.3, ymax + 1.1, 'y'], {fixed: true, anchorY: 'top', fontSize: 16});
+board.create('text', [-0.12, -0.1, '0'], {fixed: true, anchorX: 'right', anchorY: 'top', fontSize: 12});
+
+/* four free handles, snapped to the grid; none of the start positions is a correct answer */
+var snapAttr = {name: '', size: 6, snapToGrid: true, snapSizeX: 1, snapSizeY: 1, showInfobox: true};
+var Q1 = board.create('point', [xlo + 1, 0], JXG.merge(snapAttr, {strokeColor: '#c62828', fillColor: '#c62828'}));
+var Q2 = board.create('point', [xlo + 2, 0], JXG.merge(snapAttr, {strokeColor: '#c62828', fillColor: '#c62828'}));
+var P1 = board.create('point', [0, -1], JXG.merge(snapAttr, {strokeColor: '#1565c0', fillColor: '#1565c0'}));
+var P2 = board.create('point', [2, -1], JXG.merge(snapAttr, {strokeColor: '#1565c0', fillColor: '#1565c0'}));
+
+/* the curve y = x^3 - B x^2 + C through the two red points (B and C solved from the points) */
+function cubicPars() {
+    var u1 = Q1.X(), v1 = Q1.Y(), u2 = Q2.X(), v2 = Q2.Y(), dd = u1 * u1 - u2 * u2;
+    if (dd === 0) { return null; }
+    var B = ((v2 - u2 * u2 * u2) - (v1 - u1 * u1 * u1)) / dd;
+    return [B, (v1 - u1 * u1 * u1) + B * u1 * u1];
+}
+var curve = board.create('functiongraph', [function(t) {
+    var p = cubicPars();
+    return (p === null) ? NaN : t * t * t - p[0] * t * t + p[1];
+}, xlo, xhi], {strokeColor: '#c62828', strokeWidth: 3});
+var line = board.create('line', [P1, P2], {strokeColor: '#1565c0', strokeWidth: 3});
+
+stack_jxg.bind_point(refQ1, Q1);
+stack_jxg.bind_point(refQ2, Q2);
+stack_jxg.bind_point(refP1, P1);
+stack_jxg.bind_point(refP2, P2);
+[[/jsxgraph]]
+<div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]] [[input:ans3]] [[validation:ans3]] [[input:ans4]] [[validation:ans4]]</div>
+<div>[[feedback:prt1]]</div>
+<div>[[feedback:prt2]]</div>
+<p><strong>(b)</strong> Use your graph to write down the solutions of the simultaneous equations. There are three. Give each solution as a point \( [x, y] \) with whole-number values, in any order.</p>
+<div>Solution 1: [[input:ans5]] [[validation:ans5]]</div>
+<div>Solution 2: [[input:ans6]] [[validation:ans6]]</div>
+<div>Solution 3: [[input:ans7]] [[validation:ans7]]</div>
+<div>[[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>(a) Plotting the graphs.</strong></p>
+<p>Make a table of values for the <span style="color:#c62828"><strong>curve</strong></span> \( {#eq1tex#} \) (two points are enough for the board, the rest help you sketch it):</p>
+\[ \begin{array}{c|cccccc} x & -2 & -1 & 0 & 1 & 2 & 3 \\ \hline y & {@cvals[1]@} & {@cvals[2]@} & {@cvals[3]@} & {@cvals[4]@} & {@cvals[5]@} & {@cvals[6]@} \end{array} \]
+<p>and for the <span style="color:#1565c0"><strong>straight line</strong></span> \( {#eq2tex#} \):</p>
+\[ \begin{array}{c|cccccc} x & -2 & -1 & 0 & 1 & 2 & 3 \\ \hline y & {@lvals[1]@} & {@lvals[2]@} & {@lvals[3]@} & {@lvals[4]@} & {@lvals[5]@} & {@lvals[6]@} \end{array} \]
+[[jsxgraph width="640px" height="560px"]]
+var xlo = {#xlo#}, xhi = {#xhi#}, ymin = {#ymin#}, ymax = {#ymax#};
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [xlo - 0.8, ymax + 1.2, xhi + 0.8, ymin - 1.2],
+    axis: false, grid: false, keepaspectratio: false,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+/* labelled square grid, one line per whole number */
+var gi;
+for (gi = xlo - 1; gi != xhi + 2; gi++) {
+    board.create('line', [ [gi, 0], [gi, 1] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+for (gi = ymin - 2; gi != ymax + 3; gi++) {
+    board.create('line', [ [0, gi], [1, gi] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+board.create('axis', [ [0,0], [1,0] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('axis', [ [0,0], [0,1] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('text', [xhi + 0.7, 0.5, 'x'], {fixed: true, anchorX: 'right', fontSize: 16});
+board.create('text', [0.3, ymax + 1.1, 'y'], {fixed: true, anchorY: 'top', fontSize: 16});
+board.create('text', [-0.12, -0.1, '0'], {fixed: true, anchorX: 'right', anchorY: 'top', fontSize: 12});
+
+var bb = {#bb#}, cc = {#cc#};
+var curve = board.create('functiongraph', [function(t) { return t * t * t - bb * t * t + cc; }, xlo, xhi],
+    {strokeColor: '#c62828', strokeWidth: 3, fixed: true});
+var L1 = board.create('point', [0, bb],     {visible: false, withLabel: false, name: ''});
+var L2 = board.create('point', [1, 1 + bb], {visible: false, withLabel: false, name: ''});
+var line = board.create('line', [L1, L2], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true});
+
+/* label placement: try 24 directions, keep the one furthest (in screen pixels) from the curve, the line, the axes and the board edges */
+function labelAttr(px, py) {
+    var ux = board.unitX, uy = board.unitY, R = 44;
+    function clear(x, y) {
+        var fx = x * x * x - bb * x * x + cc, slope = 3 * x * x - 2 * bb * x;
+        var dCurve = Math.abs(y - fx) * uy / Math.sqrt(1 + Math.pow(slope * uy / ux, 2));
+        var dLine = Math.abs(y - x - bb) * uy / Math.sqrt(1 + Math.pow(uy / ux, 2));
+        return Math.min(dCurve, dLine, Math.abs(x) * ux, Math.abs(y) * uy,
+            (x - (xlo - 0.8)) * ux, (xhi + 0.8 - x) * ux, (ymax + 1.2 - y) * uy, (y - (ymin - 1.2)) * uy);
+    }
+    var cands = [], k;
+    for (k = 0; k != 24; k++) { cands.push(k * Math.PI / 12); }
+    var score = cands.map(function(t) {
+        var cx = px + R * Math.cos(t) / ux, cy = py + R * Math.sin(t) / uy;
+        return Math.min(clear(cx, cy), clear(cx - 36 / ux, cy), clear(cx + 36 / ux, cy));
+    });
+    var t = cands[score.indexOf(Math.max.apply(null, score))];
+    return {offset: [Math.round(R * Math.cos(t)), Math.round(R * Math.sin(t))], anchorX: 'middle', anchorY: 'middle'};
+}
+var sols = [ [{#sx1#}, {#sy1#}], [{#sx2#}, {#sy2#}], [{#sx3#}, {#sy3#}] ];
+sols.forEach(function(sp) {
+    board.create('segment', [ [sp[0], sp[1]], [sp[0], 0] ], {dash: 2, strokeColor: '#777777', strokeWidth: 1, fixed: true, highlight: false});
+    board.create('segment', [ [sp[0], sp[1]], [0, sp[1]] ], {dash: 2, strokeColor: '#777777', strokeWidth: 1, fixed: true, highlight: false});
+    var lab = labelAttr(sp[0], sp[1]);
+    lab.fontSize = 15;
+    board.create('point', sp, {name: '(' + sp[0] + ', ' + sp[1] + ')', size: 5,
+        strokeColor: '#2e7d32', fillColor: '#2e7d32', fixed: true, label: lab});
+});
+[[/jsxgraph]]
+<p><strong>(b) Reading the solutions from the graph.</strong> The line and the curve cross at the three green points. The dashed guides show their coordinates:</p>
+\[ [{@sx1@},\ {@sy1@}], \qquad [{@sx2@},\ {@sy2@}], \qquad [{@sx3@},\ {@sy3@}]. \]
+<p><strong>Why these are solutions.</strong> A solution of simultaneous equations must make <em>both</em> equations true at the same time. Substitute each point back into the two equations.</p>
+<p>For \( x={@sx1@},\ y={@sy1@} \):</p>
+\[ \begin{align*}
+\text{Curve: } x^3-(b)x^2+(c) &= ({@sx1@})^3-({@bb@})({@sx1@})^2+({@cc@}) = {@sy1@} = y \; \checkmark \\
+\text{Line: } x+(b) &= ({@sx1@})+({@bb@}) = {@sy1@} = y \; \checkmark
+\end{align*} \]
+<p>For \( x={@sx2@},\ y={@sy2@} \):</p>
+\[ \begin{align*}
+\text{Curve: } x^3-(b)x^2+(c) &= ({@sx2@})^3-({@bb@})({@sx2@})^2+({@cc@}) = {@sy2@} = y \; \checkmark \\
+\text{Line: } x+(b) &= ({@sx2@})+({@bb@}) = {@sy2@} = y \; \checkmark
+\end{align*} \]
+<p>For \( x={@sx3@},\ y={@sy3@} \):</p>
+\[ \begin{align*}
+\text{Curve: } x^3-(b)x^2+(c) &= ({@sx3@})^3-({@bb@})({@sx3@})^2+({@cc@}) = {@sy3@} = y \; \checkmark \\
+\text{Line: } x+(b) &= ({@sx3@})+({@bb@}) = {@sy3@} = y \; \checkmark
+\end{align*} \]
+<p>Each point gives the same value of \( y \) in both equations, so the line and the curve really do meet there.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* ---------- DESIGN BACKWARDS ----------
+   Curve  y = x^3 - b x^2 + c   and line  y = x + b  meet where  x^3 - b x^2 - x + (c - b) = 0.
+   If the three crossings are x = r1, r2, r3 (whole numbers) then
+        r1 + r2 + r3 = b ,   r1 r2 + r1 r3 + r2 r3 = -1 ,   c = b - r1 r2 r3 .
+   The middle condition (= -1) is what the line y = x + b forces, so b and c cannot be chosen
+   independently: the roots are the free choice, b and c follow.  Pool = [roots, left ends, right ends]:
+   8 equation pairs x 2 left ends x 2 right ends = 32 variants; each interval hugs the roots
+   (roots span minus 1 or 2 units each side), so the interval depends on the equations. */
+pool : [
+    [[-5,-1,1],[-7,-6],[2,3]],
+    [[-4,-1,1],[-6,-5],[2,3]],
+    [[-3,-1,1],[-5,-4],[2,3]],
+    [[-2,-1,1],[-4,-3],[2,3]],
+    [[-1,1,2],[-3,-2],[3,4]],
+    [[-1,1,3],[-3,-2],[4,5]],
+    [[-1,1,4],[-3,-2],[5,6]],
+    [[-1,1,5],[-3,-2],[6,7]]
+];
+cfg : rand(pool);
+rts : cfg[1];
+xlo : rand(cfg[2]);
+xhi : rand(cfg[3]);
+bb  : rts[1] + rts[2] + rts[3];
+cc  : bb - rts[1]*rts[2]*rts[3];
+
+/* the three solutions (the line value equals the cubic value there) */
+sx1 : rts[1];  sy1 : sx1 + bb;
+sx2 : rts[2];  sy2 : sx2 + bb;
+sx3 : rts[3];  sy3 : sx3 + bb;
+sol1 : [sx1, sy1];  sol2 : [sx2, sy2];  sol3 : [sx3, sy3];
+
+/* vertical extent: crossings, (0,c), (1,1-b+c), line points, origin, and the second turning point x=2b/3 if it is on the board */
+ext   : if is(xlo <= 2*bb/3 and 2*bb/3 <= xhi) then cc - 4*bb^3/27 else cc;
+ylist : [sy1, sy2, sy3, cc, 1-bb+cc, bb, 1+bb, 0, ext];
+ymin  : floor(lmin(ylist)) - 2;
+ymax  : ceiling(lmax(ylist)) + 2;
+
+/* readable equations */
+sgnterm(c) := if is(c<0) then sconcat(" - ", string(-c)) else sconcat(" + ", string(c));
+qterm(c) := if is(c=1) then " + x^2" else if is(c=-1) then " - x^2" else if is(c<0) then sconcat(" - ", string(-c), "x^2") else sconcat(" + ", string(c), "x^2");
+eq1tex : sconcat("y = x^3", qterm(-bb), sgnterm(cc));
+eq2tex : sconcat("y = x", sgnterm(bb));
+
+/* model answers: ans1,ans2 = two points on the curve, ans3,ans4 = two points on the line */
+ta1 : [0, cc];
+ta2 : [1, 1-bb+cc];
+ta3 : [0, bb];
+ta4 : [1, 1+bb];
+ta5 : sol1;  ta6 : sol2;  ta7 : sol3;
+swp : reverse(sol1);      /* used only in a question test */
+
+cvals : create_list(k^3 - bb*k^2 + cc, k, [-2,-1,0,1,2,3]);
+lvals : create_list(k + bb, k, [-2,-1,0,1,2,3]);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( {#eq1tex#}, \; {#eq2tex#}, \; {@xlo@} \le x \le {@xhi@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>ta4</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>algebraic</type>
+      <tans>ta5</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>[x, y]</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans6</name>
+      <type>algebraic</type>
+      <tans>ta6</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>[x, y]</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans7</name>
+      <type>algebraic</type>
+      <tans>ta7</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>[x, y]</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>0.2500000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[u1 : float(ans1[1]); v1 : float(ans1[2]); u2 : float(ans2[1]); v2 : float(ans2[2]);
+dd : u1^2 - u2^2;
+degen : is(abs(dd) < 0.001);
+on1 : is(abs(v1 - (u1^3 - bb*u1^2 + cc)) < 0.2);
+on2 : is(abs(v2 - (u2^3 - bb*u2^2 + cc)) < 0.2);
+both_on : is(on1 and on2);
+beta_s : if degen then 1000 else ((v2-u2^3)-(v1-u1^3))/dd;
+gamma_s : if degen then 1000 else (v1-u1^3)+beta_s*u1^2;]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>two points determine a unique curve?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>degen</sans>
+        <tans>false</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt1-0-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-degenerate</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your two red points do not fix a curve of this kind: their \( x \)-values are the same or opposites. Choose two points on the curve whose \( x \)-values are not opposites of each other.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>both red points lie on the curve</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>both_on</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>y-intercept right, x^2 term wrong</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>gamma_s</sans>
+        <tans>cc</tans>
+        <testoptions>0.3</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-xsq</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your curve crosses the y-axis at the right place, but its shape is not right. Check the \( x^2 \) term: use a table of values and take care with the sign of \( b \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>shape right, height wrong</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>beta_s</sans>
+        <tans>bb</tans>
+        <testoptions>0.15</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-height</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The shape of your curve is close, but it is not at the right height. Where should the curve \( {#eq1tex#} \) cross the y-axis (put \( x=0 \))?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your red points are not both on the curve \( {#eq1tex#} \). Make a table of values: choose an \( x \), work out \( y \), and place a red point there.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>0.2500000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[d12 : float(sqrt((ans4[1]-ans3[1])^2+(ans4[2]-ans3[2])^2));
+dist_ok : is(d12 > 0.5);
+on1 : is(abs(float(ans3[2]-(ans3[1]+bb))) < 0.2);
+on2 : is(abs(float(ans4[2]-(ans4[1]+bb))) < 0.2);
+both_on : is(on1 and on2);
+vert : is(abs(float(ans4[1]-ans3[1])) < 0.05);
+slope_s : if vert then 1000 else float((ans4[2]-ans3[2])/(ans4[1]-ans3[1]));
+icpt_s : if vert then 1000 else float(ans3[2]-slope_s*ans3[1]);]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>two blue points distinct?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>dist_ok</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt2-0-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-twopoints</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your two blue points are on top of each other. Place them at different positions so that they define a straight line.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>both blue points lie on y = x + b</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>both_on</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>gradient right, intercept wrong</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>slope_s</sans>
+        <tans>1</tans>
+        <testoptions>0.1</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-intercept</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The steepness of your line is right, but it does not cut the y-axis in the right place. Compare the constant term in \( {#eq2tex#} \) with where your line crosses the y-axis.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>intercept right, gradient wrong</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>icpt_s</sans>
+        <tans>bb</tans>
+        <testoptions>0.3</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-slope</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your line crosses the y-axis in the right place, but its steepness is wrong. For \( y=x+b \), how far up does the line go for each 1 step to the right?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your line is not the graph of \( {#eq2tex#} \). Make a table of values: choose two values of \( x \), work out \( y \) for each, and place the blue points there.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sols : {sol1, sol2, sol3};
+nright : cardinality(intersection(setify([ans5, ans6, ans7]), sols));
+nswap : cardinality(intersection(setify([reverse(ans5), reverse(ans6), reverse(ans7)]), sols));</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>all three found (any order)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nright</sans>
+        <tans>3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-all</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>two found</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nright</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.6667</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-two</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Two of your points are solutions, but the third is not (or you repeated a point). A cubic curve and a line can cross up to three times: look again at the whole interval.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>one found</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nright</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.3333</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-one</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Only one of your points is a solution. The line and the curve cross three times in this interval; read the coordinates of each crossing from the grid, and enter three different points.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>none found: swapped?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nswap</sans>
+        <tans>0</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-none</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>None of your points is where the line and the curve cross. A solution lies on <em>both</em> graphs: read its \( x \) and \( y \) values from the grid.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-swapped</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Careful with the order: write each solution as \( [x, y] \), with the \( x \)-value (across) first and the \( y \)-value (up) second.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>2000</deployedseed>
+    <deployedseed>2042</deployedseed>
+    <deployedseed>2086</deployedseed>
+    <deployedseed>2132</deployedseed>
+    <deployedseed>2180</deployedseed>
+    <deployedseed>2230</deployedseed>
+    <deployedseed>2282</deployedseed>
+    <deployedseed>2336</deployedseed>
+    <deployedseed>2392</deployedseed>
+    <deployedseed>2450</deployedseed>
+    <deployedseed>2510</deployedseed>
+    <deployedseed>2572</deployedseed>
+    <deployedseed>2636</deployedseed>
+    <deployedseed>2702</deployedseed>
+    <deployedseed>2770</deployedseed>
+    <deployedseed>2840</deployedseed>
+    <deployedseed>2912</deployedseed>
+    <deployedseed>2986</deployedseed>
+    <deployedseed>3062</deployedseed>
+    <deployedseed>3140</deployedseed>
+    <deployedseed>3220</deployedseed>
+    <deployedseed>3302</deployedseed>
+    <deployedseed>3386</deployedseed>
+    <deployedseed>3472</deployedseed>
+    <deployedseed>3560</deployedseed>
+    <deployedseed>3650</deployedseed>
+    <deployedseed>3742</deployedseed>
+    <deployedseed>3836</deployedseed>
+    <deployedseed>3932</deployedseed>
+    <deployedseed>4030</deployedseed>
+    <deployedseed>4130</deployedseed>
+    <deployedseed>4232</deployedseed>
+    <deployedseed>4336</deployedseed>
+    <deployedseed>4442</deployedseed>
+    <deployedseed>4550</deployedseed>
+    <deployedseed>4660</deployedseed>
+    <deployedseed>4772</deployedseed>
+    <deployedseed>4886</deployedseed>
+    <deployedseed>5002</deployedseed>
+    <deployedseed>5120</deployedseed>
+    <deployedseed>5240</deployedseed>
+    <deployedseed>5362</deployedseed>
+    <deployedseed>5486</deployedseed>
+    <deployedseed>5612</deployedseed>
+    <deployedseed>5740</deployedseed>
+    <deployedseed>5870</deployedseed>
+    <deployedseed>6002</deployedseed>
+    <deployedseed>6136</deployedseed>
+    <deployedseed>6272</deployedseed>
+    <deployedseed>6410</deployedseed>
+    <deployedseed>6550</deployedseed>
+    <deployedseed>6692</deployedseed>
+    <deployedseed>6836</deployedseed>
+    <deployedseed>6982</deployedseed>
+    <deployedseed>7130</deployedseed>
+    <deployedseed>7280</deployedseed>
+    <deployedseed>7432</deployedseed>
+    <deployedseed>7586</deployedseed>
+    <deployedseed>7742</deployedseed>
+    <deployedseed>7900</deployedseed>
+    <deployedseed>8060</deployedseed>
+    <deployedseed>8222</deployedseed>
+    <deployedseed>8386</deployedseed>
+    <deployedseed>8552</deployedseed>
+    <deployedseed>8720</deployedseed>
+    <deployedseed>8890</deployedseed>
+    <deployedseed>9062</deployedseed>
+    <deployedseed>9236</deployedseed>
+    <deployedseed>9412</deployedseed>
+    <deployedseed>9590</deployedseed>
+    <deployedseed>9770</deployedseed>
+    <deployedseed>9952</deployedseed>
+    <deployedseed>10136</deployedseed>
+    <deployedseed>10322</deployedseed>
+    <deployedseed>10510</deployedseed>
+    <deployedseed>10700</deployedseed>
+    <deployedseed>10892</deployedseed>
+    <deployedseed>11086</deployedseed>
+    <deployedseed>11282</deployedseed>
+    <deployedseed>11480</deployedseed>
+    <deployedseed>11680</deployedseed>
+    <deployedseed>11882</deployedseed>
+    <deployedseed>12086</deployedseed>
+    <deployedseed>12292</deployedseed>
+    <deployedseed>12500</deployedseed>
+    <deployedseed>12710</deployedseed>
+    <deployedseed>12922</deployedseed>
+    <deployedseed>13136</deployedseed>
+    <deployedseed>13352</deployedseed>
+    <deployedseed>13570</deployedseed>
+    <deployedseed>13790</deployedseed>
+    <deployedseed>14012</deployedseed>
+    <deployedseed>14236</deployedseed>
+    <deployedseed>14462</deployedseed>
+    <deployedseed>14690</deployedseed>
+    <deployedseed>14920</deployedseed>
+    <deployedseed>15152</deployedseed>
+    <deployedseed>15386</deployedseed>
+    <deployedseed>15622</deployedseed>
+    <deployedseed>15860</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Solutions entered in another order</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta7</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta6</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Curve: mirror-image x-values (no unique curve)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([1,1-bb+cc],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([-1,-1-bb+cc],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-degenerate</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Curve: y-intercept right, x^2 term wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([1,2-bb+cc],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-xsq</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Curve: shifted up by 3</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([0,cc+3],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([1,4-bb+cc],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-height</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Curve: wrong in both ways</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev([0,cc+3],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev([1,5-bb+cc],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Line: right gradient, wrong intercept</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ev([0,bb+2],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ev([1,3+bb],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-intercept</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>8</testcase>
+      <description>Line: right intercept, wrong gradient</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ev([1,bb+2],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-slope</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>9</testcase>
+      <description>Line: identical points</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[0,-1]</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>[0,-1]</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-twopoints</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>10</testcase>
+      <description>Line: horizontal, wrong everything</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ev([0,bb+5],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ev([2,bb+5],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>11</testcase>
+      <description>Solutions: two correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ev([sx1,sy1+1],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.6667000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-two</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>12</testcase>
+      <description>Solutions: same point three times</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.3333000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-one</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>13</testcase>
+      <description>Solutions: x and y swapped, others wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>swp</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ev([sx2,sy2+1],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ev([sx3,sy3+1],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-swapped</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>14</testcase>
+      <description>Solutions: all wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ev([sx1,sy1+1],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ev([sx2,sy2+1],simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ev([sx3,sy3+1],simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-none</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

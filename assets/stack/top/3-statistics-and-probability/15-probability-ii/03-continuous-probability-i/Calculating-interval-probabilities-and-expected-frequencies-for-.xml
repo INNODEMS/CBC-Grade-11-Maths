@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating interval probabilities and expected frequencies for a uniform distribution</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A commercial bakery in Nakuru produces loaves of bread. Due to slight variations in the dough mixing process, the exact weight \(W\) of a standard loaf is <b>uniformly distributed</b> between <b>{@a@}g</b> and <b>{@b@}g</b>.</p>
+
+<p><b>a) </b> The bakery's quality control standards require a loaf to weigh <b>at least {@c@}g</b> to be approved for sale to supermarkets. Calculate the probability that a randomly selected loaf meets this standard.</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> During the morning shift, the bakery produces a batch of <b>{@N@} loaves</b>. Based on your probability from part (a), calculate the <b>expected number</b> of loaves from this batch that will be approved for supermarket sale.</p>
+<p>\(\text{Expected loaves} =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Quality Control Probability</b><br>
+The total width of the uniform distribution is \(b - a = {@b@} - {@a@} = {@w@}\).</p>
+<p>We want the probability that the weight is at least \({@c@}\)g, which corresponds to the interval from \({@c@}\)g up to the maximum weight of \({@b@}\)g:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(W \ge {@c@}) = \frac{b - c}{b - a} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(W \ge {@c@}) = \frac{{@b@} - {@c@}}{{@w@}} = \frac{{@b - c@}}{{@w@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(W \ge {@c@}) = {@ta1@} } \)</p>
+
+<p><b>Part b: Expected Frequency</b><br>
+The expected frequency (\(E\)) of an event is found by multiplying the total number of trials (\(N\)) by the probability of the event occurring (\(p\)):</p>
+<p style="margin-left: 20px;">\( \displaystyle E = N \times P(W \ge {@c@}) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle E = {@N@} \times {@ta1@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ E = {@ta2@} \text{ loaves} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize bounds for the uniform weight distribution */
+a : rand([385, 390, 392, 395]);
+w : rand([20, 24, 25, 30, 35]);
+b : a + w;
+
+/* Randomize the quality control cutoff */
+offset : rand([5, 8, 10, 12, 15]);
+c : a + offset;
+
+/* Calculate exact probability for part a */
+prob_accept : (b - c) / w;
+ta1 : prob_accept;
+
+/* Force N to be a multiple of the width so the expected value is always a perfect integer */
+N_mult : rand([10, 12, 15, 20, 25, 30]);
+N : N_mult * w;
+
+/* Calculate expected frequency */
+ta2 : N * prob_accept;
+
+/* Distractors for targeted PRT feedback */
+ta1_wrong : (c - a) / w; /* Calculated P(W < c) instead of P(W >= c) */
+ta2_wrong : ta1; /* Entered the probability again instead of multiplying by N */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>U({@a@}, {@b@}). w={@w@}. P(W>={@c@}) = {@ta1@}. N={@N@}. Expected = {@ta2@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Continuous Probability (Uniform Expected Value)</p>
+<p id="description">Grade 11 CBE: Calculating interval probabilities for a uniform distribution and using them to find the expected frequency in a large batch.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of interval probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully calculated the probability of the loaf meeting the required minimum weight.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they calculated less-than instead of greater-than</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.2</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability that the loaf weighs <b>less than</b> \({@c@}\)g. The quality control standard requires the loaf to weigh <b>at least</b> \({@c@}\)g (\(W \ge {@c@}\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. To find \(P(W \ge {@c@})\), calculate the distance from \({@c@}\) to the maximum boundary (\({@b@}\)), and divide by the total width of the distribution.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of expected frequency</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly multiplied the probability by the total batch size to find the expected frequency.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they just entered the probability again</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ans1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered the theoretical probability again. To find the <b>expected number</b> of loaves, you must multiply that probability by the total number of loaves in the batch (\({@N@}\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Expected Frequency (\(E\)) = Total Number of Trials (\(N\)) \(\times\) Probability of Event.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>693154601</deployedseed>
+    <deployedseed>973269159</deployedseed>
+    <deployedseed>2097284267</deployedseed>
+    <deployedseed>1750436428</deployedseed>
+    <deployedseed>1054757158</deployedseed>
+    <deployedseed>253625605</deployedseed>
+    <deployedseed>903431632</deployedseed>
+    <deployedseed>1414886484</deployedseed>
+    <deployedseed>508391287</deployedseed>
+    <deployedseed>802861833</deployedseed>
+    <deployedseed>798916751</deployedseed>
+    <deployedseed>1710600564</deployedseed>
+    <deployedseed>1571510432</deployedseed>
+    <deployedseed>1218751100</deployedseed>
+    <deployedseed>1012844075</deployedseed>
+    <deployedseed>2047211971</deployedseed>
+    <deployedseed>1446917818</deployedseed>
+    <deployedseed>1621958199</deployedseed>
+    <deployedseed>992994785</deployedseed>
+    <deployedseed>1890096846</deployedseed>
+    <deployedseed>2029899715</deployedseed>
+    <deployedseed>470213094</deployedseed>
+    <deployedseed>936513140</deployedseed>
+    <deployedseed>183579138</deployedseed>
+    <deployedseed>348005714</deployedseed>
+    <deployedseed>1219611339</deployedseed>
+    <deployedseed>980618945</deployedseed>
+    <deployedseed>1902116302</deployedseed>
+    <deployedseed>815191828</deployedseed>
+    <deployedseed>2036732007</deployedseed>
+    <deployedseed>1785346301</deployedseed>
+    <deployedseed>1581444801</deployedseed>
+    <deployedseed>1196734645</deployedseed>
+    <deployedseed>2099911223</deployedseed>
+    <deployedseed>179062947</deployedseed>
+    <deployedseed>171364230</deployedseed>
+    <deployedseed>2046811335</deployedseed>
+    <deployedseed>1097211950</deployedseed>
+    <deployedseed>870739024</deployedseed>
+    <deployedseed>1868631522</deployedseed>
+    <deployedseed>1689582640</deployedseed>
+    <deployedseed>1810499427</deployedseed>
+    <deployedseed>1586961823</deployedseed>
+    <deployedseed>2096056752</deployedseed>
+    <deployedseed>199445045</deployedseed>
+    <deployedseed>1264591375</deployedseed>
+    <deployedseed>1668805892</deployedseed>
+    <deployedseed>133357416</deployedseed>
+    <deployedseed>624712736</deployedseed>
+    <deployedseed>1845173350</deployedseed>
+    <deployedseed>1358992414</deployedseed>
+    <deployedseed>1680582794</deployedseed>
+    <deployedseed>2021282320</deployedseed>
+    <deployedseed>2131956157</deployedseed>
+    <deployedseed>561579179</deployedseed>
+    <deployedseed>194986617</deployedseed>
+    <deployedseed>985699999</deployedseed>
+    <deployedseed>1678615323</deployedseed>
+    <deployedseed>1953423388</deployedseed>
+    <deployedseed>1794254762</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Calculated wrong interval direction, and forgot to multiply by N</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta1_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.2000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

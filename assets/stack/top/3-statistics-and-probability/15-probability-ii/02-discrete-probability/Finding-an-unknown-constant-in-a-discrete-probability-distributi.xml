@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Finding an unknown constant in a discrete probability distribution formula</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Otieno models the number of goals (\(X\)) his school's football team scores per match. The discrete random variable \(X\) takes the values 0, 1, 2, 3, and 4.</p>
+<p>He determines that the probability distribution is given by the algebraic formula:</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( P(X=x) = k({@expr@}) \)</p>
+<p>where \(k\) is an unknown constant.</p>
+
+<p><b>a) </b> For this formula to represent a valid probability distribution, the sum of all probabilities must equal 1. Find the exact value of the constant \(k\).</p>
+<p><i>(Enter your answer as a fraction).</i></p>
+<p>\(k =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Using your complete formula, calculate the probability that the team scores <b>at least {@t@} goals</b> in a match (\(P(X \ge {@t@})\)).</p>
+<p><i>(Enter your answer as a fraction).</i></p>
+<p>\(P(X \ge {@t@}) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Finding the Constant \(k\)</b><br>
+A valid probability distribution function (PDF) must sum to 1 over all possible values of \(X\):</p>
+<p style="margin-left: 20px;">\( \displaystyle \sum_{x=0}^{4} P(X=x) = 1 \)</p>
+<p>We substitute each value of \(X\) (0, 1, 2, 3, 4) into the formula \(k({@expr@})\) and add them together:</p>
+<p style="margin-left: 20px;">\( k({@val0@}) + k({@val1@}) + k({@val2@}) + k({@val3@}) + k({@val4@}) = 1 \)</p>
+<p style="margin-left: 20px;">\( {@sum_coeffs@}k = 1 \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ k = {@ta1@} } \)</p>
+
+<p><b>Part b: Cumulative Probability</b><br>
+"At least {@t@} goals" means \(X \ge {@t@}\). We find the sum of these specific probabilities up to the maximum value of 4:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X \ge {@t@}) = {@prob_sum_string@} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X \ge {@t@}) = {@target_coeff_sum@}k \)</p>
+<p>Substituting our known value of \(k = {@ta1@}\):</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X \ge {@t@}) = {@ta2@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize the coefficients to generate 600+ unique variants */
+c : rand([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+a : rand([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+t : rand([1, 2, 3]);
+
+/* The algebraic expression to display */
+expr : c*x + a;
+
+/* Calculate the value of the expression at each x */
+val0 : a;
+val1 : c + a;
+val2 : 2*c + a;
+val3 : 3*c + a;
+val4 : 4*c + a;
+
+/* The sum for x = 0, 1, 2, 3, 4 */
+sum_coeffs : val0 + val1 + val2 + val3 + val4;
+
+/* Calculate exact k */
+k_val : 1 / sum_coeffs;
+
+/* Calculate cumulative probability sum dynamically */
+target_coeff_sum : if t=1 then (val1 + val2 + val3 + val4) 
+                   elseif t=2 then (val2 + val3 + val4) 
+                   else (val3 + val4);
+
+prob_ge_t : target_coeff_sum * k_val;
+
+/* Distractor for picking ONLY X=t rather than summing */
+prob_just_t : if t=1 then val1*k_val elseif t=2 then val2*k_val else val3*k_val;
+
+/* Strings for the worked solution */
+prob_sum_string : if t=1 then "P(X=1) + P(X=2) + P(X=3) + P(X=4)" 
+                  elseif t=2 then "P(X=2) + P(X=3) + P(X=4)" 
+                  else "P(X=3) + P(X=4)";
+
+/* Target answers */
+ta1 : k_val;
+ta2 : prob_ge_t;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Formula: k({@expr@}). Sum coeffs = {@sum_coeffs@}. k = {@ta1@}. Target: >= {@t@}. P = {@ta2@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Discrete Probability (Algebraic Formulas)</p>
+<p id="description">Grade 11 CBE: Finding an unknown constant in a probability mass function by summing to 1, and calculating a cumulative probability.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of k</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully equated the sum of the probabilities to 1 to find \(k\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. To find \(k\), substitute \(x=0, 1, 2, 3,\) and \(4\) into the formula, add all five expressions together, and set them equal to \(1\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of cumulative probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly summed the probabilities for the given range.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they only calculated P(X=t)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>prob_just_t</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You only calculated \(P(X={@t@})\). The phrase "at least {@t@}" means you must add together the probabilities for all outcomes from {@t@} up to the maximum (4).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Substitute all valid values for \(X \ge {@t@}\) into the formula, then multiply their sum by your value for \(k\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>371520410</deployedseed>
+    <deployedseed>1437632625</deployedseed>
+    <deployedseed>1405987919</deployedseed>
+    <deployedseed>318336178</deployedseed>
+    <deployedseed>1290027672</deployedseed>
+    <deployedseed>1492045877</deployedseed>
+    <deployedseed>1906690881</deployedseed>
+    <deployedseed>1359419888</deployedseed>
+    <deployedseed>2087294710</deployedseed>
+    <deployedseed>823712939</deployedseed>
+    <deployedseed>526020160</deployedseed>
+    <deployedseed>787642689</deployedseed>
+    <deployedseed>1327913566</deployedseed>
+    <deployedseed>672591186</deployedseed>
+    <deployedseed>783673782</deployedseed>
+    <deployedseed>1633504295</deployedseed>
+    <deployedseed>805787058</deployedseed>
+    <deployedseed>1216298008</deployedseed>
+    <deployedseed>137843655</deployedseed>
+    <deployedseed>1284239999</deployedseed>
+    <deployedseed>1339593796</deployedseed>
+    <deployedseed>901982940</deployedseed>
+    <deployedseed>143754683</deployedseed>
+    <deployedseed>1992757258</deployedseed>
+    <deployedseed>471624669</deployedseed>
+    <deployedseed>569848657</deployedseed>
+    <deployedseed>225387682</deployedseed>
+    <deployedseed>2128645781</deployedseed>
+    <deployedseed>972176586</deployedseed>
+    <deployedseed>952048905</deployedseed>
+    <deployedseed>1454937456</deployedseed>
+    <deployedseed>170712776</deployedseed>
+    <deployedseed>1894587966</deployedseed>
+    <deployedseed>491995114</deployedseed>
+    <deployedseed>1921214226</deployedseed>
+    <deployedseed>1419441572</deployedseed>
+    <deployedseed>502772363</deployedseed>
+    <deployedseed>241910379</deployedseed>
+    <deployedseed>1173204404</deployedseed>
+    <deployedseed>315622197</deployedseed>
+    <deployedseed>112949157</deployedseed>
+    <deployedseed>615691972</deployedseed>
+    <deployedseed>1011598592</deployedseed>
+    <deployedseed>1048560788</deployedseed>
+    <deployedseed>2118192124</deployedseed>
+    <deployedseed>1879630503</deployedseed>
+    <deployedseed>1613051732</deployedseed>
+    <deployedseed>640468391</deployedseed>
+    <deployedseed>41162981</deployedseed>
+    <deployedseed>2061000336</deployedseed>
+    <deployedseed>381621489</deployedseed>
+    <deployedseed>1100005713</deployedseed>
+    <deployedseed>845678527</deployedseed>
+    <deployedseed>1129161067</deployedseed>
+    <deployedseed>1365562123</deployedseed>
+    <deployedseed>1611318896</deployedseed>
+    <deployedseed>290441751</deployedseed>
+    <deployedseed>74113189</deployedseed>
+    <deployedseed>2070677987</deployedseed>
+    <deployedseed>2106940780</deployedseed>
+    <deployedseed>766264783</deployedseed>
+    <deployedseed>1690874092</deployedseed>
+    <deployedseed>1057096277</deployedseed>
+    <deployedseed>1677875811</deployedseed>
+    <deployedseed>1202737084</deployedseed>
+    <deployedseed>1872044553</deployedseed>
+    <deployedseed>1913962464</deployedseed>
+    <deployedseed>1096450451</deployedseed>
+    <deployedseed>1662025389</deployedseed>
+    <deployedseed>1845900451</deployedseed>
+    <deployedseed>66918023</deployedseed>
+    <deployedseed>135629100</deployedseed>
+    <deployedseed>92522737</deployedseed>
+    <deployedseed>1011053329</deployedseed>
+    <deployedseed>783777047</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Only evaluated P(X=t) for part b</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>prob_just_t</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
