@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating probabilities for a uniformly distributed waiting time</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Achieng' arrives at a matatu stop at a random time. From past observation, the time she waits for the next matatu is <b>uniformly distributed</b> between <b>0</b> and <b>{@b@} minutes</b>. Let \(X\) be the waiting time in minutes.</p>
+
+[[jsxgraph width="550px" height="250px"]]
+var b = {#b#};
+var c = {#c#};
+var d = {#d#};
+var h = 1/b;
+
+/* Dynamic bounding box: scales perfectly regardless of how large 'b' gets */
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-b*0.08, h*1.6, b*1.15, -h*0.35],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+/* Custom axes to ensure labels never overlap */
+brd.create('arrow', [[0, 0], [b*1.1, 0]], {strokeColor: '#424242', strokeWidth: 2});
+brd.create('arrow', [[0, -h*0.1], [0, h*1.4]], {strokeColor: '#424242', strokeWidth: 2});
+
+/* Axis Titles - FIXED SYNTAX */
+brd.create('text', [b*1.1, -h*0.15, 'Time (min)'], {anchorX: 'right', anchorY: 'top', fontSize: 12, strokeColor: '#424242'});
+brd.create('text', [-b*0.02, h*1.3, 'f(x)'], {anchorX: 'right', anchorY: 'middle', fontSize: 12, strokeColor: '#424242'});
+
+/* Draw the full uniform PDF rectangle (light outline) */
+brd.create('polygon', [[0, 0], [b, 0], [b, h], [0, h]], {
+    fillColor: 'none', 
+    borders: {strokeWidth: 2, strokeColor: '#1976d2'},
+    vertices: {visible: false}
+});
+
+/* Shade the target interval from c to d */
+brd.create('polygon', [[c, 0], [d, 0], [d, h], [c, h]], {
+    fillColor: '#bbdefb', fillOpacity: 0.7, 
+    borders: {strokeWidth: 0},
+    vertices: {visible: false}
+});
+
+/* Highlight interval borders */
+brd.create('segment', [[c, 0], [c, h]], {strokeColor: '#1976d2', strokeWidth: 2});
+brd.create('segment', [[d, 0], [d, h]], {strokeColor: '#1976d2', strokeWidth: 2});
+
+/* X-axis labels - FIXED SYNTAX */
+brd.create('text', [b, -h*0.05, b.toString()], {anchorX: 'middle', anchorY: 'top', fontSize: 12, strokeColor: '#424242'});
+brd.create('text', [c, -h*0.05, c.toString()], {anchorX: 'middle', anchorY: 'top', fontSize: 12, strokeColor: '#1976d2', fontWeight: 'bold'});
+brd.create('text', [d, -h*0.05, d.toString()], {anchorX: 'middle', anchorY: 'top', fontSize: 12, strokeColor: '#1976d2', fontWeight: 'bold'});
+brd.create('text', [(c+d)/2, h/2, 'P(c \u2264 X \u2264 d)'], {anchorX: 'middle', anchorY: 'middle', fontSize: 14, strokeColor: '#0d47a1'});
+
+/* Y-axis unknown height indicator - FIXED SYNTAX */
+brd.create('segment', [[0, h], [b, h]], {strokeColor: '#9e9e9e', strokeWidth: 1, dash: 2});
+brd.create('text', [-b*0.02, h, '?'], {anchorX: 'right', anchorY: 'middle', fontSize: 16, strokeColor: '#d32f2f', fontWeight: 'bold'});
+[[/jsxgraph]]
+
+<p> Because \(X\) is a continuous uniform random variable, the total area under the probability density curve must equal exactly 1.</p>
+<p><b>a) </b> Calculate the constant height of the probability density function, \(f(x)\).</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(f(x) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Calculate the probability that Achieng' waits between <b>{@c@}</b> and <b>{@d@} minutes</b> (\( P({@c@} \le X \le {@d@}) \)).</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P({@c@} \le X \le {@d@}) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Calculate the probability that Achieng' waits for <i>exactly </i> <b>{@exact_val@} minutes</b> (\( P(X = {@exact_val@}) \)).</p>
+<p>\(P(X = {@exact_val@}) =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: The PDF Height</b><br>
+For a uniform distribution \(U(a, b)\), the probability density function forms a rectangle with a total area of 1. The total width of the distribution is \(b - a = {@b@} - 0 = {@b@}\).</p>
+<p>To ensure the area equals 1, the height must be the reciprocal of the width:</p>
+<p style="margin-left: 20px;">\( \displaystyle f(x) = \frac{1}{b - a} = \frac{1}{{@b@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ f(x) = {@ta1@} } \)</p>
+
+<p><b>Part b: Interval Probability</b><br>
+The probability of a continuous variable falling within an interval is the area of the rectangle over that specific interval:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(c \le X \le d) = \frac{d - c}{b - a} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P({@c@} \le X \le {@d@}) = \frac{{@d@} - {@c@}}{{@b@}} = \frac{{@d_minus_c@}}{{@b@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P({@c@} \le X \le {@d@}) = {@ta2@} } \)</p>
+
+<p><b>Part c: Exact Value Probability</b><br>
+For any <b>continuous</b> random variable, the probability of obtaining one single, exact precise moment is always zero, because there is no "width" or area under a single point on a curve.</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X = {@exact_val@}) = 0 } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize max wait time for the uniform distribution */
+b : rand([15, 20, 25, 30, 35, 40, 45, 50, 55, 60]);
+
+/* Calculate height of the PDF (1/b) */
+ta1 : 1 / b;
+
+/* Randomize internal bounds for P(c <= X <= d) */
+c : rand([2, 3, 4, 5, 6]);
+d : c + rand([4, 5, 6, 7, 8, 9]);
+d_minus_c : d - c;
+
+/* Calculate target interval probability */
+ta2 : d_minus_c / b;
+
+/* Randomize exact value target for part c */
+exact_val : rand([7, 8, 9, 11, 12, 13, 14]);
+
+/* Target probability for an exact value in a continuous distribution is always 0 */
+ta3 : 0;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>U(0, {@b@}). f(x) = {@ta1@}. P({@c@} <= X <= {@d@}) = {@ta2@}. P(X = {@exact_val@}) = {@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Continuous Probability (Uniform Distribution)</p>
+<p id="description">Grade 11 CBE: Finding the probability density function value, calculating interval areas, and recognizing that exact value probabilities are zero for continuous variables.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of f(x)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. The height of a uniform PDF is always \(1\) divided by the total width of the distribution.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they just entered the max width</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>b</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered the <i>width</i> of the distribution (\({@b@}\)). Remember, the total <i>area</i> must equal 1. What must the height be to make the area 1?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Calculate the total width of the distribution, and then find its reciprocal to get the height \(f(x)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of interval probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly calculated the proportional area for the specified time interval.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Find the width of the target interval (\({@d@} - {@c@}\)) and divide it by the total width of the entire distribution (\({@b@}\)).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of exact probability (0)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. Because time is a continuous variable, the probability of hitting one exact, infinitely precise moment is always zero.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they mistakenly applied the discrete logic (1/b)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered the value of the PDF height \(f(x)\). Remember, probability is measured by <b>area</b> under the curve. A single exact point has a width of 0, so its area is also 0.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Think about how probability is measured for continuous variables (area under the curve). Does a single, exact number have any width or area?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1746766155</deployedseed>
+    <deployedseed>266994942</deployedseed>
+    <deployedseed>1142965791</deployedseed>
+    <deployedseed>1342829293</deployedseed>
+    <deployedseed>1730471530</deployedseed>
+    <deployedseed>632575709</deployedseed>
+    <deployedseed>962078514</deployedseed>
+    <deployedseed>2075530171</deployedseed>
+    <deployedseed>2117909572</deployedseed>
+    <deployedseed>1985781334</deployedseed>
+    <deployedseed>754027988</deployedseed>
+    <deployedseed>1948483822</deployedseed>
+    <deployedseed>402853681</deployedseed>
+    <deployedseed>1419179773</deployedseed>
+    <deployedseed>1767650033</deployedseed>
+    <deployedseed>2095517243</deployedseed>
+    <deployedseed>580449147</deployedseed>
+    <deployedseed>1425210982</deployedseed>
+    <deployedseed>1230380500</deployedseed>
+    <deployedseed>1333479106</deployedseed>
+    <deployedseed>715517787</deployedseed>
+    <deployedseed>599049648</deployedseed>
+    <deployedseed>733629189</deployedseed>
+    <deployedseed>1451318945</deployedseed>
+    <deployedseed>571340358</deployedseed>
+    <deployedseed>626438024</deployedseed>
+    <deployedseed>2133674988</deployedseed>
+    <deployedseed>1745531301</deployedseed>
+    <deployedseed>1502748158</deployedseed>
+    <deployedseed>286049722</deployedseed>
+    <deployedseed>1077007394</deployedseed>
+    <deployedseed>1477724852</deployedseed>
+    <deployedseed>1515153492</deployedseed>
+    <deployedseed>843461388</deployedseed>
+    <deployedseed>2141197756</deployedseed>
+    <deployedseed>2120188065</deployedseed>
+    <deployedseed>2049635759</deployedseed>
+    <deployedseed>17673232</deployedseed>
+    <deployedseed>1324669040</deployedseed>
+    <deployedseed>796339594</deployedseed>
+    <deployedseed>854674961</deployedseed>
+    <deployedseed>871085988</deployedseed>
+    <deployedseed>456504964</deployedseed>
+    <deployedseed>1688314861</deployedseed>
+    <deployedseed>1447127949</deployedseed>
+    <deployedseed>696091722</deployedseed>
+    <deployedseed>1473550591</deployedseed>
+    <deployedseed>1381797759</deployedseed>
+    <deployedseed>1824109443</deployedseed>
+    <deployedseed>2143827500</deployedseed>
+    <deployedseed>890025347</deployedseed>
+    <deployedseed>258688374</deployedseed>
+    <deployedseed>257107873</deployedseed>
+    <deployedseed>1280987898</deployedseed>
+    <deployedseed>1711628103</deployedseed>
+    <deployedseed>314177714</deployedseed>
+    <deployedseed>1730521043</deployedseed>
+    <deployedseed>762167273</deployedseed>
+    <deployedseed>2113049441</deployedseed>
+    <deployedseed>849860107</deployedseed>
+    <deployedseed>254985464</deployedseed>
+    <deployedseed>889904110</deployedseed>
+    <deployedseed>1621826247</deployedseed>
+    <deployedseed>908034777</deployedseed>
+    <deployedseed>198256487</deployedseed>
+    <deployedseed>436668755</deployedseed>
+    <deployedseed>1438915032</deployedseed>
+    <deployedseed>1457437165</deployedseed>
+    <deployedseed>446685875</deployedseed>
+    <deployedseed>1098779931</deployedseed>
+    <deployedseed>1984842433</deployedseed>
+    <deployedseed>1952228329</deployedseed>
+    <deployedseed>354546434</deployedseed>
+    <deployedseed>191056044</deployedseed>
+    <deployedseed>1252950035</deployedseed>
+    <deployedseed>1539545938</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Entered width for part a, entered f(x) for part c</description>
+      <testinput>
+        <name>ans1</name>
+        <value>b</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 5</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3 + 5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

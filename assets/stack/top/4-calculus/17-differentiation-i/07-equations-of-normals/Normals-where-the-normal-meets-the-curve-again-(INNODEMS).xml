@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Normals: where the normal meets the curve again (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph shows the parabola \( y = {@fx@} \) and the point \( P \) on it where \( x = {@aa@} \).</p>
+[[jsxgraph width="420px" height="400px"]]
+var c = {#cq#}, a = {#float(aa)#}, x2 = {#float(x2)#};
+function f(x){ return x*x + c; }
+var R = Math.max(Math.abs(a), Math.abs(x2)) + 1.5;
+var top = Math.max(f(R), f(a)) + 1, bot = c - 0.15*(top - c) - 1;
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-R, top, R, bot],
+    axis: true, showCopyright: false, showNavigation: false,
+    pan: {enabled:false}, zoom: {enabled:false}
+});
+board.create('functiongraph', [f, -R, R], {strokeColor:'#1565c0', strokeWidth:2, highlight:false});
+board.create('point', [a, f(a)], {name:'P', size:3, fixed:true, fillColor:'#d32f2f', strokeColor:'#d32f2f', label:{offset:[8, 8]}});
+[[/jsxgraph]]
+<p>The normal to the parabola at \( P \) crosses the parabola again at a second point \( Q \).</p>
+<p>(a) Find the equation of the normal at \( P \).</p>
+<div>\( y = \) [[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>
+<p>(b) Find the coordinates of \( Q \). Give exact values (fractions are fine).</p>
+<div>\( x = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<div>\( y = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>(a)</strong> \( \dfrac{dy}{dx} = 2x \), so the tangent at \( P \) has gradient \( 2({@aa@}) = {@2*aa@} \) and the normal has gradient \( {@mn@} \). The point is \( P({@aa@},\ {@ya@}) \), so</p>
+\[ y = {@mn@}\left(x - ({@aa@})\right) + {@ya@} = {@nl@}. \]
+<p><strong>(b)</strong> Solve the normal and the parabola simultaneously:</p>
+\[
+\begin{align*}
+{@fx@} &= {@nl@} \\
+{@expand(fx - nl)@} &= 0.
+\end{align*}
+\]
+<p>We already know one solution: \( x = {@aa@} \) (the point \( P \)), so \( x - ({@aa@}) \) is a factor:</p>
+\[ {@factor(expand(fx - nl))@} = 0. \]
+<p>The other solution is \( x = {@x2@} \). Then \( y = \left({@x2@}\right)^2 + ({@cq@}) = {@y2@} \), so \( Q = \left({@x2@},\ {@y2@}\right) \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Parabola y = x^2 + cq, point P at x = aa.  Normal: gradient -1/(2 aa).
+   Second intersection x2 = -aa - 1/(2 aa)  (sum of the roots). */
+aa  : rand([-3, -2, -1, 1, 2, 3]);    /* not +/-1/2: there the normal with the wrong sign IS the tangent */
+cq  : rand([-3, -2, -1, 0, 1, 2]);
+fx  : x^2 + cq;
+ya  : aa^2 + cq;
+mn  : -1/(2*aa);
+nl  : expand(mn*(x - aa) + ya);
+x2  : -aa - 1/(2*aa);
+y2  : x2^2 + cq;
+tl  : expand(2*aa*(x - aa) + ya);           /* tangent: a common wrong answer */
+w_nominus : expand(1/(2*aa)*(x - aa) + ya);  /* forgot the minus sign */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@fx@},\ a={@aa@},\ \text{normal } y={@nl@},\ Q=({@x2@},{@y2@}) \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>nl</tans>
+      <boxsize>20</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>x2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>y2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>nl</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: tangent</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>tl</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-tangent</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the <em>tangent</em> at \( P \). The normal is perpendicular to it, with gradient \( -\dfrac{1}{2a} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: nominus</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_nominus</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nominus</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the sign of your gradient. The normal gradient is \( -\dfrac{1}{m_{\text{tangent}}} = -\dfrac{1}{{@2*aa@}} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Find the tangent gradient \( 2a \) at \( P \), take \( -\dfrac{1}{2a} \), then use \( y = m(x - a) + f(a) \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecfok : is(ans2 # aa and radcan(expand(subst(ans2, x, fx - ans1))) = 0);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>x2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: isP</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>aa</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-isP</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the \( x \)-coordinate of \( P \) itself. The quadratic has two roots: one is \( x = {@aa@} \), and you need the <em>other</em> one.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: mirror</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>-aa</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-mirror</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the mirror image of \( P \) in the \( y \)-axis, which is where the horizontal line through \( P \) meets the parabola. Solve the normal and the parabola simultaneously.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: ecf</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ecfok</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is where <em>your</em> line from part (a) meets the parabola again, so the method is right. Fix part (a).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Set \( {@fx@} \) equal to the normal, rearrange to \( (\ldots) = 0 \), and use the fact that \( x = {@aa@} \) is one root.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf3 : ev(subst(ans2, x, fx), simp);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>y2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: ecf</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ecf3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is the correct \( y \)-value for <em>your</em> \( x \)-coordinate.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Substitute your \( x \)-coordinate into \( y = {@fx@} \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>nl</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>x2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>y2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Gave P</description>
+      <testinput>
+        <name>ans1</name>
+        <value>nl</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>aa</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ya</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-isP</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Mirror point</description>
+      <testinput>
+        <name>ans1</name>
+        <value>nl</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>-aa</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ya</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-mirror</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Used the tangent, carried through</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tl</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(aa,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ya</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-tangent</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Forgot minus, ECF for Q</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_nominus</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(-aa+1/(2*aa),simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ev((-aa+1/(2*aa))^2+cq,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-nominus</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-ecf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x+100</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>100</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

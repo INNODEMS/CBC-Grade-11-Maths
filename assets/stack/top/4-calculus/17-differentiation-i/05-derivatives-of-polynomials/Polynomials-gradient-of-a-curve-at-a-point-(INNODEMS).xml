@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Polynomials: gradient of a curve at a point (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph shows the curve \( y = {@fx@}, \) with the point \( P \) on the curve where \( x = {@xp@} \).</p>
+[[jsxgraph width="420px" height="380px"]]
+var k3 = {#k3#}, k2 = {#k2#}, k1 = {#k1#}, k0 = {#k0#};
+var xp = {#xp#}, yp = {#yp#};
+function f(x){ return ((k3*x + k2)*x + k1)*x + k0; }
+
+/* Fit the vertical window to the curve on [-3, 3], but keep P comfortably inside. */
+var lo = Infinity, hi = -Infinity;
+for (var s = -3; s <= 3.0001; s += 0.05) { var v = f(s); lo = Math.min(lo, v); hi = Math.max(hi, v); }
+lo = Math.max(lo, yp - 12); hi = Math.min(hi, yp + 12);
+var pad = 0.12*(hi - lo) + 1;
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-3.5, hi + pad, 3.5, lo - pad],
+    axis: true, showCopyright: false, showNavigation: false,
+    pan: {enabled:false}, zoom: {enabled:false}
+});
+board.create('functiongraph', [f, -3.5, 3.5], {strokeColor:'#1565c0', strokeWidth:2, highlight:false});
+board.create('point', [xp, yp], {name:'P', size:3, fixed:true, fillColor:'#d32f2f', strokeColor:'#d32f2f',
+    label:{offset:[8, 10]}});
+[[/jsxgraph]]
+<p>(a) Find \( \dfrac{dy}{dx} \).</p>
+<div>\( \dfrac{dy}{dx} = \) [[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>
+<p>(b) Find the gradient of the curve at \( P \).</p>
+<div>Gradient at \( P = \) [[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p><strong>(a)</strong> Differentiate term by term:</p>
+\( \frac{dy}{dx} = {@dfx@}. \)
+<p><strong>(b)</strong> The gradient of the curve at a point is the value of \( \dfrac{dy}{dx} \) there. Substitute \( x = {@xp@} \) into the <em>derivative</em> (not into the curve):</p>
+\( \left.\frac{dy}{dx}\right|_{x={@xp@}} = {@gp@}. \)
+<p>So the tangent to the curve at \( P({@xp@},\ {@yp@}) \) has gradient \( {@gp@} \). Note that \( y = {@yp@} \) at \( P \) is the <em>height</em> of the curve, which is a different thing from its <em>steepness</em>.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* y = k3 x^3 + k2 x^2 + k1 x + k0 and a point x = xp, chosen so that
+   the curve fits on a small graph and f(xp), f'(xp) are different and non-zero. */
+cands : sublist(
+  create_list([a3, a2, a1, a0, x0], a3, [-1, 1], a2, -3, 3, a1, -4, 4, a0, -3, 3, x0, [-2, -1, 1, 2]),
+  lambda([z], block([fv, gv],
+    fv : z[1]*z[5]^3 + z[2]*z[5]^2 + z[3]*z[5] + z[4],
+    gv : 3*z[1]*z[5]^2 + 2*z[2]*z[5] + z[3],
+    is(abs(fv) <= 8 and gv # 0 and gv # fv and abs(gv) <= 15
+       and z[2] # 0 and z[3] # 0 and z[4] # 0))));
+pick : rand(cands);
+k3 : pick[1];
+k2 : pick[2];
+k1 : pick[3];
+k0 : pick[4];
+xp : pick[5];
+fx  : k3*x^3 + k2*x^2 + k1*x + k0;
+dfx : diff(fx, x);              /* model answer (a) */
+yp  : subst(xp, x, fx);         /* height of P */
+gp  : subst(xp, x, dfx);        /* model answer (b) */
+w_nolower : 3*k3*x^3 + 2*k2*x^2 + k1*x;   /* kept the powers */
+w_const   : dfx + k0;                      /* kept the constant */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( y={@fx@},\ x_P={@xp@},\ y'={@dfx@},\ y'({@xp@})={@gp@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>dfx</tans>
+      <boxsize>22</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>gp</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>dfx</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: nolower</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_nolower</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nolower</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember to reduce each power by one: \( \frac{d}{dx}(x^{n}) = n\,x^{\,n-1} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: keptconst</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_const</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-keptconst</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The constant term \( {@k0@} \) differentiates to \( 0 \), so it should not appear in \( \dfrac{dy}{dx} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Differentiate each term using \( \frac{d}{dx}(c\,x^{n}) = n\,c\,x^{\,n-1} \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf2 : ev(subst(xp, x, ans1), simp);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>gp</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: subinf</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>yp</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-subinf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You substituted \( x = {@xp@} \) into the equation of the <em>curve</em>, which gives the height \( y \) of \( P \). The gradient comes from substituting into the <em>derivative</em> \( \dfrac{dy}{dx} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: ecf</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ecf2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your value is what you get by substituting \( x = {@xp@} \) into <em>your</em> answer to part (a), so the method is right. Correct part (a) to get the true gradient.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Substitute \( x = {@xp@} \) into \( \dfrac{dy}{dx} \) from part (a).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dfx</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>gp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Substituted into f</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dfx</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>yp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-subinf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Wrong (a), consistent (b): ECF</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(dfx+100,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(gp+100,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Kept powers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_nolower</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>gp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-nolower</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Kept constant</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_const</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>gp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-keptconst</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(dfx+x^2,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(gp+100,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

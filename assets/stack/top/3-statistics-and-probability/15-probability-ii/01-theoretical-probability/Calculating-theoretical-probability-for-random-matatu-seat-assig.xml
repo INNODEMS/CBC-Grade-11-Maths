@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating theoretical probability for random matatu seat assignments</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A matatu heading to Kisumu has exactly <b>{@total_seats@} empty seats</b> remaining. Upon inspection, <b>{@num_window@} are window seats</b> and <b>{@num_aisle@} are aisle seats</b>.</p>
+
+<p>A group of <b>{@board_pass@} friends</b> board the matatu and are assigned to the empty seats completely at random.</p>
+
+<p><b>a) </b> Calculate the total number of ways the {@board_pass@} friends can be assigned to the available empty seats.</p>
+<p>\(n(S) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Calculate the number of possible seating assignments where <i>exactly</i> <b>{@req_window@} friend(s)</b> get window seats (and the rest get aisle seats).</p>
+<p>\(n(E) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Using your results from parts (a) and (b), determine the theoretical probability that exactly {@req_window@} friend(s) get window seats.</p>
+<p><i>(Enter your answer as a fraction).</i></p>
+<p>\(P(\text{exact arrangement}) =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: The Sample Space</b><br>
+There are \({@total_seats@}\) empty seats available in total, and \({@board_pass@}\) friends to fill them. The total number of possible random seat assignments is:</p>
+<p style="margin-left: 20px;">\( \displaystyle n(S) = {}^{{@total_seats@}}C_{{@board_pass@}} = \frac{{@total_seats@}!}{{@board_pass@}!({@total_seats@} - {@board_pass@})!} = {@ta1@} \)</p>
+
+<p><b>Part b: The Favourable Outcomes</b><br>
+The event requires choosing exactly \({@req_window@}\) window seat(s) from the \({@num_window@}\) available, AND the remaining \({@req_aisle@}\) seat(s) from the \({@num_aisle@}\) available aisle seats. We multiply these independent combinations:</p>
+<p style="margin-left: 20px;">\( \displaystyle n(E) = {}^{{@num_window@}}C_{{@req_window@}} \times {}^{{@num_aisle@}}C_{{@req_aisle@}} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle n(E) = {@window_comb@} \times {@aisle_comb@} = {@ta2@} \)</p>
+
+<p><b>Part c: The Theoretical Probability</b><br>
+Theoretical probability is defined as the number of favourable outcomes divided by the total number of equally-likely outcomes in the sample space:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(E) = \frac{n(E)}{n(S)} = \frac{{@ta2@}}{{@ta1@}} \)</p>
+<p>Simplifying this fraction mathematically gives the final probability:</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ {@ta3@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomize seat counts safely using explicit lists */
+num_window : rand([3, 4, 5, 6]);
+num_aisle : rand([4, 5, 6, 7]);
+total_seats : num_window + num_aisle;
+
+/* Randomize boarding passengers and required split */
+board_pass : rand([3, 4]);
+
+/* Ensure required window seats is physically possible and forces a split */
+req_window : rand([1, 2]);
+req_aisle : board_pass - req_window;
+
+/* Maxima uses binomial(n, k) for the combinations function nCr */
+n_S : binomial(total_seats, board_pass);
+window_comb : binomial(num_window, req_window);
+aisle_comb : binomial(num_aisle, req_aisle);
+n_E : window_comb * aisle_comb;
+
+/* Calculate the final probability */
+prob : n_E / n_S;
+
+/* Target answers */
+ta1 : n_S;
+ta2 : n_E;
+ta3 : prob;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Win: {@num_window@}, Aisle: {@num_aisle@}. Pass: {@board_pass@}. Req W: {@req_window@}, Req A: {@req_aisle@}. n(S)={@ta1@}, n(E)={@ta2@}, P={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Theoretical Probability (Selecting from Two Groups)</p>
+<p id="description">Grade 11 CBE: Calculating sample space and favourable outcomes using the combinations formula for a spatial seating assignment.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>binomial</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>binomial</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>binomial</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of sample space</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully calculated the combinations for the entire sample space.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. To find the total sample space \(n(S)\), use the combinations formula \({}^nC_r\) where \(n\) is the TOTAL number of available empty seats, and \(r\) is the number of passengers boarding.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of favourable outcomes</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully identified the number of favourable seating combinations.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Remember to calculate the combinations for the window seats and the combinations for the aisle seats separately, then multiply them together to find \(n(E)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of final probability fraction</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. Your theoretical probability is correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they simply divided their own potentially wrong n(E) by n(S)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ans2 / ans1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You correctly applied the formula \(P(E) = \frac{n(E)}{n(S)}\) based on your previous answers, but because one of your earlier calculations was incorrect, your final probability is also incorrect.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Theoretical probability is found by dividing the number of favourable outcomes \(n(E)\) by the total outcomes in the sample space \(n(S)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>683447267</deployedseed>
+    <deployedseed>949651663</deployedseed>
+    <deployedseed>2082899824</deployedseed>
+    <deployedseed>1655663247</deployedseed>
+    <deployedseed>1243553069</deployedseed>
+    <deployedseed>1651779806</deployedseed>
+    <deployedseed>684679395</deployedseed>
+    <deployedseed>149425714</deployedseed>
+    <deployedseed>1341535105</deployedseed>
+    <deployedseed>1086758611</deployedseed>
+    <deployedseed>1942576080</deployedseed>
+    <deployedseed>191089920</deployedseed>
+    <deployedseed>403724307</deployedseed>
+    <deployedseed>1286785039</deployedseed>
+    <deployedseed>908373322</deployedseed>
+    <deployedseed>414506581</deployedseed>
+    <deployedseed>1178019769</deployedseed>
+    <deployedseed>1178782234</deployedseed>
+    <deployedseed>1280887831</deployedseed>
+    <deployedseed>1456865657</deployedseed>
+    <deployedseed>1106783730</deployedseed>
+    <deployedseed>1299324266</deployedseed>
+    <deployedseed>998757883</deployedseed>
+    <deployedseed>8686116</deployedseed>
+    <deployedseed>708382940</deployedseed>
+    <deployedseed>2126768010</deployedseed>
+    <deployedseed>561348689</deployedseed>
+    <deployedseed>2123478137</deployedseed>
+    <deployedseed>1658485869</deployedseed>
+    <deployedseed>973789182</deployedseed>
+    <deployedseed>1193197151</deployedseed>
+    <deployedseed>1611555360</deployedseed>
+    <deployedseed>1841258881</deployedseed>
+    <deployedseed>2140320390</deployedseed>
+    <deployedseed>609368168</deployedseed>
+    <deployedseed>18989549</deployedseed>
+    <deployedseed>365470335</deployedseed>
+    <deployedseed>141507486</deployedseed>
+    <deployedseed>1699703111</deployedseed>
+    <deployedseed>121239498</deployedseed>
+    <deployedseed>667340891</deployedseed>
+    <deployedseed>289598795</deployedseed>
+    <deployedseed>594023052</deployedseed>
+    <deployedseed>717863781</deployedseed>
+    <deployedseed>1937839514</deployedseed>
+    <deployedseed>53877142</deployedseed>
+    <deployedseed>1928374647</deployedseed>
+    <deployedseed>910515808</deployedseed>
+    <deployedseed>1921633333</deployedseed>
+    <deployedseed>625401487</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong combinations, but correctly applied probability division</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>(ta2+2)/(ta1+5)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Completely arbitrary incorrect answers (safely failing)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+10</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3+10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
