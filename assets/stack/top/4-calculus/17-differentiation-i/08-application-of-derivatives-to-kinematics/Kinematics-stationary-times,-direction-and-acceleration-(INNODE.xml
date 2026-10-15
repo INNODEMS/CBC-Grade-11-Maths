@@ -1,0 +1,928 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Kinematics: stationary times, direction and acceleration (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A particle moves along a straight line. Its position, in metres, after \( t \) seconds is</p>
+\[ s(t) = {@st@}, \qquad t \ge 0. \]
+<p>(a) Find the velocity \( v(t) \) and the acceleration \( a(t) \).</p>
+<div>\( v(t) = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<div>\( a(t) = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(b) At what times is the particle stationary? Enter a set, e.g. <code>{2, 7}</code>.</p>
+<div>\( t \in \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>
+<p>(c) The particle moves in the <strong>negative</strong> direction for</p>
+<div>[[input:ans4]] \( < t < \) [[input:ans5]] [[validation:ans4]] [[validation:ans5]]</div>
+<div>[[feedback:prt4]]</div>
+<p>(d) Find the acceleration at the first stationary time.</p>
+<div>Acceleration \( = \) [[input:ans6]] m/s\(^2\) [[validation:ans6]] [[feedback:prt5]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>(a)</strong> Differentiate once for velocity and again for acceleration:</p>
+\[ v(t) = s'(t) = {@vt@} = {@factor(vt)@}, \qquad a(t) = v'(t) = {@acc@}. \]
+<p><strong>(b)</strong> Stationary means \( v(t) = 0 \): \( {@factor(vt)@} = 0 \), so \( t = {@pp@} \) s or \( t = {@qp@} \) s.</p>
+<p><strong>(c)</strong> \( v(t) \) is a quadratic with a positive leading coefficient, so it is negative <em>between</em> its roots. Test a value: at \( t = {@(pp+qp)/2@} \), \( v = {@subst((pp+qp)/2, t, vt)@} < 0 \). The particle moves in the negative direction for \( {@pp@} < t < {@qp@} \).</p>
+<p><strong>(d)</strong> \( a({@pp@}) = {@acc@} \big|_{t={@pp@}} = {@apq@} \) m/s\(^2\). The particle is momentarily at rest and the negative acceleration is turning it round to move in the negative direction.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>5</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* v(t) = 3 (t - pp)(t - qp) with 0 < pp < qp and pp + qp even, so that
+   s(t) = t^3 - 3(pp+qp)/2 t^2 + 3 pp qp t + s0 has integer coefficients. */
+pp  : rand([1, 2, 3, 4]);
+qp  : pp + rand([2, 4]);
+s0  : rand_with_prohib(-5, 5, [0]);
+st  : t^3 - 3*(pp + qp)/2*t^2 + 3*pp*qp*t + s0;
+vt  : expand(diff(st, t));
+acc : diff(vt, t);
+ta3 : {pp, qp};
+apq : subst(pp, t, acc);                  /* acceleration at the first stationary time */
+w_mid : {(pp + qp)/2};                   /* solved a(t) = 0 instead */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( s(t)={@st@},\ v={@vt@},\ a={@acc@},\ t\in{@ta3@},\ a({@pp@})={@apq@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>vt</tans>
+      <boxsize>18</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>acc</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>pp</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>algebraic</type>
+      <tans>qp</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans6</name>
+      <type>algebraic</type>
+      <tans>apq</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>vt</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: keptconst</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>vt + s0</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-keptconst</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The constant \( {@s0@} \) differentiates to \( 0 \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. \( v(t) = s'(t) \): differentiate each term of \( s(t) \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf2 : ev(diff(ans1, t), simp);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>acc</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: ecf</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ecf2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is the derivative of <em>your</em> \( v(t) \), so the method is right. Fix \( v(t) \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. \( a(t) = v'(t) \): differentiate your velocity.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[sa : if setp(ans3) then ans3 else if listp(ans3) then setify(ans3) else {ans3};
+nsa : length(sa);
+okall : is(nsa > 0 and subsetp(sa, ta3));
+ecfok : is(nsa = 2 and ratsimp(ans1 - vt) # 0 and every(lambda([z], is(radcan(expand(subst(z, t, ans1))) = 0)), listify(sa)));]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: onlyone</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>okall</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-onlyone</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct, but there is another stationary time: \( v(t) = 0 \) is a quadratic equation.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: solveda</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>w_mid</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-solveda</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is where the <em>acceleration</em> is zero. The particle is stationary where the <em>velocity</em> is zero.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: ecf</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ecfok</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>These are the zeros of <em>your</em> \( v(t) \), so the method is right. Fix part (a).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Solve \( v(t) = 0 \). Start by taking out the common factor 3.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sb : if setp(ans3) then listify(ans3) else if listp(ans3) then ans3 else [ans3];
+ecfok4 : is(length(sb) = 2 and setify(sb) # ta3 and every(numberp, sb) and [ans4, ans5] = sort(sb));</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>[ans4, ans5]</sans>
+        <tans>[pp, qp]</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt4-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: ecf</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ecfok4</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This interval runs between <em>your</em> stationary times from part (b), so the reasoning is right.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: positive</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>[ans4, ans5]</sans>
+        <tans>[0, pp]</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-positive</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>On this interval \( v(t) > 0 \), so the particle moves in the <em>positive</em> direction. Test a time between the two stationary times.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. The particle moves in the negative direction when \( v(t) < 0 \). Since \( v \) is a quadratic with positive \( t^2 \) coefficient, this happens between its two roots.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt5</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sc : if setp(ans3) then listify(ans3) else if listp(ans3) then ans3 else [ans3];
+ecf6 : if every(numberp, sc) then ev(subst(lmin(sc), t, ans2), simp) else und;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans6</sans>
+        <tans>apq</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt5-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: ecf</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans6</sans>
+        <tans>ecf6</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is <em>your</em> \( a(t) \) at the first of <em>your</em> stationary times, so the method is right.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt5-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: velocity</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans6</sans>
+        <tans>subst(pp, t, vt)</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-velocity</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the velocity at that time (which is \( 0 \) by definition of stationary). The question asks for the acceleration \( a({@pp@}) \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt5-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Substitute the first stationary time into \( a(t) \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>vt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>acc</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>pp</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>qp</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>apq</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Factorised forms accepted</description>
+      <testinput>
+        <name>ans1</name>
+        <value>3*(t-pp)*(t-qp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>acc</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[qp, pp]</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>pp</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>qp</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>apq</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Kept constant</description>
+      <testinput>
+        <name>ans1</name>
+        <value>vt+s0</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>acc</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>pp</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>qp</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>apq</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-keptconst</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Only one time</description>
+      <testinput>
+        <name>ans1</name>
+        <value>vt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>acc</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>{qp}</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>pp</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>qp</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>apq</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-onlyone</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Solved a=0</description>
+      <testinput>
+        <name>ans1</name>
+        <value>vt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>acc</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>w_mid</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>pp</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>qp</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>apq</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-solveda</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Positive interval</description>
+      <testinput>
+        <name>ans1</name>
+        <value>vt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>acc</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>0</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>pp</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>apq</value>
+      </testinput>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-positive</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Gave velocity in (d)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>vt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>acc</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>pp</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>qp</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>0</value>
+      </testinput>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-velocity</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>8</testcase>
+      <description>Wrong v, consistent later parts</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(expand(3*(t-pp)*(t-qp-2)),simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(diff(expand(3*(t-pp)*(t-qp-2)),t),simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>{pp, qp+2}</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>pp</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>qp+2</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ev(subst(pp,t,diff(expand(3*(t-pp)*(t-qp-2)),t)),simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-ecf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-ecf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-ecf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

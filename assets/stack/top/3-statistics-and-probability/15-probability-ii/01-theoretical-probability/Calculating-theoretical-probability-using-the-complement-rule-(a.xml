@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating theoretical probability using the complement rule (at least one)</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A high school in Kakamega is selecting students to represent them at the National Drama Festival. The drama club has <b>{@num_actors@} actors</b> and <b>{@num_singers@} singers</b>.</p>
+
+[[jsxgraph width="400px" height="250px"]]
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-1, 6, 11, -1],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+/* Draw a simple stage area */
+board.create('polygon', [[0,0], [10,0], [9,5], [1,5]], {
+    fillColor: '#eceff1', fillOpacity: 0.8, 
+    borders: {strokeWidth: 2, strokeColor: '#b0bec5'}
+});
+board.create('text', [5, -0.4, 'Drama Club Pool'], {anchorX: 'middle', fontSize: 14, strokeColor: '#455a64'});
+
+/* Dynamically scatter the actors and singers */
+var act_c = {#num_actors#};
+var sing_c = {#num_singers#};
+
+for(var i=0; i<act_c; i++) {
+    var rx = 1.5 + (i * 3.1) % 7;
+    var ry = 0.5 + (i * 1.7) % 4;
+    board.create('point', [rx, ry], {name:'', size: 6, fillColor: '#9c27b0', strokeColor: '#4a148c'});
+}
+
+for(var j=0; j<sing_c; j++) {
+    var bx = 1.5 + (j * 2.9 + 2) % 7;
+    var by = 0.5 + (j * 2.3 + 1.5) % 4;
+    board.create('point', [bx, by], {name:'', size: 6, fillColor: '#ff9800', strokeColor: '#e65100'});
+}
+[[/jsxgraph]]
+
+<p>The principal randomly selects a delegation of exactly <b>{@select_n@} students</b>.</p>
+
+<p><b>a) </b> Calculate the total number of possible delegations that can be formed from the entire club.</p>
+<p>\(n(S) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> To find the probability of selecting <i>at least one actor</i>, it is easier to first find the complement: selecting <b>no actors at all</b>. Calculate the number of possible delegations that consist <i>only</i> of singers.</p>
+<p>\(n(\text{all singers}) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Using the complement rule (\( P(\text{at least one}) = 1 - P(\text{none}) \)), determine the probability that the delegation includes <b>at least one actor</b>.</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P(\text{at least one actor}) =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: The Sample Space</b><br>
+The club has a total of \({@num_actors@} + {@num_singers@} = {@total_pop@}\) students. We are choosing a delegation of \({@select_n@}\) students. Using the combinations formula:</p>
+<p style="margin-left: 20px;">\( \displaystyle n(S) = {}^{{@total_pop@}}C_{{@select_n@}} = \frac{{@total_pop@}!}{{@select_n@}!({@total_pop@} - {@select_n@})!} = {@ta1@} \)</p>
+
+<p><b>Part b: The Complement Event</b><br>
+The complement of "at least one actor" is "zero actors" (meaning all \({@select_n@}\) students chosen must be singers). We calculate the combinations for choosing \({@select_n@}\) students purely from the \({@num_singers@}\) available singers:</p>
+<p style="margin-left: 20px;">\( \displaystyle n(\text{all singers}) = {}^{{@num_singers@}}C_{{@select_n@}} = {@ta2@} \)</p>
+
+<p><b>Part c: The Theoretical Probability</b><br>
+First, we find the probability of the complement event (selecting no actors):</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{all singers}) = \frac{n(\text{all singers})}{n(S)} = \frac{{@ta2@}}{{@ta1@}} \)</p>
+<p>Then, we apply the complement rule to find our target probability:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{at least one actor}) = 1 - P(\text{all singers}) = 1 - \frac{{@ta2@}}{{@ta1@}} \)</p>
+<p>Simplifying this mathematically yields:</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ {@ta3@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomize student counts to guarantee many unique variants */
+num_actors : rand_with_step(5, 10, 1);
+num_singers : rand_with_step(5, 10, 1);
+total_pop : num_actors + num_singers;
+
+/* Randomize total drawn */
+select_n : rand([3, 4, 5]);
+
+/* Maxima uses binomial(n, k) for the combinations function nCr */
+n_S : binomial(total_pop, select_n);
+
+/* The complement event: picking NO actors means picking ALL singers */
+n_none : binomial(num_singers, select_n);
+
+/* Calculate probabilities */
+prob_none : n_none / n_S;
+prob_at_least_one : 1 - prob_none;
+
+/* Target answers */
+ta1 : n_S;
+ta2 : n_none;
+ta3 : prob_at_least_one;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Actors: {@num_actors@}, Singers: {@num_singers@}. Draw: {@select_n@}. n(S)={@ta1@}, n(none)={@ta2@}, P(>=1)={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Theoretical Probability (Complement Rule)</p>
+<p id="description">Grade 11 CBE: Calculating probability for 'at least one' scenarios using combinations and the complement rule.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>binomial</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>binomial</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>binomial</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>1</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of sample space</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully calculated the combinations for the entire sample space.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. To find the total sample space \(n(S)\), use the combinations formula \({}^nC_r\) where \(n\) is the TOTAL number of students, and \(r\) is the delegation size.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of complement combinations</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully calculated the number of ways to select only singers.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. To find the complement outcomes, calculate \({}^nC_r\) where \(n\) is specifically the number of SINGERS, and \(r\) is the delegation size.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of final probability fraction</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You successfully applied the complement rule to find the final probability.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they forgot to subtract from 1</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>prob_none</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.3</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability of selecting <b>no actors</b>. Remember to subtract this value from 1 to find the probability of selecting <b>at least one actor</b>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Find the probability of the complement event (\(n(E') / n(S)\)), and then subtract it from 1.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1970414813</deployedseed>
+    <deployedseed>1572209689</deployedseed>
+    <deployedseed>627133644</deployedseed>
+    <deployedseed>1475106673</deployedseed>
+    <deployedseed>1795264217</deployedseed>
+    <deployedseed>155999494</deployedseed>
+    <deployedseed>2007105153</deployedseed>
+    <deployedseed>519948015</deployedseed>
+    <deployedseed>744798604</deployedseed>
+    <deployedseed>717581894</deployedseed>
+    <deployedseed>1297870766</deployedseed>
+    <deployedseed>916267396</deployedseed>
+    <deployedseed>1591916066</deployedseed>
+    <deployedseed>597659672</deployedseed>
+    <deployedseed>1203260198</deployedseed>
+    <deployedseed>502535289</deployedseed>
+    <deployedseed>666027590</deployedseed>
+    <deployedseed>1921430580</deployedseed>
+    <deployedseed>2084196158</deployedseed>
+    <deployedseed>871867256</deployedseed>
+    <deployedseed>575782956</deployedseed>
+    <deployedseed>311342388</deployedseed>
+    <deployedseed>128074109</deployedseed>
+    <deployedseed>1073985310</deployedseed>
+    <deployedseed>529652259</deployedseed>
+    <deployedseed>2038764718</deployedseed>
+    <deployedseed>1766796014</deployedseed>
+    <deployedseed>1678471871</deployedseed>
+    <deployedseed>149202957</deployedseed>
+    <deployedseed>2096630825</deployedseed>
+    <deployedseed>1803848168</deployedseed>
+    <deployedseed>1974253212</deployedseed>
+    <deployedseed>2077736455</deployedseed>
+    <deployedseed>852277573</deployedseed>
+    <deployedseed>221895568</deployedseed>
+    <deployedseed>169009755</deployedseed>
+    <deployedseed>131715704</deployedseed>
+    <deployedseed>1794864557</deployedseed>
+    <deployedseed>157462592</deployedseed>
+    <deployedseed>1931414804</deployedseed>
+    <deployedseed>864426143</deployedseed>
+    <deployedseed>395006043</deployedseed>
+    <deployedseed>1940630022</deployedseed>
+    <deployedseed>492402242</deployedseed>
+    <deployedseed>1282435400</deployedseed>
+    <deployedseed>1853666214</deployedseed>
+    <deployedseed>1445709544</deployedseed>
+    <deployedseed>348727361</deployedseed>
+    <deployedseed>1650258747</deployedseed>
+    <deployedseed>1189523173</deployedseed>
+    <deployedseed>1611089401</deployedseed>
+    <deployedseed>419402194</deployedseed>
+    <deployedseed>153866416</deployedseed>
+    <deployedseed>2144154848</deployedseed>
+    <deployedseed>1272629692</deployedseed>
+    <deployedseed>582492272</deployedseed>
+    <deployedseed>861958255</deployedseed>
+    <deployedseed>2124650688</deployedseed>
+    <deployedseed>1855372346</deployedseed>
+    <deployedseed>616151861</deployedseed>
+    <deployedseed>140796627</deployedseed>
+    <deployedseed>1088796909</deployedseed>
+    <deployedseed>1201427643</deployedseed>
+    <deployedseed>1919265606</deployedseed>
+    <deployedseed>1056025928</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot to subtract from 1</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>prob_none</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.3000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

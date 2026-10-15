@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating disjoint probabilities and inverse cumulative temperatures for a uniform distribution</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>The daily high temperature (\(T\)) in Kisumu during July is <b>uniformly distributed</b> between <b>{@a@}\(^{\circ}\text{C}\)</b> and <b>{@b@}\(^{\circ}\text{C}\)</b>.</p>
+
+<p><b>a) </b> Calculate the probability that on a randomly selected day, the high temperature is either <b>less than {@c@}\(^{\circ}\text{C}\)</b> OR <b>greater than {@d@}\(^{\circ}\text{C}\)</b>.</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> A meteorologist states that the probability of the temperature being less than or equal to a specific unknown temperature \(t\) is exactly <b>\({@target_prob_tex@}\)</b>.</p>
+<p>Use the cumulative distribution formula to find the exact temperature \(t\).</p>
+<p>\(t =\) [[input:ans2]] \(^{\circ}\text{C}\)</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Disjoint Probabilities</b><br>
+The total width of our uniform distribution is \(b - a = {@b@} - {@a@} = {@w@}\).</p>
+<p>Because the events "less than {@c@}" and "greater than {@d@}" do not overlap (they are mutually exclusive), we calculate their probabilities separately and add them together:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(T < {@c@}) = \frac{{@c@} - {@a@}}{{@w@}} = \frac{{@c - a@}}{{@w@}} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(T > {@d@}) = \frac{{@b@} - {@d@}}{{@w@}} = \frac{{@b - d@}}{{@w@}} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(T < {@c@} \text{ or } T > {@d@}) = \frac{{@c - a@}}{{@w@}} + \frac{{@b - d@}}{{@w@}} = \frac{{@c - a + b - d@}}{{@w@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{combined}) = {@ta1@} } \)</p>
+
+<p><b>Part b: Inverse Cumulative Probability</b><br>
+We are given the cumulative probability \(P(T \le t) = {@target_prob_tex@}\). For a uniform distribution, the formula for cumulative probability is:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(T \le t) = \frac{t - a}{b - a} \)</p>
+<p>Substitute the known values into the formula and solve for \(t\):</p>
+<p style="margin-left: 20px;">\( \displaystyle \frac{t - {@a@}}{{@w@}} = {@target_prob_tex@} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle t - {@a@} = {@target_prob_tex@} \times {@w@} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle t - {@a@} = {@target_prob_num * w@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ t = {@ta2@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize bounds for the uniform temperature distribution */
+a : rand([18, 19, 20, 21, 22]);
+w : rand([10, 12, 14, 15, 16, 20]);
+b : a + w;
+
+/* Part a: Disjoint probabilities */
+offset1 : rand([2, 3, 4]);
+c : a + offset1; 
+offset2 : rand([2, 3, 4]);
+d : b - offset2; 
+
+prob_less_c : (c - a) / w;
+prob_greater_d : (b - d) / w;
+ta1 : prob_less_c + prob_greater_d;
+
+/* Part b: Inverse probability targets */
+target_prob_list : [1/4, 1/3, 1/2, 2/3, 3/4, 1/5, 2/5, 3/5, 4/5];
+target_prob_tex_list : ["1/4", "1/3", "1/2", "2/3", "3/4", "1/5", "2/5", "3/5", "4/5"];
+
+idx : rand([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+target_prob_num : target_prob_list[idx];
+target_prob_str : target_prob_tex_list[idx];
+target_prob_tex : target_prob_num;
+
+/* Calculate t: (t - a) / w = p  =>  t = a + p * w */
+ta2 : a + target_prob_num * w;
+
+/* Distractors for targeted PRT feedback */
+ta1_wrong : prob_less_c * prob_greater_d;
+ta2_wrong : target_prob_num * w;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>U({@a@}, {@b@}). w={@w@}. P(T<{@c@} OR T>{@d@}) = {@ta1@}. Target P = {@target_prob_tex@}, t = {@ta2@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Continuous Probability (Uniform Distribution)</p>
+<p id="description">Grade 11 CBE: Calculating disjoint probabilities (addition rule) and determining an inverse cumulative value for a uniform distribution.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of disjoint probability sum</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully calculated the probabilities of both intervals and added them together.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they multiplied instead of added</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You multiplied the two probabilities together. Because the events are mutually exclusive (connected by "OR"), you must <b>add</b> their individual probabilities.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Calculate \(P(T < {@c@})\) and \(P(T > {@d@})\) separately, and then add those two fractions together.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of inverse temperature</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You successfully used the cumulative distribution formula to solve backwards for \(t\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they forgot to add the minimum temperature 'a'</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.2</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the correct geometric <i>width</i> (\(t - a\)), but you forgot to add the starting temperature (\(a = {@a@}\)) back to your final answer to find the actual temperature \(t\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Set up the equation \(\frac{t - {@a@}}{{@w@}} = {@target_prob_tex@}\) and solve algebraically for \(t\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>461699491</deployedseed>
+    <deployedseed>1152618601</deployedseed>
+    <deployedseed>1560627513</deployedseed>
+    <deployedseed>1264404334</deployedseed>
+    <deployedseed>1929947734</deployedseed>
+    <deployedseed>855748927</deployedseed>
+    <deployedseed>888668463</deployedseed>
+    <deployedseed>984620158</deployedseed>
+    <deployedseed>818256757</deployedseed>
+    <deployedseed>127009884</deployedseed>
+    <deployedseed>1222985335</deployedseed>
+    <deployedseed>2101935659</deployedseed>
+    <deployedseed>858161774</deployedseed>
+    <deployedseed>1220694280</deployedseed>
+    <deployedseed>1937984610</deployedseed>
+    <deployedseed>1700931286</deployedseed>
+    <deployedseed>231800490</deployedseed>
+    <deployedseed>1967051864</deployedseed>
+    <deployedseed>715868026</deployedseed>
+    <deployedseed>546324870</deployedseed>
+    <deployedseed>1091163700</deployedseed>
+    <deployedseed>1760438615</deployedseed>
+    <deployedseed>2073891371</deployedseed>
+    <deployedseed>292158158</deployedseed>
+    <deployedseed>797832688</deployedseed>
+    <deployedseed>1557983973</deployedseed>
+    <deployedseed>1193621141</deployedseed>
+    <deployedseed>1417511800</deployedseed>
+    <deployedseed>959166488</deployedseed>
+    <deployedseed>1531779458</deployedseed>
+    <deployedseed>12228150</deployedseed>
+    <deployedseed>514011696</deployedseed>
+    <deployedseed>614898354</deployedseed>
+    <deployedseed>2121241684</deployedseed>
+    <deployedseed>492207102</deployedseed>
+    <deployedseed>15821318</deployedseed>
+    <deployedseed>771929968</deployedseed>
+    <deployedseed>2071528140</deployedseed>
+    <deployedseed>55159295</deployedseed>
+    <deployedseed>1889925276</deployedseed>
+    <deployedseed>1175066187</deployedseed>
+    <deployedseed>52755072</deployedseed>
+    <deployedseed>831278457</deployedseed>
+    <deployedseed>2096585013</deployedseed>
+    <deployedseed>653898998</deployedseed>
+    <deployedseed>1308971730</deployedseed>
+    <deployedseed>1475088110</deployedseed>
+    <deployedseed>437073116</deployedseed>
+    <deployedseed>1734157455</deployedseed>
+    <deployedseed>695901535</deployedseed>
+    <deployedseed>158240528</deployedseed>
+    <deployedseed>796234297</deployedseed>
+    <deployedseed>282987480</deployedseed>
+    <deployedseed>900340959</deployedseed>
+    <deployedseed>2085071949</deployedseed>
+    <deployedseed>186524588</deployedseed>
+    <deployedseed>1568049407</deployedseed>
+    <deployedseed>1321330435</deployedseed>
+    <deployedseed>1405122694</deployedseed>
+    <deployedseed>1751608619</deployedseed>
+    <deployedseed>88659571</deployedseed>
+    <deployedseed>1797079306</deployedseed>
+    <deployedseed>1300873996</deployedseed>
+    <deployedseed>1359492193</deployedseed>
+    <deployedseed>325396208</deployedseed>
+    <deployedseed>2049258797</deployedseed>
+    <deployedseed>421769559</deployedseed>
+    <deployedseed>356971945</deployedseed>
+    <deployedseed>2083033962</deployedseed>
+    <deployedseed>1663424074</deployedseed>
+    <deployedseed>201994938</deployedseed>
+    <deployedseed>2072498306</deployedseed>
+    <deployedseed>599163635</deployedseed>
+    <deployedseed>497021509</deployedseed>
+    <deployedseed>777193307</deployedseed>
+    <deployedseed>1007290873</deployedseed>
+    <deployedseed>451041461</deployedseed>
+    <deployedseed>592369376</deployedseed>
+    <deployedseed>1106086416</deployedseed>
+    <deployedseed>1951080031</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Multiplied probabilities and forgot to add 'a'</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.2000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

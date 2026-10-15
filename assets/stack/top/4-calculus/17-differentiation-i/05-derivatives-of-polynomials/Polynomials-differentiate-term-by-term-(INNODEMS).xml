@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Polynomials: differentiate term by term (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The <strong>sum rule</strong> and the <strong>constant multiple rule</strong> let us differentiate a polynomial one term at a time: for each term \( c\,x^{n} \), multiply the coefficient by the power and reduce the power by one,
+\[ \frac{d}{dx}\left(c\,x^{n}\right) = n\,c\,x^{\,n-1}, \qquad \frac{d}{dx}(\text{constant}) = 0. \]</p>
+<p>Find \( f'(x) \) for</p>
+\[ f(x) = {@fx@}. \]
+<div>\( f'(x) = \) [[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>Differentiate each term separately (sum rule), keeping each coefficient as a multiplier (constant multiple rule), and apply the power rule \( \frac{d}{dx}(x^n) = n x^{n-1} \) to each power:</p>
+\[
+\begin{align*}
+f'(x) &= \frac{d}{dx}\left({@ca4*x^4@}\right) + \frac{d}{dx}\left({@ca3*x^3@}\right) + \frac{d}{dx}\left({@ca2*x^2@}\right) + \frac{d}{dx}\left({@ca1*x@}\right) + \frac{d}{dx}\left({@ca0@}\right) \\
+&= 4\cdot({@ca4@})\,x^{3} + 3\cdot({@ca3@})\,x^{2} + 2\cdot({@ca2@})\,x + ({@ca1@}) + 0 \\
+&= {@dfx@}.
+\end{align*}
+\]
+<p>Notice that the constant term \( {@ca0@} \) disappears: a constant does not change, so its rate of change is \( 0 \). The linear term \( {@ca1*x@} \) becomes the constant \( {@ca1@} \), because \( x = x^{1} \) differentiates to \( 1\cdot x^{0} = 1 \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* f(x) = ca4 x^4 + ca3 x^3 + ca2 x^2 + ca1 x + ca0, every coefficient non-zero. */
+ca4 : rand_with_prohib(-5, 5, [0]);
+ca3 : rand_with_prohib(-6, 6, [0]);
+ca2 : rand_with_prohib(-6, 6, [0]);
+ca1 : rand_with_prohib(-9, 9, [0]);
+ca0 : rand_with_prohib(-9, 9, [0]);
+fx  : ca4*x^4 + ca3*x^3 + ca2*x^2 + ca1*x + ca0;
+dfx : diff(fx, x);                                   /* model answer */
+
+/* Common errors. */
+w_const   : dfx + ca0;                               /* kept the constant term */
+w_linear  : dfx - ca1 + ca1*x;                       /* left the linear term as ca1*x */
+w_nolower : 4*ca4*x^4 + 3*ca3*x^3 + 2*ca2*x^2 + ca1*x;  /* multiplied by n but kept the power */
+w_nomult  : ca4*x^3 + ca3*x^2 + ca2*x + ca1;        /* lowered the power but forgot to multiply by n */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( f(x)={@fx@},\ f'(x)={@dfx@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>dfx</tans>
+      <boxsize>25</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[dd : expand(ans1 - dfx);
+nt : if dd = 0 then 0 else if atom(dd) then 1 else if op(dd) = "+" then length(args(dd)) else 1;
+wp : if nt = 1 then hipow(dd, x) else 0;]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>dfx</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: nolower</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_nolower</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nolower</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You multiplied each coefficient by its power, but forgot to <strong>reduce the power by one</strong>. The power rule is \( \frac{d}{dx}(x^{n}) = n\,x^{\,n-1} \): for example \( x^{4} \) becomes \( 4x^{3} \), not \( 4x^{4} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: nomult</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_nomult</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nomult</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You reduced each power by one, but forgot to <strong>multiply by the old power</strong>. For example \( \frac{d}{dx}(x^{4}) = 4x^{3} \), not \( x^{3} \). Multiply each coefficient by its power first.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: keptconst</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_const</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-keptconst</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Nearly there: every term is right except the constant. The constant term \( {@ca0@} \) never changes, so its derivative is \( 0 \) &mdash; it should not appear in \( f'(x) \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Misconception: linear</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_linear</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-linear</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Nearly there: check the linear term \( {@ca1*x@} \). Since \( x = x^{1} \), its derivative is \( 1\cdot {@ca1@}\, x^{0} = {@ca1@} \), a constant. The \( x \) should disappear.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description>Misconception: oneterm</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nt</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-oneterm</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>All of your terms are correct except one. Look again at the term of \( f'(x) \) in \( x^{ {@wp@} } \), which comes from the \( x^{ {@wp+1@} } \) term of \( f(x) \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Differentiate each term of \( f(x) \) separately using \( \frac{d}{dx}(c\,x^{n}) = n\,c\,x^{\,n-1} \), and remember the constant term differentiates to \( 0 \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct derivative</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dfx</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Kept the power</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_nolower</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-nolower</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Forgot to multiply by n</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_nomult</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-nomult</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Kept the constant</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_const</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-keptconst</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Left the linear term as c*x</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_linear</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-linear</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>One x^2 term wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(dfx+x^2,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-oneterm</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Generic wrong answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(dfx+x^3+x^2+x+1,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

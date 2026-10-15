@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating a missing probability and cumulative probability for a discrete distribution</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Wanjiru runs a kiosk and records the number of items (\(X\)) a customer buys per visit. From her records, she estimates the probability distribution below, but one entry was accidentally erased.</p>
+
+<table style="width: 50%; text-align: center; border-collapse: collapse; margin-bottom: 20px;" border="1" cellpadding="5">
+  <tbody>
+    <tr style="background-color: #eceff1;">
+      <td><b>\(X\) (Items bought)</b></td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td><b>\(P(X = x)\)</b></td>
+      <td>{@p0@}</td>
+      <td>{@p1@}</td>
+      <td><b>?</b></td>
+      <td>{@p3@}</td>
+      <td>{@p4@}</td>
+    </tr>
+  </tbody>
+</table>
+
+[[jsxgraph width="500px" height="250px"]]
+var p0 = {#p0#};
+var p1 = {#p1#};
+var p3 = {#p3#};
+var p4 = {#p4#};
+
+var brd = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-0.8, 0.65, 5.5, -0.20],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+/* Draw horizontal grid lines and outer Y-axis labels */
+for(var i=0.1; i<=0.5; i+=0.1) {
+    brd.create('line', [[0, i], [5.3, i]], {strokeColor: '#e0e0e0', strokeWidth: 1, straightFirst: false, straightLast: false});
+    brd.create('text', [-0.05, i, i.toFixed(1)], {anchorX: 'right', anchorY: 'middle', fontSize: 12, strokeColor: '#424242'});
+}
+
+/* Draw clean custom axes */
+brd.create('arrow', [[0, 0], [5.3, 0]], {strokeColor: '#424242', strokeWidth: 2});
+brd.create('arrow', [[0, 0], [0, 0.55]], {strokeColor: '#424242', strokeWidth: 2});
+
+/* Draw outer Axis Titles */
+brd.create('text', [5.3, -0.08, 'X (Items)'], {anchorX: 'right', anchorY: 'top', fontSize: 12, strokeColor: '#424242'});
+brd.create('text', [-0.05, 0.60, 'P(X=x)'], {anchorX: 'right', anchorY: 'middle', fontSize: 12, strokeColor: '#424242'});
+
+/* Draw outer X-axis labels strictly below the bars */
+for(var j=0; j<=4; j++) {
+    brd.create('text', [j+0.7, -0.03, j.toString()], {anchorX: 'middle', anchorY: 'top', fontSize: 12, strokeColor: '#424242'});
+}
+
+/* Define common style for bars to completely hide vertices */
+var barStyle = {
+    fillColor: '#4caf50', 
+    fillOpacity: 0.8, 
+    borders: {strokeWidth: 1, strokeColor: '#388e3c'},
+    vertices: {visible: false}
+};
+
+/* Draw the known probability bars shifted to the right to avoid the Y-axis */
+brd.create('polygon', [[0.4, 0], [1.0, 0], [1.0, p0], [0.4, p0]], barStyle);
+brd.create('polygon', [[1.4, 0], [2.0, 0], [2.0, p1], [1.4, p1]], barStyle);
+
+/* Draw the missing bar as a clean dashed outline */
+brd.create('polygon', [[2.4, 0], [3.0, 0], [3.0, 0.4], [2.4, 0.4]], {
+    fillColor: 'none', 
+    borders: {strokeWidth: 2, dash: 2, strokeColor: '#f44336'},
+    vertices: {visible: false}
+});
+brd.create('text', [2.7, 0.2, '?'], {anchorX: 'middle', anchorY: 'middle', fontSize: 24, strokeColor: '#f44336'});
+
+brd.create('polygon', [[3.4, 0], [4.0, 0], [4.0, p3], [3.4, p3]], barStyle);
+brd.create('polygon', [[4.4, 0], [5.0, 0], [5.0, p4], [4.4, p4]], barStyle);
+[[/jsxgraph]]
+
+<p><b>a) </b> For the table to represent a valid Probability Distribution Function (PDF), the sum of all probabilities must equal exactly 1. Calculate the missing probability.</p>
+<p>\(P(X = 2) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Calculate the probability that a randomly selected customer buys <b>at least 2 items</b>.</p>
+<p>\(P =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Finding the missing probability</b><br>
+A discrete probability distribution is only valid if the sum of all probabilities equals exactly 1.</p>
+<p style="margin-left: 20px;">\( \displaystyle \sum P(X=x) = 1 \)</p>
+<p style="margin-left: 20px;">\( P(X=0) + P(X=1) + P(X=2) + P(X=3) + P(X=4) = 1 \)</p>
+<p style="margin-left: 20px;">\( {@p0@} + {@p1@} + P(X=2) + {@p3@} + {@p4@} = 1 \)</p>
+<p style="margin-left: 20px;">\( {@p0 + p1 + p3 + p4@} + P(X=2) = 1 \)</p>
+<p style="margin-left: 20px;">\( P(X=2) = 1 - {@p0 + p1 + p3 + p4@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X=2) = {@ta1@} } \)</p>
+
+<p><b>Part b: Cumulative Probability</b><br>
+The phrase "at least 2" means the customer buys 2, 3, or 4 items. We find this by summing the relevant probabilities from the table:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X \ge 2) = P(X=2) + P(X=3) + P(X=4) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X \ge 2) = {@ta1@} + {@p3@} + {@p4@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X \ge 2) = {@ta2@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomize probabilities using integer math first to prevent floating point inaccuracies */
+p0_v : rand([5, 10, 15]);
+p1_v : rand([20, 25, 30, 35]);
+p3_v : rand([15, 20, 25]);
+p4_v : rand([5, 10]);
+
+/* Reverse engineer the missing value so the sum is exactly 100 */
+p2_v : 100 - (p0_v + p1_v + p3_v + p4_v);
+
+/* Convert to exact fractions/decimals for display and evaluation */
+p0 : p0_v / 100;
+p1 : p1_v / 100;
+p2 : p2_v / 100;
+p3 : p3_v / 100;
+p4 : p4_v / 100;
+
+/* Target answers */
+ta1 : p2;
+ta2 : p2 + p3 + p4;
+
+/* Distractor variable for PRT check */
+ta2_wrong : p3 + p4;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>PDF Sum: p0={@p0@}, p1={@p1@}, p3={@p3@}, p4={@p4@}. Missing p2={@ta1@}. P(>=2)={@ta2@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Discrete Probability (Validating PDF and Cumulative Probability)</p>
+<p id="description">Grade 11 CBE: Calculating a missing probability to ensure a valid PDF sum of 1, and calculating a cumulative 'at least' probability.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of missing probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully subtracted the known probabilities from 1 to complete the valid PDF.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Remember that the sum of all probabilities in a valid distribution must equal exactly 1. Add up the probabilities for X=0, 1, 3, and 4, then subtract that total from 1.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of cumulative probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly summed the probabilities for \(X \ge 2\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they forgot to include P(X=2)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.3</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The symbol \(\ge\) means "greater than <b>or equal to</b>". You summed \(P(X=3)\) and \(P(X=4)\), but you forgot to include your result for \(P(X=2)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. To find \(P(X \ge 2)\), you must add together the individual probabilities for \(X=2\), \(X=3\), and \(X=4\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>972415154</deployedseed>
+    <deployedseed>995305442</deployedseed>
+    <deployedseed>62978228</deployedseed>
+    <deployedseed>591127851</deployedseed>
+    <deployedseed>1426063754</deployedseed>
+    <deployedseed>269946610</deployedseed>
+    <deployedseed>268982340</deployedseed>
+    <deployedseed>1963999364</deployedseed>
+    <deployedseed>435269970</deployedseed>
+    <deployedseed>664096303</deployedseed>
+    <deployedseed>223349551</deployedseed>
+    <deployedseed>1189398417</deployedseed>
+    <deployedseed>1885288385</deployedseed>
+    <deployedseed>872787599</deployedseed>
+    <deployedseed>1904284243</deployedseed>
+    <deployedseed>2000833035</deployedseed>
+    <deployedseed>132044966</deployedseed>
+    <deployedseed>867683710</deployedseed>
+    <deployedseed>974428412</deployedseed>
+    <deployedseed>1286480378</deployedseed>
+    <deployedseed>1824745901</deployedseed>
+    <deployedseed>2083509313</deployedseed>
+    <deployedseed>2102555851</deployedseed>
+    <deployedseed>2082714918</deployedseed>
+    <deployedseed>1057539607</deployedseed>
+    <deployedseed>2047840631</deployedseed>
+    <deployedseed>1331823354</deployedseed>
+    <deployedseed>2129998161</deployedseed>
+    <deployedseed>519792529</deployedseed>
+    <deployedseed>1753988246</deployedseed>
+    <deployedseed>777926120</deployedseed>
+    <deployedseed>1825706556</deployedseed>
+    <deployedseed>1167938344</deployedseed>
+    <deployedseed>1506664879</deployedseed>
+    <deployedseed>238846203</deployedseed>
+    <deployedseed>916624903</deployedseed>
+    <deployedseed>2023969901</deployedseed>
+    <deployedseed>1420985539</deployedseed>
+    <deployedseed>570625400</deployedseed>
+    <deployedseed>1210628231</deployedseed>
+    <deployedseed>722509366</deployedseed>
+    <deployedseed>577339846</deployedseed>
+    <deployedseed>605729936</deployedseed>
+    <deployedseed>926173293</deployedseed>
+    <deployedseed>2099931778</deployedseed>
+    <deployedseed>1157208313</deployedseed>
+    <deployedseed>1043271037</deployedseed>
+    <deployedseed>1898429237</deployedseed>
+    <deployedseed>177323419</deployedseed>
+    <deployedseed>2075825544</deployedseed>
+    <deployedseed>1928311229</deployedseed>
+    <deployedseed>1778113640</deployedseed>
+    <deployedseed>1694562337</deployedseed>
+    <deployedseed>1810940750</deployedseed>
+    <deployedseed>839006651</deployedseed>
+    <deployedseed>1106718806</deployedseed>
+    <deployedseed>25925632</deployedseed>
+    <deployedseed>2097385304</deployedseed>
+    <deployedseed>288525110</deployedseed>
+    <deployedseed>858592531</deployedseed>
+    <deployedseed>1712476280</deployedseed>
+    <deployedseed>1397718266</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot to include P(X=2) in part b</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.3000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Completely arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 0.5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 0.5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

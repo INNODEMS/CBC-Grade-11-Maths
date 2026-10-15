@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating theoretical probability for a token drawing experiment</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A mathematics teacher in Kisumu prepares a cloth bag containing coloured plastic tokens for a probability experiment. The bag contains <b>{@num_red@} red tokens</b> and <b>{@num_blue@} blue tokens</b>.</p>
+
+[[jsxgraph width="400px" height="300px"]]
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-2, 11, 12, -1],
+    axis: false, grid: false, showNavigation: false, showCopyright: false, pan: {enabled: false}, zoom: {enabled: false}
+});
+
+/* Draw the outline of the cloth bag */
+board.create('polygon', [[0,0], [10,0], [11.5,10], [-1.5,10]], {
+    fillColor: '#d7ccc8', fillOpacity: 0.6, 
+    borders: {strokeWidth: 3, strokeColor: '#8d6e63'}
+});
+board.create('text', [5, -0.5, 'Bag of Tokens'], {anchorX: 'middle', fontSize: 14, strokeColor: '#5d4037'});
+
+/* Dynamically scatter the exact number of red and blue tokens */
+var red_c = {#num_red#};
+var blue_c = {#num_blue#};
+
+for(var i=0; i<red_c; i++) {
+    /* Use modulo math to create a pseudo-random but stable scatter pattern */
+    var rx = 1.5 + (i * 3.7) % 7;
+    var ry = 1.5 + (i * 2.3) % 7;
+    board.create('point', [rx, ry], {name:'', size: 8, fillColor: '#f44336', strokeColor: '#b71c1c'});
+}
+
+for(var j=0; j<blue_c; j++) {
+    var bx = 1.5 + (j * 4.1 + 2) % 7;
+    var by = 1.5 + (j * 1.9 + 3.5) % 7;
+    board.create('point', [bx, by], {name:'', size: 8, fillColor: '#2196f3', strokeColor: '#0d47a1'});
+}
+[[/jsxgraph]]
+
+<p>A student is asked to close their eyes and draw exactly <b>{@draw_total@} tokens</b> simultaneously from the bag.</p>
+
+<p><b>a) </b> Calculate the total number of possible combinations for drawing {@draw_total@} tokens from the entire bag.</p>
+<p>\(n(S) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Calculate the number of possible outcomes where the student draws <i>exactly</i> <b>{@req_red@} red token(s)</b> and <b>{@req_blue@} blue token(s)</b>.</p>
+<p>\(n(E) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Using your results from parts (a) and (b), determine the theoretical probability of this exact combination occurring.</p>
+<p><i>(Enter your answer as a fraction).</i></p>
+<p>\(P(\text{exact combination}) =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: The Sample Space</b><br>
+The bag contains a total of \({@num_red@} + {@num_blue@} = {@total_tokens@}\) tokens. We are drawing a subset of \({@draw_total@}\) tokens. Using the combinations formula:</p>
+<p style="margin-left: 20px;">\( \displaystyle n(S) = {}^{{@total_tokens@}}C_{{@draw_total@}} = \frac{{@total_tokens@}!}{{@draw_total@}!({@total_tokens@} - {@draw_total@})!} = {@ta1@} \)</p>
+
+<p><b>Part b: The Favourable Outcomes</b><br>
+The event requires choosing exactly \({@req_red@}\) token(s) from the \({@num_red@}\) red tokens, AND \({@req_blue@}\) token(s) from the \({@num_blue@}\) blue tokens. Because these are drawn from two distinct groups, we multiply their independent combinations:</p>
+<p style="margin-left: 20px;">\( \displaystyle n(E) = {}^{{@num_red@}}C_{{@req_red@}} \times {}^{{@num_blue@}}C_{{@req_blue@}} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle n(E) = {@red_comb@} \times {@blue_comb@} = {@ta2@} \)</p>
+
+<p><b>Part c: The Theoretical Probability</b><br>
+Theoretical probability is defined as the number of favourable outcomes divided by the total number of equally-likely outcomes in the sample space:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(E) = \frac{n(E)}{n(S)} = \frac{{@ta2@}}{{@ta1@}} \)</p>
+<p>Simplifying this fraction mathematically gives the final probability:</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ {@ta3@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize token counts using explicit lists for maximum compatibility */
+num_red : rand([5, 6, 7, 8, 9, 10, 11, 12]);
+num_blue : rand([5, 6, 7, 8, 9, 10, 11, 12]);
+total_tokens : num_red + num_blue;
+
+/* Randomize total drawn and ensure a split requirement safely */
+draw_total : rand([3, 4, 5]);
+req_red_temp : rand([1, 2, 3]);
+
+/* Ensure req_red is strictly less than draw_total so blue tokens are also required */
+req_red : if req_red_temp >= draw_total then draw_total - 1 else req_red_temp;
+req_blue : draw_total - req_red;
+
+/* Maxima uses binomial(n, k) for the combinations function nCr */
+n_S : binomial(total_tokens, draw_total);
+red_comb : binomial(num_red, req_red);
+blue_comb : binomial(num_blue, req_blue);
+n_E : red_comb * blue_comb;
+
+/* Calculate the final probability */
+prob : n_E / n_S;
+
+/* Target answers */
+ta1 : n_S;
+ta2 : n_E;
+ta3 : prob;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Red: {@num_red@}, Blue: {@num_blue@}. Draw: {@draw_total@}. Req R: {@req_red@}, Req B: {@req_blue@}. n(S)={@ta1@}, n(E)={@ta2@}, P={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Theoretical Probability (Combinations)</p>
+<p id="description">Grade 11 CBE: Calculating sample space and favourable outcomes using the combinations formula for a physical drawing experiment.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>binomial</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>binomial</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>binomial</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of sample space</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully calculated the combinations for the entire sample space.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. To find the total sample space \(n(S)\), use the combinations formula \({}^nC_r\) where \(n\) is the TOTAL number of tokens in the bag, and \(r\) is the number being drawn.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of favourable outcomes</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully identified the number of favourable combination selections.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Remember to calculate the combinations for the red tokens and the combinations for the blue tokens separately, then multiply them together to find \(n(E)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of final probability fraction</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. Your theoretical probability is correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they simply divided their own potentially wrong n(E) by n(S)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ans2 / ans1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You correctly applied the formula \(P(E) = \frac{n(E)}{n(S)}\) based on your previous answers, but because one of your earlier calculations was incorrect, your final probability is also incorrect.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Theoretical probability is found by dividing the number of favourable outcomes \(n(E)\) by the total outcomes in the sample space \(n(S)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>805953683</deployedseed>
+    <deployedseed>1949381343</deployedseed>
+    <deployedseed>358934434</deployedseed>
+    <deployedseed>1845241758</deployedseed>
+    <deployedseed>1078811780</deployedseed>
+    <deployedseed>1313935780</deployedseed>
+    <deployedseed>942575007</deployedseed>
+    <deployedseed>80629623</deployedseed>
+    <deployedseed>1353075232</deployedseed>
+    <deployedseed>1779219395</deployedseed>
+    <deployedseed>950135940</deployedseed>
+    <deployedseed>725215696</deployedseed>
+    <deployedseed>1580152698</deployedseed>
+    <deployedseed>463550947</deployedseed>
+    <deployedseed>2082841096</deployedseed>
+    <deployedseed>242612547</deployedseed>
+    <deployedseed>1235615109</deployedseed>
+    <deployedseed>1167498203</deployedseed>
+    <deployedseed>1839870315</deployedseed>
+    <deployedseed>1769870579</deployedseed>
+    <deployedseed>364592786</deployedseed>
+    <deployedseed>869639659</deployedseed>
+    <deployedseed>708320453</deployedseed>
+    <deployedseed>1511920664</deployedseed>
+    <deployedseed>533718999</deployedseed>
+    <deployedseed>195940000</deployedseed>
+    <deployedseed>1381009292</deployedseed>
+    <deployedseed>1523291097</deployedseed>
+    <deployedseed>1663377436</deployedseed>
+    <deployedseed>625913502</deployedseed>
+    <deployedseed>1902599323</deployedseed>
+    <deployedseed>423266262</deployedseed>
+    <deployedseed>1765150042</deployedseed>
+    <deployedseed>854533346</deployedseed>
+    <deployedseed>1442754192</deployedseed>
+    <deployedseed>220843519</deployedseed>
+    <deployedseed>318674877</deployedseed>
+    <deployedseed>1093381716</deployedseed>
+    <deployedseed>1599374281</deployedseed>
+    <deployedseed>803264254</deployedseed>
+    <deployedseed>1300909332</deployedseed>
+    <deployedseed>1158061846</deployedseed>
+    <deployedseed>1444953291</deployedseed>
+    <deployedseed>1851306934</deployedseed>
+    <deployedseed>2033737878</deployedseed>
+    <deployedseed>1577040338</deployedseed>
+    <deployedseed>522553916</deployedseed>
+    <deployedseed>466012238</deployedseed>
+    <deployedseed>946551145</deployedseed>
+    <deployedseed>2012929694</deployedseed>
+    <deployedseed>1444205083</deployedseed>
+    <deployedseed>2133449419</deployedseed>
+    <deployedseed>532888395</deployedseed>
+    <deployedseed>1176366000</deployedseed>
+    <deployedseed>977311003</deployedseed>
+    <deployedseed>741917423</deployedseed>
+    <deployedseed>1975653292</deployedseed>
+    <deployedseed>1615992967</deployedseed>
+    <deployedseed>1842827633</deployedseed>
+    <deployedseed>1445344922</deployedseed>
+    <deployedseed>170642420</deployedseed>
+    <deployedseed>177554258</deployedseed>
+    <deployedseed>1904746597</deployedseed>
+    <deployedseed>792793432</deployedseed>
+    <deployedseed>707301839</deployedseed>
+    <deployedseed>121803099</deployedseed>
+    <deployedseed>1395744100</deployedseed>
+    <deployedseed>694874675</deployedseed>
+    <deployedseed>1615635660</deployedseed>
+    <deployedseed>1034266837</deployedseed>
+    <deployedseed>320048847</deployedseed>
+    <deployedseed>1061566343</deployedseed>
+    <deployedseed>1182207223</deployedseed>
+    <deployedseed>1331280323</deployedseed>
+    <deployedseed>1673387488</deployedseed>
+    <deployedseed>439372560</deployedseed>
+    <deployedseed>2109057906</deployedseed>
+    <deployedseed>521516162</deployedseed>
+    <deployedseed>79129527</deployedseed>
+    <deployedseed>1093554114</deployedseed>
+    <deployedseed>655967336</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong combinations, but correctly applied probability division</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>(ta2+2)/(ta1+5)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Completely random incorrect answers (safely failing all nodes)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+10</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3+10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

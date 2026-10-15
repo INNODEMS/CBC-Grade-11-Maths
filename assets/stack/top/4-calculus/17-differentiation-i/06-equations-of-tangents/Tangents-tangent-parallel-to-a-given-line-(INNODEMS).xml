@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Tangents: tangent parallel to a given line (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph shows the curve \( y = {@fx@} \) (blue) and the line \( y = {@gl@} \) (dashed green).</p>
+[[jsxgraph width="440px" height="400px"]]
+var p = {#pq#}, q = {#qq#}, r = {#rq#};
+var m = {#mt#}, k = {#k0#}, a = {#aa#};
+function f(x){ return (p*x + q)*x + r; }
+function g(x){ return m*x + k; }
+var x0 = Math.min(a, 0) - 4, x1 = Math.max(a, 0) + 4;
+var lo = Infinity, hi = -Infinity;
+for (var s = x0; s <= x1 + 1e-9; s += 0.05) { var v = f(s); lo = Math.min(lo, v); hi = Math.max(hi, v); }
+lo = Math.max(lo, f(a) - 14); hi = Math.min(hi, f(a) + 14);
+var pad = 0.1*(hi - lo) + 1;
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [x0, hi + pad, x1, lo - pad],
+    axis: true, showCopyright: false, showNavigation: false,
+    pan: {enabled:false}, zoom: {enabled:false}
+});
+board.create('functiongraph', [f, x0, x1], {strokeColor:'#1565c0', strokeWidth:2, highlight:false});
+board.create('functiongraph', [g, x0, x1], {strokeColor:'#2e7d32', strokeWidth:2, dash:2, highlight:false});
+[[/jsxgraph]]
+<p>There is exactly one tangent to the curve that is <strong>parallel</strong> to the dashed line.</p>
+<p>(a) Find the coordinates of the point where this tangent touches the curve.</p>
+<div>\( x = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<div>\( y = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(b) Find the equation of the tangent.</p>
+<div>\( y = \) [[input:ans3]] [[validation:ans3]]</div>
+<div>[[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>Parallel lines have the <strong>same gradient</strong>, so the tangent must have gradient \( {@mt@} \), the gradient of \( y = {@gl@} \).</p>
+<p><strong>(a)</strong> The curve has gradient \( f'(x) = {@dfx@} \). Set it equal to \( {@mt@} \):</p>
+\[ {@dfx@} = {@mt@} \quad\Longrightarrow\quad x = {@aa@}. \]
+<p>Then \( f({@aa@}) = {@fa@} \), so the point of tangency is \( ({@aa@},\ {@fa@}) \).</p>
+<p><strong>(b)</strong> The tangent has gradient \( {@mt@} \) and passes through \( ({@aa@},\ {@fa@}) \):</p>
+\[ y = {@mt@}\left(x - ({@aa@})\right) + ({@fa@}) = {@tl@}. \]
+<p>It has the same gradient as \( y = {@gl@} \) but a different intercept, so the two lines are parallel and distinct.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* f(x) = pq x^2 + qq x + rq.  Pick the point of tangency aa first; the given
+   line then has gradient mt = f'(aa) and an intercept k0 that is not the tangent's. */
+cands : sublist(create_list([u2, u1, u0, u], u2, [1, -1, 2], u1, -4, 4, u0, -4, 4, u, -3, 3),
+  lambda([z], block([m, fv],
+    m  : 2*z[1]*z[4] + z[2],
+    fv : z[1]*z[4]^2 + z[2]*z[4] + z[3],
+    is(m # 0 and abs(m) <= 8 and abs(fv) <= 12 and z[4] # 0))));
+pick : rand(cands);
+pq : pick[1];
+qq : pick[2];
+rq : pick[3];
+aa : pick[4];
+fx  : pq*x^2 + qq*x + rq;
+dfx : diff(fx, x);
+mt  : subst(aa, x, dfx);                 /* gradient of the given line and the tangent */
+fa  : subst(aa, x, fx);
+ct  : fa - mt*aa;                        /* intercept of the tangent */
+k0  : rand_with_prohib(-6, 6, [ct, mt, 0]); /* intercept of the given line */
+gl  : mt*x + k0;                         /* the given line */
+tl  : mt*x + ct;                         /* model tangent */
+w_horiz : -qq/(2*pq);                    /* solved f'(x) = 0 */
+w_kint  : (k0 - qq)/(2*pq);              /* solved f'(x) = intercept */
+w_online: mt*aa + k0;                    /* y taken from the given line */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\( f(x)={@fx@},\ \text{line } y={@gl@},\ (a,f(a))=({@aa@},{@fa@}),\ y={@tl@} \)</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>aa</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>fa</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>tl</tans>
+      <boxsize>18</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>aa</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: horizontal</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_horiz</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-horizontal</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>At this \( x \)-value the tangent is <em>horizontal</em> (gradient \( 0 \)). You need the point where the gradient equals the gradient of the given line, \( {@mt@} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: intercept</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_kint</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-intercept</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You set \( f'(x) \) equal to the <em>intercept</em> \( {@k0@} \) of the line. Parallel lines share their <em>gradient</em>, so solve \( f'(x) = {@mt@} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. A tangent parallel to \( y = {@gl@} \) has gradient \( {@mt@} \). Solve \( f'(x) = {@mt@} \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf2 : ev(subst(ans1, x, fx), simp);
+online2 : ev(mt*ans1 + k0, simp);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>fa</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: ecf</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ecf2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is the correct height of the curve at <em>your</em> \( x \)-value. Fix part (a) to find the true point.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: online</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>online2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-online</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You found \( y \) on the <em>dashed line</em>. The point of tangency is on the <em>curve</em>, so substitute your \( x \) into \( f(x) \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Substitute your \( x \)-value into \( f(x) = {@fx@} \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf3 : expand(mt*(x - ans1) + ans2);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>tl</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: sameline</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>gl</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-sameline</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the dashed line itself! The tangent is <em>parallel</em> to it: same gradient \( {@mt@} \), but it must pass through the point of tangency, which is not on the dashed line.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: ecf</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ecf3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This line has gradient \( {@mt@} \) and passes through <em>your</em> point from part (a), so the method is right. Correct part (a) to get the true tangent.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. The tangent has gradient \( {@mt@} \) and passes through the point of tangency. Use \( y = m(x - a) + f(a) \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>aa</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>fa</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>tl</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Solved f'(x)=0, consistent</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_horiz</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(subst(w_horiz,x,fx),simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ev(expand(mt*(x-w_horiz)+subst(w_horiz,x,fx)),simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-horizontal</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-ecf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Used the intercept</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_kint</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>fa</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>tl</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-intercept</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>y from the given line</description>
+      <testinput>
+        <name>ans1</name>
+        <value>aa</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>w_online</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>tl</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-online</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Gave the given line</description>
+      <testinput>
+        <name>ans1</name>
+        <value>aa</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>fa</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>gl</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-sameline</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>100</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1000</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>x+7000</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

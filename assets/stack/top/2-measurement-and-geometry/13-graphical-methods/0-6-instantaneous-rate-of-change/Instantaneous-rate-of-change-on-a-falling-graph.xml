@@ -1,0 +1,1063 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Instantaneous rate of change on a falling graph</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph below falls continuously from a height of \( y = {@ya@} \) at \( x = {@xa@} \) down to a height of \( y = {@yb@} \) at \( x = {@xb@} \). The point on the graph where \( x = {@c@} \) is marked in red.</p>
+[[jsxgraph width="640px" height="480px"]]
+var xa = ({#xa#}), xb = ({#xb#}), ya = ({#ya#}), yb = ({#yb#}), shp = ({#shp#}), pw = ({#pw#}), c = ({#c#}), d = ({#d#});
+var L = xb - xa, H = ya - yb;
+function f(t) {
+    var s = (t - xa) / L;
+    if (shp === 1) { return yb + H * Math.pow(1 - s, pw); }
+    if (shp === 2) { return ya - H * Math.pow(s, pw); }
+    if (shp === 3) { return ya - H * (3 * s * s - 2 * s * s * s); }
+    return ya - H * s;
+}
+function df(t) {
+    var s = (t - xa) / L;
+    if (shp === 1) { return -(H * pw / L) * Math.pow(1 - s, pw - 1); }
+    if (shp === 2) { return -(H * pw / L) * Math.pow(s, pw - 1); }
+    if (shp === 3) { return -6 * (H / L) * s * (1 - s); }
+    return -H / L;
+}
+var yc = f(c), yd = f(d);
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-1.3, ya + 2, xb + 2, -1.5],
+    axis: false, grid: false, keepaspectratio: false,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+/* labelled square grid, one line per whole number */
+var gi;
+for (gi = -1; gi != xb + 3; gi++) {
+    board.create('line', [ [gi, 0], [gi, 1] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+for (gi = -1; gi != ya + 3; gi++) {
+    board.create('line', [ [0, gi], [1, gi] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+board.create('axis', [ [0,0], [1,0] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('axis', [ [0,0], [0,1] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('text', [xb + 1.8, 0.45, 'x'], {fixed: true, anchorX: 'right', fontSize: 16});
+board.create('text', [0.25, ya + 1.9, 'y'], {fixed: true, anchorY: 'top', fontSize: 16});
+var boxCss = 'background:#ffffff; padding:1px 5px; border:1px solid #999999; border-radius:3px;';
+/* the graph, drawn only from x = xa to x = xb, with its two end points labelled */
+board.create('functiongraph', [f, xa, xb], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false});
+board.create('point', [xa, ya], {name: '', size: 4, strokeColor: '#1565c0', fillColor: '#1565c0', fixed: true});
+board.create('point', [xb, yb], {name: '', size: 4, strokeColor: '#1565c0', fillColor: '#1565c0', fixed: true});
+board.create('text', [xa + 0.5, ya + 0.9, '(' + xa + ', ' + ya + ')'], {fixed: true, highlight: false, fontSize: 14, anchorX: 'left', cssStyle: boxCss});
+board.create('text', [xb + 0.3, yb + 0.75, '(' + xb + ', ' + yb + ')'], {fixed: true, highlight: false, fontSize: 14, anchorX: 'left', cssStyle: boxCss});
+/* the point the question is about: a red dot with a dashed guide down to the x-axis */
+board.create('segment', [ [c, 0], [c, yc] ], {dash: 2, strokeColor: '#c62828', strokeWidth: 2, fixed: true, highlight: false});
+board.create('point', [c, yc], {name: '', size: 5, strokeColor: '#c62828', fillColor: '#c62828', fixed: true});
+board.create('text', [c, -0.75, 'x = ' + c], {fixed: true, highlight: false, fontSize: 14, anchorX: 'middle', cssStyle: boxCss});
+[[/jsxgraph]]
+<p>Which of the following statements describe the <strong>instantaneous rate of change</strong> of the function at \( x = {@c@} \)?</p>
+<p><em>Select all that apply.</em></p>
+<div>[[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>The big idea.</strong> The instantaneous rate of change of a function at a point is the slope of the <strong>tangent line</strong> to its graph at that point: how steeply, and in which direction, the graph is heading at that exact point. A graph that falls as x increases has tangents that slope downward, so its rate of change is <strong>negative</strong>. Here the red point is at \( x = {@c@} \).</p>
+<p>The graph below is redrawn with the <span style="color:#2e7d32"><strong>green tangent at x = {@c@}</strong></span> (slope about {#sc2#}), the <span style="color:#ef6c00"><strong>orange tangent at x = {@d@}</strong></span> (slope about {#sd2#}), and the <span style="color:#757575"><strong>grey dashed chord</strong></span> joining the two ends of the graph, whose slope is the average rate of change over the whole interval ({#avg2#}).</p>
+[[jsxgraph width="640px" height="480px"]]
+var xa = ({#xa#}), xb = ({#xb#}), ya = ({#ya#}), yb = ({#yb#}), shp = ({#shp#}), pw = ({#pw#}), c = ({#c#}), d = ({#d#});
+var L = xb - xa, H = ya - yb;
+function f(t) {
+    var s = (t - xa) / L;
+    if (shp === 1) { return yb + H * Math.pow(1 - s, pw); }
+    if (shp === 2) { return ya - H * Math.pow(s, pw); }
+    if (shp === 3) { return ya - H * (3 * s * s - 2 * s * s * s); }
+    return ya - H * s;
+}
+function df(t) {
+    var s = (t - xa) / L;
+    if (shp === 1) { return -(H * pw / L) * Math.pow(1 - s, pw - 1); }
+    if (shp === 2) { return -(H * pw / L) * Math.pow(s, pw - 1); }
+    if (shp === 3) { return -6 * (H / L) * s * (1 - s); }
+    return -H / L;
+}
+var yc = f(c), yd = f(d);
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-1.3, ya + 2, xb + 2, -1.5],
+    axis: false, grid: false, keepaspectratio: false,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+/* labelled square grid, one line per whole number */
+var gi;
+for (gi = -1; gi != xb + 3; gi++) {
+    board.create('line', [ [gi, 0], [gi, 1] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+for (gi = -1; gi != ya + 3; gi++) {
+    board.create('line', [ [0, gi], [1, gi] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+board.create('axis', [ [0,0], [1,0] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('axis', [ [0,0], [0,1] ], {strokeColor: '#222222', strokeWidth: 2,
+    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
+board.create('text', [xb + 1.8, 0.45, 'x'], {fixed: true, anchorX: 'right', fontSize: 16});
+board.create('text', [0.25, ya + 1.9, 'y'], {fixed: true, anchorY: 'top', fontSize: 16});
+var boxCss = 'background:#ffffff; padding:1px 5px; border:1px solid #999999; border-radius:3px;';
+/* the graph, drawn only from x = xa to x = xb, with its two end points labelled */
+board.create('functiongraph', [f, xa, xb], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false});
+board.create('point', [xa, ya], {name: '', size: 4, strokeColor: '#1565c0', fillColor: '#1565c0', fixed: true});
+board.create('point', [xb, yb], {name: '', size: 4, strokeColor: '#1565c0', fillColor: '#1565c0', fixed: true});
+board.create('text', [xa + 0.5, ya + 0.9, '(' + xa + ', ' + ya + ')'], {fixed: true, highlight: false, fontSize: 14, anchorX: 'left', cssStyle: boxCss});
+board.create('text', [xb + 0.3, yb + 0.75, '(' + xb + ', ' + yb + ')'], {fixed: true, highlight: false, fontSize: 14, anchorX: 'left', cssStyle: boxCss});
+/* the point the question is about: a red dot with a dashed guide down to the x-axis */
+board.create('segment', [ [c, 0], [c, yc] ], {dash: 2, strokeColor: '#c62828', strokeWidth: 2, fixed: true, highlight: false});
+board.create('point', [c, yc], {name: '', size: 5, strokeColor: '#c62828', fillColor: '#c62828', fixed: true});
+board.create('text', [c, -0.75, 'x = ' + c], {fixed: true, highlight: false, fontSize: 14, anchorX: 'middle', cssStyle: boxCss});
+
+/* the solution adds: the tangent at x = c (green), the tangent at x = d (orange), and the chord joining the two ends (grey, dashed) */
+board.create('segment', [ [xa, ya], [xb, yb] ], {dash: 3, strokeColor: '#757575', strokeWidth: 2, fixed: true, highlight: false});
+board.create('segment', [ [d, 0], [d, yd] ], {dash: 2, strokeColor: '#ef6c00', strokeWidth: 2, fixed: true, highlight: false});
+board.create('point', [d, yd], {name: '', size: 5, strokeColor: '#ef6c00', fillColor: '#ef6c00', fixed: true});
+board.create('text', [d, -0.75, 'x = ' + d], {fixed: true, highlight: false, fontSize: 14, anchorX: 'middle', cssStyle: boxCss});
+var w = 1.7;
+board.create('segment', [ [d - w, yd - w * df(d)], [d + w, yd + w * df(d)] ], {strokeColor: '#ef6c00', strokeWidth: 4, fixed: true, highlight: false});
+board.create('segment', [ [c - w, yc - w * df(c)], [c + w, yc + w * df(c)] ], {strokeColor: '#2e7d32', strokeWidth: 4, fixed: true, highlight: false});
+board.create('point', [c, yc], {name: '', size: 5, strokeColor: '#c62828', fillColor: '#c62828', fixed: true});
+[[/jsxgraph]]
+<p><strong>Your statements, one by one.</strong></p>
+{#solhtml#}]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* ---------- the graph: continuously FALLING from (xa, ya) to (xb, yb) ----------
+   s = (x-xa)/L (L = xb-xa, H = ya-yb).   shp 1: y = yb + H(1-s)^pw   steep at the start, levelling off
+                                           shp 2: y = ya - H s^pw      gentle at the start, steeper later
+                                           shp 3: y = ya - H(3s^2-2s^3) gentle at both ends, steepest in the middle
+                                           shp 4: y = ya - H s         a straight line (same rate everywhere)
+   Pool entry [xa,xb,ya,yb,shp,pw,c,d]: c = the point the question asks about, d = a second point used in comparison statements.
+   Vetted: strictly decreasing inside the interval; c, d interior and at least 2 apart; the steepness at c differs clearly
+   from that at d and from the average rate (except for the straight line), so every comparison can be judged from the picture. */
+pool : [
+    [3,11,6,2,1,3,7,4],
+    [0,6,12,0,2,3,4,2],
+    [3,11,10,0,2,3,9,5],
+    [3,9,9,0,2,2,5,8],
+    [0,10,9,1,4,0,6,1],
+    [2,12,8,1,2,3,10,6],
+    [0,8,6,1,2,2,3,6],
+    [2,10,10,0,1,3,7,4],
+    [3,13,9,1,1,2,6,10],
+    [3,13,6,0,3,0,9,4],
+    [3,13,9,0,2,3,6,11],
+    [2,12,10,1,1,3,7,4],
+    [2,10,12,1,1,3,4,6],
+    [3,9,9,1,3,0,5,8],
+    [1,11,8,3,3,0,6,3],
+    [3,13,8,2,2,3,10,12],
+    [3,13,12,0,1,2,10,12],
+    [3,11,12,3,3,0,7,4],
+    [2,12,8,3,1,2,9,7],
+    [1,7,9,2,2,2,3,6],
+    [2,12,8,2,4,0,5,11],
+    [1,11,8,2,1,2,4,9],
+    [3,11,6,2,2,2,6,9],
+    [0,6,10,1,2,3,5,2],
+    [1,7,12,3,3,0,4,6],
+    [2,8,12,3,1,3,6,4],
+    [0,6,8,2,1,2,4,2],
+    [0,8,6,1,1,3,4,2],
+    [2,12,12,0,3,0,6,3],
+    [1,7,9,0,2,3,6,3],
+    [1,9,6,3,2,2,3,8],
+    [1,11,12,0,3,0,6,10],
+    [3,13,6,0,4,0,10,8],
+    [0,6,9,0,2,3,2,5],
+    [1,11,6,0,1,2,4,8],
+    [0,10,9,0,4,0,7,5],
+    [1,9,12,3,1,2,7,4],
+    [1,9,12,2,2,2,3,8],
+    [0,10,8,1,3,0,4,8],
+    [2,10,6,1,1,3,6,3],
+    [0,8,10,2,1,2,2,5],
+    [3,13,8,2,1,2,6,8],
+    [2,10,10,2,3,0,6,9],
+    [2,8,12,0,1,2,3,6],
+    [0,6,10,3,4,0,5,3],
+    [3,13,6,2,2,3,8,12],
+    [3,11,10,1,2,2,6,4],
+    [2,8,6,2,2,3,5,7],
+    [0,10,8,2,2,2,7,4],
+    [0,10,12,2,1,3,3,1],
+    [2,10,6,0,1,3,7,4],
+    [0,10,10,3,1,3,2,7],
+    [0,6,9,0,3,0,2,5],
+    [2,12,6,1,3,0,8,4],
+    [1,7,9,3,2,2,2,5],
+    [2,12,10,2,1,2,9,7],
+    [0,8,8,3,2,3,6,4],
+    [1,11,6,3,1,3,6,3],
+    [3,13,8,2,3,0,8,12],
+    [3,11,12,3,1,3,7,4],
+    [2,12,8,3,2,2,4,9],
+    [3,9,10,2,2,2,5,7],
+    [0,10,9,2,2,2,3,7],
+    [3,13,10,0,3,0,9,11],
+    [2,8,10,1,3,0,5,3],
+    [0,10,8,1,2,3,3,5],
+    [0,10,12,1,1,2,2,9],
+    [2,10,10,3,4,0,4,7]
+];
+cfg : rand(pool);
+xa : cfg[1];  xb : cfg[2];  ya : cfg[3];  yb : cfg[4];  shp : cfg[5];  pw : cfg[6];  c : cfg[7];  d : cfg[8];
+L : xb - xa;  H : ya - yb;
+fx(t)  := block([s], s:(t-xa)/L, if is(shp=1) then yb + H*(1-s)^pw else if is(shp=2) then ya - H*s^pw else if is(shp=3) then ya - H*(3*s^2-2*s^3) else ya - H*s);
+dfx(t) := block([s], s:(t-xa)/L, if is(shp=1) then -(H*pw/L)*(1-s)^(pw-1) else if is(shp=2) then -(H*pw/L)*s^(pw-1) else if is(shp=3) then -6*(H/L)*s*(1-s) else -H/L);
+yc : fx(c);  sc : dfx(c);          /* height and instantaneous rate at x = c  (always negative) */
+yd : fx(d);  sd : dfx(d);          /* the same at x = d */
+avg : (yb - ya)/L;                 /* average rate of change over the whole interval */
+r2(x) := string(float(round(100*x)/100));
+r3(x) := string(float(round(1000*x)/1000));
+sc2 : r2(sc);  sd2 : r2(sd);  avg2 : r2(avg);  yc2 : r2(yc);  yd2 : r2(yd);
+cs : string(c);  ds : string(d);  xas : string(xa);  xbs : string(xb);  yas : string(ya);  ybs : string(yb);
+sgl : create_list(r3((fx(c+h)-yc)/h), h, [1, 1/2, 1/10, 1/100]);
+
+/* truth of the statements that depend on the graph and on the points chosen */
+t21 : is(abs(sc) > abs(sd));       /* falls more steeply at c than at d */
+t22 : is(abs(sc) < abs(sd));       /* falls less steeply at c than at d */
+t23 : is(sc = avg);                /* instantaneous rate at c equals the average rate */
+t24 : is(abs(sc) > abs(avg));      /* more negative than the average rate */
+t25 : is(shp = 4);                 /* same value at every point */
+
+/* ---------- the statements (key, is it true for THIS graph?, text) ----------
+   Keys 1-4 are always true, 11-15 always false, 21-25 depend on the graph.  Every false one is a near miss. */
+Spool : [
+ [1,  true,  sconcat("It is negative, because the graph is falling at x = ", cs, ".")],
+ [2,  true,  sconcat("It equals the slope of the tangent line to the graph at x = ", cs, ", and that tangent slopes downward from left to right.")],
+ [3,  true,  sconcat("It is negative at every point strictly between x = ", xas, " and x = ", xbs, ", because the graph keeps falling all the way across the interval.")],
+ [4,  true,  sconcat("It is the value that the average rate of change (change in y divided by change in x) over a step starting at x = ", cs, " settles to as that step is made smaller and smaller.")],
+ [11, false, sconcat("It is positive, because the height of the graph at x = ", cs, " is a positive number.")],
+ [12, false, sconcat("It is zero, because the graph has no turning point (no peak or trough) at x = ", cs, ".")],
+ [13, false, sconcat("The tangent line at x = ", cs, " slopes upward from left to right, because x increases as you move along the graph.")],
+ [14, false, "It is a positive number that tells you how fast the graph is falling (the speed of the fall), so no negative sign is needed."],
+ [15, false, sconcat("It can only be found from the two end points of the graph, as the drop in height from ", yas, " to ", ybs, " divided by the width of the interval.")],
+ [21, t21,   sconcat("The graph is falling more steeply at x = ", cs, " than at x = ", ds, ".")],
+ [22, t22,   sconcat("The graph is falling less steeply at x = ", cs, " than at x = ", ds, ".")],
+ [23, t23,   sconcat("It is equal to the average rate of change over the whole interval, from x = ", xas, " to x = ", xbs, ".")],
+ [24, t24,   sconcat("It is a faster fall (a more negative rate) than the average rate of change over the whole interval, from x = ", xas, " to x = ", xbs, ".")],
+ [25, t25,   "It has the same value at every point of the graph."]
+];
+Tr : sublist(Spool, lambda([r], second(r)));
+Fa : sublist(Spool, lambda([r], not second(r)));
+nt : min(rand([2,3,4]), length(Tr));          /* how many correct statements the student sees: 2, 3 or 4 of 6 */
+Tsel : rand_selection(Tr, nt);
+Fsel : rand_selection(Fa, 6 - nt);
+ta1 : random_permutation(append(Tsel, Fsel));   /* the six options, in a random order (STACK shows them in the order of this list) */
+tk : map(first, Tsel);                          /* keys of the correct options shown */
+wk : map(first, Fsel);                          /* keys of the wrong options shown */
+
+/* ---------- explanations for the worked solution ---------- */
+cmpTxt : if is(abs(sc) > abs(sd)) then sconcat("the green tangent (slope ", sc2, ") is steeper than the orange one (slope ", sd2, "), so the graph falls more steeply at x = ", cs, ".")
+         else if is(abs(sc) < abs(sd)) then sconcat("the orange tangent (slope ", sd2, ") is steeper than the green one (slope ", sc2, "), so the graph falls less steeply at x = ", cs, " than at x = ", ds, ".")
+         else sconcat("the two tangents are equally steep (slope ", sc2, "), because the graph is a straight line.");
+avgTxt : if is(sc = avg) then sconcat("the green tangent and the grey chord have the same slope, ", sc2, ", because the graph is a straight line.")
+         else sconcat("the grey chord has slope ", avg2, " but the green tangent has slope ", sc2, ", so the two are different.");
+spdTxt : if is(abs(sc) > abs(avg)) then sconcat("the green tangent (", sc2, ") is steeper than the grey chord (", avg2, "), so at x = ", cs, " the graph falls faster than its average.")
+         else sconcat("the green tangent (", sc2, ") is gentler than the grey chord (", avg2, "), so at x = ", cs, " the graph falls more slowly than its average.");
+exl : [
+ [1,  sconcat("In the graph the height goes down as you move right through x = ", cs, ", so the tangent (the green segment) slopes downward and its slope is negative: about ", sc2, ".")],
+ [2,  sconcat("The instantaneous rate of change at a point is defined as the slope of the tangent line there. The green segment is the tangent at x = ", cs, "; it goes down from left to right, and its slope is about ", sc2, ".")],
+ [3,  sconcat("The graph falls from (", xas, ", ", yas, ") to (", xbs, ", ", ybs, ") without ever rising or going flat in between, so a tangent drawn at any point strictly inside the interval slopes downward and the rate is negative there. (At an end point the curve may level off, which is why the statement says strictly between.)")],
+ [4,  sconcat("The average rates of change over steps of 1, 0.5, 0.1 and 0.01 to the right of x = ", cs, " are ", sgl[1], ", ", sgl[2], ", ", sgl[3], " and ", sgl[4], ". They settle towards ", sc2, ", the slope of the tangent: this is exactly what 'instantaneous' means.")],
+ [11, sconcat("The height of the graph at x = ", cs, " is ", yc2, ", but height is not rate. The rate is the slope of the tangent, ", sc2, ", which is negative even though the height is positive.")],
+ [12, sconcat("A rate of change of zero needs a horizontal tangent (a peak, a trough or a level stretch). The graph is falling at x = ", cs, ", so the tangent slopes downward and the rate is ", sc2, ", not 0.")],
+ [13, sconcat("Moving to the right along the graph the height goes down, so the green tangent slopes downward, not upward. An upward-sloping tangent would mean the graph is rising.")],
+ [14, sconcat("The rate of change keeps its sign: a graph that falls has a negative rate. The speed of the fall is the size of the rate without its sign, ", r2(abs(sc)), ", but the rate of change itself is ", sc2, ".")],
+ [15, sconcat("The two end points give only the average rate over the whole interval (the grey dashed chord, slope ", avg2, "). The instantaneous rate at x = ", cs, " is the slope of the tangent there (the green segment, ", sc2, "). It is found from the graph near x = ", cs, ", not from the end points alone.")],
+ [21, sconcat("Compare the two tangents: ", cmpTxt)],
+ [22, sconcat("Compare the two tangents: ", cmpTxt)],
+ [23, sconcat("Compare the green tangent with the grey chord joining the two ends: ", avgTxt)],
+ [24, sconcat("Compare the green tangent with the grey chord joining the two ends: ", spdTxt)],
+ [25, if is(shp=4) then "The graph is a straight line, so the tangent at every point is the line itself and the rate is the same everywhere." else sconcat("The steepness changes along the curve: the green tangent has slope ", sc2, " but the orange tangent at x = ", ds, " has slope ", sd2, ". A graph that curves has a different instantaneous rate at different points.")]
+];
+solhtml : apply(sconcat, map(lambda([r], sconcat("<p><strong>", if second(r) then "TRUE" else "FALSE", ".</strong> &ldquo;", third(r), "&rdquo;<br>", assoc(first(r), exl), "</p>")), ta1));
+qnote : sconcat("shape ", string(shp), "/", string(pw), "  x:", xas, "-", xbs, "  y:", yas, "-", ybs, "  c=", cs, " d=", ds, "  true:", string(tk), " false:", string(wk));]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>{#qnote#}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>checkbox</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sel : setify(ans1);
+truth : setify(tk);
+wrongticked : setdifference(sel, truth);
+missed : setdifference(truth, sel);
+nc : 6 - cardinality(symmdifference(sel, truth));</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(11,wrongticked)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt1-0-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You ticked the statement about the height being positive. The height of the graph is not its rate of change: the rate is the slope of the tangent.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(12,wrongticked)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You ticked the statement about a zero rate. A rate of zero needs a horizontal tangent (a peak, a trough or a level stretch); here the graph is falling.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>10</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(1,missed)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>11</truenextnode>
+        <trueanswernote>prt1-10-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You left out a correct statement: the graph is falling at the marked point, so the rate there is negative.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>11</falsenextnode>
+        <falseanswernote>prt1-10-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>11</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(2,missed)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>12</truenextnode>
+        <trueanswernote>prt1-11-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You left out a correct statement: the instantaneous rate of change at a point is the slope of the tangent line at that point.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>12</falsenextnode>
+        <falseanswernote>prt1-11-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>12</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(3,missed)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>13</truenextnode>
+        <trueanswernote>prt1-12-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You left out a correct statement: the graph keeps falling across the interval, so the rate is negative at every interior point.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>13</falsenextnode>
+        <falseanswernote>prt1-12-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>13</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(4,missed)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>14</truenextnode>
+        <trueanswernote>prt1-13-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You left out a correct statement: the instantaneous rate is the value the average rates settle to as the step shrinks.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>14</falsenextnode>
+        <falseanswernote>prt1-13-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>14</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(21,missed)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>15</truenextnode>
+        <trueanswernote>prt1-14-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You left out a correct steepness comparison: compare how steep the tangents are at the two points.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>15</falsenextnode>
+        <falseanswernote>prt1-14-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>15</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(22,missed)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>16</truenextnode>
+        <trueanswernote>prt1-15-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You left out a correct steepness comparison: compare how steep the tangents are at the two points.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>16</falsenextnode>
+        <falseanswernote>prt1-15-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>16</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(23,missed)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>17</truenextnode>
+        <trueanswernote>prt1-16-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You left out a correct statement: for this graph (a straight line) the instantaneous rate equals the average rate everywhere.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>17</falsenextnode>
+        <falseanswernote>prt1-16-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>17</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(24,missed)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>18</truenextnode>
+        <trueanswernote>prt1-17-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You left out a correct comparison with the average rate: compare the tangent's slope at the point with the chord's slope.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>18</falsenextnode>
+        <falseanswernote>prt1-17-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>18</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(25,missed)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>19</truenextnode>
+        <trueanswernote>prt1-18-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You left out a correct statement: this graph is a straight line, so its rate is the same at every point.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>19</falsenextnode>
+        <falseanswernote>prt1-18-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>19</name>
+        <description>all six statements classified correctly</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nc</sans>
+        <tans>6</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-all</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>20</falsenextnode>
+        <falseanswernote>prt1-19-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(13,wrongticked)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>3</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You ticked the statement about an upward-sloping tangent. Moving right, this graph goes down, so its tangent slopes downward.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>20</name>
+        <description>exactly one error: half marks</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>nc</sans>
+        <tans>5</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-five</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Almost there: exactly one of the six statements is classified wrongly.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-low</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>More than one statement is classified wrongly. Think of the tangent at the marked point: which way does it slope, and how does its steepness compare with the other tangent and with the chord joining the ends?</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(14,wrongticked)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>4</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You ticked the statement about a positive speed. The rate of change keeps its sign: a falling graph has a negative rate. The speed is the size of the rate without the sign.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(15,wrongticked)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>5</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You ticked the statement about the end points. The end points give only the average rate over the whole interval; the instantaneous rate at a point is the slope of the tangent at that point.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(21,wrongticked)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>6</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You ticked a steepness comparison that is not correct for this graph. Compare how steep the tangents are at the two points, ignoring the heights.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>6</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>6</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(22,wrongticked)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>7</truenextnode>
+        <trueanswernote>prt1-6-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You ticked a steepness comparison that is not correct for this graph. Compare how steep the tangents are at the two points, ignoring the heights.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>7</falsenextnode>
+        <falseanswernote>prt1-6-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>7</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(23,wrongticked)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>8</truenextnode>
+        <trueanswernote>prt1-7-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You ticked the statement about the average rate. The average rate over the whole interval comes from the chord joining the ends; the instantaneous rate at a point is the slope of the tangent there, and for this graph the two differ.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>8</falsenextnode>
+        <falseanswernote>prt1-7-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>8</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(24,wrongticked)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>9</truenextnode>
+        <trueanswernote>prt1-8-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You ticked a comparison with the average rate that is not correct for this graph. Compare the slope of the tangent at the point with the slope of the chord joining the two ends.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>9</falsenextnode>
+        <falseanswernote>prt1-8-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>9</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>elementp(25,wrongticked)</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>10</truenextnode>
+        <trueanswernote>prt1-9-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You ticked the statement that the rate is the same everywhere. This graph curves, so its steepness (and therefore its instantaneous rate) changes from point to point.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>10</falsenextnode>
+        <falseanswernote>prt1-9-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>6000</deployedseed>
+    <deployedseed>6060</deployedseed>
+    <deployedseed>6122</deployedseed>
+    <deployedseed>6186</deployedseed>
+    <deployedseed>6252</deployedseed>
+    <deployedseed>6320</deployedseed>
+    <deployedseed>6390</deployedseed>
+    <deployedseed>6462</deployedseed>
+    <deployedseed>6536</deployedseed>
+    <deployedseed>6612</deployedseed>
+    <deployedseed>6690</deployedseed>
+    <deployedseed>6770</deployedseed>
+    <deployedseed>6852</deployedseed>
+    <deployedseed>6936</deployedseed>
+    <deployedseed>7022</deployedseed>
+    <deployedseed>7110</deployedseed>
+    <deployedseed>7200</deployedseed>
+    <deployedseed>7292</deployedseed>
+    <deployedseed>7386</deployedseed>
+    <deployedseed>7482</deployedseed>
+    <deployedseed>7580</deployedseed>
+    <deployedseed>7680</deployedseed>
+    <deployedseed>7782</deployedseed>
+    <deployedseed>7886</deployedseed>
+    <deployedseed>7992</deployedseed>
+    <deployedseed>8100</deployedseed>
+    <deployedseed>8210</deployedseed>
+    <deployedseed>8322</deployedseed>
+    <deployedseed>8436</deployedseed>
+    <deployedseed>8552</deployedseed>
+    <deployedseed>8670</deployedseed>
+    <deployedseed>8790</deployedseed>
+    <deployedseed>8912</deployedseed>
+    <deployedseed>9036</deployedseed>
+    <deployedseed>9162</deployedseed>
+    <deployedseed>9290</deployedseed>
+    <deployedseed>9420</deployedseed>
+    <deployedseed>9552</deployedseed>
+    <deployedseed>9686</deployedseed>
+    <deployedseed>9822</deployedseed>
+    <deployedseed>9960</deployedseed>
+    <deployedseed>10100</deployedseed>
+    <deployedseed>10242</deployedseed>
+    <deployedseed>10386</deployedseed>
+    <deployedseed>10532</deployedseed>
+    <deployedseed>10680</deployedseed>
+    <deployedseed>10830</deployedseed>
+    <deployedseed>10982</deployedseed>
+    <deployedseed>11136</deployedseed>
+    <deployedseed>11292</deployedseed>
+    <deployedseed>11450</deployedseed>
+    <deployedseed>11610</deployedseed>
+    <deployedseed>11772</deployedseed>
+    <deployedseed>11936</deployedseed>
+    <deployedseed>12102</deployedseed>
+    <deployedseed>12270</deployedseed>
+    <deployedseed>12440</deployedseed>
+    <deployedseed>12612</deployedseed>
+    <deployedseed>12786</deployedseed>
+    <deployedseed>12962</deployedseed>
+    <deployedseed>13140</deployedseed>
+    <deployedseed>13320</deployedseed>
+    <deployedseed>13502</deployedseed>
+    <deployedseed>13686</deployedseed>
+    <deployedseed>13872</deployedseed>
+    <deployedseed>14060</deployedseed>
+    <deployedseed>14250</deployedseed>
+    <deployedseed>14442</deployedseed>
+    <deployedseed>14636</deployedseed>
+    <deployedseed>14832</deployedseed>
+    <deployedseed>15030</deployedseed>
+    <deployedseed>15230</deployedseed>
+    <deployedseed>15432</deployedseed>
+    <deployedseed>15636</deployedseed>
+    <deployedseed>15842</deployedseed>
+    <deployedseed>16050</deployedseed>
+    <deployedseed>16260</deployedseed>
+    <deployedseed>16472</deployedseed>
+    <deployedseed>16686</deployedseed>
+    <deployedseed>16902</deployedseed>
+    <deployedseed>17120</deployedseed>
+    <deployedseed>17340</deployedseed>
+    <deployedseed>17562</deployedseed>
+    <deployedseed>17786</deployedseed>
+    <deployedseed>18012</deployedseed>
+    <deployedseed>18240</deployedseed>
+    <deployedseed>18470</deployedseed>
+    <deployedseed>18702</deployedseed>
+    <deployedseed>18936</deployedseed>
+    <deployedseed>19172</deployedseed>
+    <deployedseed>19410</deployedseed>
+    <deployedseed>19650</deployedseed>
+    <deployedseed>19892</deployedseed>
+    <deployedseed>20136</deployedseed>
+    <deployedseed>20382</deployedseed>
+    <deployedseed>20630</deployedseed>
+    <deployedseed>20880</deployedseed>
+    <deployedseed>21132</deployedseed>
+    <deployedseed>21386</deployedseed>
+    <deployedseed>21642</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Exactly the true statements ticked</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tk</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-all</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>One true statement left out</description>
+      <testinput>
+        <name>ans1</name>
+        <value>rest(tk)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-five</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>All true ticked plus one false</description>
+      <testinput>
+        <name>ans1</name>
+        <value>cons(first(wk),tk)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-five</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>One true left out and one false ticked</description>
+      <testinput>
+        <name>ans1</name>
+        <value>cons(first(wk),rest(tk))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-low</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Only the false statements ticked</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wk</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-low</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Every statement ticked</description>
+      <testinput>
+        <name>ans1</name>
+        <value>append(tk,wk)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-low</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
