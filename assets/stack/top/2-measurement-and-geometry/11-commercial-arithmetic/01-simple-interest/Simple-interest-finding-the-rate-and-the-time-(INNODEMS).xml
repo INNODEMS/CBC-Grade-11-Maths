@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Simple interest: finding the rate and the time (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>{@nm@} lent a friend Ksh \( {@P0@} \). After \( {@T0@} \) years the friend paid back a total of Ksh \( {@A0@} \), which included simple interest.</p>
+<p>(a) How much interest was paid?</p>
+<div>Interest \( = \) Ksh [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Find the rate of simple interest per annum.</p>
+<div>\( R = \) [[input:ans2]] \( \% \) [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(c) At the same rate, how many years would it take for Ksh \( {@P0@} \) to earn Ksh \( {@I2@} \) in interest?</p>
+<div>\( T = \) [[input:ans3]] years [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>(a)</strong> \( I = \text{Amount} - P = {@A0@} - {@P0@} = {@si@} \).</p>
+<p><strong>(b)</strong> Make \( R \) the subject of \( I = \dfrac{PRT}{100} \):</p>
+\[ R = \frac{100 \times I}{P \times T} = \frac{100 \times {@si@}}{ {@P0@} \times {@T0@} } = {@rd(R0)@}\%. \]
+<p><strong>(c)</strong> Make \( T \) the subject:</p>
+\[ T = \frac{100 \times I}{P \times R} = \frac{100 \times {@I2@}}{ {@P0@} \times {@rd(R0)@} } = {@rd(T2)@} \text{ years}. \]]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[nm : rand(["Esther", "Kelvin", "Wanjiru", "Otieno", "Achieng", "Kiprono", "Amina", "Mutua"]);
+rd(v) := if integerp(v) then v else float(v);
+P0 : rand([40000, 80000, 120000, 200000, 300000, 500000]);
+/* Avoid R*T*(T-1) = 100, where "used the amount" and "did not divide by T" coincide. */
+rt : rand(sublist(create_list([u, w], u, [5/2, 3, 4, 5, 11/2, 6, 15/2, 8], w, [2, 3, 4, 5]),
+                  lambda([z], is(z[1]*z[2]*(z[2] - 1) # 100))));
+R0 : rt[1];
+T0 : rt[2];
+si : P0*R0*T0/100;
+A0 : P0 + si;
+T2 : rand_with_prohib(2, 8, [T0]);
+I2 : P0*R0*T2/100;
+w_amt   : 100*A0/(P0*T0);                /* used the amount instead of the interest */
+w_total : 100*si/P0;                     /* total % for the whole period (did not divide by T) */
+w_no100 : si/(P0*T0);                    /* forgot the 100 */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text><![CDATA[P={@P0@}, A={@A0@}, T={@T0@}: I={@si@}, R={@rd(R0)@}; I2={@I2@} -> T={@T2@}]]></text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>si</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>R0</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>numerical</type>
+      <tans>T2</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>si</tans>
+        <testoptions>max(1/2, abs(si)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. The interest is the extra money paid back: amount \( - \) principal.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf2 : 100*ans1/(P0*T0);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>R0</tans>
+        <testoptions>max(1/100, abs(R0)*0)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: usedamount</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>w_amt</tans>
+        <testoptions>max(1/100, abs(w_amt)*0)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-usedamount</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You used the whole amount repaid. In \( I = \dfrac{PRT}{100} \), \( I \) is only the <em>interest</em>, \( {@A0@} - {@P0@} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: nodivT</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>w_total</tans>
+        <testoptions>max(1/100, abs(w_total)*0)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-nodivT</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the percentage increase over all \( {@T0@} \) years together. The rate is <em>per annum</em>: divide by the time as well.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: no100</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>w_no100</tans>
+        <testoptions>max(1/100, abs(w_no100)*0)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-no100</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the rate as a decimal. Multiply by 100 to write it as a percentage.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Misconception: ecf</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ecf2</tans>
+        <testoptions>max(1/100, abs(ecf2)*0)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is the correct rate for <em>your</em> interest in part (a).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Use \( R = \dfrac{100 \times I}{P \times T} \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf3 : if ans2 = 0 then und else 100*I2/(P0*ans2);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>T2</tans>
+        <testoptions>max(1/100, abs(T2)*0)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: ecf</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ecf3</tans>
+        <testoptions>max(1/100, abs(ecf3)*0)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is the correct time for <em>your</em> rate in part (b).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Use \( T = \dfrac{100 \times I}{P \times R} \) with \( I = {@I2@} \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>si</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>R0</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>T2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Decimal rate accepted</description>
+      <testinput>
+        <name>ans1</name>
+        <value>si</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(R0)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>T2</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Used amount, carried through</description>
+      <testinput>
+        <name>ans1</name>
+        <value>si</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>w_amt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>100*I2/(P0*w_amt)</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-usedamount</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Did not divide by T</description>
+      <testinput>
+        <name>ans1</name>
+        <value>si</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>w_total</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>T2</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-nodivT</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Forgot 100</description>
+      <testinput>
+        <name>ans1</name>
+        <value>si</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>w_no100</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>T2</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-no100</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>99</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>99</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

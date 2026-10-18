@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Income tax: housing benefit, allowances and deductions (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Use the monthly tax table below.</p><table style="border-collapse:collapse;text-align:left;margin:6px 0;">
+<tr><th style="border:1px solid #888;padding:4px 8px;">Monthly taxable income</th><th style="border:1px solid #888;padding:4px 8px;">Rate</th></tr>
+<tr><td style="border:1px solid #888;padding:4px 8px;">On the first Ksh 24,000</td><td style="border:1px solid #888;padding:4px 8px;">10%</td></tr>
+<tr><td style="border:1px solid #888;padding:4px 8px;">On the next Ksh 8,333</td><td style="border:1px solid #888;padding:4px 8px;">25%</td></tr>
+<tr><td style="border:1px solid #888;padding:4px 8px;">On the next Ksh 467,667</td><td style="border:1px solid #888;padding:4px 8px;">30%</td></tr>
+</table>
+<p>Personal relief: Ksh 2,400 per month.</p>
+<p>{@nm@} works for a county government with a monthly basic salary of Ksh \( {@B0@} \). The employer provides housing, and the value of this <strong>housing benefit</strong> is assessed at 15% of the basic salary. {@nm@} also receives a transport allowance of Ksh \( {@Ta@} \) per month. Each month Ksh \( {@Pn@} \) is deducted for pension and Ksh \( {@Md@} \) for medical insurance before tax is calculated.</p>
+<p>(a) Find the monthly taxable income.</p>
+<div>Taxable income \( = \) Ksh [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Find the monthly PAYE, to 2 decimal places.</p>
+<div>PAYE \( = \) Ksh [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(c) Find the net monthly income (taxable income minus PAYE).</p>
+<div>Net income \( = \) Ksh [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>(a)</strong> Housing benefit \( = 15\% \times {@B0@} = {@hb@} \). Then</p>
+\[ \text{Taxable income} = {@B0@} + {@hb@} + {@Ta@} - {@Pn@} - {@Md@} = {@TI@}. \]
+<p><strong>(b)</strong></p>\[
+\begin{align*}
+\text{First Ksh } 24{,}000 \text{ at } 10\% &= 2{,}400 \\
+\text{Next Ksh } 8{,}333 \text{ at } 25\% &= 2{,}083.25 \\
+\text{Remaining Ksh } {@TI - 32333@} \text{ at } 30\% &= {@r2(3/10*(TI - 32333))@} \\
+\text{Gross tax} &= {@r2(gt)@}
+\end{align*}
+\]
+<p>PAYE \( = {@r2(gt)@} - 2{,}400 = {@r2(paye)@} \).</p>
+<p><strong>(c)</strong> Net income \( = {@TI@} - {@r2(paye)@} = {@r2(TI - paye)@} \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[nm : rand(["Mr. Barasa", "Ms. Njeri", "Mr. Mwangi", "Ms. Atieno", "Mr. Kiprop", "Ms. Wambui"]);
+r2(v) := if integerp(round(100*v)/100) then round(v) else float(round(100*v)/100);
+b1 : 24000;
+b2 : 8333;
+taxf(ti) := (1/10)*min(ti, b1) + (1/4)*max(0, min(ti, b1 + b2) - b1) + (3/10)*max(0, ti - b1 - b2);
+B0 : 1000*rand([60, 80, 100, 120, 150]);
+hb : 15*B0/100;
+Ta : 1000*rand([5, 8, 10, 12]);
+Pn : 1000*rand([3, 4, 5, 6]);
+Md : 1000*rand([1, 2, 3]);
+TI : B0 + hb + Ta - Pn - Md;
+gt : taxf(TI);
+paye : gt - 2400;
+w_nohb : B0 + Ta - Pn - Md;               /* left out the housing benefit */
+w_hbG  : B0 + 15*(B0 + Ta)/100 + Ta - Pn - Md;  /* 15% of basic + allowance */
+w_nodd : B0 + hb + Ta;                    /* forgot the deductions */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>B={@B0@}, hb={@hb@}, T={@Ta@}, pension={@Pn@}, med={@Md@}: TI={@TI@}, PAYE={@r2(paye)@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>TI</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>r2(paye)</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>numerical</type>
+      <tans>r2(TI-paye)</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>TI</tans>
+        <testoptions>max(1/2, abs(TI)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: nohousing</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>w_nohb</tans>
+        <testoptions>max(1/2, abs(w_nohb)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nohousing</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The housing benefit is not paid in cash, but its value is still <em>taxable</em>: add 15% of the basic salary.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: hbofgross</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>w_hbG</tans>
+        <testoptions>max(1/2, abs(w_hbG)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-hbofgross</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The housing benefit is 15% of the <em>basic salary</em> only, not of basic salary plus allowances.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: nodeduct</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>w_nodd</tans>
+        <testoptions>max(1/2, abs(w_nodd)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-nodeduct</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The pension and medical insurance contributions are deducted <em>before</em> tax: subtract them.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Taxable income \( = \) basic \( + \) housing benefit \( + \) allowances \( - \) deductions.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf2 : taxf(ans1) - 2400;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>paye</tans>
+        <testoptions>max(1/2, abs(paye)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: norelief</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>gt</tans>
+        <testoptions>max(1/2, abs(gt)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-norelief</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the gross tax. Subtract the personal relief of Ksh 2,400.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: flat</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>3*TI/10 - 2400</tans>
+        <testoptions>max(1/2, abs(3*TI/10 - 2400)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-flat</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Use the bands: only the income above Ksh 32,333 is taxed at 30%.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: ecf</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ecf2</tans>
+        <testoptions>max(1/2, abs(ecf2)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is correct for <em>your</em> taxable income in part (a).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Tax each band, add, then subtract the personal relief.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf3 : ans1 - ans2;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>TI - paye</tans>
+        <testoptions>max(1/2, abs(TI - paye)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: ecf</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ecf3</tans>
+        <testoptions>max(1/2, abs(ecf3)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is correct for <em>your</em> answers to parts (a) and (b).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: grosstax</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>TI - gt</tans>
+        <testoptions>max(1/2, abs(TI - gt)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-grosstax</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Subtract the PAYE (after relief), not the gross tax.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Net income \( = \) taxable income \( - \) PAYE.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>TI</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2(paye)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>r2(TI-paye)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>No housing benefit, carried through</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_nohb</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(taxf(w_nohb)-2400)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>float(w_nohb-taxf(w_nohb)+2400)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-nohousing</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-ecf</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Housing benefit of basic+allowance</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_hbG</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2(paye)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>r2(TI-paye)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-hbofgross</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Forgot deductions</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_nodd</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2(paye)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>r2(TI-paye)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-nodeduct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Gross tax used</description>
+      <testinput>
+        <name>ans1</name>
+        <value>TI</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2(gt)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>float(TI-gt)</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-norelief</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
