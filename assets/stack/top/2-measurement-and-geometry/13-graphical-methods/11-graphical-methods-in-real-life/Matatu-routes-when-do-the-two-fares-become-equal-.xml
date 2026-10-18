@@ -1,0 +1,868 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Matatu routes: when do the two fares become equal?</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Two matatu routes, Route A and Route B, charge passengers according to the distance covered. Each route has its own cost function, which gives the total fare for the number of kilometres (km) travelled. The graph shows the fare of each route.</p>
+[[jsxgraph width="640px" height="480px"]]
+var fA = ({#fA#}), rA = ({#rA#}), fB = ({#fB#}), rB = ({#rB#}), Dmax = ({#Dmax#}), xs = ({#xs#}), ys = ({#ys#}), Ctop = ({#Ctop#});
+var dstar = ({#dstar#}), cstar = ({#cstar#}), xL = ({#xL#}), xR = ({#xR#});
+function LA(t) { return fA + rA * t; }
+function LB(t) { return fB + rB * t; }
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-0.17 * Dmax, Ctop + 2.1 * ys, 1.07 * Dmax, -3.1 * ys],
+    axis: false, grid: false, keepaspectratio: false,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+var ppx = board.unitX, ppy = board.unitY;   /* pixels per data unit, to place labels a fixed number of pixels from the axes */
+var boxCss = 'background:#ffffff; padding:1px 5px; border:1px solid #999999; border-radius:3px;';
+var gi;
+/* grid: a vertical line every xs km, a horizontal line every ys shillings */
+for (gi = 1; gi != Dmax / xs + 1; gi++) {
+    board.create('segment', [ [gi * xs, 0], [gi * xs, Ctop] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+for (gi = 1; gi != Ctop / ys + 1; gi++) {
+    board.create('segment', [ [0, gi * ys], [Dmax, gi * ys] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+/* axes start at zero; every tick mark and number is drawn individually, so each grid line has exactly one label */
+board.create('arrow', [ [0, 0], [1.03 * Dmax, 0] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+board.create('arrow', [ [0, 0], [0, Ctop + 0.3 * ys] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+for (gi = 0; gi != Dmax / xs + 1; gi++) {
+    board.create('segment', [ [gi * xs, 0], [gi * xs, -6 / ppy] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+    board.create('text', [gi * xs, -9 / ppy, '' + (gi * xs)], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'top', fontSize: 14});
+}
+for (gi = 1; gi != Ctop / ys + 1; gi++) {
+    board.create('segment', [ [0, gi * ys], [-6 / ppx, gi * ys] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+    board.create('text', [-10 / ppx, gi * ys, '' + (gi * ys)], {fixed: true, highlight: false, anchorX: 'right', anchorY: 'middle', fontSize: 14});
+}
+board.create('text', [Dmax / 2, -64 / ppy, 'Distance travelled (km)'], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'top', fontSize: 17});
+board.create('text', [-0.16 * Dmax, Ctop + 1.8 * ys, 'Fare (KSh)'], {fixed: true, highlight: false, anchorX: 'left', fontSize: 17});
+/* the two fare lines: Route A solid blue, Route B dashed red (so they differ without colour too) */
+board.create('segment', [ [0, fA], [Dmax, LA(Dmax)] ], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false, layer: 4});
+board.create('segment', [ [0, fB], [Dmax, LB(Dmax)] ], {strokeColor: '#c62828', strokeWidth: 3, dash: 2, fixed: true, highlight: false, layer: 4});
+/* legend */
+var ly = Ctop + 0.95 * ys;
+board.create('polygon', [ [0.4 * Dmax, Ctop + 1.4 * ys], [1.03 * Dmax, Ctop + 1.4 * ys], [1.03 * Dmax, Ctop + 0.5 * ys], [0.4 * Dmax, Ctop + 0.5 * ys] ],
+    {fillColor: '#fafafa', fillOpacity: 1, vertices: {visible: false}, borders: {strokeColor: '#999999', strokeWidth: 1}, fixed: true, highlight: false, layer: 3});
+board.create('segment', [ [0.44 * Dmax, ly], [0.54 * Dmax, ly] ], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false, layer: 5});
+board.create('text', [0.56 * Dmax, ly, 'Route A'], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'middle', fontSize: 15, layer: 6});
+board.create('segment', [ [0.73 * Dmax, ly], [0.83 * Dmax, ly] ], {strokeColor: '#c62828', strokeWidth: 3, dash: 2, fixed: true, highlight: false, layer: 5});
+board.create('text', [0.85 * Dmax, ly, 'Route B'], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'middle', fontSize: 15, layer: 6});
+[[/jsxgraph]]
+<p><strong>(a)</strong> At what distance would the two routes cost the same amount?</p>
+<div>Distance = [[input:ans1]] km [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>
+<p><strong>(b)</strong> Explain what the value in (a) means.</p>
+<div>[[input:ans2]] [[validation:ans2]]</div>
+<div>[[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>What the graph shows.</strong> Each line gives the fare (vertical axis, in KSh) for a trip of a given length (horizontal axis, in km). Each grid line across is {@ys@} shillings and each grid line up is {@xs@} km. A point on a line is a trip together with its fare on that route. The point where the two lines <em>cross</em> is the one trip that costs the same on both routes.</p>
+<p><strong>(a) The distance at which the routes cost the same.</strong></p>
+[[jsxgraph width="640px" height="480px"]]
+var fA = ({#fA#}), rA = ({#rA#}), fB = ({#fB#}), rB = ({#rB#}), Dmax = ({#Dmax#}), xs = ({#xs#}), ys = ({#ys#}), Ctop = ({#Ctop#});
+var dstar = ({#dstar#}), cstar = ({#cstar#}), xL = ({#xL#}), xR = ({#xR#});
+function LA(t) { return fA + rA * t; }
+function LB(t) { return fB + rB * t; }
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-0.17 * Dmax, Ctop + 2.1 * ys, 1.07 * Dmax, -3.1 * ys],
+    axis: false, grid: false, keepaspectratio: false,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+var ppx = board.unitX, ppy = board.unitY;   /* pixels per data unit, to place labels a fixed number of pixels from the axes */
+var boxCss = 'background:#ffffff; padding:1px 5px; border:1px solid #999999; border-radius:3px;';
+var gi;
+/* grid: a vertical line every xs km, a horizontal line every ys shillings */
+for (gi = 1; gi != Dmax / xs + 1; gi++) {
+    board.create('segment', [ [gi * xs, 0], [gi * xs, Ctop] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+for (gi = 1; gi != Ctop / ys + 1; gi++) {
+    board.create('segment', [ [0, gi * ys], [Dmax, gi * ys] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+/* axes start at zero; every tick mark and number is drawn individually, so each grid line has exactly one label */
+board.create('arrow', [ [0, 0], [1.03 * Dmax, 0] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+board.create('arrow', [ [0, 0], [0, Ctop + 0.3 * ys] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+for (gi = 0; gi != Dmax / xs + 1; gi++) {
+    board.create('segment', [ [gi * xs, 0], [gi * xs, -6 / ppy] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+    board.create('text', [gi * xs, -9 / ppy, '' + (gi * xs)], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'top', fontSize: 14});
+}
+for (gi = 1; gi != Ctop / ys + 1; gi++) {
+    board.create('segment', [ [0, gi * ys], [-6 / ppx, gi * ys] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+    board.create('text', [-10 / ppx, gi * ys, '' + (gi * ys)], {fixed: true, highlight: false, anchorX: 'right', anchorY: 'middle', fontSize: 14});
+}
+board.create('text', [Dmax / 2, -64 / ppy, 'Distance travelled (km)'], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'top', fontSize: 17});
+board.create('text', [-0.16 * Dmax, Ctop + 1.8 * ys, 'Fare (KSh)'], {fixed: true, highlight: false, anchorX: 'left', fontSize: 17});
+/* the two fare lines: Route A solid blue, Route B dashed red (so they differ without colour too) */
+board.create('segment', [ [0, fA], [Dmax, LA(Dmax)] ], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false, layer: 4});
+board.create('segment', [ [0, fB], [Dmax, LB(Dmax)] ], {strokeColor: '#c62828', strokeWidth: 3, dash: 2, fixed: true, highlight: false, layer: 4});
+/* legend */
+var ly = Ctop + 0.95 * ys;
+board.create('polygon', [ [0.4 * Dmax, Ctop + 1.4 * ys], [1.03 * Dmax, Ctop + 1.4 * ys], [1.03 * Dmax, Ctop + 0.5 * ys], [0.4 * Dmax, Ctop + 0.5 * ys] ],
+    {fillColor: '#fafafa', fillOpacity: 1, vertices: {visible: false}, borders: {strokeColor: '#999999', strokeWidth: 1}, fixed: true, highlight: false, layer: 3});
+board.create('segment', [ [0.44 * Dmax, ly], [0.54 * Dmax, ly] ], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false, layer: 5});
+board.create('text', [0.56 * Dmax, ly, 'Route A'], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'middle', fontSize: 15, layer: 6});
+board.create('segment', [ [0.73 * Dmax, ly], [0.83 * Dmax, ly] ], {strokeColor: '#c62828', strokeWidth: 3, dash: 2, fixed: true, highlight: false, layer: 5});
+board.create('text', [0.85 * Dmax, ly, 'Route B'], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'middle', fontSize: 15, layer: 6});
+
+/* Graph 1: read across from the crossing point to the axes; the starting fares are the heights at 0 km */
+board.create('segment', [ [dstar, 0], [dstar, cstar] ], {dash: 2, strokeColor: '#2e7d32', strokeWidth: 3, fixed: true, highlight: false, layer: 5});
+board.create('segment', [ [dstar, cstar], [0, cstar] ], {dash: 2, strokeColor: '#2e7d32', strokeWidth: 3, fixed: true, highlight: false, layer: 5});
+board.create('point', [dstar, cstar], {name: '', size: 6, strokeColor: '#2e7d32', fillColor: '#2e7d32', fixed: true});
+board.create('text', [dstar, -34 / ppy, dstar + ' km'], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'top', fontSize: 15, cssStyle: boxCss});
+board.create('text', [dstar / 2, cstar + 14 / ppy, 'KSh ' + cstar], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'bottom', fontSize: 15, cssStyle: boxCss});
+/* the dots at 0 km mark the starting fares; each short label has the colour of its route */
+board.create('point', [0, fA], {name: '', size: 4, strokeColor: '#1565c0', fillColor: '#1565c0', fixed: true});
+board.create('point', [0, fB], {name: '', size: 4, strokeColor: '#c62828', fillColor: '#c62828', fixed: true});
+board.create('text', [10 / ppx, fA + 10 / ppy, 'KSh ' + fA], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'bottom', fontSize: 13,
+    cssStyle: 'background:#ffffff; padding:1px 4px; border:2px solid #1565c0; border-radius:3px;'});
+board.create('text', [10 / ppx, fB + 10 / ppy, 'KSh ' + fB], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'bottom', fontSize: 13,
+    cssStyle: 'background:#ffffff; padding:1px 4px; border:2px solid #c62828; border-radius:3px;'});
+[[/jsxgraph]]
+<ol>
+<li>Find the point where the blue line (Route A) and the dashed red line (Route B) cross.</li>
+<li>From that point go straight down to the horizontal (distance) axis and read the value: <strong>{@dstar@} km</strong>.</li>
+<li>From the same point go straight across to the vertical (fare) axis: the fare is <strong>KSh {@cstar@}</strong>. The question asks for the distance, so the answer is the value read on the <em>horizontal</em> axis.</li>
+</ol>
+<p><strong>Check using the cost functions.</strong> At 0 km the lines start at KSh {@fA@} (Route A) and KSh {@fB@} (Route B). The rate (the gradient) is the extra fare for each km, which we find from the start and the crossing point: Route A: \( \dfrac{ {@cstar@} - {@fA@} }{ {@dstar@} } = {@rA@} \) KSh per km; Route B: \( \dfrac{ {@cstar@} - {@fB@} }{ {@dstar@} } = {@rB@} \) KSh per km. So</p>
+\[ \text{Route A: } C = {@fA@} + {@rA@}d \qquad \text{Route B: } C = {@fB@} + {@rB@}d. \]
+<p>The fares are equal when the two expressions are equal:</p>
+\[ {#sgl#} \;\Longrightarrow\; {@rA-rB@}d = {@fB-fA@}\;\Longrightarrow\; d = {@dstar@}\text{ km}, \]
+<p>and then \( C = {@fA@} + {@rA@}\times {@dstar@} = {@cstar@} \) and \( C = {@fB@} + {@rB@}\times {@dstar@} = {@cstar@} \), the same fare on both routes. &#10003;</p>
+<p><strong>Answer (a): {@dstar@} km.</strong> <em>Common mistake:</em> giving {@cstar@}, the fare, instead of the distance.</p>
+<p><strong>(b) What the value in (a) means.</strong> The crossing point is where the two fares are equal, but it is also where the cheaper route <em>changes</em>. Graph 2 shades the two sides of the crossing:</p>
+[[jsxgraph width="640px" height="480px"]]
+var fA = ({#fA#}), rA = ({#rA#}), fB = ({#fB#}), rB = ({#rB#}), Dmax = ({#Dmax#}), xs = ({#xs#}), ys = ({#ys#}), Ctop = ({#Ctop#});
+var dstar = ({#dstar#}), cstar = ({#cstar#}), xL = ({#xL#}), xR = ({#xR#});
+function LA(t) { return fA + rA * t; }
+function LB(t) { return fB + rB * t; }
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-0.17 * Dmax, Ctop + 2.1 * ys, 1.07 * Dmax, -3.1 * ys],
+    axis: false, grid: false, keepaspectratio: false,
+    showCopyright: false, showNavigation: false,
+    pan: {enabled: false}, zoom: {enabled: false}
+});
+var ppx = board.unitX, ppy = board.unitY;   /* pixels per data unit, to place labels a fixed number of pixels from the axes */
+var boxCss = 'background:#ffffff; padding:1px 5px; border:1px solid #999999; border-radius:3px;';
+var gi;
+/* grid: a vertical line every xs km, a horizontal line every ys shillings */
+for (gi = 1; gi != Dmax / xs + 1; gi++) {
+    board.create('segment', [ [gi * xs, 0], [gi * xs, Ctop] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+for (gi = 1; gi != Ctop / ys + 1; gi++) {
+    board.create('segment', [ [0, gi * ys], [Dmax, gi * ys] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+/* axes start at zero; every tick mark and number is drawn individually, so each grid line has exactly one label */
+board.create('arrow', [ [0, 0], [1.03 * Dmax, 0] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+board.create('arrow', [ [0, 0], [0, Ctop + 0.3 * ys] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+for (gi = 0; gi != Dmax / xs + 1; gi++) {
+    board.create('segment', [ [gi * xs, 0], [gi * xs, -6 / ppy] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+    board.create('text', [gi * xs, -9 / ppy, '' + (gi * xs)], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'top', fontSize: 14});
+}
+for (gi = 1; gi != Ctop / ys + 1; gi++) {
+    board.create('segment', [ [0, gi * ys], [-6 / ppx, gi * ys] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false});
+    board.create('text', [-10 / ppx, gi * ys, '' + (gi * ys)], {fixed: true, highlight: false, anchorX: 'right', anchorY: 'middle', fontSize: 14});
+}
+board.create('text', [Dmax / 2, -64 / ppy, 'Distance travelled (km)'], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'top', fontSize: 17});
+board.create('text', [-0.16 * Dmax, Ctop + 1.8 * ys, 'Fare (KSh)'], {fixed: true, highlight: false, anchorX: 'left', fontSize: 17});
+/* the two fare lines: Route A solid blue, Route B dashed red (so they differ without colour too) */
+board.create('segment', [ [0, fA], [Dmax, LA(Dmax)] ], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false, layer: 4});
+board.create('segment', [ [0, fB], [Dmax, LB(Dmax)] ], {strokeColor: '#c62828', strokeWidth: 3, dash: 2, fixed: true, highlight: false, layer: 4});
+/* legend */
+var ly = Ctop + 0.95 * ys;
+board.create('polygon', [ [0.4 * Dmax, Ctop + 1.4 * ys], [1.03 * Dmax, Ctop + 1.4 * ys], [1.03 * Dmax, Ctop + 0.5 * ys], [0.4 * Dmax, Ctop + 0.5 * ys] ],
+    {fillColor: '#fafafa', fillOpacity: 1, vertices: {visible: false}, borders: {strokeColor: '#999999', strokeWidth: 1}, fixed: true, highlight: false, layer: 3});
+board.create('segment', [ [0.44 * Dmax, ly], [0.54 * Dmax, ly] ], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false, layer: 5});
+board.create('text', [0.56 * Dmax, ly, 'Route A'], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'middle', fontSize: 15, layer: 6});
+board.create('segment', [ [0.73 * Dmax, ly], [0.83 * Dmax, ly] ], {strokeColor: '#c62828', strokeWidth: 3, dash: 2, fixed: true, highlight: false, layer: 5});
+board.create('text', [0.85 * Dmax, ly, 'Route B'], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'middle', fontSize: 15, layer: 6});
+
+/* Graph 2: left of the crossing one route is cheaper, right of it the other; the green arrows show how far apart the fares are */
+board.create('polygon', [ [0, 0], [dstar, 0], [dstar, Ctop], [0, Ctop] ], {fillColor: '#1565c0', fillOpacity: 0.07, vertices: {visible: false}, borders: {strokeColor: '#1565c0', strokeWidth: 0}, fixed: true, highlight: false, layer: 1});
+board.create('polygon', [ [dstar, 0], [Dmax, 0], [Dmax, Ctop], [dstar, Ctop] ], {fillColor: '#ef6c00', fillOpacity: 0.09, vertices: {visible: false}, borders: {strokeColor: '#ef6c00', strokeWidth: 0}, fixed: true, highlight: false, layer: 1});
+board.create('segment', [ [dstar, 0], [dstar, Ctop] ], {dash: 2, strokeColor: '#2e7d32', strokeWidth: 2, fixed: true, highlight: false, layer: 2});
+board.create('point', [dstar, cstar], {name: '', size: 6, strokeColor: '#2e7d32', fillColor: '#2e7d32', fixed: true});
+board.create('text', [dstar / 2, Ctop - 0.55 * ys, '{#labL#}'], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'middle', fontSize: 14, cssStyle: boxCss});
+board.create('text', [(dstar + Dmax) / 2, Ctop - 0.55 * ys, '{#labR#}'], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'middle', fontSize: 14, cssStyle: boxCss});
+board.create('segment', [ [xL, LA(xL)], [xL, LB(xL)] ], {firstArrow: true, lastArrow: true, strokeColor: '#2e7d32', strokeWidth: 3, fixed: true, highlight: false, layer: 6});
+board.create('text', [xL + 9 / ppx, (LA(xL) + LB(xL)) / 2, 'KSh ' + Math.abs(LA(xL) - LB(xL)) + ' apart'], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'middle', fontSize: 13, cssStyle: boxCss});
+board.create('segment', [ [xR, LA(xR)], [xR, LB(xR)] ], {firstArrow: true, lastArrow: true, strokeColor: '#2e7d32', strokeWidth: 3, fixed: true, highlight: false, layer: 6});
+board.create('text', [xR - 9 / ppx, (LA(xR) + LB(xR)) / 2, 'KSh ' + Math.abs(LA(xR) - LB(xR)) + ' apart'], {fixed: true, highlight: false, anchorX: 'right', anchorY: 'middle', fontSize: 13, cssStyle: boxCss});
+[[/jsxgraph]]
+<ul>
+<li><strong>To the left of the crossing</strong> (trips shorter than {@dstar@} km) the line of {#nameS#} is lower, so {#nameS#} is the cheaper route. It starts at the lower fare (KSh {@fS@} against KSh {@fL@}), so it wins on short trips.</li>
+<li><strong>At the crossing</strong> ({@dstar@} km) both routes charge KSh {@cstar@}.</li>
+<li><strong>To the right of the crossing</strong> (trips longer than {@dstar@} km) the line of {#nameL#} is lower, so {#nameL#} is the cheaper route. {#nameS#} adds {@rS@} KSh for every extra km but {#nameL#} adds only {@rL@}, so the starting advantage of {#nameS#} is used up by the crossing and then reversed. The green arrows show the fares getting further apart on each side.</li>
+</ul>
+<p><strong>Answer (b): both routes charge the same fare, KSh {@cstar@}, for a {@dstar@} km trip; for shorter trips {#nameS#} is cheaper and for longer trips {#nameL#} is cheaper.</strong></p>
+<p><strong>Why the other explanations are wrong.</strong></p>
+<ul>
+<li><em>The same wording with the two routes swapped:</em> the lines show that {#nameS#}, not {#nameL#}, is lower on the left of the crossing.</li>
+<li><em>One route cheaper for every trip:</em> the lines cross, so the lower line changes at {@dstar@} km. A route that is cheaper on both sides would need the lines to touch without crossing, but these lines have different gradients, so they cross.</li>
+<li><em>The two numbers the wrong way round:</em> the horizontal axis is distance and the vertical axis is fare, so the crossing is {@dstar@} km and KSh {@cstar@}, not KSh {@dstar@} and {@cstar@} km.</li>
+<li><em>The same rate per km after {@dstar@} km:</em> the rates are the gradients, {@rA@} and {@rB@} KSh per km, and they do not change along a straight line. It is the <em>total fares</em>, not the rates, that are equal at the crossing.</li>
+</ul>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* ---------- DESIGN BACKWARDS: the two fare lines cross exactly on a grid intersection ----------
+   Route A:  fare = fA + rA * d      Route B:  fare = fB + rB * d      (d = distance in km, fare in KSh)
+   They meet at d* = (fB - fA)/(rA - rB) km, where the fare is c* = fA + rA d*.
+   Pool entry [fA, rA, fB, rB, Dmax, xs, ys]:
+     fA, fB   starting fares, multiples of ys (so each line starts exactly on a grid line)
+     rA, rB   rates in KSh per km (4 to 30, at least 3 apart); the route with the LOWER starting fare always has the HIGHER rate,
+              so the lines really do cross for a trip longer than 0 km
+     Dmax     the graph runs from 0 to Dmax km;  xs = horizontal grid spacing (km);  ys = vertical grid spacing (KSh)
+   Vetted: d* is a whole multiple of xs between 25% and 65% of Dmax, c* is a multiple of ys, the lines are at least one grid line
+   apart at Dmax, and the wrong answers used for feedback (c*, d* +- one grid step, d*+3) are all different numbers. */
+pool : [
+    [0,25,150,10,16,2,50],
+    [125,5,25,15,16,2,25],
+    [150,30,200,20,12,1,50],
+    [100,10,0,30,8,1,50],
+    [40,20,100,8,10,1,20],
+    [60,4,0,16,12,1,20],
+    [0,10,20,5,12,1,20],
+    [40,4,20,8,12,1,10],
+    [20,4,0,8,15,1,10],
+    [40,8,80,4,16,2,20],
+    [25,30,75,20,8,1,25],
+    [50,10,0,15,20,2,25],
+    [50,5,0,10,20,2,50],
+    [0,10,10,5,8,1,10],
+    [0,8,20,4,15,1,10],
+    [30,4,10,8,10,1,10],
+    [50,15,150,5,16,2,25],
+    [30,5,0,10,12,2,10],
+    [150,10,100,20,15,1,50],
+    [100,10,50,20,12,1,50],
+    [0,30,100,10,10,1,50],
+    [200,30,300,10,8,1,50],
+    [150,15,175,10,10,1,25],
+    [80,10,60,15,10,1,20],
+    [100,15,50,25,8,1,25],
+    [100,10,0,30,10,1,50],
+    [25,20,0,25,10,1,25],
+    [80,5,40,10,16,2,20],
+    [30,4,0,7,16,2,10],
+    [175,5,150,10,12,1,25],
+    [150,10,0,25,16,2,50],
+    [10,8,30,4,12,1,10],
+    [40,5,20,10,8,1,10],
+    [250,20,300,10,15,1,50],
+    [80,10,120,5,15,1,20],
+    [20,15,0,20,12,2,20],
+    [175,10,200,5,12,1,25],
+    [0,10,50,5,20,2,25],
+    [0,7,30,4,16,2,10],
+    [50,10,25,15,15,1,25],
+    [100,20,200,10,20,2,50],
+    [0,10,30,5,12,2,10],
+    [0,15,50,5,15,1,25],
+    [0,12,30,6,10,1,10],
+    [40,15,80,5,12,2,20],
+    [0,8,40,4,20,2,20],
+    [80,5,40,10,15,1,20],
+    [0,16,60,4,8,1,20],
+    [60,5,40,10,8,1,20],
+    [100,4,60,8,20,2,20]
+];
+cfg : rand(pool);
+fA : cfg[1];  rA : cfg[2];  fB : cfg[3];  rB : cfg[4];  Dmax : cfg[5];  xs : cfg[6];  ys : cfg[7];
+dstar : (fB - fA)/(rA - rB);                 /* ANSWER (a): the distance where the fares are equal (km) */
+cstar : fA + rA*dstar;                       /* the fare at that distance (KSh) */
+Cend : max(fA + rA*Dmax, fB + rB*Dmax);
+Ctop : ys*ceiling(Cend/ys) + ys;             /* top of the vertical axis */
+kL : max(1, floor(dstar/(2*xs)));   xL : dstar - kL*xs;                 /* a grid distance on the left of the crossing */
+kR : max(1, floor((Dmax - dstar)/(2*xs)));   xR : dstar + kR*xs;        /* a grid distance on the right of the crossing */
+gapL : abs((fA + rA*xL) - (fB + rB*xL));   gapR : abs((fA + rA*xR) - (fB + rB*xR));
+/* which route is cheaper for SHORT trips (lower starting fare) and which for LONG trips */
+nameS : if is(fA < fB) then "Route A" else "Route B";
+nameL : if is(fA < fB) then "Route B" else "Route A";
+fS : min(fA, fB);   fL : max(fA, fB);        /* starting fares of the short-trip route and of the long-trip route */
+rS : if is(fA < fB) then rA else rB;         /* rate of the short-trip route (the higher rate) */
+rL : if is(fA < fB) then rB else rA;         /* rate of the long-trip route (the lower rate) */
+labL : sconcat(nameS, " is cheaper");        /* wording for the zone to the left of the crossing */
+labR : sconcat(nameL, " is cheaper");        /* wording for the zone to the right of the crossing */
+
+/* ---------- (b) dropdown: what does the value in (a) mean?  Key 1 is correct; the others are near misses ---------- */
+ta2 : random_permutation([
+ [1, true,  sconcat("Both routes charge the same fare, KSh ", string(cstar), ", for a trip of ", string(dstar), " km. For shorter trips ", nameS, " is cheaper, and for longer trips ", nameL, " is cheaper.")],
+ [2, false, sconcat("Both routes charge the same fare, KSh ", string(cstar), ", for a trip of ", string(dstar), " km. For shorter trips ", nameL, " is cheaper, and for longer trips ", nameS, " is cheaper.")],
+ [3, false, sconcat(nameS, " is cheaper for every trip. The two routes only touch at ", string(dstar), " km, where they charge the same, and after that ", nameS, " is cheaper again.")],
+ [4, false, sconcat("Both routes charge KSh ", string(dstar), " for a trip of ", string(cstar), " km, so that is the fare at which the two routes become equal.")],
+ [5, false, sconcat("After ", string(dstar), " km the two routes charge the same rate per kilometre, so from then on every extra kilometre costs the same on both routes.")]
+]);
+ta1 : dstar;
+/* values used in the worked solution */
+sgl : sconcat(string(fA), " + ", string(rA), "d = ", string(fB), " + ", string(rB), "d");
+qnote : sconcat("A: ", string(fA), "+", string(rA), "d  B: ", string(fB), "+", string(rB), "d  Dmax=", string(Dmax), " xs=", string(xs), " ys=", string(ys));]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>{#qnote#}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>dropdown</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>correct distance</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>dstar</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>gave the fare instead of the distance</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>cstar</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-fare</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That number is the <strong>fare</strong> at the crossing point, which is read on the vertical axis. The question asks for the <strong>distance</strong>: from the crossing point go straight down to the horizontal axis.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>one grid line out; otherwise generic</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>abs(ans1-dstar)</sans>
+        <tans>xs</tans>
+        <testoptions>0.001</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-gridline</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You are exactly one grid line out on the distance axis. Check which vertical grid line the crossing point is on, and remember that each grid line is a fixed number of km.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the point where the two lines cross, then go straight down from it to the horizontal (distance) axis and read the value.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>correct explanation</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>chose option 2</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-opt2</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The wording matches, but the two routes are the wrong way round. Look at the graph to the <em>left</em> of the crossing (short trips): which line is lower there?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>chose option 3</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-opt3</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The two lines are not parallel and they do cross, so the cheaper route changes at the crossing. Look at which line is lower on each side of it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>chose option 4</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-opt4</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The two numbers are the wrong way round. The horizontal axis shows the distance in km and the vertical axis shows the fare in KSh.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>chose option 5</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>5</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-opt5</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The rates (how much each extra km costs) are the gradients of the lines and are different. At the crossing it is the total fares that are equal, not the rates.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>9000</deployedseed>
+    <deployedseed>9072</deployedseed>
+    <deployedseed>9146</deployedseed>
+    <deployedseed>9222</deployedseed>
+    <deployedseed>9300</deployedseed>
+    <deployedseed>9380</deployedseed>
+    <deployedseed>9462</deployedseed>
+    <deployedseed>9546</deployedseed>
+    <deployedseed>9632</deployedseed>
+    <deployedseed>9720</deployedseed>
+    <deployedseed>9810</deployedseed>
+    <deployedseed>9902</deployedseed>
+    <deployedseed>9996</deployedseed>
+    <deployedseed>10092</deployedseed>
+    <deployedseed>10190</deployedseed>
+    <deployedseed>10290</deployedseed>
+    <deployedseed>10392</deployedseed>
+    <deployedseed>10496</deployedseed>
+    <deployedseed>10602</deployedseed>
+    <deployedseed>10710</deployedseed>
+    <deployedseed>10820</deployedseed>
+    <deployedseed>10932</deployedseed>
+    <deployedseed>11046</deployedseed>
+    <deployedseed>11162</deployedseed>
+    <deployedseed>11280</deployedseed>
+    <deployedseed>11400</deployedseed>
+    <deployedseed>11522</deployedseed>
+    <deployedseed>11646</deployedseed>
+    <deployedseed>11772</deployedseed>
+    <deployedseed>11900</deployedseed>
+    <deployedseed>12030</deployedseed>
+    <deployedseed>12162</deployedseed>
+    <deployedseed>12296</deployedseed>
+    <deployedseed>12432</deployedseed>
+    <deployedseed>12570</deployedseed>
+    <deployedseed>12710</deployedseed>
+    <deployedseed>12852</deployedseed>
+    <deployedseed>12996</deployedseed>
+    <deployedseed>13142</deployedseed>
+    <deployedseed>13290</deployedseed>
+    <deployedseed>13440</deployedseed>
+    <deployedseed>13592</deployedseed>
+    <deployedseed>13746</deployedseed>
+    <deployedseed>13902</deployedseed>
+    <deployedseed>14060</deployedseed>
+    <deployedseed>14220</deployedseed>
+    <deployedseed>14382</deployedseed>
+    <deployedseed>14546</deployedseed>
+    <deployedseed>14712</deployedseed>
+    <deployedseed>14880</deployedseed>
+    <deployedseed>15050</deployedseed>
+    <deployedseed>15222</deployedseed>
+    <deployedseed>15396</deployedseed>
+    <deployedseed>15572</deployedseed>
+    <deployedseed>15750</deployedseed>
+    <deployedseed>15930</deployedseed>
+    <deployedseed>16112</deployedseed>
+    <deployedseed>16296</deployedseed>
+    <deployedseed>16482</deployedseed>
+    <deployedseed>16670</deployedseed>
+    <deployedseed>16860</deployedseed>
+    <deployedseed>17052</deployedseed>
+    <deployedseed>17246</deployedseed>
+    <deployedseed>17442</deployedseed>
+    <deployedseed>17640</deployedseed>
+    <deployedseed>17840</deployedseed>
+    <deployedseed>18042</deployedseed>
+    <deployedseed>18246</deployedseed>
+    <deployedseed>18452</deployedseed>
+    <deployedseed>18660</deployedseed>
+    <deployedseed>18870</deployedseed>
+    <deployedseed>19082</deployedseed>
+    <deployedseed>19296</deployedseed>
+    <deployedseed>19512</deployedseed>
+    <deployedseed>19730</deployedseed>
+    <deployedseed>19950</deployedseed>
+    <deployedseed>20172</deployedseed>
+    <deployedseed>20396</deployedseed>
+    <deployedseed>20622</deployedseed>
+    <deployedseed>20850</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dstar</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>(a) the fare instead of the distance</description>
+      <testinput>
+        <name>ans1</name>
+        <value>cstar</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-fare</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>(a) one grid line out</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dstar+xs</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-gridline</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>(a) generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dstar+3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>(b) routes swapped</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dstar</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-opt2</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>(b) one route always cheaper</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dstar</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-opt3</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>(b) numbers swapped</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dstar</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-opt4</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>8</testcase>
+      <description>(b) same rate after the crossing</description>
+      <testinput>
+        <name>ans1</name>
+        <value>dstar</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-opt5</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

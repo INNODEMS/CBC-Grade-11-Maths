@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Applying the empirical rule to normally distributed milk yields</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>The daily milk yield from a large herd of dairy cows in a Kenyan farm is <b>normally distributed</b>. The mean yield is \(\mu = {@mu@}\) litres, with a standard deviation of \(\sigma = {@sigma@}\) litres. Let \(X \sim N({@mu@}, {@sigma@})\).</p>
+<p>Use the <b>68-95-99.7 empirical rule</b> and the symmetry of the normal distribution to answer the following questions.</p>
+
+<p><b>a) </b> Find the probability that a randomly selected cow yields between <b>{@lower_a@}</b> and <b>{@upper_a@} litres</b> of milk per day.</p>
+<p><i>(Enter your answer as a decimal probability between 0 and 1, not a percentage).</i></p>
+<p>\(P({@lower_a@} < X < {@upper_a@}) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Find the probability that a cow yields <b>{@tail_word@} {@bound_b@} litres</b>.</p>
+<p>\(P(X {@sign_b@} {@bound_b@}) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> In a separate group of <b>{@N_pop@} cows</b>, how many cows would you expect to yield between <b>{@lower_c@}</b> and <b>{@upper_c@} litres</b>?</p>
+<p>\(\text{Expected count} =\) [[input:ans3]] cows</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Central Interval</b><br>
+We compare the given values to the mean \(\mu = {@mu@}\) and standard deviation \(\sigma = {@sigma@}\).</p>
+<p>Notice that \({@lower_a@} = {@mu@} - {@k_a@}({@sigma@}) = \mu - {@k_a@}\sigma\).</p>
+<p>And \({@upper_a@} = {@mu@} + {@k_a@}({@sigma@}) = \mu + {@k_a@}\sigma\).</p>
+<p>According to the empirical rule, the probability of falling within \({@k_a@}\) standard deviation(s) of the mean is approximately {@pct_a@}%. Therefore, as a decimal:</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P({@lower_a@} < X < {@upper_a@}) = {@ta1@} } \)</p>
+
+<p><b>Part b: One-Sided Tail Probability</b><br>
+We are looking for \(P(X {@sign_b@} {@bound_b@})\).</p>
+<p>First, express \({@bound_b@}\) in terms of the mean and standard deviation: \({@bound_b@} = \mu {@sign_math_b@} {@k_b@}\sigma\).</p>
+<p>The empirical rule tells us that the central area within \({@k_b@}\) standard deviations is {@pct_b@}% (or {@rule_b@}). Because the normal curve is perfectly symmetrical, the remaining probability (the two tails combined) is \(1 - {@rule_b@}\).</p>
+<p>We only want one of these tails, so we divide the remainder by 2:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X {@sign_b@} {@bound_b@}) = \frac{1 - {@rule_b@}}{2} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X {@sign_b@} {@bound_b@}) = {@ta2@} } \)</p>
+
+<p><b>Part c: Expected Count</b><br>
+First, find the probability for the interval \({@lower_c@} < X < {@upper_c@}\).</p>
+<p>These values correspond to \(\mu - {@k_c@}\sigma\) and \(\mu + {@k_c@}\sigma\). By the empirical rule, this probability is {@ta3_prob@}.</p>
+<p>To find the expected count, multiply the total population (\({@N_pop@}\)) by this probability:</p>
+<p style="margin-left: 20px;">\( \text{Expected count} = {@N_pop@} \times {@ta3_prob@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ \text{Expected count} = {@ta3@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize mean and standard deviation */
+mu : rand([20, 25, 30, 35, 40, 45, 50]);
+sigma : rand([2, 3, 4, 5]);
+
+/* Part a variables (1 or 2 standard deviations) */
+k_a : rand([1, 2]);
+lower_a : mu - k_a * sigma;
+upper_a : mu + k_a * sigma;
+ta1 : if k_a = 1 then 0.68 else 0.95;
+pct_a : if k_a = 1 then 68 else 95;
+
+/* Part b variables (1, 2, or 3 standard deviations, upper or lower tail) */
+k_b : rand([1, 2, 3]);
+dir_b : rand([1, 2]); /* 1 = more than, 2 = less than */
+tail_word : if dir_b = 1 then "more than" else "less than";
+sign_b : if dir_b = 1 then ">" else "<";
+sign_math_b : if dir_b = 1 then "+" else "-";
+bound_b : if dir_b = 1 then mu + k_b * sigma else mu - k_b * sigma;
+
+rule_b : if k_b = 1 then 0.68 elseif k_b = 2 then 0.95 else 0.997;
+pct_b : if k_b = 1 then 68 elseif k_b = 2 then 95 else 99.7;
+ta2 : (1 - rule_b) / 2;
+
+/* Part c variables (Expected count) */
+k_c : rand([1, 2]);
+lower_c : mu - k_c * sigma;
+upper_c : mu + k_c * sigma;
+N_pop : rand([500, 1000, 1500, 2000, 2500]);
+ta3_prob : if k_c = 1 then 0.68 else 0.95;
+ta3 : ta3_prob * N_pop;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>N({@mu@}, {@sigma@}). Part a: k={@k_a@}, P={@ta1@}. Part b: {@sign_b@} {@bound_b@}, P={@ta2@}. Part c: N={@N_pop@}, P={@ta3_prob@}, Expected={@ta3@}.</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Normal Distribution (Empirical Rule)</p>
+<p id="description">Grade 11 CBE: Applying the 68-95-99.7 rule to find central probabilities, symmetric tail probabilities, and expected population counts.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of central probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully recognized this interval represents \({@k_a@}\) standard deviation(s) from the mean.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they entered the percentage instead of probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>pct_a</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered a percentage (\({@pct_a@}\)). The question requires you to express the probability as a decimal between 0 and 1.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Determine how many standard deviations (\(\sigma\)) the values \({@lower_a@}\) and \({@upper_a@}\) are from the mean (\(\mu\)), and apply the 68-95-99.7 rule.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of one-sided tail</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly used the symmetry of the normal distribution to find the probability of a single tail.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they forgot to divide by 2</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>1 - rule_b</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability for <b>both</b> extreme tails combined (\(1 - {@rule_b@}\)). Because the question asks for only one direction ({@tail_word@}), you must divide that remaining probability by 2.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Determine the central probability for \({@k_b@}\) standard deviations, subtract it from 1, and then divide by 2 because the distribution is perfectly symmetrical.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of expected count</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully multiplied the probability of the interval by the total number of cows.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they just entered the probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_prob</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered the theoretical probability (\({@ta3_prob@}\)). To find the <b>expected count</b>, you must multiply that probability by the total population (\({@N_pop@}\) cows).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Expected Frequency = Probability of the event \(\times\) Total Population.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Entered percentage in a, forgot to divide by 2 in b, entered probability in c</description>
+      <testinput>
+        <name>ans1</name>
+        <value>pct_a</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1 - rule_b</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_prob</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3 + 10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
