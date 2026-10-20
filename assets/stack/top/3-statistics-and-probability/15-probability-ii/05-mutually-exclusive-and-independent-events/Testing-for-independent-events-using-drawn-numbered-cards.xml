@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Testing for independent events using drawn numbered cards</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A single card is drawn at random from a set of <b>{@N@} cards</b> numbered 1 to {@N@}. Define the following events:</p>
+<ul>
+  <li><b>Event \(A\):</b> The card shows a multiple of <b>{@d1@}</b>.</li>
+  <li><b>Event \(B\):</b> The card shows a multiple of <b>{@d2@}</b>.</li>
+</ul>
+
+<p><b>a) </b> Calculate the probability that the card is a multiple of <b>both</b> {@d1@} and {@d2@} (meaning it is a multiple of their product, {@d_int@}).</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P(A \text{ and } B) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Two events are independent if the probability of their intersection equals the product of their individual probabilities. Find the exact product of the two individual probabilities.</p>
+<p>\(P(A) \times P(B) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Calculate the probability that the card is a multiple of {@d1@} <b>OR</b> a multiple of {@d2@}.</p>
+<p>\(P =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>First, we find the number of cards in each event by determining how many multiples fit into {@N@}:</p>
+<ul>
+  <li>Number of multiples of {@d1@} = \({@size_A@}\). So, \(P(A) = \frac{{@size_A@}}{{@N@}}\).</li>
+  <li>Number of multiples of {@d2@} = \({@size_B@}\). So, \(P(B) = \frac{{@size_B@}}{{@N@}}\).</li>
+  <li>Number of multiples of both (multiples of {@d_int@}) = \({@size_int@}\).</li>
+</ul>
+
+<p><b>Part a: Joint Probability</b><br>
+The probability of drawing a card that belongs to both events is the number of shared multiples divided by the total number of cards.</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A \text{ and } B) = \frac{{@size_int@}}{{@N@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(A \text{ and } B) = {@ta1@} } \)</p>
+
+<p><b>Part b: Test for Independence</b><br>
+We multiply the individual probabilities of Event \(A\) and Event \(B\):</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A) \times P(B) = \frac{{@size_A@}}{{@N@}} \times \frac{{@size_B@}}{{@N@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(A) \times P(B) = {@ta2@} } \)</p>
+<p><i>Note: Because \(P(A \text{ and } B)\) {@indep_sign@} \(P(A) \times P(B)\), these events are <b>{@indep_text@}</b>.</i></p>
+
+<p><b>Part c: General Addition Rule</b><br>
+Using the addition rule, we add the probabilities of \(A\) and \(B\), then subtract the intersection to avoid double-counting:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A \text{ or } B) = P(A) + P(B) - P(A \text{ and } B) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A \text{ or } B) = \frac{{@size_A@}}{{@N@}} + \frac{{@size_B@}}{{@N@}} - \frac{{@size_int@}}{{@N@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(A \text{ or } B) = {@ta3@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize the total number of cards broadly */
+N : rand([20, 25, 30, 35, 40, 45, 50, 60, 75, 100]);
+
+/* Define the divisors ensuring they share no common factors so the intersection is strictly their product */
+d1 : rand([2, 3]);
+d2_opts : if d1=2 then [3, 5, 7, 9] else [2, 4, 5, 7, 8];
+d2 : rand(d2_opts);
+d_int : d1 * d2;
+
+/* Calculate the sizes of each set using exact integer division (floor) to prevent float evaluation */
+size_A : floor(N / d1);
+size_B : floor(N / d2);
+size_int : floor(N / d_int);
+
+/* Target answers using exact fractional logic */
+P_A : size_A / N;
+P_B : size_B / N;
+
+ta1 : size_int / N;
+ta2 : P_A * P_B;
+ta3 : P_A + P_B - ta1;
+
+/* Feedback text logic for the worked solution */
+is_indep : if ta1 = ta2 then true else false;
+indep_sign : if is_indep then "=" else "\\neq";
+indep_text : if is_indep then "independent" else "dependent";
+
+/* Distractors */
+ta3_wrong : P_A + P_B; /* Forgot to subtract intersection */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>N={@N@}. d1={@d1@}, d2={@d2@}. P(A&B)={@ta1@}. P(A)*P(B)={@ta2@}. P(A or B)={@ta3@}. Indep={@is_indep@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Testing for Independence</p>
+<p id="description">Grade 11 CBE: Calculating intersections, unions, and manually applying the multiplicative test for independence using a set of numbered cards.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of intersection</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You found the number of shared multiples and divided by the total number of cards.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Determine how many numbers between 1 and {@N@} are multiples of <b>both</b> {@d1@} and {@d2@}, and divide that count by {@N@}.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of independence test</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly multiplied the individual probabilities \(P(A)\) and \(P(B)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Find the probability of \(A\) and the probability of \(B\) separately, and multiply them together as fractions.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they forgot to subtract intersection</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added \(P(A)\) and \(P(B)\) directly. Because these events overlap, you must subtract the intersection \(P(A \text{ and } B)\) so that you do not double-count the shared multiples.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence of union</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You correctly applied the general addition rule: \(P(A) + P(B) - P(A \text{ and } B)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Apply the general addition rule: \(P(A \text{ or } B) = P(A) + P(B) - P(A \text{ and } B)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>62787370</deployedseed>
+    <deployedseed>2091096369</deployedseed>
+    <deployedseed>1628304085</deployedseed>
+    <deployedseed>642752665</deployedseed>
+    <deployedseed>1943313667</deployedseed>
+    <deployedseed>2018045236</deployedseed>
+    <deployedseed>171485478</deployedseed>
+    <deployedseed>1874491097</deployedseed>
+    <deployedseed>707385367</deployedseed>
+    <deployedseed>80515213</deployedseed>
+    <deployedseed>1186231192</deployedseed>
+    <deployedseed>1236396521</deployedseed>
+    <deployedseed>172795586</deployedseed>
+    <deployedseed>1269070588</deployedseed>
+    <deployedseed>657392467</deployedseed>
+    <deployedseed>957925537</deployedseed>
+    <deployedseed>711040950</deployedseed>
+    <deployedseed>390044663</deployedseed>
+    <deployedseed>1473444121</deployedseed>
+    <deployedseed>1947068494</deployedseed>
+    <deployedseed>1308974856</deployedseed>
+    <deployedseed>677501874</deployedseed>
+    <deployedseed>1300367022</deployedseed>
+    <deployedseed>1716326634</deployedseed>
+    <deployedseed>794584772</deployedseed>
+    <deployedseed>1352957895</deployedseed>
+    <deployedseed>2036951923</deployedseed>
+    <deployedseed>2033573732</deployedseed>
+    <deployedseed>723445025</deployedseed>
+    <deployedseed>552975616</deployedseed>
+    <deployedseed>994013311</deployedseed>
+    <deployedseed>952475921</deployedseed>
+    <deployedseed>1172992517</deployedseed>
+    <deployedseed>1632237570</deployedseed>
+    <deployedseed>752888692</deployedseed>
+    <deployedseed>1969859078</deployedseed>
+    <deployedseed>1427796684</deployedseed>
+    <deployedseed>1815020126</deployedseed>
+    <deployedseed>1976601710</deployedseed>
+    <deployedseed>1543184765</deployedseed>
+    <deployedseed>372764058</deployedseed>
+    <deployedseed>901287397</deployedseed>
+    <deployedseed>1028257861</deployedseed>
+    <deployedseed>1890467483</deployedseed>
+    <deployedseed>1420759678</deployedseed>
+    <deployedseed>1919879281</deployedseed>
+    <deployedseed>295880107</deployedseed>
+    <deployedseed>1456990690</deployedseed>
+    <deployedseed>425001431</deployedseed>
+    <deployedseed>1519393760</deployedseed>
+    <deployedseed>101854905</deployedseed>
+    <deployedseed>924449161</deployedseed>
+    <deployedseed>993524977</deployedseed>
+    <deployedseed>1585857043</deployedseed>
+    <deployedseed>1698018474</deployedseed>
+    <deployedseed>919613417</deployedseed>
+    <deployedseed>1536506026</deployedseed>
+    <deployedseed>1205726576</deployedseed>
+    <deployedseed>80833057</deployedseed>
+    <deployedseed>556407957</deployedseed>
+    <deployedseed>1278773747</deployedseed>
+    <deployedseed>159625383</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot to subtract intersection in part c</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

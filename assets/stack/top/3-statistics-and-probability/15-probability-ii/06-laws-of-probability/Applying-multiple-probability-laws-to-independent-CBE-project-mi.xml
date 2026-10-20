@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Applying multiple probability laws to independent CBE project milestones</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A Grade 11 learner is undertaking two independent practical tasks for their school competency portfolio: an Agri-nutrition project (Event \(A\)) and a Digital Enterprise project (Event \(B\)). Based on formative assessment criteria, the probability that the learner successfully achieves the required performance benchmark for the Agri-nutrition project is <b>{@str_A@}</b>, and the probability for the Digital Enterprise project is <b>{@str_B@}</b>.</p>
+
+<p><b>a) </b> Find the probability that the learner successfully achieves the competency benchmark for <b>both</b> projects.</p>
+<p><i>(Enter your answer as an exact decimal).</i></p>
+<p>\(P(A \cap B) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Find the probability that the learner successfully achieves the competency benchmark for <b>at least one</b> of the two projects.</p>
+<p>\(P(A \cup B) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Find the probability that the learner successfully achieves the benchmark for <b>exactly one</b> project (either agri-nutrition only, or digital enterprise only).</p>
+<p>\(P(\text{exactly one}) =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Achieving Both Benchmarks</b><br>
+Since the projects are independent competency tasks, we use the multiplication rule for independent events:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A \cap B) = P(A) \times P(B) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A \cap B) = {@str_A@} \times {@str_B@} = {@ta1_str@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(A \cap B) = {@ta1_str@} } \)</p>
+
+<p><b>Part b: Achieving At Least One Benchmark</b><br>
+"At least one" represents the union of the two competency achievements. We apply the general addition rule:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A \cup B) = P(A) + P(B) - P(A \cap B) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A \cup B) = {@str_A@} + {@str_B@} - {@ta1_str@} = {@ta2_str@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(A \cup B) = {@ta2_str@} } \)</p>
+
+<p><b>Part c: Achieving Exactly One Benchmark</b><br>
+Achieving exactly one means meeting the standard for at least one (\(A \cup B\)) but NOT meeting both simultaneously (\(A \cap B\)). Therefore, we subtract the intersection from the union:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{exactly one}) = P(A \cup B) - P(A \cap B) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{exactly one}) = {@ta2_str@} - {@ta1_str@} = {@ta3_str@} \)</p>
+<p><i>(Alternatively: \(P(A \cap B') + P(A' \cap B) = ({@str_A@} \times {@comp_B_str@}) + ({@comp_A_str@} \times {@str_B@}) = {@ta3_str@}\)).</i></p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{exactly one}) = {@ta3_str@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Master arrays to strictly enforce float-safe exact rational math and high variance */
+num_A_list : [45, 50, 55, 60, 65, 70, 75, 80];
+str_A_list : ["0.45", "0.50", "0.55", "0.60", "0.65", "0.70", "0.75", "0.80"];
+idx_A : rand([1, 2, 3, 4, 5, 6, 7, 8]);
+num_A : num_A_list[idx_A];
+str_A : str_A_list[idx_A];
+
+num_B_list : [42, 48, 52, 58, 62, 68, 72, 78];
+str_B_list : ["0.42", "0.48", "0.52", "0.58", "0.62", "0.68", "0.72", "0.78"];
+idx_B : rand([1, 2, 3, 4, 5, 6, 7, 8]);
+num_B : num_B_list[idx_B];
+str_B : str_B_list[idx_B];
+
+/* Exact fractional calculations */
+P_A : num_A / 100;
+P_B : num_B / 100;
+
+ta1 : P_A * P_B;
+ta2 : P_A + P_B - ta1;
+ta3 : ta2 - ta1;
+
+/* Complement strings for the alternative solution method */
+comp_A_str : float(1 - P_A);
+comp_B_str : float(1 - P_B);
+
+/* Strings for display in worked solution */
+ta1_str : float(ta1);
+ta2_str : float(ta2);
+ta3_str : float(ta3);
+
+/* Distractors for specific PRT feedback */
+ta2_wrong : P_A + P_B; /* Forgot to subtract intersection */
+ta3_wrong_path1 : P_A * (1 - P_B); /* Only counted one pathway */
+ta3_wrong_path2 : (1 - P_A) * P_B; /* Only counted the other pathway */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>P(A)={@str_A@}, P(B)={@str_B@}. Both={@ta1@}, Union={@ta2@}, Exactly One={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Applying Multiple Probability Laws in CBE Projects</p>
+<p id="description">Grade 11 CBE: Calculating intersection, union, and exactly one outcomes for independent competency project milestones.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You multiplied the independent project benchmark probabilities successfully.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Because the project tasks are independent, you find the joint probability by multiplying their individual performance probabilities.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they forgot to subtract the intersection</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added the two probabilities directly. Because a learner can achieve both benchmarks, you must apply the general addition rule and subtract the intersection you found in part (a).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You accurately applied the addition rule for project benchmarks.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Use the general addition rule: \(P(A \cup B) = P(A) + P(B) - P(A \cap B)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they only calculated one of the two exclusive paths</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong_path1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability of succeeding in agri-nutrition while falling short in digital enterprise. To find the probability of achieving <b>exactly one</b> benchmark, you must also calculate the alternative path and add them together.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check the other exclusive path</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong_path2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability of succeeding in digital enterprise while falling short in agri-nutrition. To find the probability of achieving <b>exactly one</b> benchmark, you must also include the other exclusive pathway.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully found the probability of meeting exactly one project benchmark.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Subtract the intersection from the union to find the probability of achieving exactly one benchmark.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1602081208</deployedseed>
+    <deployedseed>1660880536</deployedseed>
+    <deployedseed>1682549579</deployedseed>
+    <deployedseed>81459977</deployedseed>
+    <deployedseed>1168582628</deployedseed>
+    <deployedseed>662902901</deployedseed>
+    <deployedseed>2122036099</deployedseed>
+    <deployedseed>1965739100</deployedseed>
+    <deployedseed>2072706547</deployedseed>
+    <deployedseed>1308120920</deployedseed>
+    <deployedseed>1398496412</deployedseed>
+    <deployedseed>1630964303</deployedseed>
+    <deployedseed>1503481149</deployedseed>
+    <deployedseed>1041970110</deployedseed>
+    <deployedseed>1923544484</deployedseed>
+    <deployedseed>995391011</deployedseed>
+    <deployedseed>1515568140</deployedseed>
+    <deployedseed>1426615645</deployedseed>
+    <deployedseed>1603174214</deployedseed>
+    <deployedseed>126111292</deployedseed>
+    <deployedseed>636206074</deployedseed>
+    <deployedseed>1163058776</deployedseed>
+    <deployedseed>925520269</deployedseed>
+    <deployedseed>604791735</deployedseed>
+    <deployedseed>1924685626</deployedseed>
+    <deployedseed>474304586</deployedseed>
+    <deployedseed>514486065</deployedseed>
+    <deployedseed>1856746351</deployedseed>
+    <deployedseed>1507653505</deployedseed>
+    <deployedseed>747301415</deployedseed>
+    <deployedseed>2076516534</deployedseed>
+    <deployedseed>366597301</deployedseed>
+    <deployedseed>2081725435</deployedseed>
+    <deployedseed>589422835</deployedseed>
+    <deployedseed>752408690</deployedseed>
+    <deployedseed>604991218</deployedseed>
+    <deployedseed>2023917075</deployedseed>
+    <deployedseed>1958420460</deployedseed>
+    <deployedseed>1233487833</deployedseed>
+    <deployedseed>500281389</deployedseed>
+    <deployedseed>404210524</deployedseed>
+    <deployedseed>2041521824</deployedseed>
+    <deployedseed>1353258540</deployedseed>
+    <deployedseed>1619014499</deployedseed>
+    <deployedseed>1924510318</deployedseed>
+    <deployedseed>1782725325</deployedseed>
+    <deployedseed>1856170194</deployedseed>
+    <deployedseed>1301753436</deployedseed>
+    <deployedseed>1064757563</deployedseed>
+    <deployedseed>1401856306</deployedseed>
+    <deployedseed>1854312475</deployedseed>
+    <deployedseed>1693045776</deployedseed>
+    <deployedseed>1481078449</deployedseed>
+    <deployedseed>260843343</deployedseed>
+    <deployedseed>3039990</deployedseed>
+    <deployedseed>1081786033</deployedseed>
+    <deployedseed>426386740</deployedseed>
+    <deployedseed>1753080653</deployedseed>
+    <deployedseed>1071399727</deployedseed>
+    <deployedseed>1404354363</deployedseed>
+    <deployedseed>1414581928</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Errors in union and exact paths</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_wrong_path1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3 + 10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

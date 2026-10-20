@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Predicting consecutive football match outcomes using tree diagrams</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p><b>{@team@}</b> plays two consecutive matches in the local football league. In each match, the team independently has a probability of \(P(W) = {@str_W@}\) to win, \(P(D) = {@str_D@}\) to draw, and \(P(L) = {@str_L@}\) to lose.</p>
+
+<p>Construct a two-stage tree diagram where each node splits into three branches (W, D, L).</p>
+
+<p><b>a) </b> Find the probability that the team wins <b>both</b> matches.</p>
+<p><i>(Enter your answer as an exact decimal).</i></p>
+<p>\(P(\text{Win and Win}) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Find the probability that the team draws <b>both</b> matches.</p>
+<p>\(P(\text{Draw and Draw}) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Find the probability that the team wins <b>at least one</b> match. </p>
+<p><i>(Hint: It is easier to use the complement rule. First find the probability of winning NO matches, which means getting a Draw or a Loss in both matches).</i></p>
+<p>\(P(\text{At least one Win}) =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>Because the matches are independent, the branch probabilities remain exactly the same at both levels of the tree diagram.</p>
+
+<p><b>Part a: Winning Both</b><br>
+To find the probability of a specific sequence, we multiply the probabilities along that path:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(W, W) = P(W) \times P(W) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(W, W) = {@str_W@} \times {@str_W@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{Win both}) = {@ta1_str@} } \)</p>
+
+<p><b>Part b: Drawing Both</b><br>
+Similarly, we multiply the draw probabilities:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(D, D) = P(D) \times P(D) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(D, D) = {@str_D@} \times {@str_D@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{Draw both}) = {@ta2_str@} } \)</p>
+
+<p><b>Part c: Winning At Least One Match</b><br>
+The easiest way to calculate "at least one" is to use the complement of "none". The team wins ZERO matches if they get a Draw or a Loss in both games. The probability of not winning a single match is:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Not Winning}) = P(D) + P(L) = {@str_D@} + {@str_L@} = {@P_Not_W_str@} \)</p>
+<p>The probability of this happening twice in a row is:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Zero Wins}) = {@P_Not_W_str@} \times {@P_Not_W_str@} = {@P_Zero_Wins_str@} \)</p>
+<p>Therefore, the probability of winning <i>at least one</i> match is the complement of winning zero matches:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{At least one Win}) = 1 - P(\text{Zero Wins}) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{At least one Win}) = 1 - {@P_Zero_Wins_str@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{At least one Win}) = {@ta3_str@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Context arrays for localization */
+idx_team : rand([1, 2, 3, 4, 5, 6]);
+team_list : ["Shabana FC", "Gor Mahia", "AFC Leopards", "Bandari FC", "Tusker FC", "Kakamega Homeboyz"];
+team : team_list[idx_team];
+
+/* Independent probability parameters using integers to ensure exact fractional math */
+num_W_list : [35, 40, 45, 50, 55, 60];
+num_D_list : [15, 20, 25, 30];
+
+num_W : rand(num_W_list);
+num_D : rand(num_D_list);
+num_L : 100 - num_W - num_D; /* Automatically sums to 1.0 */
+
+/* Exact internal fractions */
+P_W : num_W / 100;
+P_D : num_D / 100;
+P_L : num_L / 100;
+
+/* Decimal strings for safe display */
+str_W : float(P_W);
+str_D : float(P_D);
+str_L : float(P_L);
+
+/* Calculate targets precisely */
+ta1 : P_W * P_W;
+ta2 : P_D * P_D;
+
+P_Not_W : P_D + P_L;
+P_Zero_Wins : P_Not_W * P_Not_W;
+ta3 : 1 - P_Zero_Wins;
+
+/* Intermediate display strings for worked solution */
+ta1_str : float(ta1);
+ta2_str : float(ta2);
+ta3_str : float(ta3);
+P_Not_W_str : float(P_Not_W);
+P_Zero_Wins_str : float(P_Zero_Wins);
+
+/* Distractors */
+ta1_wrong_add : P_W + P_W;
+ta3_wrong_complement : 1 - ta1; /* Mistakenly calculated 1 - P(Both Wins) */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>{@team@}. P(W)={@str_W@}, P(D)={@str_D@}, P(L)={@str_L@}. WW={@ta1_str@}. DD={@ta2_str@}. At Least 1 Win={@ta3_str@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Three-Branch Tree Diagram: Independent Events</p>
+<p id="description">Grade 11 CBE: Calculating terminal path probabilities and applying the complement rule for "at least one" in a three-branch, two-stage independent tree diagram.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they added instead of multiplied</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong_add</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added the probability of winning to itself. When moving along the branches of a tree diagram for consecutive independent events, you must <b>multiply</b> the probabilities.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You multiplied the independent probabilities.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. The probability of winning both matches is \(P(W) \times P(W)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. The probability of drawing both matches is \(P(D) \times P(D)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check wrong complement</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong_complement</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \(1 - P(\text{Winning Both})\). That calculation gives you the probability of winning <i>at most one</i> match (i.e. not winning both). To find the probability of winning <b>at least one</b> match, you must subtract the probability of winning ZERO matches from 1.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly used the complement of winning zero matches.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Find the probability of winning no matches at all (meaning getting a Draw or Loss in both games), and subtract that result from 1.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1111115981</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Errors in addition and complement</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong_add</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_wrong_complement</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

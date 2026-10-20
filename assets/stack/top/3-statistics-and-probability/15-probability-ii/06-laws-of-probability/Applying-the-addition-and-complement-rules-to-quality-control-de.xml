@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Applying the addition and complement rules to quality control defects</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A manufacturing plant in Athi River produces digital tablets. Quality control records show that for any randomly selected tablet:</p>
+<ul>
+  <li>The probability it has a cosmetic defect (Event \(C\)) is \(P(C) = {@str_C@}\).</li>
+  <li>The probability it has a functional defect (Event \(F\)) is \(P(F) = {@str_F@}\).</li>
+  <li>The probability it has <b>both</b> a cosmetic and a functional defect is \(P(C \cap F) = {@str_both@}\).</li>
+</ul>
+
+<p><b>a) </b> Find the probability that a tablet has <b>at least one</b> defect (either cosmetic, functional, or both).</p>
+<p><i>(Enter your answer as an exact decimal).</i></p>
+<p>\(P(C \cup F) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Find the probability that a tablet has <b>neither</b> defect (it is in perfect condition).</p>
+<p>\(P((C \cup F)') =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: At Least One Defect</b><br>
+The probability of at least one defect is the union of the two events. We use the general addition rule:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(C \cup F) = P(C) + P(F) - P(C \cap F) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(C \cup F) = {@str_C@} + {@str_F@} - {@str_both@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(C \cup F) = {@ta1_str@} } \)</p>
+
+<p><b>Part b: No Defects</b><br>
+Having "neither defect" is the exact complement of having "at least one defect". We use the complement rule:</p>
+<p style="margin-left: 20px;">\( \displaystyle P((C \cup F)') = 1 - P(C \cup F) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P((C \cup F)') = 1 - {@ta1_str@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P((C \cup F)') = {@ta2_str@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Arrays for exact matching of strings and exact rational values */
+num_C_list : [20, 25, 30, 35, 40];
+str_C_list : ["0.20", "0.25", "0.30", "0.35", "0.40"];
+idx_C : rand([1, 2, 3, 4, 5]);
+num_C : num_C_list[idx_C];
+str_C : str_C_list[idx_C];
+
+num_F_list : [10, 12, 14, 15, 18];
+str_F_list : ["0.10", "0.12", "0.14", "0.15", "0.18"];
+idx_F : rand([1, 2, 3, 4, 5]);
+num_F : num_F_list[idx_F];
+str_F : str_F_list[idx_F];
+
+num_both_list : [2, 3, 4, 5, 6, 8];
+str_both_list : ["0.02", "0.03", "0.04", "0.05", "0.06", "0.08"];
+idx_both : rand([1, 2, 3, 4, 5, 6]);
+num_both : num_both_list[idx_both];
+str_both : str_both_list[idx_both];
+
+/* Enforce Float-Safe Math using exact fractions */
+P_C : num_C / 100;
+P_F : num_F / 100;
+P_both : num_both / 100;
+
+ta1 : P_C + P_F - P_both;
+ta2 : 1 - ta1;
+
+/* Create strings for the worked solution to avoid STACK drift display issues */
+ta1_str : float(ta1);
+ta2_str : float(ta2);
+
+/* Distractors */
+ta1_wrong : P_C + P_F; /* Forgot to subtract intersection */
+ta2_wrong : 1 - P_both; /* Subtracted intersection instead of union */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>P(C)={@str_C@}, P(F)={@str_F@}, P(Both)={@str_both@}. Union={@ta1@}, Complement={@ta2@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Laws of Probability: Addition and Complement Rules</p>
+<p id="description">Grade 11 CBE: Applying the general addition rule and the complement rule to continuous decimal probabilities within a quality control scenario.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they forgot to subtract the intersection</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added \(P(C)\) and \(P(F)\) directly. Remember to subtract the intersection \(P(C \cap F)\) so you do not count the tablets with both defects twice.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence of union</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully applied the general addition rule.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Use the formula: \(P(C \cup F) = P(C) + P(F) - P(C \cap F)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they subtracted the intersection instead of union</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \(1 - P(C \cap F)\). This gives the probability that a tablet does not have <b>both</b> defects simultaneously. To find the probability that it has <b>neither</b> defect, you must subtract the union you found in part (a) from 1.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence of complement</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly identified that "neither" is the complement of the union.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Subtract your answer from part (a) from 1.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>615061856</deployedseed>
+    <deployedseed>691444486</deployedseed>
+    <deployedseed>630568658</deployedseed>
+    <deployedseed>429057754</deployedseed>
+    <deployedseed>1822758716</deployedseed>
+    <deployedseed>1067006105</deployedseed>
+    <deployedseed>1809047787</deployedseed>
+    <deployedseed>1570915269</deployedseed>
+    <deployedseed>1404447069</deployedseed>
+    <deployedseed>778879998</deployedseed>
+    <deployedseed>1122869420</deployedseed>
+    <deployedseed>1457633956</deployedseed>
+    <deployedseed>1490549740</deployedseed>
+    <deployedseed>1641976832</deployedseed>
+    <deployedseed>413221057</deployedseed>
+    <deployedseed>261788030</deployedseed>
+    <deployedseed>1682631822</deployedseed>
+    <deployedseed>1150343289</deployedseed>
+    <deployedseed>1396194154</deployedseed>
+    <deployedseed>882184858</deployedseed>
+    <deployedseed>1407717760</deployedseed>
+    <deployedseed>103945168</deployedseed>
+    <deployedseed>1282163527</deployedseed>
+    <deployedseed>1206682187</deployedseed>
+    <deployedseed>1429428064</deployedseed>
+    <deployedseed>947689369</deployedseed>
+    <deployedseed>1174309076</deployedseed>
+    <deployedseed>986096275</deployedseed>
+    <deployedseed>719634395</deployedseed>
+    <deployedseed>1463675238</deployedseed>
+    <deployedseed>1694528236</deployedseed>
+    <deployedseed>1527942945</deployedseed>
+    <deployedseed>1983255916</deployedseed>
+    <deployedseed>1061853687</deployedseed>
+    <deployedseed>191750561</deployedseed>
+    <deployedseed>28708533</deployedseed>
+    <deployedseed>1751566209</deployedseed>
+    <deployedseed>1139330830</deployedseed>
+    <deployedseed>2133974365</deployedseed>
+    <deployedseed>381045211</deployedseed>
+    <deployedseed>1926826977</deployedseed>
+    <deployedseed>294120606</deployedseed>
+    <deployedseed>730026000</deployedseed>
+    <deployedseed>688507457</deployedseed>
+    <deployedseed>1621624555</deployedseed>
+    <deployedseed>506075050</deployedseed>
+    <deployedseed>745270748</deployedseed>
+    <deployedseed>627478469</deployedseed>
+    <deployedseed>920169612</deployedseed>
+    <deployedseed>1934821693</deployedseed>
+    <deployedseed>42825290</deployedseed>
+    <deployedseed>1615546946</deployedseed>
+    <deployedseed>2111787617</deployedseed>
+    <deployedseed>1562543467</deployedseed>
+    <deployedseed>1273075357</deployedseed>
+    <deployedseed>1159758539</deployedseed>
+    <deployedseed>2131771452</deployedseed>
+    <deployedseed>817408646</deployedseed>
+    <deployedseed>931219305</deployedseed>
+    <deployedseed>618762348</deployedseed>
+    <deployedseed>647985940</deployedseed>
+    <deployedseed>1162385991</deployedseed>
+    <deployedseed>1147278785</deployedseed>
+    <deployedseed>1744755091</deployedseed>
+    <deployedseed>909415803</deployedseed>
+    <deployedseed>418485414</deployedseed>
+    <deployedseed>1296692393</deployedseed>
+    <deployedseed>99852506</deployedseed>
+    <deployedseed>497097788</deployedseed>
+    <deployedseed>409188800</deployedseed>
+    <deployedseed>59219895</deployedseed>
+    <deployedseed>1515068266</deployedseed>
+    <deployedseed>963625359</deployedseed>
+    <deployedseed>152692234</deployedseed>
+    <deployedseed>2065648418</deployedseed>
+    <deployedseed>638804836</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot to subtract intersection, wrong complement</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
