@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Real life: choosing between two bank offers (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>An entrepreneur in {@town@} wants to invest Ksh \( {@P0@} \) for 1 year and has two offers:</p>
+<ul><li><strong>Bank A:</strong> \( {@rA@}\% \) per annum compounded <strong>quarterly</strong>.</li>
+<li><strong>Bank B:</strong> \( {@rd(rB)@}\% \) per annum compounded <strong>annually</strong>.</li></ul>
+<p>Give your answers to 2 decimal places.</p>
+<p>(a) Amount after 1 year with Bank A:</p>
+<div>Ksh [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Amount after 1 year with Bank B:</p>
+<div>Ksh [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(c) Which bank should the entrepreneur choose?</p>
+<div>[[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>(a)</strong> Bank A adds \( \frac{ {@rA@} }{4} = {@rd(rA/4)@}\% \) four times in the year:</p>
+\[ {@P0@}\left(1 + \frac{ {@rd(rA/4)@} }{100}\right)^4 = {@r2(AA)@}. \]
+<p><strong>(b)</strong> \( {@P0@}\left(1 + \frac{ {@rd(rB)@} }{100}\right) = {@r2(AB)@} \).</p>
+<p><strong>(c)</strong> Bank {@best@} gives more money. A lower nominal rate compounded more often can beat a higher rate compounded once a year, or it can fall short, so always compare the actual amounts.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[r2(v) := if integerp(round(100*v)/100) then round(v) else float(round(100*v)/100);
+rd(v) := if integerp(v) then v else float(v);
+town : rand(["Nakuru", "Thika", "Meru", "Kakamega", "Naivasha"]);
+P0 : 1000*rand([50, 100, 150, 200, 500]);
+cands : sublist(create_list([u1, u2], u1, [8, 10, 12, 16], u2, [1/4, 1/2, 3/4, 1]),
+  lambda([z], is(abs((1 + z[1]/400)^4 - (1 + (z[1] + z[2])/100)) > 1/2000)));
+pk : rand(cands);
+rA : pk[1];
+rB : pk[1] + pk[2];
+AA : P0*(1 + rA/400)^4;
+AB : P0*(1 + rB/100);
+ta3 : if AA > AB then 1 else 2;
+best : if AA > AB then "A" else "B";
+w_annualA : P0*(1 + rA/100);               /* ignored the quarterly compounding */
+opts3 : [[1, is(ta3 = 1), "Bank A"], [2, is(ta3 = 2), "Bank B"]];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text><![CDATA[P={@P0@}, A {@rA@}% qtrly -> {@r2(AA)@}; B {@rd(rB)@}% -> {@r2(AB)@}; best {@best@}]]></text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>1</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>r2(AA)</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>r2(AB)</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>dropdown</type>
+      <tans>opts3</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>AA</tans>
+        <testoptions>max(1/2, abs(AA)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: annual</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>w_annualA</tans>
+        <testoptions>max(1/2, abs(w_annualA)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-annual</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You compounded once. Bank A compounds quarterly: use \( {@rd(rA/4)@}\% \) per quarter for 4 quarters.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: onequarter</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>P0*(1 + rA/400)</tans>
+        <testoptions>max(1/2, abs(P0*(1 + rA/400))*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-onequarter</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the amount after one quarter. There are 4 quarters in a year.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Use \( P\left(1 + \frac{r/4}{100}\right)^4 \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>AB</tans>
+        <testoptions>max(1/2, abs(AB)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: interest</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>AB - P0</tans>
+        <testoptions>max(1/2, abs(AB - P0)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-interest</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the interest only. Give the full amount.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. One year at \( {@rd(rB)@}\% \): \( P\left(1 + \frac{ {@rd(rB)@} }{100}\right) \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Compare your two amounts: the better offer gives more money after a year, whatever its nominal rate.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>r2(AA)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2(AB)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Annual for A</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(w_annualA)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2(AB)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>3-ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-annual</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>One quarter; interest for B</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(P0*(1+rA/400))</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(AB-P0)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-onequarter</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-interest</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

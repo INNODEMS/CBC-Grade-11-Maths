@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Appreciation: value of land after T years (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A plot of land near {@town@} is bought for Ksh \( {@P0@} \). Its value appreciates at a steady rate of \( {@R0@}\% \) per annum.</p>
+<p>Give your answers to the nearest shilling.</p>
+<p>(a) Find the value of the land after \( {@T0@} \) years.</p>
+<div>Value \( = \) Ksh [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) By how much has the value of the land increased over the \( {@T0@} \) years?</p>
+<div>Increase \( = \) Ksh [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>(a)</strong> Appreciation works like compound interest: each year's increase is calculated on the value at the start of that year.</p>
+\[ A = P\left(1 + \frac{R}{100}\right)^T = {@P0@}\left(1 + \frac{ {@R0@} }{100}\right)^{ {@T0@} } = {@P0@} \times ({@float(1 + R0/100)@})^{ {@T0@} } = {@round(A0)@}. \]
+<p><strong>(b)</strong> Increase \( = A - P = {@round(A0)@} - {@P0@} = {@round(A0) - P0@} \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[town : rand(["Kisumu", "Nakuru", "Eldoret", "Machakos", "Thika", "Nyeri"]);
+P0 : rand([800000, 1200000, 1500000, 2500000, 3500000]);
+R0 : rand([6, 8, 10, 12, 15]);
+T0 : rand([3, 4, 5, 6, 8]);
+A0 : P0*(1 + R0/100)^T0;
+w_simple : P0*(1 + R0*T0/100);           /* same increase every year */
+w_dep    : P0*(1 - R0/100)^T0;           /* used the depreciation formula */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>P={@P0@}, R={@R0@}, T={@T0@}, A={@round(A0)@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>round(A0)</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>round(A0)-P0</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>A0</tans>
+        <testoptions>max(1/2, abs(A0)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: simple</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>w_simple</tans>
+        <testoptions>max(1/2, abs(w_simple)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-simple</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added the same \( {@R0@}\% \) of the <em>original</em> value every year. Appreciation is compounded: each year's increase is \( {@R0@}\% \) of the <em>current</em> value. Use \( A = P\left(1 + \frac{R}{100}\right)^T \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: depreciation</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>w_dep</tans>
+        <testoptions>max(1/2, abs(w_dep)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-depreciation</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your value is <em>less</em> than the purchase price. That is depreciation. Land that appreciates gains value: use \( 1 + \frac{R}{100} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Use \( A = P\left(1 + \frac{R}{100}\right)^T \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf2 : ans1 - P0;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>A0 - P0</tans>
+        <testoptions>max(1/2, abs(A0 - P0)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: ecf</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ecf2</tans>
+        <testoptions>max(1/2, abs(ecf2)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is <em>your</em> value from (a) minus the purchase price, so this step is right.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: value</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>A0</tans>
+        <testoptions>max(1/2, abs(A0)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-value</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the new value. The increase is new value \( - \) original value.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Increase \( = \) new value \( - \) original value.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>round(A0)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>round(A0)-P0</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Simple growth, carried through</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_simple</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>w_simple-P0</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-simple</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Depreciation formula</description>
+      <testinput>
+        <name>ans1</name>
+        <value>round(w_dep)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>round(A0)-P0</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-depreciation</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Gave value as increase</description>
+      <testinput>
+        <name>ans1</name>
+        <value>round(A0)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>round(A0)</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-value</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Income tax: tax bands and PAYE (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Use the monthly tax table below.</p><table style="border-collapse:collapse;text-align:left;margin:6px 0;">
+<tr><th style="border:1px solid #888;padding:4px 8px;">Monthly taxable income</th><th style="border:1px solid #888;padding:4px 8px;">Rate</th></tr>
+<tr><td style="border:1px solid #888;padding:4px 8px;">On the first Ksh 24,000</td><td style="border:1px solid #888;padding:4px 8px;">10%</td></tr>
+<tr><td style="border:1px solid #888;padding:4px 8px;">On the next Ksh 8,333</td><td style="border:1px solid #888;padding:4px 8px;">25%</td></tr>
+<tr><td style="border:1px solid #888;padding:4px 8px;">On the next Ksh 467,667</td><td style="border:1px solid #888;padding:4px 8px;">30%</td></tr>
+</table>
+<p>Personal relief: Ksh 2,400 per month.</p>
+<p>{@nm@} has a monthly taxable income of Ksh \( {@TI@} \).</p>
+<p>(a) How much of this income falls in the 30% band?</p>
+<div>Ksh [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Calculate the gross monthly tax, to 2 decimal places.</p>
+<div>Gross tax \( = \) Ksh [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(c) Calculate the monthly PAYE.</p>
+<div>PAYE \( = \) Ksh [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>(a)</strong> The first two bands cover \( 24{,}000 + 8{,}333 = 32{,}333 \). The rest is in the 30% band: \( {@TI@} - 32{,}333 = {@TI - 32333@} \).</p>
+<p><strong>(b)</strong> Tax each band at its own rate:</p>\[
+\begin{align*}
+\text{First Ksh } 24{,}000 \text{ at } 10\% &= 2{,}400 \\
+\text{Next Ksh } 8{,}333 \text{ at } 25\% &= 2{,}083.25 \\
+\text{Remaining Ksh } {@TI - 32333@} \text{ at } 30\% &= {@r2(3/10*(TI - 32333))@} \\
+\text{Gross tax} &= {@r2(gt)@}
+\end{align*}
+\]
+<p>The 30% rate applies only to the part above Ksh 32,333, not to the whole income.</p>
+<p><strong>(c)</strong> PAYE \( = {@r2(gt)@} - 2{,}400 = {@r2(gt - 2400)@} \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[nm : rand(["Mr. Barasa", "Ms. Njeri", "Mr. Mwangi", "Ms. Atieno", "Mr. Kiprop", "Ms. Wambui"]);
+r2(v) := if integerp(round(100*v)/100) then round(v) else float(round(100*v)/100);
+b1 : 24000;
+b2 : 8333;
+taxf(ti) := (1/10)*min(ti, b1) + (1/4)*max(0, min(ti, b1 + b2) - b1) + (3/10)*max(0, ti - b1 - b2);
+TI : 100*rand_with_prohib(400, 2000, []);
+gt : taxf(TI);
+w_flat : 3*TI/10;                         /* whole income at 30% */
+w_noband2 : 2400 + 3*(TI - 24000)/10;     /* skipped the 25% band */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>TI={@TI@}: 30% part={@TI-32333@}, gross tax={@r2(gt)@}, PAYE={@r2(gt-2400)@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>TI-32333</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>r2(gt)</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>numerical</type>
+      <tans>r2(gt-2400)</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>TI - 32333</tans>
+        <testoptions>max(1/2, abs(TI - 32333)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: band1only</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>TI - 24000</tans>
+        <testoptions>max(1/2, abs(TI - 24000)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-band1only</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You took off only the first band. The 25% band (the next Ksh 8,333) also comes before the 30% band.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: band2only</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>TI - 8333</tans>
+        <testoptions>max(1/2, abs(TI - 8333)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-band2only</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Take off <em>both</em> lower bands: \( 24{,}000 + 8{,}333 = 32{,}333 \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Subtract the first two bands, \( 24{,}000 + 8{,}333 \), from the taxable income.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf2 : 2400 + 8333/4 + 3*ans1/10;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>gt</tans>
+        <testoptions>max(1/2, abs(gt)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: flat</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>w_flat</tans>
+        <testoptions>max(1/2, abs(w_flat)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-flat</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You applied 30% to the <em>whole</em> income. In a progressive system each band is taxed at its own rate: 10% on the first 24,000, 25% on the next 8,333, and 30% only on the rest.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: noband2</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>w_noband2</tans>
+        <testoptions>max(1/2, abs(w_noband2)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-noband2</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You missed the 25% band. The next Ksh 8,333 after the first 24,000 is taxed at 25%, not 30%.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: ecf</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ecf2</tans>
+        <testoptions>max(1/2, abs(ecf2)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is correct for <em>your</em> 30% portion from part (a).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Add the tax from each band: \( 2{,}400 + 2{,}083.25 + 30\% \) of the remainder.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>ecf3 : ans2 - 2400;</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>gt - 2400</tans>
+        <testoptions>max(1/2, abs(gt - 2400)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: ecf</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ecf3</tans>
+        <testoptions>max(1/2, abs(ecf3)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-ecf</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is <em>your</em> gross tax minus the relief, so this step is right.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: added</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>gt + 2400</tans>
+        <testoptions>max(1/2, abs(gt + 2400)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-added</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Personal relief <em>reduces</em> the tax: subtract it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: netpay</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>TI - gt</tans>
+        <testoptions>max(1/2, abs(TI - gt)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-netpay</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is close to the income after tax. PAYE is the <em>tax</em>: gross tax minus personal relief.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. PAYE \( = \) gross tax \( - \) personal relief.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>TI-32333</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2(gt)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>r2(gt-2400)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Flat 30%, carried through</description>
+      <testinput>
+        <name>ans1</name>
+        <value>TI-32333</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(w_flat)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>float(w_flat-2400)</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-flat</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-ecf</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Skipped band 2</description>
+      <testinput>
+        <name>ans1</name>
+        <value>TI-24000</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(w_noband2)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>r2(gt-2400)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-band1only</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-noband2</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Added relief</description>
+      <testinput>
+        <name>ans1</name>
+        <value>TI-32333</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>r2(gt)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>float(gt+2400)</value>
+      </testinput>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-added</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

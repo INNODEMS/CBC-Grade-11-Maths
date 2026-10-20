@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Depreciation: finding the annual rate (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A {@asset@} was bought for Ksh \( {@P0@} \). After \( {@T0@} \) years its value had fallen to Ksh \( {@A0@} \).</p>
+<p>(a) By what percentage has the value fallen over the \( {@T0@} \) years altogether?</p>
+<div>Total decrease \( = \) [[input:ans1]] \( \% \) [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Assuming it depreciated at a steady compound rate, find the annual rate of depreciation.</p>
+<div>\( R = \) [[input:ans2]] \( \% \) per annum [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><strong>(a)</strong> \( \dfrac{P - A}{P} \times 100\% = \dfrac{ {@P0 - A0@} }{ {@P0@} } \times 100\% = {@rd(totp)@}\% \).</p>
+<p><strong>(b)</strong> Rearrange \( A = P\left(1 - \frac{R}{100}\right)^T \):</p>
+\[
+\begin{align*}
+\frac{A}{P} = \frac{ {@A0@} }{ {@P0@} } = {@float(A0/P0)@} &= \left(1 - \frac{R}{100}\right)^{ {@T0@} } \\
+1 - \frac{R}{100} &= \sqrt[{@T0@}]{ {@float(A0/P0)@} } = {@float(1 - R0/100)@} \\
+R &= 100 \times (1 - {@float(1 - R0/100)@}) = {@R0@}\%.
+\end{align*}
+\]]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[rd(v) := if integerp(v) then v else float(v);
+asset : rand(["solar inverter", "photocopier", "school bus", "maize sheller", "water pump"]);
+R0 : rand([5, 10, 15, 20, 25]);
+T0 : rand([2, 3]);
+/* Prices chosen so that the value after T years is a whole number of shillings. */
+P0 : if T0 = 2 then 40000*rand([2, 3, 4, 5, 8, 10]) else 8000*rand([10, 15, 20, 25, 50]);
+A0 : P0*(1 - R0/100)^T0;
+totp : 100*(P0 - A0)/P0;
+w_avg : totp/T0;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>P={@P0@}, A={@A0@}, T={@T0@}: total {@rd(totp)@}%, R={@R0@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>totp</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>R0</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>totp</tans>
+        <testoptions>max(1/100, abs(totp)*0)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: remaining</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>100*A0/P0</tans>
+        <testoptions>max(1/100, abs(100*A0/P0)*0)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-remaining</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the percentage of the value that <em>remains</em>. The decrease is 100% minus that.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Percentage decrease \( = \dfrac{\text{decrease}}{\text{original value}} \times 100\% \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>R0</tans>
+        <testoptions>max(1/20, abs(R0)*0)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: average</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>w_avg</tans>
+        <testoptions>max(1/20, abs(w_avg)*0)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-average</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Dividing the total percentage by \( {@T0@} \) assumes the same amount is lost every year. Depreciation is compound: solve \( \frac{A}{P} = \left(1 - \frac{R}{100}\right)^{ {@T0@} } \) by taking the \( {@T0@} \)th root.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: sign</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>-R0</tans>
+        <testoptions>max(1/20, abs(-R0)*0)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-sign</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>A depreciation rate is stated as a positive percentage: the value falls by \( R\% \) per year. Check your rearrangement: \( R = 100\left(1 - \sqrt[T]{A/P}\right) \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: total</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>totp</tans>
+        <testoptions>max(1/20, abs(totp)*0)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-total</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the decrease over the whole \( {@T0@} \) years. The question asks for the rate <em>per annum</em>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Use \( R = 100\left(1 - \sqrt[T]{\dfrac{A}{P}}\right) \).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>totp</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>R0</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Average rate</description>
+      <testinput>
+        <name>ans1</name>
+        <value>totp</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(w_avg)</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-average</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Negative rate</description>
+      <testinput>
+        <name>ans1</name>
+        <value>totp</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>-R0</value>
+      </testinput>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-sign</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Remaining %, total as rate</description>
+      <testinput>
+        <name>ans1</name>
+        <value>100*A0/P0</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>totp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-remaining</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-total</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

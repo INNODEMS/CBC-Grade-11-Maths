@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Predicting independent event outcomes for local weather and football leagues</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>The meteorological department forecasts that the probability of heavy rain in <b>{@city@}</b> this Saturday is <b>{@A_str@}</b>. Independently, the probability that the local football team, <b>{@team@}</b>, wins their weekend league match is <b>{@B_str@}</b>.</p>
+<p>Let \(R\) be the event "it rains" and \(W\) be the event "the team wins". Because the weather does not affect the team's preparedness, assume \(R\) and \(W\) are <b>independent events</b>.</p>
+
+<p><b>a) </b> Find the probability that it rains AND the team wins.</p>
+<p><i>(Enter your answer as a fully simplified fraction or exact decimal).</i></p>
+<p>\(P(R \text{ and } W) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b)  </b> Find the probability that it rains OR the team wins.</p>
+<p>\(P(R \text{ or } W) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Find the probability that it does NOT rain AND the team does NOT win.</p>
+<p>\(P =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Intersection</b><br>
+Because the events are independent, the probability of both happening is the product of their individual probabilities:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R \text{ and } W) = P(R) \times P(W) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R \text{ and } W) = {@A_str@} \times {@B_str@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(R \text{ and } W) = {@ta1@} } \)</p>
+
+<p><b>Part b: Union</b><br>
+Using the general addition rule, we add the individual probabilities and subtract the intersection:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R \text{ or } W) = P(R) + P(W) - P(R \text{ and } W) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R \text{ or } W) = {@A_str@} + {@B_str@} - {@ta1@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(R \text{ or } W) = {@ta2@} } \)</p>
+
+<p><b>Part c: Neither Event</b><br>
+The event "neither happens" is the complement of the event "at least one happens" (the union).</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{neither}) = 1 - P(R \text{ or } W) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{neither}) = 1 - {@ta2@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{neither}) = {@ta3@} } \)</p>
+<p><i>(Alternatively, you could multiply the independent complements: \(P(R') \times P(W') = (1 - {@A_str@}) \times (1 - {@B_str@}) = {@ta3@}\)).</i></p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize context variables to meet PCI requirements safely */
+idx : rand([1, 2, 3, 4, 5, 6]);
+team_list : ["Nairobi City Stars", "Tusker FC", "AFC Leopards", "Gor Mahia", "Kakamega Homeboyz", "Bandari FC"];
+city_list : ["Nairobi", "Nairobi", "Nairobi", "Nairobi", "Kakamega", "Mombasa"];
+
+team : team_list[idx];
+city : city_list[idx];
+
+/* Master arrays to strictly enforce float-safe exact rational math */
+num_list : [25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
+str_list : ["0.25", "0.30", "0.35", "0.40", "0.45", "0.50", "0.55", "0.60", "0.65", "0.70", "0.75", "0.80"];
+
+idx_A : rand([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+idx_B : rand([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+/* Exact internal fraction, string for display */
+P_A : num_list[idx_A] / 100;
+A_str : str_list[idx_A];
+
+P_B : num_list[idx_B] / 100;
+B_str : str_list[idx_B];
+
+/* Calculate targets exactly using rationals to prevent test case drift */
+ta1 : P_A * P_B;
+ta2 : P_A + P_B - ta1;
+ta3 : 1 - ta2;
+
+/* Distractors for specific PRT feedback */
+ta2_wrong : P_A + P_B; /* Added without subtracting intersection */
+ta3_wrong : 1 - ta1; /* Subtracted intersection from 1 instead of the union */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>{@team@}. P(A)={@A_str@}, P(B)={@B_str@}. Intersection={@ta1@}, Union={@ta2@}, Neither={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Independent Events (Intersection and Union)</p>
+<p id="description">Grade 11 CBE: Calculating the probability of independent events intersecting, their union via the general addition rule, and their combined complement (neither), contextualized within Kenyan football leagues and weather forecasts.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of intersection</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. Since the events are independent, you correctly multiplied their individual probabilities to find the intersection.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. For independent events, \(P(A \text{ and } B) = P(A) \times P(B)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they forgot to subtract intersection</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added the two probabilities directly (\({@A_str@} + {@B_str@}\)). However, you must use the general addition rule and subtract the intersection you found in part (a), otherwise you are counting the "both" scenario twice.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence of union</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly used the general addition rule: \(P(R) + P(W) - P(R \text{ and } W)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Use the general addition rule: \(P(R \text{ or } W) = P(R) + P(W) - P(R \text{ and } W)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they used the wrong complement</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \(1 - P(R \text{ and } W)\). That gives the probability that they don't <b>both</b> happen. To find the probability that <b>neither</b> happens, you must subtract the <i>union</i> from 1: \(1 - P(R \text{ or } W)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence of neither</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. The probability of "neither" is the complement of the union (\(1 - P(R \text{ or } W)\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. The event "neither" is the exact opposite (complement) of the event "at least one" (the union you found in part b). Subtract your answer in part (b) from 1.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1127153390</deployedseed>
+    <deployedseed>948322078</deployedseed>
+    <deployedseed>1860049658</deployedseed>
+    <deployedseed>1598529186</deployedseed>
+    <deployedseed>1760406207</deployedseed>
+    <deployedseed>1675963395</deployedseed>
+    <deployedseed>1006805239</deployedseed>
+    <deployedseed>508024552</deployedseed>
+    <deployedseed>1602975342</deployedseed>
+    <deployedseed>130891247</deployedseed>
+    <deployedseed>877578408</deployedseed>
+    <deployedseed>2094955524</deployedseed>
+    <deployedseed>294885187</deployedseed>
+    <deployedseed>638488885</deployedseed>
+    <deployedseed>285747785</deployedseed>
+    <deployedseed>991909504</deployedseed>
+    <deployedseed>1606240122</deployedseed>
+    <deployedseed>634676787</deployedseed>
+    <deployedseed>1827293048</deployedseed>
+    <deployedseed>1398588845</deployedseed>
+    <deployedseed>516144857</deployedseed>
+    <deployedseed>653603289</deployedseed>
+    <deployedseed>1942991951</deployedseed>
+    <deployedseed>1232107948</deployedseed>
+    <deployedseed>1315330059</deployedseed>
+    <deployedseed>102256865</deployedseed>
+    <deployedseed>371868074</deployedseed>
+    <deployedseed>320759905</deployedseed>
+    <deployedseed>817273650</deployedseed>
+    <deployedseed>277837270</deployedseed>
+    <deployedseed>282866040</deployedseed>
+    <deployedseed>1597679366</deployedseed>
+    <deployedseed>2130051586</deployedseed>
+    <deployedseed>1791802379</deployedseed>
+    <deployedseed>1076063848</deployedseed>
+    <deployedseed>431496428</deployedseed>
+    <deployedseed>51280315</deployedseed>
+    <deployedseed>799184254</deployedseed>
+    <deployedseed>921459729</deployedseed>
+    <deployedseed>1102025298</deployedseed>
+    <deployedseed>1589591913</deployedseed>
+    <deployedseed>1135373210</deployedseed>
+    <deployedseed>5660274</deployedseed>
+    <deployedseed>1761156842</deployedseed>
+    <deployedseed>2034380703</deployedseed>
+    <deployedseed>1711738861</deployedseed>
+    <deployedseed>843964644</deployedseed>
+    <deployedseed>571812291</deployedseed>
+    <deployedseed>200054330</deployedseed>
+    <deployedseed>113944382</deployedseed>
+    <deployedseed>1035652771</deployedseed>
+    <deployedseed>931846640</deployedseed>
+    <deployedseed>1471287372</deployedseed>
+    <deployedseed>199771348</deployedseed>
+    <deployedseed>1962220504</deployedseed>
+    <deployedseed>62286731</deployedseed>
+    <deployedseed>49582083</deployedseed>
+    <deployedseed>261297139</deployedseed>
+    <deployedseed>1492884282</deployedseed>
+    <deployedseed>290538090</deployedseed>
+    <deployedseed>1335716202</deployedseed>
+    <deployedseed>1407421296</deployedseed>
+    <deployedseed>898747629</deployedseed>
+    <deployedseed>482750934</deployedseed>
+    <deployedseed>595182558</deployedseed>
+    <deployedseed>1973364994</deployedseed>
+    <deployedseed>871863943</deployedseed>
+    <deployedseed>1750669999</deployedseed>
+    <deployedseed>1055558744</deployedseed>
+    <deployedseed>1320780581</deployedseed>
+    <deployedseed>323468398</deployedseed>
+    <deployedseed>276005778</deployedseed>
+    <deployedseed>1892816786</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot to subtract intersection in b, wrong complement in c</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3 + 10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

@@ -7,30 +7,59 @@
     <questiontext format="html">
       <text><![CDATA[<p><strong>Solve the following simultaneous equations graphically</strong>, for \( {@xlo@} \le x \le {@xhi@} \).</p>
 \[ {#eq1tex#} \qquad \text{and} \qquad {#eq2tex#} \]
-<p><strong>(a)</strong> Plot both graphs on the grid. Use a table of values to find two points on the curve \( {#eq1tex#} \) and drag the two <span style="color:#c62828"><strong>red points</strong></span> onto them; the curve is drawn through your two points. (Choose points whose \( x \)-values are not opposites of each other, such as 2 and \( -2 \).) Then drag the two <span style="color:#1565c0"><strong>blue points</strong></span> (at different positions) to place the straight line \( {#eq2tex#} \). The points snap to the grid.</p>
+<p><strong>(a)</strong> Plot the graphs of equations above on the grid by dragging the <span style="color:#c62828"><strong>red points</strong></span> to draw the curve and <span style="color:#1565c0"><strong>blue points</strong></span> for the straight line.</p>
+
+
+
 [[jsxgraph input-ref-ans1="refQ1" input-ref-ans2="refQ2" input-ref-ans3="refP1" input-ref-ans4="refP2" width="640px" height="560px"]]
 var xlo = {#xlo#}, xhi = {#xhi#}, ymin = {#ymin#}, ymax = {#ymax#};
+/* keepaspectratio: true gives the SAME scale on both axes (square grid cells) */
 var board = JXG.JSXGraph.initBoard(divid, {
-    boundingbox: [xlo - 0.8, ymax + 1.2, xhi + 0.8, ymin - 1.2],
-    axis: false, grid: false, keepaspectratio: false,
+    boundingbox: [xlo - 1.5, ymax + 1.5, xhi + 1.5, ymin - 1.5],
+    axis: false, grid: false, keepaspectratio: true,
     showCopyright: false, showNavigation: false,
     pan: {enabled: false}, zoom: {enabled: false}
 });
-/* labelled square grid, one line per whole number */
+/* the visible area after the 1:1 adjustment: [left, top, right, bottom] */
+var bb = board.getBoundingBox();
+var u = board.unitX;                              /* pixels per unit (identical for x and y) */
+var left = Math.ceil(bb[0]), right = Math.floor(bb[2]), top = Math.floor(bb[1]), bottom = Math.ceil(bb[3]);
+var step = Math.ceil(28 / u);                     /* number every "step" units, so neighbouring labels are always at least 28 px apart */
 var gi;
-for (gi = xlo - 1; gi != xhi + 2; gi++) {
-    board.create('line', [ [gi, 0], [gi, 1] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+
+/* square grid: one line for every whole number across the whole visible board */
+for (gi = left; gi != right + 1; gi++) {
+    board.create('segment', [ [gi, bb[3]], [gi, bb[1]] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
 }
-for (gi = ymin - 2; gi != ymax + 3; gi++) {
-    board.create('line', [ [0, gi], [1, gi] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+for (gi = bottom; gi != top + 1; gi++) {
+    board.create('segment', [ [bb[0], gi], [bb[2], gi] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
 }
-board.create('axis', [ [0,0], [1,0] ], {strokeColor: '#222222', strokeWidth: 2,
-    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
-board.create('axis', [ [0,0], [0,1] ], {strokeColor: '#222222', strokeWidth: 2,
-    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
-board.create('text', [xhi + 0.7, 0.5, 'x'], {fixed: true, anchorX: 'right', fontSize: 16});
-board.create('text', [0.3, ymax + 1.1, 'y'], {fixed: true, anchorY: 'top', fontSize: 16});
-board.create('text', [-0.12, -0.1, '0'], {fixed: true, anchorX: 'right', anchorY: 'top', fontSize: 12});
+
+/* axes with arrow heads */
+board.create('arrow', [ [bb[0], 0], [bb[2], 0] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false, layer: 2});
+board.create('arrow', [ [0, bb[3]], [0, bb[1]] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false, layer: 2});
+
+/* tick marks and numbers, drawn one by one:
+   x numbers are centred directly under their grid line; y numbers sit to the LEFT of the y-axis, level with their grid line */
+for (gi = left; gi != right + 1; gi++) {
+    if (gi !== 0) {
+        board.create('segment', [ [gi, -4 / u], [gi, 4 / u] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false, layer: 2});
+        if (gi % step === 0) {
+            board.create('text', [gi, -9 / u, '' + gi], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'top', fontSize: 13});
+        }
+    }
+}
+for (gi = bottom; gi != top + 1; gi++) {
+    if (gi !== 0) {
+        board.create('segment', [ [-4 / u, gi], [4 / u, gi] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false, layer: 2});
+        if (gi % step === 0) {
+            board.create('text', [-9 / u, gi, '' + gi], {fixed: true, highlight: false, anchorX: 'right', anchorY: 'middle', fontSize: 13});
+        }
+    }
+}
+board.create('text', [-9 / u, -9 / u, '0'], {fixed: true, highlight: false, anchorX: 'right', anchorY: 'top', fontSize: 13});
+board.create('text', [bb[2] - 6 / u, 12 / u, 'x'], {fixed: true, highlight: false, anchorX: 'right', anchorY: 'bottom', fontSize: 16});
+board.create('text', [10 / u, bb[1] - 6 / u, 'y'], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'top', fontSize: 16});
 
 /* four free handles, snapped to the grid; none of the start positions is a correct answer */
 var snapAttr = {name: '', size: 6, snapToGrid: true, snapSizeX: 1, snapSizeY: 1, showInfobox: true};
@@ -60,7 +89,7 @@ stack_jxg.bind_point(refP2, P2);
 <div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]] [[input:ans3]] [[validation:ans3]] [[input:ans4]] [[validation:ans4]]</div>
 <div>[[feedback:prt1]]</div>
 <div>[[feedback:prt2]]</div>
-<p><strong>(b)</strong> Use your graph to write down the solutions of the simultaneous equations. There are three. Give each solution as a point \( [x, y] \) with whole-number values, in any order.</p>
+<p><strong>(b)</strong> Use your graph to write down the solutions of the simultaneous equations. Give each solution as a point \( [x, y] \).</p>
 <div>Solution 1: [[input:ans5]] [[validation:ans5]]</div>
 <div>Solution 2: [[input:ans6]] [[validation:ans6]]</div>
 <div>Solution 3: [[input:ans7]] [[validation:ans7]]</div>
@@ -157,7 +186,7 @@ sols.forEach(function(sp) {
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2025010100</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
       <text><![CDATA[/* ---------- DESIGN BACKWARDS ----------
@@ -249,7 +278,7 @@ lvals : create_list(k + bb, k, [-2,-1,0,1,2,3]);]]></text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>15</boxsize>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -267,7 +296,7 @@ lvals : create_list(k + bb, k, [-2,-1,0,1,2,3]);]]></text>
       <name>ans2</name>
       <type>algebraic</type>
       <tans>ta2</tans>
-      <boxsize>15</boxsize>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -321,10 +350,10 @@ lvals : create_list(k + bb, k, [-2,-1,0,1,2,3]);]]></text>
       <name>ans5</name>
       <type>algebraic</type>
       <tans>ta5</tans>
-      <boxsize>12</boxsize>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>[x, y]</syntaxhint>
+      <syntaxhint/>
       <syntaxattribute>1</syntaxattribute>
       <forbidwords/>
       <allowwords/>
@@ -332,17 +361,17 @@ lvals : create_list(k + bb, k, [-2,-1,0,1,2,3]);]]></text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>1</checkanswertype>
       <mustverify>0</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans6</name>
       <type>algebraic</type>
       <tans>ta6</tans>
-      <boxsize>12</boxsize>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>[x, y]</syntaxhint>
+      <syntaxhint/>
       <syntaxattribute>1</syntaxattribute>
       <forbidwords/>
       <allowwords/>
@@ -350,17 +379,17 @@ lvals : create_list(k + bb, k, [-2,-1,0,1,2,3]);]]></text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>1</checkanswertype>
       <mustverify>0</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans7</name>
       <type>algebraic</type>
       <tans>ta7</tans>
-      <boxsize>12</boxsize>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>[x, y]</syntaxhint>
+      <syntaxhint/>
       <syntaxattribute>1</syntaxattribute>
       <forbidwords/>
       <allowwords/>
@@ -368,7 +397,7 @@ lvals : create_list(k + bb, k, [-2,-1,0,1,2,3]);]]></text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>1</checkanswertype>
       <mustverify>0</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>

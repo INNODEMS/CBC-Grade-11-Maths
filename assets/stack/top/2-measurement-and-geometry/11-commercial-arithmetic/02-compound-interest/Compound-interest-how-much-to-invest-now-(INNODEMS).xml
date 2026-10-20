@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Compound interest: how much to invest now (INNODEMS)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>{@nm@} wants to have Ksh \( {@A0@} \) in \( {@T0@} \) years' time to pay for college fees. A savings account pays \( {@R0@}\% \) per annum compound interest, compounded {@freqw@}.</p>
+<p>How much must {@nm@} invest now? Give your answer to the nearest shilling.</p>
+<div>Amount to invest \( = \) Ksh [[input:ans1]] [[validation:ans1]]</div>
+<div>[[feedback:prt1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Here the final amount \( A \) is known and the principal \( P \) is unknown. The rate per period is \( \dfrac{ {@R0@} }{ {@kk@} } = {@rd(rp)@}\% \) and there are \( {@kk@} \times {@T0@} = {@nper@} \) periods.</p>
+\[
+\begin{align*}
+{@A0@} &= P\left(1 + \frac{ {@rd(rp)@} }{100}\right)^{ {@nper@} } \\
+P &= \frac{ {@A0@} }{ ({@float(1 + rp/100)@})^{ {@nper@} } } = {@round(P0)@}.
+\end{align*}
+\]
+<p>{@nm@} must invest about Ksh \( {@round(P0)@} \) now. Check: \( {@round(P0)@} \times ({@float(1 + rp/100)@})^{ {@nper@} } \approx {@A0@} \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2025010100</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[nm : rand(["Esther", "Kelvin", "Wanjiru", "Otieno", "Achieng", "Kiprono", "Amina", "Mutua"]);
+rd(v) := if integerp(v) then v else float(v);
+fq : rand([[1, "annually"], [2, "semi-annually"], [4, "quarterly"]]);
+kk : fq[1];
+freqw : fq[2];
+A0 : rand([150000, 200000, 400000, 500000, 750000]);
+R0 : rand([6, 8, 10, 12]);
+T0 : rand([3, 4, 5, 6, 8]);
+rp : R0/kk;
+nper : kk*T0;
+P0 : A0/(1 + rp/100)^nper;
+w_mult  : A0*(1 + rp/100)^nper;          /* multiplied instead of divided */
+w_simple: A0/(1 + R0*T0/100);            /* simple interest in reverse */
+w_noadj : A0/(1 + R0/100)^T0;            /* did not adjust for the compounding period */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>A={@A0@}, {@R0@}% {@freqw@}, T={@T0@}: P={@round(P0)@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text>Your answer is partially correct.</text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>round(P0)</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct answer?</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>P0</tans>
+        <testoptions>max(1/2, abs(P0)*1/10000)</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-correct</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Misconception: multiplied</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>w_mult</tans>
+        <testoptions>max(1/2, abs(w_mult)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-multiplied</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer is <em>larger</em> than the target, so it is the value of Ksh \( {@A0@} \) after a further \( {@T0@} \) years. Here \( A \) is known: make \( P \) the subject by <em>dividing</em> \( A \) by the growth factor.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Misconception: simple</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>w_simple</tans>
+        <testoptions>max(1/2, abs(w_simple)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-simple</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You used simple interest. The account pays <em>compound</em> interest: \( P = \dfrac{A}{\left(1 + \frac{r}{100}\right)^n} \).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Misconception: noadjust</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>w_noadj</tans>
+        <testoptions>max(1/2, abs(w_noadj)*1/10000)</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-noadjust</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The interest is compounded {@freqw@}. Use the rate per period \( {@rd(rp)@}\% \) and \( {@nper@} \) periods.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-incorrect</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not correct. Rearrange \( A = P\left(1 + \frac{r}{100}\right)^n \) to make \( P \) the subject.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>1002</deployedseed>
+    <deployedseed>1003</deployedseed>
+    <deployedseed>1004</deployedseed>
+    <deployedseed>1005</deployedseed>
+    <deployedseed>1006</deployedseed>
+    <deployedseed>1007</deployedseed>
+    <deployedseed>1008</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>round(P0)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-correct</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Multiplied</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(w_mult)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-multiplied</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Simple</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(w_simple)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-simple</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-incorrect</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
