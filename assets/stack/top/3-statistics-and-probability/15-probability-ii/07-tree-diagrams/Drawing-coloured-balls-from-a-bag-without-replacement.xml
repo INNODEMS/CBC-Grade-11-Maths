@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Drawing coloured balls from a bag without replacement</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A bag contains <b>{@num_R@} red (R) balls</b> and <b>{@num_B@} blue (B) balls</b>. Two balls are drawn one at a time <b>without replacement</b>. Construct a tree diagram to represent all possible outcomes and use it to solve the following questions.</p>
+
+<p><b>a) </b> Find the probability that the first ball drawn is red.</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P(R_1) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Assuming the first ball drawn was red, find the probability that the second ball drawn is also red.</p>
+<p>\(P(R_2 \mid R_1) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Find the probability that <b>both</b> balls drawn are red.</p>
+<p>\(P(R_1 \text{ and } R_2) =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>
+
+<p><b>d) </b> Find the probability that <b>exactly one</b> ball is red.</p>
+<p><i>Hint: Identify the two different paths on the tree diagram that result in exactly one red ball, and add their probabilities.</i></p>
+<p>\(P(\text{exactly one red}) =\) [[input:ans4]]</p>
+<div>[[validation:ans4]] [[feedback:prt4]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>First, identify the initial state of the bag:<br>
+Total balls for the 1st draw = \({@num_R@} + {@num_B@} = {@total1@}\)</p>
+
+<p><b>Part a: First Branch</b><br>
+The probability of drawing a red ball on the first branch is the number of red balls divided by the initial total.</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R_1) = \frac{{@num_R@}}{{@total1@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(R_1) = {@ta1@} } \)</p>
+
+<p><b>Part b: Second Branch</b><br>
+Because the first red ball is not replaced, the bag now contains 1 fewer red ball and 1 fewer total ball:<br>
+New red count = \({@num_R@} - 1 = {@num_R_minus_1@}\)<br>
+New total count = \({@total1@} - 1 = {@total2@}\)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R_2 \mid R_1) = \frac{{@num_R_minus_1@}}{{@total2@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(R_2 \mid R_1) = {@ta2@} } \)</p>
+
+<p><b>Part c: Terminal Path (Both Red)</b><br>
+To find the probability of a specific sequence, multiply the probabilities along that path of the tree diagram:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R_1 \text{ and } R_2) = P(R_1) \times P(R_2 \mid R_1) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R_1 \text{ and } R_2) = \frac{{@num_R@}}{{@total1@}} \times \frac{{@num_R_minus_1@}}{{@total2@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(R_1 \text{ and } R_2) = {@ta3@} } \)</p>
+
+<p><b>Part d: Exactly One Red Ball</b><br>
+There are two paths on the tree diagram that give exactly one red ball: Red-Blue (RB) and Blue-Red (BR).</p>
+<ul>
+  <li><b>RB Path:</b> \( \frac{{@num_R@}}{{@total1@}} \times \frac{{@num_B@}}{{@total2@}} = {@P_RB@} \)</li>
+  <li><b>BR Path:</b> \( \frac{{@num_B@}}{{@total1@}} \times \frac{{@num_R@}}{{@total2@}} = {@P_BR@} \)</li>
+</ul>
+<p>Add these two path probabilities together:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{exactly one red}) = {@P_RB@} + {@P_BR@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{exactly one red}) = {@ta4@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomize ball counts broadly */
+num_R : rand([3, 4, 5, 6, 7, 8, 9]);
+num_B : rand([2, 3, 4, 5, 6, 7]);
+
+/* Calculate exact totals */
+total1 : num_R + num_B;
+total2 : total1 - 1;
+num_R_minus_1 : num_R - 1;
+
+/* Calculate target probabilities using exact fractional math */
+ta1 : num_R / total1;
+ta2 : num_R_minus_1 / total2;
+ta3 : ta1 * ta2;
+
+P_RB : (num_R / total1) * (num_B / total2);
+P_BR : (num_B / total1) * (num_R / total2);
+ta4 : P_RB + P_BR;
+
+/* Distractors for specific PRT checks */
+ta2_wrong_replacement : num_R / total1;
+ta3_wrong_replacement : ta1 * ta1;
+ta4_wrong_one_path : P_RB;
+ta4_wrong_replacement : 2 * (num_R / total1) * (num_B / total1);</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>R={@num_R@}, B={@num_B@}. T1={@total1@}. P(R1)={@ta1@}, P(R2|R1)={@ta2@}, P(RR)={@ta3@}, P(1 Red)={@ta4@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Tree Diagrams: Multiplying and Adding Paths</p>
+<p id="description">Grade 11 CBE: Step-by-step construction and evaluation of a two-stage tree diagram without replacement.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>ta4</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Divide the number of red balls by the initial total number of balls.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they calculated with replacement</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong_replacement</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability as if the first ball was <b>replaced</b>. Because the draw is without replacement, the conditional probability on this later branch changes since removing an item changes the population.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You accurately reduced both the red count and the total count by 1.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. If one red ball has been removed, how many red balls remain? How many total balls remain?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check replacement error propagation</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong_replacement</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the path probability as if the draws were independent (with replacement). You must multiply your answer from part (a) by your answer from part (b).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. The probability of reaching a specific terminal equals the product of all the branch probabilities along that path.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply the probability of the first branch by the probability of the second branch.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they only calculated one path</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ta4_wrong_one_path</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You only calculated the probability of one path (e.g., Red then Blue). To find the probability of an event described by several different paths, you must add the probabilities for <b>all</b> paths that satisfy the event (Red-Blue AND Blue-Red).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check replacement error propagation</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ta4_wrong_replacement</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the paths as if the balls were drawn <b>with replacement</b>. The probabilities on the second branches must account for the removed ball.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt4-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ta4</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly calculated the probability of both favorable paths (RB and BR) and added them together.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Calculate the probability of the Red-Blue path, calculate the probability of the Blue-Red path, and add the two values.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1519950961</deployedseed>
+    <deployedseed>4363038</deployedseed>
+    <deployedseed>1738136843</deployedseed>
+    <deployedseed>1675691177</deployedseed>
+    <deployedseed>123992688</deployedseed>
+    <deployedseed>1218409374</deployedseed>
+    <deployedseed>277935450</deployedseed>
+    <deployedseed>1107265452</deployedseed>
+    <deployedseed>1667119561</deployedseed>
+    <deployedseed>1763642573</deployedseed>
+    <deployedseed>1590970741</deployedseed>
+    <deployedseed>196812977</deployedseed>
+    <deployedseed>1047869479</deployedseed>
+    <deployedseed>1312914707</deployedseed>
+    <deployedseed>436307498</deployedseed>
+    <deployedseed>1709952058</deployedseed>
+    <deployedseed>897680885</deployedseed>
+    <deployedseed>1835905702</deployedseed>
+    <deployedseed>440333036</deployedseed>
+    <deployedseed>508679981</deployedseed>
+    <deployedseed>47031048</deployedseed>
+    <deployedseed>1712132222</deployedseed>
+    <deployedseed>386948760</deployedseed>
+    <deployedseed>1335313411</deployedseed>
+    <deployedseed>322710150</deployedseed>
+    <deployedseed>377029038</deployedseed>
+    <deployedseed>511518360</deployedseed>
+    <deployedseed>527936375</deployedseed>
+    <deployedseed>1482458659</deployedseed>
+    <deployedseed>1636542611</deployedseed>
+    <deployedseed>1570967690</deployedseed>
+    <deployedseed>565419393</deployedseed>
+    <deployedseed>448164269</deployedseed>
+    <deployedseed>1700376357</deployedseed>
+    <deployedseed>524180788</deployedseed>
+    <deployedseed>1118891475</deployedseed>
+    <deployedseed>1284327384</deployedseed>
+    <deployedseed>1739699625</deployedseed>
+    <deployedseed>200602731</deployedseed>
+    <deployedseed>922172392</deployedseed>
+    <deployedseed>1969947014</deployedseed>
+    <deployedseed>170731059</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

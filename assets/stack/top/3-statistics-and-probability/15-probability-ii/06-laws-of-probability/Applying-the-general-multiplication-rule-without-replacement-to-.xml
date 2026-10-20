@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Applying the general multiplication rule without replacement to committee selection</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A school debate club in Kisumu consists of <b>{@num_B@} boys</b> and <b>{@num_G@} girls</b>. The patron selects two learners at random, one after the other, to represent the school at a regional contest. Because a learner cannot be selected twice, this is a selection <b>without replacement</b>.</p>
+
+<p>Let \(G_1\) be the event "the first learner selected is a girl" and \(G_2\) be the event "the second learner selected is a girl".</p>
+
+<p><b>a) </b> Find the probability that the first learner selected is a girl, \(P(G_1)\).</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P(G_1) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Given that the first learner selected was a girl, find the probability that the second learner selected is also a girl, \(P(G_2 \mid G_1)\).</p>
+<p>\(P(G_2 \mid G_1) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Use the general multiplication rule to find the probability that <b>both</b> selected learners are girls.</p>
+<p>\(P(G_1 \text{ and } G_2) =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>First, find the initial total number of learners in the club:<br>
+\(\text{Total}_1 = {@num_B@} + {@num_G@} = {@total1@}\)</p>
+
+<p><b>Part a: First Event</b><br>
+The probability of selecting a girl on the first draw is the number of girls divided by the total number of learners:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(G_1) = \frac{{@num_G@}}{{@total1@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(G_1) = {@ta1@} } \)</p>
+
+<p><b>Part b: Conditional Probability</b><br>
+Because the first learner is not replaced, there is now 1 fewer girl in the club, and 1 fewer total learner:<br>
+New number of girls = \({@num_G@} - 1 = {@num_G_minus_1@}\)<br>
+New total learners = \({@total1@} - 1 = {@total2@}\)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(G_2 \mid G_1) = \frac{{@num_G_minus_1@}}{{@total2@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(G_2 \mid G_1) = {@ta2@} } \)</p>
+
+<p><b>Part c: General Multiplication Rule</b><br>
+The general multiplication rule states that \(P(A \cap B) = P(A) \times P(B \mid A)\).</p>
+<p style="margin-left: 20px;">\( \displaystyle P(G_1 \text{ and } G_2) = P(G_1) \times P(G_2 \mid G_1) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(G_1 \text{ and } G_2) = \frac{{@num_G@}}{{@total1@}} \times \frac{{@num_G_minus_1@}}{{@total2@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(G_1 \text{ and } G_2) = {@ta3@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomize counts broadly to prevent STACK cache collisions */
+num_B : rand([8, 10, 12, 14, 15, 18, 20]);
+num_G : rand([6, 9, 11, 13, 16, 17, 19]);
+
+/* Calculate totals for stage 1 and stage 2 */
+total1 : num_B + num_G;
+total2 : total1 - 1;
+num_G_minus_1 : num_G - 1;
+
+/* Calculate target probabilities using exact fractional math */
+ta1 : num_G / total1;
+ta2 : num_G_minus_1 / total2;
+ta3 : ta1 * ta2;
+
+/* Distractors for PRT checks */
+ta2_wrong : num_G / total1; /* Did not account for without replacement */
+ta3_wrong : ta1 * ta2_wrong; /* Multiplied independent events instead of dependent */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>B={@num_B@}, G={@num_G@}. Total={@total1@}. P(G1)={@ta1@}. P(G2|G1)={@ta2@}. P(Both)={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">General Multiplication Rule (Without Replacement)</p>
+<p id="description">Grade 11 CBE: Calculating conditional probability for dependent events and applying the general multiplication rule to find the intersection.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of independent first event</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Divide the number of girls by the total number of learners in the club.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they calculated with replacement</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability as if the first learner was <b>replaced</b>. Because the selection is without replacement, there is 1 fewer girl remaining, and 1 fewer total learner remaining for the second draw.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence of conditional event</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly reduced both the numerator and the denominator by 1 to account for the first girl being selected.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. If one girl has already been selected, how many girls are left? How many total learners are left?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they multiplied independent probabilities</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You multiplied the probability as if the events were independent (\(P(G_1) \times P(G_1)\)). You must use the conditional probability from part (b) because the first selection changes the probabilities for the second.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence of general multiplication rule</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully applied the general multiplication rule: \(P(G_1) \times P(G_2 \mid G_1)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply your answer from part (a) by your answer from part (b).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>872247689</deployedseed>
+    <deployedseed>1686526591</deployedseed>
+    <deployedseed>574667438</deployedseed>
+    <deployedseed>1486431267</deployedseed>
+    <deployedseed>1096731812</deployedseed>
+    <deployedseed>1637623913</deployedseed>
+    <deployedseed>1595681672</deployedseed>
+    <deployedseed>791590051</deployedseed>
+    <deployedseed>2049614066</deployedseed>
+    <deployedseed>1647785507</deployedseed>
+    <deployedseed>142555699</deployedseed>
+    <deployedseed>1765532065</deployedseed>
+    <deployedseed>1396055426</deployedseed>
+    <deployedseed>2107316583</deployedseed>
+    <deployedseed>211492882</deployedseed>
+    <deployedseed>233180264</deployedseed>
+    <deployedseed>1423810763</deployedseed>
+    <deployedseed>2095678736</deployedseed>
+    <deployedseed>492980154</deployedseed>
+    <deployedseed>1785865802</deployedseed>
+    <deployedseed>923810232</deployedseed>
+    <deployedseed>2139779001</deployedseed>
+    <deployedseed>348816828</deployedseed>
+    <deployedseed>596446918</deployedseed>
+    <deployedseed>1026475719</deployedseed>
+    <deployedseed>2116447707</deployedseed>
+    <deployedseed>1690145094</deployedseed>
+    <deployedseed>2065747887</deployedseed>
+    <deployedseed>1084866346</deployedseed>
+    <deployedseed>2029733384</deployedseed>
+    <deployedseed>1615374887</deployedseed>
+    <deployedseed>1443346035</deployedseed>
+    <deployedseed>1811598257</deployedseed>
+    <deployedseed>490906499</deployedseed>
+    <deployedseed>2106469372</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>With replacement errors</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 5</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3 + 5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

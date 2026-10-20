@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating cumulative and tail probabilities for an exponential distribution</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>The time \(X\) (in minutes) a customer waits at a bank counter in Mombasa follows an <b>exponential distribution</b> with \(\lambda = {@lam_str@}\). The mean waiting time is \({@mean_val@}\) minutes.</p>
+<p>The cumulative probability formula for the exponential distribution is given by:</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( P(X < x) = 1 - e^{-{@lam_str@}x} \quad \text{for } x \ge 0 \)</p>
+
+<p><b>a) </b> Find the probability that a customer waits for <b>less than {@x_a@} minutes</b>.</p>
+<p><i>(Enter your answer as an exact mathematical expression. For example, to enter \(1 - e^{-3}\), type <b>1 - e^(-3)</b> or <b>1 - exp(-3)</b>. Do not enter decimals).</i></p>
+<p>\(P(X < {@x_a@}) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Find the probability that a customer waits for <b>more than {@x_b@} minutes</b>.</p>
+<p><i>(Enter your answer as an exact mathematical expression. For example, to enter \(e^{-3}\), type <b>e^(-3)</b> or <b>exp(-3)</b>).</i></p>
+<p>\(P(X > {@x_b@}) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Less Than Probability</b><br>
+We substitute \(x = {@x_a@}\) directly into the cumulative probability formula:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X < {@x_a@}) = 1 - e^{-{@lam_str@} \times {@x_a@}} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X < {@x_a@}) = 1 - e^{-{@power_a@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X < {@x_a@}) = {@ta1@} } \)</p>
+
+<p><b>Part b: More Than Probability</b><br>
+The formula gives the probability of waiting <i>less</i> than \(x\) minutes. To find the probability of waiting <i>more</i> than \(x\) minutes, we must use the complement rule:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X > x) = 1 - P(X \le x) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X > {@x_b@}) = 1 - (1 - e^{-{@lam_str@} \times {@x_b@}}) \)</p>
+<p>The \(1 - 1\) cancels out, leaving only the exponential term:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X > {@x_b@}) = e^{-{@lam_str@} \times {@x_b@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X > {@x_b@}) = {@ta2@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize the lambda denominator to ensure clean math and massive variance */
+lam_den : rand([2, 4, 5, 10, 20, 25, 50]);
+mean_val : lam_den;
+
+/* Create an exact rational for STACK math, and a string for display */
+lam_frac : 1 / lam_den;
+lam_str : if lam_den = 2 then "0.5" elseif lam_den = 4 then "0.25" elseif lam_den = 5 then "0.2" elseif lam_den = 10 then "0.1" elseif lam_den = 20 then "0.05" elseif lam_den = 25 then "0.04" else "0.02";
+
+/* Randomize targets ensuring the resulting exponent is a clean integer */
+k_a : rand([1, 2, 3, 4, 5, 6]);
+x_a : lam_den * k_a;
+power_a : k_a;
+
+k_b : k_a + rand([1, 2, 3, 4]);
+x_b : lam_den * k_b;
+power_b : k_b;
+
+/* Target answers using exact algebra */
+ta1 : 1 - exp(-power_a);
+ta2 : exp(-power_b);
+
+/* Distractors for PRT checks */
+ta1_wrong : exp(-power_a);
+ta2_wrong : 1 - exp(-power_b);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Exp({@lam_str@}). P(X < {@x_a@}) = {@ta1@}. P(X > {@x_b@}) = {@ta2@}.</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Continuous Probability (Exponential Distribution)</p>
+<p id="description">Grade 11 CBE: Calculating cumulative and complement tail probabilities using the exponential distribution formula.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>12</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of cumulative probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully applied the cumulative exponential formula.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they forgot to subtract from 1</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.2</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \(e^{-{@lam_str@}x}\). Remember that the full cumulative formula requires you to subtract that exponential term from \(1\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Substitute \(x = {@x_a@}\) directly into the given formula \(1 - e^{-{@lam_str@}x}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of tail probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly used the complement rule: \(1 - (1 - e^{-x}) = e^{-x}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they calculated less-than instead of more-than</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability of waiting <b>less than</b> \({@x_b@}\) minutes. The question asked for the probability of waiting <b>more than</b> \({@x_b@}\) minutes. Use the complement rule: \(1 - P(X \le x)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Find the probability of waiting less than \({@x_b@}\) minutes, and then subtract that entire result from \(1\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1041489124</deployedseed>
+    <deployedseed>466598216</deployedseed>
+    <deployedseed>1635420325</deployedseed>
+    <deployedseed>1995552618</deployedseed>
+    <deployedseed>278446869</deployedseed>
+    <deployedseed>1433164246</deployedseed>
+    <deployedseed>1674714063</deployedseed>
+    <deployedseed>1327566509</deployedseed>
+    <deployedseed>1142632040</deployedseed>
+    <deployedseed>664206562</deployedseed>
+    <deployedseed>1910205741</deployedseed>
+    <deployedseed>1845851837</deployedseed>
+    <deployedseed>309065178</deployedseed>
+    <deployedseed>161146088</deployedseed>
+    <deployedseed>1383196698</deployedseed>
+    <deployedseed>296805654</deployedseed>
+    <deployedseed>2071782538</deployedseed>
+    <deployedseed>1941338665</deployedseed>
+    <deployedseed>1379931723</deployedseed>
+    <deployedseed>1079777829</deployedseed>
+    <deployedseed>518244960</deployedseed>
+    <deployedseed>166964648</deployedseed>
+    <deployedseed>683646973</deployedseed>
+    <deployedseed>720512835</deployedseed>
+    <deployedseed>208017757</deployedseed>
+    <deployedseed>1884086777</deployedseed>
+    <deployedseed>960786468</deployedseed>
+    <deployedseed>892179924</deployedseed>
+    <deployedseed>2024052825</deployedseed>
+    <deployedseed>1166253951</deployedseed>
+    <deployedseed>2034700386</deployedseed>
+    <deployedseed>1725203765</deployedseed>
+    <deployedseed>783655779</deployedseed>
+    <deployedseed>186347296</deployedseed>
+    <deployedseed>675296021</deployedseed>
+    <deployedseed>2020791863</deployedseed>
+    <deployedseed>58886029</deployedseed>
+    <deployedseed>1393478625</deployedseed>
+    <deployedseed>106741675</deployedseed>
+    <deployedseed>978260440</deployedseed>
+    <deployedseed>553973973</deployedseed>
+    <deployedseed>1987781132</deployedseed>
+    <deployedseed>527910756</deployedseed>
+    <deployedseed>1599231470</deployedseed>
+    <deployedseed>2135961982</deployedseed>
+    <deployedseed>379460299</deployedseed>
+    <deployedseed>447390483</deployedseed>
+    <deployedseed>332803907</deployedseed>
+    <deployedseed>276096118</deployedseed>
+    <deployedseed>2032681541</deployedseed>
+    <deployedseed>426979748</deployedseed>
+    <deployedseed>1212946633</deployedseed>
+    <deployedseed>1775304631</deployedseed>
+    <deployedseed>1560793760</deployedseed>
+    <deployedseed>1075193027</deployedseed>
+    <deployedseed>2070660519</deployedseed>
+    <deployedseed>841535792</deployedseed>
+    <deployedseed>345816145</deployedseed>
+    <deployedseed>79113123</deployedseed>
+    <deployedseed>1626436458</deployedseed>
+    <deployedseed>274552588</deployedseed>
+    <deployedseed>833676255</deployedseed>
+    <deployedseed>606247730</deployedseed>
+    <deployedseed>1043600478</deployedseed>
+    <deployedseed>342943067</deployedseed>
+    <deployedseed>200120348</deployedseed>
+    <deployedseed>238771602</deployedseed>
+    <deployedseed>221549145</deployedseed>
+    <deployedseed>845586801</deployedseed>
+    <deployedseed>1661595912</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Forgot to subtract from 1 in a, calculated less-than in b</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.2000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

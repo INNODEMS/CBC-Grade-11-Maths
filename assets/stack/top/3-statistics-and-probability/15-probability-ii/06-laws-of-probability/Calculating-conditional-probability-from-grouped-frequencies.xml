@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating conditional probability from grouped frequencies</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>In a class of <b>{@Total@} learners</b>, <b>{@B@}</b> study Biology, <b>{@C@}</b> study Chemistry, and <b>{@Both@}</b> study both subjects. One learner is selected at random.</p>
+
+<p><b>a) </b> Given that the selected learner studies Chemistry, find the probability that they also study Biology.</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Given that the selected learner studies Biology, find the probability that they also study Chemistry.</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>The conditional probability formula is \( \displaystyle P(X \mid Y) = \frac{P(X \text{ and } Y)}{P(Y)} \).<br>
+When dealing with frequencies (counts of learners), this simplifies to dividing the number of learners in <b>both</b> groups by the total number of learners in the <b>given</b> group.</p>
+
+<p><b>Part a: Given Chemistry</b><br>
+We are given that the learner studies Chemistry, so our new total (the denominator) is the \({@C@}\) learners who study Chemistry. The number of these learners who also study Biology is \({@Both@}\).</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Biology} \mid \text{Chemistry}) = \frac{\text{Number studying both}}{\text{Total studying Chemistry}} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Biology} \mid \text{Chemistry}) = \frac{{@Both@}}{{@C@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{Biology} \mid \text{Chemistry}) = {@ta1@} } \)</p>
+
+<p><b>Part b: Given Biology</b><br>
+We are given that the learner studies Biology, so our new total (the denominator) is the \({@B@}\) learners who study Biology. The number of these learners who also study Chemistry is \({@Both@}\).</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Chemistry} \mid \text{Biology}) = \frac{\text{Number studying both}}{\text{Total studying Biology}} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Chemistry} \mid \text{Biology}) = \frac{{@Both@}}{{@B@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{Chemistry} \mid \text{Biology}) = {@ta2@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Construct class sizes using independent blocks to guarantee math consistency and high variance */
+Only_B : rand([12, 15, 18, 20, 24, 25]);
+Only_C : rand([14, 16, 22, 26, 28, 30]);
+Both : rand([5, 6, 8, 10, 12, 14]);
+Neither : rand([2, 4, 5, 7, 9, 11]);
+
+/* Derive the explicit values used in the question text */
+B : Only_B + Both;
+C : Only_C + Both;
+Total : Only_B + Only_C + Both + Neither;
+
+/* Calculate target answers using exact fractions */
+ta1 : Both / C;
+ta2 : Both / B;
+
+/* Distractors for specific PRT feedback */
+ta1_wrong : Both / Total;
+ta2_wrong : Both / Total;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Total={@Total@}. B={@B@}, C={@C@}, Both={@Both@}. P(B|C)={@ta1@}. P(C|B)={@ta2@}.</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Conditional Probability (Grouped Frequencies)</p>
+<p id="description">Grade 11 CBE: Calculating conditional probability by restricting the sample space denominator to a given sub-group.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully restricted the denominator to only those learners studying Chemistry.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they divided by the Total class size</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability of selecting a learner who studies both out of the <b>entire class</b> (\({@Total@}\)). The phrase "Given that the learner studies Chemistry" means you must restrict your total to only the \({@C@}\) learners who study Chemistry.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Divide the number of learners studying <b>both</b> subjects by the number of learners studying <b>Chemistry</b>.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully restricted the denominator to only those learners studying Biology.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they divided by the Total class size</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability of selecting a learner who studies both out of the <b>entire class</b> (\({@Total@}\)). The phrase "Given that the learner studies Biology" means you must restrict your total to only the \({@B@}\) learners who study Biology.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Divide the number of learners studying <b>both</b> subjects by the number of learners studying <b>Biology</b>.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1137191281</deployedseed>
+    <deployedseed>1499453161</deployedseed>
+    <deployedseed>1463068516</deployedseed>
+    <deployedseed>1119637904</deployedseed>
+    <deployedseed>224740701</deployedseed>
+    <deployedseed>1953301019</deployedseed>
+    <deployedseed>1169817530</deployedseed>
+    <deployedseed>1820529144</deployedseed>
+    <deployedseed>747451681</deployedseed>
+    <deployedseed>1219014531</deployedseed>
+    <deployedseed>1896030766</deployedseed>
+    <deployedseed>354978244</deployedseed>
+    <deployedseed>1065778122</deployedseed>
+    <deployedseed>863905731</deployedseed>
+    <deployedseed>249423835</deployedseed>
+    <deployedseed>746437782</deployedseed>
+    <deployedseed>1157020632</deployedseed>
+    <deployedseed>1689411697</deployedseed>
+    <deployedseed>565901734</deployedseed>
+    <deployedseed>1805643465</deployedseed>
+    <deployedseed>584591434</deployedseed>
+    <deployedseed>1332352618</deployedseed>
+    <deployedseed>246917783</deployedseed>
+    <deployedseed>1198250983</deployedseed>
+    <deployedseed>1745814789</deployedseed>
+    <deployedseed>988316847</deployedseed>
+    <deployedseed>1999402407</deployedseed>
+    <deployedseed>2031452760</deployedseed>
+    <deployedseed>458870467</deployedseed>
+    <deployedseed>916643446</deployedseed>
+    <deployedseed>1486505552</deployedseed>
+    <deployedseed>604237768</deployedseed>
+    <deployedseed>1747179259</deployedseed>
+    <deployedseed>1080864696</deployedseed>
+    <deployedseed>1623542529</deployedseed>
+    <deployedseed>931697606</deployedseed>
+    <deployedseed>1047876507</deployedseed>
+    <deployedseed>1531512337</deployedseed>
+    <deployedseed>1445756878</deployedseed>
+    <deployedseed>535563207</deployedseed>
+    <deployedseed>2066606514</deployedseed>
+    <deployedseed>586097654</deployedseed>
+    <deployedseed>2058714401</deployedseed>
+    <deployedseed>1965688419</deployedseed>
+    <deployedseed>2084233533</deployedseed>
+    <deployedseed>343380391</deployedseed>
+    <deployedseed>2050658260</deployedseed>
+    <deployedseed>1389304542</deployedseed>
+    <deployedseed>1968520323</deployedseed>
+    <deployedseed>1338857103</deployedseed>
+    <deployedseed>848567672</deployedseed>
+    <deployedseed>715078805</deployedseed>
+    <deployedseed>653753894</deployedseed>
+    <deployedseed>1431151383</deployedseed>
+    <deployedseed>788511887</deployedseed>
+    <deployedseed>884437566</deployedseed>
+    <deployedseed>1533578262</deployedseed>
+    <deployedseed>461839438</deployedseed>
+    <deployedseed>1139505991</deployedseed>
+    <deployedseed>1598779022</deployedseed>
+    <deployedseed>417861854</deployedseed>
+    <deployedseed>856750818</deployedseed>
+    <deployedseed>1196822327</deployedseed>
+    <deployedseed>804359952</deployedseed>
+    <deployedseed>1092883940</deployedseed>
+    <deployedseed>1717116231</deployedseed>
+    <deployedseed>200306606</deployedseed>
+    <deployedseed>95728315</deployedseed>
+    <deployedseed>209269285</deployedseed>
+    <deployedseed>944763964</deployedseed>
+    <deployedseed>1580094571</deployedseed>
+    <deployedseed>289282912</deployedseed>
+    <deployedseed>1387422262</deployedseed>
+    <deployedseed>1990576592</deployedseed>
+    <deployedseed>1287203577</deployedseed>
+    <deployedseed>1328815824</deployedseed>
+    <deployedseed>903407885</deployedseed>
+    <deployedseed>1593436762</deployedseed>
+    <deployedseed>1913956030</deployedseed>
+    <deployedseed>49833796</deployedseed>
+    <deployedseed>146269404</deployedseed>
+    <deployedseed>681851341</deployedseed>
+    <deployedseed>1340833274</deployedseed>
+    <deployedseed>1367255367</deployedseed>
+    <deployedseed>1487722358</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Divided by total instead of condition</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Arbitrary incorrect answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1 + 5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2 + 5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

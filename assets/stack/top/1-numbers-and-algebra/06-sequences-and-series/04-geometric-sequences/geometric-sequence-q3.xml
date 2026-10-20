@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>geometric sequence q3</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>The number of members in a school club in the first three years was \( {@e1@} \), \( {@e2@} \) and \( {@e3@} \). The numbers form a geometric progression (GP), and \(x\) is a whole number.</p>
+
+<p>(a) Find the value of \(x\).</p>
+<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p>(b) Find the common ratio, \(r\).</p>
+<p>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
+
+<p>(c) Write an expression for the number of members in year \(n\). Use \(n\) in your answer.</p>
+<p>[[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</p>
+
+<p>(d) In which year does the number of members first become more than {@cap@}?</p>
+<p>[[input:ans4]] [[validation:ans4]] [[feedback:prt4]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p>The first three terms are \( {@e1@} \), \( {@e2@} \) and \( {@e3@} \). They form a geometric progression (GP).</p>
+
+<p>(a) <strong>Value of \(x\):</strong></p>
+<p>In a GP, the ratio between neighbouring terms is the same:</p>
+<p>\[ \frac{T_2}{T_1} = \frac{T_3}{T_2} \]</p>
+<p>Multiply both sides by \(T_1 \times T_2\). This gives \( (T_2)^2 = T_1 \times T_3 \):</p>
+<p>\[ ({@e2@})^2 = ({@e1@})({@e3@}) \]</p>
+<p>Expand both sides:</p>
+<p>\[ {@lhs@} = {@rhs@} \]</p>
+<p>The \(x^2\) terms are the same on both sides, so they cancel. Take the \(x\) terms to the right side and the numbers to the left side:</p>
+<p>\[ {@cons@} = {@-coef@}x \]</p>
+<p>Divide both sides by {@-coef@}:</p>
+<p>\[ x = \frac{ {@cons@} }{ {@-coef@} } = {@ta1@} \]</p>
+
+<p>(b) <strong>Common ratio:</strong></p>
+<p>Put \( x = {@xx@} \) into the terms:</p>
+<p>\[ T_1 = {@t1@}, \qquad T_2 = {@t2@}, \qquad T_3 = {@t3@} \]</p>
+<p>Divide a term by the term before it:</p>
+<p>\[ r = \frac{ {@t2@} }{ {@t1@} } = {@ta2@} \]</p>
+<p>Check: \( \frac{ {@t3@} }{ {@t2@} } = {@ta2@} \). The ratio is the same.</p>
+
+<p>(c) <strong>Members in year \(n\):</strong></p>
+<p>Here \( a = {@a@} \) and \( r = {@r@} \). Put these into \( T_n = ar^{n-1} \):</p>
+<p>\[ T_n = {@a@} \times {@r@}^{n-1} \]</p>
+
+<p>(d) <strong>First year with more than {@cap@} members:</strong></p>
+<p>First find the value of \(n\) that gives exactly {@cap@} members. Put \( T_n = {@cap@} \) into the rule:</p>
+<p>\[ {@a@} \times {@r@}^{n-1} = {@cap@} \]</p>
+<p>Divide both sides by {@a@}:</p>
+<p>\[ {@r@}^{n-1} = {@cap/a@} \]</p>
+<p>The unknown \(n\) is in the power, so take logarithms of both sides:</p>
+<p>\[ (n-1)\log {@r@} = \log {@cap/a@} \]</p>
+<p>\[ n - 1 = \frac{\log {@cap/a@}}{\log {@r@}} \]</p>
+<p>\[ n = 1 + \frac{\log {@cap/a@}}{\log {@r@}} = {@dispdp(n_exact,2)@} \]</p>
+<p>\(n\) must be a whole number of years. The number of members is exactly {@cap@} at \( n = {@dispdp(n_exact,2)@} \), so it is more than {@cap@} only for years after that.</p>
+<p>Year {@n_low@} is too early, because it is less than {@dispdp(n_exact,2)@}. The smallest whole number bigger than {@dispdp(n_exact,2)@} is {@ta4@}.</p>
+<p>So the number of members first becomes more than {@cap@} in year {@ta4@}.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>a: rand(3) + 2;
+r: rand(3) + 2;
+xx: rand(5) + 2;
+
+t1: a;
+t2: a*r;
+t3: a*r^2;
+
+c1: t1 - xx;
+c2: t2 - xx;
+c3: t3 - xx;
+
+e1: x + c1;
+e2: x + c2;
+e3: x + c3;
+
+lhs: expand(e2^2);
+rhs: expand(e1*e3);
+coef: 2*c2 - c1 - c3;
+cons: c2^2 - c1*c3;
+
+k: rand(3) + 6;
+cap: a*r^(k-2)*(r+1)/2;
+n_exact: float(1 + log(cap/a)/log(r));
+n_disp: float(round(n_exact*100)/100);
+n_low: k - 1;
+
+ta1: xx;
+ta2: r;
+ta3: a*r^(n-1);
+ta4: k;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@a@} {@r@} {@xx@} {@t1@} {@t2@} {@t3@} {@c1@} {@c2@} {@c3@} {@e1@} {@e2@} {@e3@} {@lhs@} {@rhs@} {@coef@} {@cons@} {@k@} {@cap@} {@ta1@} {@ta2@} {@ta3@} {@ta4@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>cross</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>ta4</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ta4</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1753702157</deployedseed>
+    <deployedseed>1265770116</deployedseed>
+    <deployedseed>514170997</deployedseed>
+    <deployedseed>1184550453</deployedseed>
+    <deployedseed>1191354940</deployedseed>
+    <deployedseed>1558961101</deployedseed>
+    <deployedseed>518647993</deployedseed>
+    <deployedseed>2004770633</deployedseed>
+    <deployedseed>1898048760</deployedseed>
+    <deployedseed>204635935</deployedseed>
+    <deployedseed>1409822941</deployedseed>
+    <deployedseed>757554459</deployedseed>
+    <deployedseed>2144493968</deployedseed>
+    <deployedseed>23392363</deployedseed>
+    <deployedseed>475046485</deployedseed>
+    <deployedseed>1709689926</deployedseed>
+    <deployedseed>2122985233</deployedseed>
+    <deployedseed>1184973175</deployedseed>
+    <deployedseed>680499006</deployedseed>
+    <deployedseed>1214097373</deployedseed>
+  </question>
+</quiz>

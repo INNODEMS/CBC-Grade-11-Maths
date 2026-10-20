@@ -14,6 +14,7 @@
 <div>[[validation:ans1]] [[feedback:prt1]]</div>
 
 <p><b>b) </b> Find the probability that a cow yields <b>{@tail_word@} {@bound_b@} litres</b>.</p>
+<p><i>(Enter your answer as a decimal).</i></p>
 <p>\(P(X {@sign_b@} {@bound_b@}) =\) [[input:ans2]]</p>
 <div>[[validation:ans2]] [[feedback:prt2]]</div>
 
@@ -29,21 +30,21 @@ We compare the given values to the mean \(\mu = {@mu@}\) and standard deviation 
 <p>Notice that \({@lower_a@} = {@mu@} - {@k_a@}({@sigma@}) = \mu - {@k_a@}\sigma\).</p>
 <p>And \({@upper_a@} = {@mu@} + {@k_a@}({@sigma@}) = \mu + {@k_a@}\sigma\).</p>
 <p>According to the empirical rule, the probability of falling within \({@k_a@}\) standard deviation(s) of the mean is approximately {@pct_a@}%. Therefore, as a decimal:</p>
-<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P({@lower_a@} < X < {@upper_a@}) = {@ta1@} } \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P({@lower_a@} < X < {@upper_a@}) = {@ta1_str@} } \)</p>
 
 <p><b>Part b: One-Sided Tail Probability</b><br>
 We are looking for \(P(X {@sign_b@} {@bound_b@})\).</p>
 <p>First, express \({@bound_b@}\) in terms of the mean and standard deviation: \({@bound_b@} = \mu {@sign_math_b@} {@k_b@}\sigma\).</p>
-<p>The empirical rule tells us that the central area within \({@k_b@}\) standard deviations is {@pct_b@}% (or {@rule_b@}). Because the normal curve is perfectly symmetrical, the remaining probability (the two tails combined) is \(1 - {@rule_b@}\).</p>
+<p>The empirical rule tells us that the central probability within \({@k_b@}\) standard deviations is {@pct_b_str@}% (or {@rule_b_str@}). Because the normal curve is perfectly symmetrical, the remaining probability (the two tails combined) is \(1 - {@rule_b_str@}\).</p>
 <p>We only want one of these tails, so we divide the remainder by 2:</p>
-<p style="margin-left: 20px;">\( \displaystyle P(X {@sign_b@} {@bound_b@}) = \frac{1 - {@rule_b@}}{2} \)</p>
-<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X {@sign_b@} {@bound_b@}) = {@ta2@} } \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(X {@sign_b@} {@bound_b@}) = \frac{1 - {@rule_b_str@}}{2} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(X {@sign_b@} {@bound_b@}) = {@ta2_str@} } \)</p>
 
 <p><b>Part c: Expected Count</b><br>
 First, find the probability for the interval \({@lower_c@} < X < {@upper_c@}\).</p>
-<p>These values correspond to \(\mu - {@k_c@}\sigma\) and \(\mu + {@k_c@}\sigma\). By the empirical rule, this probability is {@ta3_prob@}.</p>
+<p>These values correspond to \(\mu - {@k_c@}\sigma\) and \(\mu + {@k_c@}\sigma\). By the empirical rule, this probability is {@ta3_prob_str@}.</p>
 <p>To find the expected count, multiply the total population (\({@N_pop@}\)) by this probability:</p>
-<p style="margin-left: 20px;">\( \text{Expected count} = {@N_pop@} \times {@ta3_prob@} \)</p>
+<p style="margin-left: 20px;">\( \text{Expected count} = {@N_pop@} \times {@ta3_prob_str@} \)</p>
 <p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ \text{Expected count} = {@ta3@} } \)</p>]]></text>
     </generalfeedback>
     <defaultgrade>4</defaultgrade>
@@ -62,8 +63,11 @@ sigma : rand([2, 3, 4, 5]);
 k_a : rand([1, 2]);
 lower_a : mu - k_a * sigma;
 upper_a : mu + k_a * sigma;
-ta1 : if k_a = 1 then 0.68 else 0.95;
+
+/* Use exact fractions for STACK calculations, and strings for display to avoid float drift */
+ta1 : if k_a = 1 then 68/100 else 95/100;
 pct_a : if k_a = 1 then 68 else 95;
+ta1_str : if k_a = 1 then "0.68" else "0.95";
 
 /* Part b variables (1, 2, or 3 standard deviations, upper or lower tail) */
 k_b : rand([1, 2, 3]);
@@ -73,23 +77,29 @@ sign_b : if dir_b = 1 then ">" else "<";
 sign_math_b : if dir_b = 1 then "+" else "-";
 bound_b : if dir_b = 1 then mu + k_b * sigma else mu - k_b * sigma;
 
-rule_b : if k_b = 1 then 0.68 elseif k_b = 2 then 0.95 else 0.997;
-pct_b : if k_b = 1 then 68 elseif k_b = 2 then 95 else 99.7;
-ta2 : (1 - rule_b) / 2;
+/* Using exact rationals to protect the test suite from floating-point evaluation bugs */
+rule_b_frac : if k_b = 1 then 68/100 elseif k_b = 2 then 95/100 else 997/1000;
+rule_b_str : if k_b = 1 then "0.68" elseif k_b = 2 then "0.95" else "0.997";
+pct_b_str : if k_b = 1 then "68" elseif k_b = 2 then "95" else "99.7";
+
+ta2 : (1 - rule_b_frac) / 2;
+ta2_str : if k_b = 1 then "0.16" elseif k_b = 2 then "0.025" else "0.0015";
+ta2_wrong : 1 - rule_b_frac;
 
 /* Part c variables (Expected count) */
 k_c : rand([1, 2]);
 lower_c : mu - k_c * sigma;
 upper_c : mu + k_c * sigma;
 N_pop : rand([500, 1000, 1500, 2000, 2500]);
-ta3_prob : if k_c = 1 then 0.68 else 0.95;
+ta3_prob : if k_c = 1 then 68/100 else 95/100;
+ta3_prob_str : if k_c = 1 then "0.68" else "0.95";
 ta3 : ta3_prob * N_pop;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text><![CDATA[<p>N({@mu@}, {@sigma@}). Part a: k={@k_a@}, P={@ta1@}. Part b: {@sign_b@} {@bound_b@}, P={@ta2@}. Part c: N={@N_pop@}, P={@ta3_prob@}, Expected={@ta3@}.</p>]]></text>
+      <text><![CDATA[<p>N({@mu@}, {@sigma@}). Part a: k={@k_a@}, P={@ta1_str@}. Part b: {@sign_b@} {@bound_b@}, P={@ta2_str@}. Part c: N={@N_pop@}, P={@ta3_prob_str@}, Expected={@ta3@}.</p>]]></text>
     </questionnote>
     <questiondescription format="html">
       <text><![CDATA[<p id="concept">Normal Distribution (Empirical Rule)</p>
@@ -268,7 +278,7 @@ ta3 : ta3_prob * N_pop;]]></text>
         <description>Check if they forgot to divide by 2</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
-        <tans>1 - rule_b</tans>
+        <tans>ta2_wrong</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>+</truescoremode>
@@ -277,7 +287,7 @@ ta3 : ta3_prob * N_pop;]]></text>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt2-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>You calculated the probability for <b>both</b> extreme tails combined (\(1 - {@rule_b@}\)). Because the question asks for only one direction ({@tail_word@}), you must divide that remaining probability by 2.</p>]]></text>
+          <text><![CDATA[<p>You calculated the probability for <b>both</b> extreme tails combined (\(1 - {@rule_b_str@}\)). Because the question asks for only one direction ({@tail_word@}), you must divide that remaining probability by 2.</p>]]></text>
         </truefeedback>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
@@ -336,7 +346,7 @@ ta3 : ta3_prob * N_pop;]]></text>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt3-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>You entered the theoretical probability (\({@ta3_prob@}\)). To find the <b>expected count</b>, you must multiply that probability by the total population (\({@N_pop@}\) cows).</p>]]></text>
+          <text><![CDATA[<p>You entered the theoretical probability (\({@ta3_prob_str@}\)). To find the <b>expected count</b>, you must multiply that probability by the total population (\({@N_pop@}\) cows).</p>]]></text>
         </truefeedback>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
@@ -348,6 +358,87 @@ ta3 : ta3_prob * N_pop;]]></text>
         </falsefeedback>
       </node>
     </prt>
+    <deployedseed>1261233585</deployedseed>
+    <deployedseed>833374608</deployedseed>
+    <deployedseed>1645333526</deployedseed>
+    <deployedseed>2079262346</deployedseed>
+    <deployedseed>500774442</deployedseed>
+    <deployedseed>407001004</deployedseed>
+    <deployedseed>31493608</deployedseed>
+    <deployedseed>2025868987</deployedseed>
+    <deployedseed>1756218235</deployedseed>
+    <deployedseed>1375350583</deployedseed>
+    <deployedseed>1884381316</deployedseed>
+    <deployedseed>1702662998</deployedseed>
+    <deployedseed>209210474</deployedseed>
+    <deployedseed>1227540127</deployedseed>
+    <deployedseed>2023789379</deployedseed>
+    <deployedseed>1499131355</deployedseed>
+    <deployedseed>610299559</deployedseed>
+    <deployedseed>708096273</deployedseed>
+    <deployedseed>1408660318</deployedseed>
+    <deployedseed>1745672793</deployedseed>
+    <deployedseed>580678896</deployedseed>
+    <deployedseed>700338105</deployedseed>
+    <deployedseed>21827746</deployedseed>
+    <deployedseed>981392439</deployedseed>
+    <deployedseed>1594633097</deployedseed>
+    <deployedseed>1394114063</deployedseed>
+    <deployedseed>1965444619</deployedseed>
+    <deployedseed>1875146164</deployedseed>
+    <deployedseed>1086607689</deployedseed>
+    <deployedseed>1905720729</deployedseed>
+    <deployedseed>1200199954</deployedseed>
+    <deployedseed>1866360759</deployedseed>
+    <deployedseed>1934618222</deployedseed>
+    <deployedseed>1797226180</deployedseed>
+    <deployedseed>1233580696</deployedseed>
+    <deployedseed>1851319255</deployedseed>
+    <deployedseed>423103134</deployedseed>
+    <deployedseed>1039578900</deployedseed>
+    <deployedseed>2088487543</deployedseed>
+    <deployedseed>46878304</deployedseed>
+    <deployedseed>1400077467</deployedseed>
+    <deployedseed>1875231998</deployedseed>
+    <deployedseed>608325932</deployedseed>
+    <deployedseed>1692571826</deployedseed>
+    <deployedseed>347476729</deployedseed>
+    <deployedseed>315665233</deployedseed>
+    <deployedseed>905866289</deployedseed>
+    <deployedseed>2073050956</deployedseed>
+    <deployedseed>1337946000</deployedseed>
+    <deployedseed>2112412069</deployedseed>
+    <deployedseed>1148960517</deployedseed>
+    <deployedseed>2050086446</deployedseed>
+    <deployedseed>976040466</deployedseed>
+    <deployedseed>273056674</deployedseed>
+    <deployedseed>774932392</deployedseed>
+    <deployedseed>2028400459</deployedseed>
+    <deployedseed>398342147</deployedseed>
+    <deployedseed>1064349879</deployedseed>
+    <deployedseed>1182634200</deployedseed>
+    <deployedseed>1291357230</deployedseed>
+    <deployedseed>1219674267</deployedseed>
+    <deployedseed>684378351</deployedseed>
+    <deployedseed>2033856173</deployedseed>
+    <deployedseed>704635057</deployedseed>
+    <deployedseed>1429273382</deployedseed>
+    <deployedseed>1399984985</deployedseed>
+    <deployedseed>1415993807</deployedseed>
+    <deployedseed>1841124124</deployedseed>
+    <deployedseed>1358408915</deployedseed>
+    <deployedseed>1279249467</deployedseed>
+    <deployedseed>1523867619</deployedseed>
+    <deployedseed>1509416316</deployedseed>
+    <deployedseed>1533929714</deployedseed>
+    <deployedseed>660354561</deployedseed>
+    <deployedseed>1941258835</deployedseed>
+    <deployedseed>1830325216</deployedseed>
+    <deployedseed>178368306</deployedseed>
+    <deployedseed>1082716184</deployedseed>
+    <deployedseed>1450721262</deployedseed>
+    <deployedseed>1144043688</deployedseed>
+    <deployedseed>1758754485</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Everything correct</description>
@@ -391,7 +482,7 @@ ta3 : ta3_prob * N_pop;]]></text>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>1 - rule_b</value>
+        <value>ta2_wrong</value>
       </testinput>
       <testinput>
         <name>ans3</name>
