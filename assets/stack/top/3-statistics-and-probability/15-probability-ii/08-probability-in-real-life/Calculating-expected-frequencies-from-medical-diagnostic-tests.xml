@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating expected frequencies from medical diagnostic tests</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A clinic in Kisumu uses a rapid diagnostic test for malaria. Historical data shows that <b>{@num_D@}%</b> of patients presenting with a fever at this clinic actually have malaria.</p>
+
+<p>The test is highly effective, but not perfect:</p>
+<ul>
+  <li>It correctly identifies malaria in <b>{@num_TP@}%</b> of cases where the patient actually has malaria (a True Positive).</li>
+  <li>It correctly gives a negative result in <b>{@num_TN@}%</b> of cases where the patient does <b>not</b> have malaria (a True Negative).</li>
+</ul>
+
+<p><b>a) </b> Find the probability that a randomly selected patient presenting with a fever tests positive.</p>
+<p><i>(Enter your answer as an exact decimal).</i></p>
+<p>\(P(\text{Positive}) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Out of a batch of <b>{@pop_size@}</b> patients presenting with a fever, estimate how many will test positive but do <b>not</b> actually have malaria (False Positives).</p>
+<p><i>(Enter your answer as a whole number).</i></p>
+<p>\(\text{Expected False Positives} =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>First, convert all percentages to exact decimal probabilities:</p>
+<ul>
+  <li>\(P(\text{Malaria}) = {@str_P_M@}\)</li>
+  <li>\(P(\text{No Malaria}) = 1 - {@str_P_M@} = {@str_P_NM@}\)</li>
+  <li>\(P(\text{Positive} \mid \text{Malaria}) = {@str_P_Pos_given_M@}\)</li>
+  <li>\(P(\text{Negative} \mid \text{No Malaria}) = {@str_P_Neg_given_NM@}\)</li>
+</ul>
+
+<p>We must also find the <b>False Positive</b> rate (testing positive when you do not have malaria):<br>
+\(P(\text{Positive} \mid \text{No Malaria}) = 1 - P(\text{Negative} \mid \text{No Malaria}) = 1 - {@str_P_Neg_given_NM@} = {@str_P_Pos_given_NM@}\)</p>
+
+<p><b>Part a: Probability of a Positive Result</b><br>
+A patient can test positive via two different paths: (Malaria and Positive) OR (No Malaria and Positive).</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Malaria and Positive}) = {@str_P_M@} \times {@str_P_Pos_given_M@} = {@str_path1@} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{No Malaria and Positive}) = {@str_P_NM@} \times {@str_P_Pos_given_NM@} = {@str_path2@} \)</p>
+<p>Add these probabilities together:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Positive}) = {@str_path1@} + {@str_path2@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{Positive}) = {@str_ta1@} } \)</p>
+
+<p><b>Part b: Expected False Positives</b><br>
+A false positive occurs on the (No Malaria and Positive) path, which has a probability of \({@str_path2@}\).<br>
+To find the expected number out of \({@pop_size@}\) patients, multiply the probability by the total population:</p>
+<p style="margin-left: 20px;">\( \displaystyle \text{Expected False Positives} = {@str_path2@} \times {@pop_size@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ \text{Expected} = {@ta2@} \text{ patients} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Master arrays crafted to ensure the expected value in Part B is always an integer */
+num_D_list : [10, 20, 30];
+num_D : rand(num_D_list);
+
+num_TP_list : [90, 92, 94, 95, 96, 98];
+num_TP : rand(num_TP_list);
+
+num_TN_list : [85, 90, 95];
+num_TN : rand(num_TN_list);
+
+pop_size : rand([1000, 2000, 5000]);
+
+/* Exact fractional probabilities */
+P_M : num_D / 100;
+P_NM : (100 - num_D) / 100;
+
+P_Pos_given_M : num_TP / 100;
+P_Neg_given_NM : num_TN / 100;
+P_Pos_given_NM : (100 - num_TN) / 100;
+
+/* Targets */
+path1 : P_M * P_Pos_given_M;
+path2 : P_NM * P_Pos_given_NM;
+
+ta1 : path1 + path2;
+ta2 : pop_size * path2;
+
+/* Display variables for clean worked solution output */
+str_P_M : float(P_M);
+str_P_NM : float(P_NM);
+str_P_Pos_given_M : float(P_Pos_given_M);
+str_P_Neg_given_NM : float(P_Neg_given_NM);
+str_P_Pos_given_NM : float(P_Pos_given_NM);
+str_path1 : float(path1);
+str_path2 : float(path2);
+str_ta1 : float(ta1);
+
+/* Distractors */
+ta1_wrong_one_path : path1; /* Only calculated True Positives */
+ta2_wrong_rate : pop_size * P_Pos_given_NM; /* Multiplied population directly by conditional rate, ignoring P(NM) */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>P(M)={@str_P_M@}, P(+|M)={@str_P_Pos_given_M@}, P(-|NM)={@str_P_Neg_given_NM@}. P(+)={@str_ta1@}. Expected FP out of {@pop_size@} = {@ta2@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Probability in Real Life: Expected Frequencies</p>
+<p id="description">Grade 11 CBE: Calculating total probability using medical diagnostic rates and applying the Law of Large Numbers to find expected false positives.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they only calculated True Positives</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong_one_path</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You only calculated the probability of a <i>True Positive</i> (having malaria and testing positive). A patient can also test positive if they do not have malaria (a False Positive). You must calculate both paths and add them together.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You successfully added the probability of a True Positive to the probability of a False Positive.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Review the probabilities of both paths that lead to a positive result.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they ignored the population rate</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong_rate</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You multiplied the total population directly by the conditional false positive rate. You must remember that only a fraction of the population does not have malaria in the first place. You must multiply the total population by the <i>combined path probability</i> of (No Malaria AND Positive).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly multiplied the terminal path probability by the total patient population.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply the total number of patients by the probability of the (No Malaria AND Positive) path.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>691215065</deployedseed>
+    <deployedseed>1611781790</deployedseed>
+    <deployedseed>490701442</deployedseed>
+    <deployedseed>951271881</deployedseed>
+    <deployedseed>70930885</deployedseed>
+    <deployedseed>70704916</deployedseed>
+    <deployedseed>507912475</deployedseed>
+    <deployedseed>2024560378</deployedseed>
+    <deployedseed>520166527</deployedseed>
+    <deployedseed>561697007</deployedseed>
+    <deployedseed>13061378</deployedseed>
+    <deployedseed>599826070</deployedseed>
+    <deployedseed>1669977410</deployedseed>
+    <deployedseed>1446914342</deployedseed>
+    <deployedseed>2095998602</deployedseed>
+    <deployedseed>322160935</deployedseed>
+    <deployedseed>1123304050</deployedseed>
+    <deployedseed>987541075</deployedseed>
+    <deployedseed>826247446</deployedseed>
+    <deployedseed>1786094415</deployedseed>
+    <deployedseed>2138503153</deployedseed>
+    <deployedseed>746584107</deployedseed>
+    <deployedseed>1014068862</deployedseed>
+    <deployedseed>1526032955</deployedseed>
+    <deployedseed>1582071696</deployedseed>
+    <deployedseed>1185916449</deployedseed>
+    <deployedseed>2087032139</deployedseed>
+    <deployedseed>597230242</deployedseed>
+    <deployedseed>493993099</deployedseed>
+    <deployedseed>1767808037</deployedseed>
+    <deployedseed>1093899111</deployedseed>
+    <deployedseed>569148379</deployedseed>
+    <deployedseed>388995031</deployedseed>
+    <deployedseed>1775930412</deployedseed>
+    <deployedseed>1225956080</deployedseed>
+    <deployedseed>1355548706</deployedseed>
+    <deployedseed>1890620667</deployedseed>
+    <deployedseed>739129993</deployedseed>
+    <deployedseed>1050401323</deployedseed>
+    <deployedseed>1385378051</deployedseed>
+    <deployedseed>189560293</deployedseed>
+    <deployedseed>1227015165</deployedseed>
+    <deployedseed>1636177516</deployedseed>
+    <deployedseed>1851232659</deployedseed>
+    <deployedseed>538551101</deployedseed>
+    <deployedseed>966031762</deployedseed>
+    <deployedseed>1210618452</deployedseed>
+    <deployedseed>996083539</deployedseed>
+    <deployedseed>2020424775</deployedseed>
+    <deployedseed>581726814</deployedseed>
+    <deployedseed>1486487451</deployedseed>
+    <deployedseed>1484095858</deployedseed>
+    <deployedseed>822234868</deployedseed>
+    <deployedseed>1418802908</deployedseed>
+    <deployedseed>1669641753</deployedseed>
+    <deployedseed>29163554</deployedseed>
+    <deployedseed>1153531994</deployedseed>
+    <deployedseed>724093978</deployedseed>
+    <deployedseed>155352890</deployedseed>
+    <deployedseed>892867141</deployedseed>
+    <deployedseed>1354229132</deployedseed>
+    <deployedseed>1844217052</deployedseed>
+    <deployedseed>1656960102</deployedseed>
+    <deployedseed>2036157073</deployedseed>
+    <deployedseed>1213938072</deployedseed>
+    <deployedseed>795204234</deployedseed>
+    <deployedseed>1987907961</deployedseed>
+    <deployedseed>1979621394</deployedseed>
+    <deployedseed>1902361846</deployedseed>
+    <deployedseed>965069387</deployedseed>
+    <deployedseed>471804435</deployedseed>
+    <deployedseed>1601039171</deployedseed>
+    <deployedseed>1891236576</deployedseed>
+    <deployedseed>959292697</deployedseed>
+    <deployedseed>1682066603</deployedseed>
+    <deployedseed>1736539066</deployedseed>
+    <deployedseed>906996926</deployedseed>
+    <deployedseed>1179243820</deployedseed>
+    <deployedseed>862582780</deployedseed>
+    <deployedseed>1970321302</deployedseed>
+    <deployedseed>1241420017</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Common path and expected value errors</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong_one_path</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong_rate</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

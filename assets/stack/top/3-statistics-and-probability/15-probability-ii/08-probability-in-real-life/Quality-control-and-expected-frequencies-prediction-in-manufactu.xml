@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Quality control and expected frequencies prediction in manufacturing</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A light bulb factory in Eldoret tests its products for quality control. Historical data shows that <b>{@defective_rate@}%</b> of the bulbs produced in a standard run are defective.</p>
+
+<p><b>a) </b> Find the probability that a randomly selected light bulb from this factory is <b>working</b> (not defective).</p>
+<p><i>(Enter your answer as an exact decimal).</i></p>
+<p>\(P(\text{Working}) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> If the factory produces a daily batch of <b>{@batch_size@}</b> bulbs, how many bulbs are expected to be <b>defective</b>?</p>
+<p><i>(Enter your answer as a whole number).</i></p>
+<p>\(\text{Expected Defective} =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> In that same daily batch of <b>{@batch_size@}</b> bulbs, how many bulbs are expected to be <b>working</b> and ready for sale?</p>
+<p>\(\text{Expected Working} =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>First, identify the baseline probability of a defect:<br>
+\(\displaystyle P(\text{Defective}) = \frac{{@defective_rate@}}{100} = {@P_D@}\)</p>
+
+<p><b>Part a: Probability of a Working Bulb</b><br>
+A bulb is either defective or working. We use the complement rule to find the probability that a bulb works:</p>
+<p style="margin-left: 20px;">\(\displaystyle P(\text{Working}) = 1 - P(\text{Defective})\)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Working}) = 1 - {@P_D@} = {@ta1@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{Working}) = {@ta1@} } \)</p>
+
+<p><b>Part b: Expected Defective Bulbs</b><br>
+The expected frequency is the probability of the event multiplied by the total number of trials (the batch size).</p>
+<p style="margin-left: 20px;">\(\displaystyle \text{Expected Defective} = P(\text{Defective}) \times \text{Total Bulbs}\)</p>
+<p style="margin-left: 20px;">\( \displaystyle \text{Expected Defective} = {@P_D@} \times {@batch_size@} = {@ta2@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ \text{Expected Defective} = {@ta2@} \text{ bulbs} } \)</p>
+
+<p><b>Part c: Expected Working Bulbs</b><br>
+You can find this in two ways. Either multiply the probability of a working bulb by the total batch size, or simply subtract the expected defective bulbs from the total batch.</p>
+<p style="margin-left: 20px;"><b>Method 1:</b> \( {@ta1@} \times {@batch_size@} = {@ta3@} \)</p>
+<p style="margin-left: 20px;"><b>Method 2:</b> \( {@batch_size@} - {@ta2@} = {@ta3@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ \text{Expected Working} = {@ta3@} \text{ bulbs} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Master arrays to generate exactly 100 variants */
+idx_rate : rand([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+rate_list : [1, 2, 3, 4, 5, 6, 8, 10, 12, 15];
+defective_rate : rate_list[idx_rate];
+
+idx_batch : rand([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+batch_list : [500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 8000, 10000];
+batch_size : batch_list[idx_batch];
+
+/* Exact fractional probabilities calculated safely */
+P_D : float(defective_rate / 100);
+
+/* Targets */
+ta1 : float(1 - P_D);
+/* Multiplied out using integers first to prevent floating point `.000001` drift on expected counts */
+ta2 : (defective_rate * batch_size) / 100;
+ta3 : batch_size - ta2;
+
+/* Distractors for specific PRT checks */
+ta1_wrong_defective : P_D; /* Forgot the complement rule */
+ta2_wrong_working : ta3; /* Confused defective for working */
+ta3_wrong_defective : ta2; /* Confused working for defective */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Rate={@defective_rate@}%, n={@batch_size@}. P(Work)={@ta1@}, E(Def)={@ta2@}, E(Work)={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Probability in Real Life: Quality Control</p>
+<p id="description">Grade 11 CBE: Calculating probabilities via the complement rule and finding expected frequencies in a manufacturing quality control scenario.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they forgot the complement</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong_defective</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability that a bulb is <b>defective</b>. You need to find the probability that the bulb is <b>working</b> by subtracting the defective probability from 1.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You accurately applied the complement rule.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Convert the percentage to a decimal and subtract it from 1.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they calculated expected working</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong_working</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the expected number of <b>working</b> bulbs. This question asks for the expected number of <b>defective</b> bulbs. Multiply the defective probability by the total batch size.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply the total batch size by the probability that a bulb is defective.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they calculated expected defective</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong_defective</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the expected number of <b>defective</b> bulbs again. Subtract your answer from part (b) from the total batch size to find the number of working bulbs.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Either multiply the probability of a working bulb by the total batch size, or subtract the expected defective bulbs from the total batch size.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1190810320</deployedseed>
+    <deployedseed>1281596352</deployedseed>
+    <deployedseed>295220305</deployedseed>
+    <deployedseed>2098962897</deployedseed>
+    <deployedseed>481719022</deployedseed>
+    <deployedseed>1879637267</deployedseed>
+    <deployedseed>68768974</deployedseed>
+    <deployedseed>1665641305</deployedseed>
+    <deployedseed>1290525707</deployedseed>
+    <deployedseed>319099122</deployedseed>
+    <deployedseed>1554686945</deployedseed>
+    <deployedseed>1822936757</deployedseed>
+    <deployedseed>1334523441</deployedseed>
+    <deployedseed>762633491</deployedseed>
+    <deployedseed>1819836076</deployedseed>
+    <deployedseed>1472965448</deployedseed>
+    <deployedseed>1144488081</deployedseed>
+    <deployedseed>806956453</deployedseed>
+    <deployedseed>171621784</deployedseed>
+    <deployedseed>226493538</deployedseed>
+    <deployedseed>623017548</deployedseed>
+    <deployedseed>1184610233</deployedseed>
+    <deployedseed>2027959273</deployedseed>
+    <deployedseed>619714469</deployedseed>
+    <deployedseed>1132574857</deployedseed>
+    <deployedseed>781642059</deployedseed>
+    <deployedseed>2041862311</deployedseed>
+    <deployedseed>13101547</deployedseed>
+    <deployedseed>1353796380</deployedseed>
+    <deployedseed>946207676</deployedseed>
+    <deployedseed>137710587</deployedseed>
+    <deployedseed>491427799</deployedseed>
+    <deployedseed>110734973</deployedseed>
+    <deployedseed>1502372148</deployedseed>
+    <deployedseed>349046438</deployedseed>
+    <deployedseed>447084537</deployedseed>
+    <deployedseed>732948412</deployedseed>
+    <deployedseed>490041983</deployedseed>
+    <deployedseed>592882078</deployedseed>
+    <deployedseed>1441088907</deployedseed>
+    <deployedseed>338340635</deployedseed>
+    <deployedseed>17164174</deployedseed>
+    <deployedseed>1022195412</deployedseed>
+    <deployedseed>1683397543</deployedseed>
+    <deployedseed>1596881380</deployedseed>
+    <deployedseed>974845876</deployedseed>
+    <deployedseed>846888653</deployedseed>
+    <deployedseed>1527685328</deployedseed>
+    <deployedseed>390564345</deployedseed>
+    <deployedseed>226728316</deployedseed>
+    <deployedseed>1638826782</deployedseed>
+    <deployedseed>910516753</deployedseed>
+    <deployedseed>1409089448</deployedseed>
+    <deployedseed>1099717658</deployedseed>
+    <deployedseed>1583489005</deployedseed>
+    <deployedseed>260198226</deployedseed>
+    <deployedseed>1095227511</deployedseed>
+    <deployedseed>1632585987</deployedseed>
+    <deployedseed>332181757</deployedseed>
+    <deployedseed>1563635052</deployedseed>
+    <deployedseed>498725252</deployedseed>
+    <deployedseed>1426578895</deployedseed>
+    <deployedseed>510586319</deployedseed>
+    <deployedseed>1587805431</deployedseed>
+    <deployedseed>668694804</deployedseed>
+    <deployedseed>1782783819</deployedseed>
+    <deployedseed>870243462</deployedseed>
+    <deployedseed>2109282570</deployedseed>
+    <deployedseed>143700083</deployedseed>
+    <deployedseed>1389110302</deployedseed>
+    <deployedseed>83551500</deployedseed>
+    <deployedseed>1962087443</deployedseed>
+    <deployedseed>307330762</deployedseed>
+    <deployedseed>773223887</deployedseed>
+    <deployedseed>1968380397</deployedseed>
+    <deployedseed>2050758107</deployedseed>
+    <deployedseed>1186864629</deployedseed>
+    <deployedseed>647503979</deployedseed>
+    <deployedseed>1551929128</deployedseed>
+    <deployedseed>1847183459</deployedseed>
+    <deployedseed>192959471</deployedseed>
+    <deployedseed>157566836</deployedseed>
+    <deployedseed>146746674</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Errors in complement and swapped expectations</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong_defective</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong_working</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_wrong_defective</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

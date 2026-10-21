@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating expected profit for micro-business insurance policies</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Bima Salama Insurance offers a fire protection policy for micro-business owners in Nakuru. The company charges an annual premium of <b>KES {@premium@}</b> per policy.</p>
+
+<p>If a fire occurs, the insurance company pays out a compensation claim of <b>KES {@payout@}</b>. Based on historical county data, the probability of a micro-business making a fire claim in a given year is \(\displaystyle \frac{{@claim_rate@}}{1000}\).</p>
+
+<p><b>a) </b> Calculate the expected payout (the average financial risk to the insurance company) for a single policy.</p>
+<p><i>(Enter your answer as an exact number of KES).</i></p>
+<p>\(\text{Expected Payout} =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Calculate the expected profit the insurance company makes on a single policy.</p>
+<p>\(\text{Expected Profit} =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> If the company successfully sells <b>{@num_policies@}</b> policies this year, what is their total projected expected profit?</p>
+<p>\(\text{Total Profit} =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Expected Payout</b><br>
+The expected value of an event is the probability of the event multiplied by its financial outcome. The company only pays out if a fire occurs.</p>
+<p style="margin-left: 20px;">\( \displaystyle \text{Expected Payout} = P(\text{Claim}) \times \text{Payout Amount} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle \text{Expected Payout} = \frac{{@claim_rate@}}{1000} \times {@payout@} = {@ta1@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ \text{Expected Payout} = \text{KES } {@ta1@} } \)</p>
+
+<p><b>Part b: Expected Profit per Policy</b><br>
+The expected profit is the money the company collects (the premium) minus the money it expects to pay out on average.</p>
+<p style="margin-left: 20px;">\( \displaystyle \text{Expected Profit} = \text{Premium} - \text{Expected Payout} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle \text{Expected Profit} = {@premium@} - {@ta1@} = {@ta2@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ \text{Expected Profit} = \text{KES } {@ta2@} } \)</p>
+
+<p><b>Part c: Total Projected Profit</b><br>
+To find the total profit for multiple policies, multiply the expected profit per policy by the number of policies sold.</p>
+<p style="margin-left: 20px;">\( \displaystyle \text{Total Profit} = \text{Expected Profit per Policy} \times \text{Number of Policies} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle \text{Total Profit} = {@ta2@} \times {@num_policies@} = {@ta3@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ \text{Total Profit} = \text{KES } {@ta3@} } \)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomize payout and claim rates to ensure exact integer expected values */
+payout : rand([100000, 150000, 200000, 250000, 300000, 400000, 500000]);
+claim_rate : rand([2, 4, 5, 8, 10, 12, 15]);
+
+/* The prob_claim is claim_rate / 1000. 
+   Because payout has at least 5 zeros, expected_payout is always an exact integer. */
+expected_payout : (payout * claim_rate) / 1000;
+
+/* Generate a premium that guarantees a realistic positive expected profit margin */
+profit_margin : rand([500, 800, 1000, 1200, 1500, 2000, 2500]);
+premium : expected_payout + profit_margin;
+
+/* Scale of operations */
+num_policies : rand([500, 1000, 1200, 1500, 2000, 2500, 5000]);
+
+/* Target Answers */
+ta1 : expected_payout;
+ta2 : profit_margin; /* By definition: premium - expected_payout */
+ta3 : ta2 * num_policies;
+
+/* Distractors */
+ta1_wrong_complement : (payout * (1000 - claim_rate)) / 1000; /* Calculated payout for NOT having a fire */
+ta2_wrong_max_loss : premium - payout; /* Assumed profit was premium minus the maximum possible payout instead of expected */
+ta3_wrong_revenue : premium * num_policies; /* Calculated total revenue instead of total profit */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Prem={@premium@}, Payout={@payout@}, P(Claim)={@claim_rate@}/1000. E(Payout)={@ta1@}, E(Profit)={@ta2@}, Total(n={@num_policies@})={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Expected Value and Profit</p>
+<p id="description">Grade 11 CBE: Calculating expected financial risk and projected business profit using probability in an insurance context.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they used the complement probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong_complement</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You multiplied the payout by the probability of <i>not</i> having a fire. The company only pays out when a fire actually occurs, so you must multiply the payout by the probability of a claim.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. The expected payout is the probability of the claim multiplied by the payout amount.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply the probability of a claim (\(\frac{{@claim_rate@}}{1000}\)) by the payout amount.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they subtracted the full payout instead of the expected payout</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong_max_loss</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You subtracted the entire maximum payout from the premium. Remember that the company does not pay out on every single policy. You must subtract the <i>average expected payout</i> you found in part (a) from the premium to find the expected profit.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. Profit is the collected premium minus the expected risk payout.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Subtract your expected payout from part (a) from the premium charged.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they calculated revenue instead of profit</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong_revenue</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the total <i>revenue</i> (Premium \(\times\) Number of policies). To find the total <i>profit</i>, you must multiply the expected profit per policy you found in part (b) by the number of policies.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You scaled the expected profit accurately across the entire portfolio.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply your expected profit per policy from part (b) by the total number of policies sold.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1509915072</deployedseed>
+    <deployedseed>749198128</deployedseed>
+    <deployedseed>157895506</deployedseed>
+    <deployedseed>2016224088</deployedseed>
+    <deployedseed>1664788234</deployedseed>
+    <deployedseed>1236122473</deployedseed>
+    <deployedseed>1443146401</deployedseed>
+    <deployedseed>2004584645</deployedseed>
+    <deployedseed>341336388</deployedseed>
+    <deployedseed>644766464</deployedseed>
+    <deployedseed>1655264877</deployedseed>
+    <deployedseed>616607403</deployedseed>
+    <deployedseed>1718954738</deployedseed>
+    <deployedseed>1365352757</deployedseed>
+    <deployedseed>1581231899</deployedseed>
+    <deployedseed>1983823516</deployedseed>
+    <deployedseed>1020231497</deployedseed>
+    <deployedseed>1366055998</deployedseed>
+    <deployedseed>149932101</deployedseed>
+    <deployedseed>732010522</deployedseed>
+    <deployedseed>1233051148</deployedseed>
+    <deployedseed>1302209615</deployedseed>
+    <deployedseed>2061796477</deployedseed>
+    <deployedseed>2136754557</deployedseed>
+    <deployedseed>222424820</deployedseed>
+    <deployedseed>209467928</deployedseed>
+    <deployedseed>1059437764</deployedseed>
+    <deployedseed>1460873276</deployedseed>
+    <deployedseed>398681440</deployedseed>
+    <deployedseed>188012086</deployedseed>
+    <deployedseed>1048411842</deployedseed>
+    <deployedseed>1970468403</deployedseed>
+    <deployedseed>1360786888</deployedseed>
+    <deployedseed>1205838228</deployedseed>
+    <deployedseed>1062734935</deployedseed>
+    <deployedseed>1313211563</deployedseed>
+    <deployedseed>853478679</deployedseed>
+    <deployedseed>1755395284</deployedseed>
+    <deployedseed>1511845595</deployedseed>
+    <deployedseed>693645308</deployedseed>
+    <deployedseed>1025261075</deployedseed>
+    <deployedseed>848895428</deployedseed>
+    <deployedseed>330570334</deployedseed>
+    <deployedseed>1636575406</deployedseed>
+    <deployedseed>1120417490</deployedseed>
+    <deployedseed>992346665</deployedseed>
+    <deployedseed>103277136</deployedseed>
+    <deployedseed>1022209016</deployedseed>
+    <deployedseed>187318476</deployedseed>
+    <deployedseed>31527061</deployedseed>
+    <deployedseed>551672249</deployedseed>
+    <deployedseed>384005983</deployedseed>
+    <deployedseed>1480622971</deployedseed>
+    <deployedseed>331467736</deployedseed>
+    <deployedseed>883014720</deployedseed>
+    <deployedseed>507635231</deployedseed>
+    <deployedseed>728741663</deployedseed>
+    <deployedseed>380001258</deployedseed>
+    <deployedseed>1888724636</deployedseed>
+    <deployedseed>727639568</deployedseed>
+    <deployedseed>1224594559</deployedseed>
+    <deployedseed>1574349321</deployedseed>
+    <deployedseed>2119040443</deployedseed>
+    <deployedseed>959612461</deployedseed>
+    <deployedseed>1579966610</deployedseed>
+    <deployedseed>1589104758</deployedseed>
+    <deployedseed>220290770</deployedseed>
+    <deployedseed>936536831</deployedseed>
+    <deployedseed>1228463928</deployedseed>
+    <deployedseed>255917192</deployedseed>
+    <deployedseed>801992704</deployedseed>
+    <deployedseed>179530749</deployedseed>
+    <deployedseed>587865643</deployedseed>
+    <deployedseed>1693785092</deployedseed>
+    <deployedseed>704257282</deployedseed>
+    <deployedseed>1961367297</deployedseed>
+    <deployedseed>142108425</deployedseed>
+    <deployedseed>548676259</deployedseed>
+    <deployedseed>1762059188</deployedseed>
+    <deployedseed>493603116</deployedseed>
+    <deployedseed>1439530412</deployedseed>
+    <deployedseed>2071291110</deployedseed>
+    <deployedseed>1877521990</deployedseed>
+    <deployedseed>562341905</deployedseed>
+    <deployedseed>1457865221</deployedseed>
+    <deployedseed>237896140</deployedseed>
+    <deployedseed>61170568</deployedseed>
+    <deployedseed>1928287079</deployedseed>
+    <deployedseed>45239042</deployedseed>
+    <deployedseed>2067681967</deployedseed>
+    <deployedseed>1875513405</deployedseed>
+    <deployedseed>1575203575</deployedseed>
+    <deployedseed>459084418</deployedseed>
+    <deployedseed>547148947</deployedseed>
+    <deployedseed>679715882</deployedseed>
+    <deployedseed>1551263276</deployedseed>
+    <deployedseed>585468017</deployedseed>
+    <deployedseed>1569907899</deployedseed>
+    <deployedseed>1100377384</deployedseed>
+    <deployedseed>1642753178</deployedseed>
+    <deployedseed>375040840</deployedseed>
+    <deployedseed>620978332</deployedseed>
+    <deployedseed>1785243118</deployedseed>
+    <deployedseed>1686830437</deployedseed>
+    <deployedseed>43919783</deployedseed>
+    <deployedseed>1991658468</deployedseed>
+    <deployedseed>674333486</deployedseed>
+    <deployedseed>518470648</deployedseed>
+    <deployedseed>667621743</deployedseed>
+    <deployedseed>1192371998</deployedseed>
+    <deployedseed>591808810</deployedseed>
+    <deployedseed>1956730403</deployedseed>
+    <deployedseed>743963670</deployedseed>
+    <deployedseed>932860585</deployedseed>
+    <deployedseed>533965719</deployedseed>
+    <deployedseed>1265179057</deployedseed>
+    <deployedseed>1633641266</deployedseed>
+    <deployedseed>1783466195</deployedseed>
+    <deployedseed>1501964929</deployedseed>
+    <deployedseed>1964224488</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Errors in complement, max loss, and revenue</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong_complement</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong_max_loss</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_wrong_revenue</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
