@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating expected net return in a charity raffle</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A community group in Kakamega is organizing a charity raffle to raise funds for a new library. They sell exactly <b>{@total_tickets@}</b> tickets at a cost of <b>KES {@ticket_cost@}</b> each.</p>
+
+<p>There is only one winning ticket, and the grand prize is <b>KES {@prize_amount@}</b>. All other tickets win nothing.</p>
+
+<p><b>a) </b> If you buy exactly one ticket, what is the probability that you win the grand prize?</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P(\text{Win}) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Calculate the <i>expected gross payout</i> (the average mathematical value of the winnings) for a single ticket, before subtracting the cost of buying the ticket.</p>
+<p>\(\text{Expected Gross Payout} =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Calculate the <b>expected net return</b> (profit or loss) of purchasing one ticket. If it is an expected loss, be sure to include a negative sign (\(-\)).</p>
+<p>\(\text{Expected Net Return} =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Probability of Winning</b><br>
+Since there is only 1 winning ticket out of {@total_tickets@} total tickets sold, the probability is:<br>
+\( \displaystyle P(\text{Win}) = \frac{1}{{@total_tickets@}} = {@ta1@} \)</p>
+
+<p><b>Part b: Expected Gross Payout</b><br>
+The expected gross payout is the probability of winning multiplied by the prize amount.<br>
+\( \displaystyle \text{Expected Gross Payout} = P(\text{Win}) \times \text{Prize Amount} \)<br>
+\( \displaystyle \text{Expected Gross Payout} = \frac{1}{{@total_tickets@}} \times {@prize_amount@} = {@ta2@} \)<br>
+<span style="font-size: 1.2em;">\( \displaystyle \boxed{ \text{Expected Gross Payout} = \text{KES } {@ta2@} } \)</span></p>
+
+<p><b>Part c: Expected Net Return</b><br>
+The net return accounts for the initial cost of purchasing the ticket. You must subtract the ticket cost from the expected gross payout.<br>
+\( \displaystyle \text{Expected Net Return} = \text{Expected Gross Payout} - \text{Ticket Cost} \)<br>
+\( \displaystyle \text{Expected Net Return} = {@ta2@} - {@ticket_cost@} = {@ta3@} \)<br>
+<span style="font-size: 1.2em;">\( \displaystyle \boxed{ \text{Expected Net Return} = \text{KES } {@ta3@} } \)</span></p>
+
+<p><i>Note: Because the expected net return is negative, buying a raffle ticket is a mathematical loss on average, which makes sense because the goal of the raffle is for the charity to make a profit!</i></p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026010500</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomize variables to ensure clean integer payouts */
+total_tickets : rand([500, 1000, 2000, 2500, 5000]);
+ticket_cost : rand([50, 100, 150, 200]);
+
+/* Ensure the prize guarantees an integer Expected Value */
+multiplier : rand([4, 5, 6, 8]); /* e.g., EV is 4 to 8 times smaller than cost */
+expected_gross : ticket_cost * multiplier / 10; /* Gives clean integers like 20, 25, 40 */
+prize_amount : expected_gross * total_tickets;
+
+/* Targets */
+ta1 : 1 / total_tickets;
+ta2 : expected_gross;
+ta3 : ta2 - ticket_cost; /* Will always be negative */
+
+/* Distractors */
+ta3_wrong_positive : ticket_cost - ta2; /* Forgot the negative sign / flipped subtraction */
+ta3_wrong_prize : prize_amount - ticket_cost; /* Calculated net return IF they win, not the EXPECTED net return */</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>N={@total_tickets@}, Cost={@ticket_cost@}, Prize={@prize_amount@}. P(W)={@ta1@}, E(Gross)={@ta2@}, E(Net)={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Probability in Real Life: Expected Net Return</p>
+<p id="description">Grade 11 CBE: Calculating expected gross payout and expected net return (loss) in a lottery/raffle scenario.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Divide the number of winning tickets (1) by the total number of tickets sold.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply the probability of winning you found in part (a) by the grand prize amount.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check if they calculated expected net return IF they win</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong_prize</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the net profit <i>assuming you actually win the grand prize</i>. The question asks for the <b>expected</b> net return of a ticket before the drawing happens. You must subtract the ticket cost from the Expected Gross Payout you found in part (b).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they missed the negative sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong_positive</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your numerical value is correct, but the sign is backwards. Because the expected payout is less than the cost of the ticket, you take a mathematical loss on average. Ensure you include the negative sign.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly subtracted the ticket cost from the expected payout to find the expected net loss.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Subtract the cost of purchasing the ticket from the expected gross payout you calculated in part (b).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1867858140</deployedseed>
+    <deployedseed>63312361</deployedseed>
+    <deployedseed>1742570506</deployedseed>
+    <deployedseed>1321961536</deployedseed>
+    <deployedseed>290331956</deployedseed>
+    <deployedseed>1889734550</deployedseed>
+    <deployedseed>1051633252</deployedseed>
+    <deployedseed>420563224</deployedseed>
+    <deployedseed>1933068134</deployedseed>
+    <deployedseed>656370191</deployedseed>
+    <deployedseed>1913659733</deployedseed>
+    <deployedseed>1713831374</deployedseed>
+    <deployedseed>826468261</deployedseed>
+    <deployedseed>580217599</deployedseed>
+    <deployedseed>1311704376</deployedseed>
+    <deployedseed>1535859499</deployedseed>
+    <deployedseed>91602222</deployedseed>
+    <deployedseed>1637856608</deployedseed>
+    <deployedseed>630760263</deployedseed>
+    <deployedseed>780405031</deployedseed>
+    <deployedseed>1218132269</deployedseed>
+    <deployedseed>50994800</deployedseed>
+    <deployedseed>1465621393</deployedseed>
+    <deployedseed>238623437</deployedseed>
+    <deployedseed>1987076186</deployedseed>
+    <deployedseed>268297052</deployedseed>
+    <deployedseed>273556299</deployedseed>
+    <deployedseed>1552779222</deployedseed>
+    <deployedseed>828601141</deployedseed>
+    <deployedseed>445346407</deployedseed>
+    <deployedseed>905017499</deployedseed>
+    <deployedseed>1672988305</deployedseed>
+    <deployedseed>175431771</deployedseed>
+    <deployedseed>175020879</deployedseed>
+    <deployedseed>94549734</deployedseed>
+    <deployedseed>536314587</deployedseed>
+    <deployedseed>1467036346</deployedseed>
+    <deployedseed>729106958</deployedseed>
+    <deployedseed>1000152119</deployedseed>
+    <deployedseed>1732755293</deployedseed>
+    <deployedseed>869152381</deployedseed>
+    <deployedseed>1896566893</deployedseed>
+    <deployedseed>2135528789</deployedseed>
+    <deployedseed>1333420969</deployedseed>
+    <deployedseed>1187282942</deployedseed>
+    <deployedseed>1651115228</deployedseed>
+    <deployedseed>1830809783</deployedseed>
+    <deployedseed>1922746522</deployedseed>
+    <deployedseed>1533469509</deployedseed>
+    <deployedseed>1117264582</deployedseed>
+    <deployedseed>305941518</deployedseed>
+    <deployedseed>1531688123</deployedseed>
+    <deployedseed>221051072</deployedseed>
+    <deployedseed>422693394</deployedseed>
+    <deployedseed>7194411</deployedseed>
+    <deployedseed>1563715704</deployedseed>
+    <deployedseed>1541401767</deployedseed>
+    <deployedseed>1211989840</deployedseed>
+    <deployedseed>1644779234</deployedseed>
+    <deployedseed>1591931492</deployedseed>
+    <deployedseed>198477893</deployedseed>
+    <deployedseed>472879</deployedseed>
+    <deployedseed>466493448</deployedseed>
+    <deployedseed>1014509961</deployedseed>
+    <deployedseed>313933601</deployedseed>
+    <deployedseed>654402122</deployedseed>
+    <deployedseed>2111397323</deployedseed>
+    <deployedseed>947144806</deployedseed>
+    <deployedseed>1100525106</deployedseed>
+    <deployedseed>1176864581</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Everything correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Errors in net return logic</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_wrong_positive</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
