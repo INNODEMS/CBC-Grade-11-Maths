@@ -8,41 +8,45 @@
       <text><![CDATA[<p>The graph of a continuous function is shown below. The point P is marked on the curve.</p>
 [[jsxgraph width="560px" height="560px"]]
 var fA = ({#fA#}), fB = ({#fB#}), fC = ({#fC#}), fH = ({#fH#}), fK = ({#fK#});
-var px = ({#px#}), py = ({#py#}), ms = ({#ms#}), dd = ({#dd#}), dsec = ({#dsec#});
-var tx = ({#tx#}), ty = ({#ty#}), sx = ({#sx#}), sy = ({#sy#}), tys = ({#tys#});
+var px = ({#px#}), py = ({#py#});
+/* uniform scale: the board is square (560 x 560) and the visible area is square too, so one unit is the same length on both axes */
 var board = JXG.JSXGraph.initBoard(divid, {
-    boundingbox: [-7.5, 7.5, 7.5, -7.5],
+    boundingbox: [-8, 8, 8, -8],
     axis: false, grid: false, keepaspectratio: true,
     showCopyright: false, showNavigation: false,
     pan: {enabled: false}, zoom: {enabled: false}
 });
-/* labelled square grid, one line per whole number */
+var u = board.unitX;                              /* pixels per unit (identical for x and y) */
+var step = Math.ceil(28 / u);                     /* number every "step" units, so neighbouring labels are at least 28 px apart */
 var gi;
-for (gi = -8; gi != 9; gi++) {
-    board.create('line', [ [gi, 0], [gi, 1] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
-    board.create('line', [ [0, gi], [1, gi] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
-}
-board.create('axis', [ [0,0], [1,0] ], {strokeColor: '#222222', strokeWidth: 2,
-    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
-board.create('axis', [ [0,0], [0,1] ], {strokeColor: '#222222', strokeWidth: 2,
-    ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0, majorHeight: 10}});
-board.create('text', [7.3, 0.5, 'x'], {fixed: true, anchorX: 'right', fontSize: 16});
-board.create('text', [0.3, 7.3, 'y'], {fixed: true, anchorY: 'top', fontSize: 16});
-board.create('text', [-0.12, -0.1, '0'], {fixed: true, anchorX: 'right', anchorY: 'top', fontSize: 12});
-var boxCss = 'background:#ffffff; padding:1px 5px; border:1px solid #999999; border-radius:3px;';
-function f(t) { var u = t - fH; return fA * u * u * u + fB * u * u + fC * u + fK; }
-var curve = board.create('functiongraph', [f, -7.5, 7.5], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false});
-var P = board.create('point', [px, py], {name: '', size: 5, strokeColor: '#c62828', fillColor: '#c62828', fixed: true});
-/* letter label placed beside a point, on the side of the tangent away from the lines through it */
-function letter(x, y, txt) {
-    var n = Math.sqrt(1 + ms * ms);
-    board.create('text', [x - 0.6 * ms / n, y + 0.6 / n, txt], {fixed: true, highlight: false, fontSize: 15, anchorX: 'middle', anchorY: 'middle', cssStyle: boxCss});
-}
 
-/* the question graph labels P with its coordinates; near the right edge the label flips to the left of P */
-var flip = Math.max(0, Math.min(1, Math.round(px / 5)));
-board.create('text', [px + 0.35 * (1 - 2 * flip), py + 0.45, 'P(' + px + ', ' + py + ')'],
-    {fixed: true, highlight: false, fontSize: 14, anchorX: ['left', 'right'][flip], cssStyle: boxCss});
+/* square grid: one line for every whole number */
+for (gi = -8; gi != 9; gi++) {
+    board.create('segment', [ [gi, -8], [gi, 8] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+    board.create('segment', [ [-8, gi], [8, gi] ], {strokeColor: '#d4d4d4', strokeWidth: 1, fixed: true, highlight: false, layer: 0});
+}
+/* axes with arrow heads */
+board.create('arrow', [ [-8, 0], [8, 0] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false, layer: 2});
+board.create('arrow', [ [0, -8], [0, 8] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false, layer: 2});
+/* tick marks and numbers, drawn one by one:
+   x numbers are centred directly under their grid line; y numbers sit to the LEFT of the y-axis, level with their grid line */
+for (gi = -7; gi != 8; gi++) {
+    if (gi !== 0) {
+        board.create('segment', [ [gi, -4 / u], [gi, 4 / u] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false, layer: 2});
+        board.create('segment', [ [-4 / u, gi], [4 / u, gi] ], {strokeColor: '#222222', strokeWidth: 2, fixed: true, highlight: false, layer: 2});
+        if (gi % step === 0) {
+            board.create('text', [gi, -9 / u, '' + gi], {fixed: true, highlight: false, anchorX: 'middle', anchorY: 'top', fontSize: 13});
+            board.create('text', [-9 / u, gi, '' + gi], {fixed: true, highlight: false, anchorX: 'right', anchorY: 'middle', fontSize: 13});
+        }
+    }
+}
+board.create('text', [-9 / u, -9 / u, '0'], {fixed: true, highlight: false, anchorX: 'right', anchorY: 'top', fontSize: 13});
+board.create('text', [7.9 - 6 / u, 12 / u, 'x'], {fixed: true, highlight: false, anchorX: 'right', anchorY: 'bottom', fontSize: 16});
+board.create('text', [10 / u, 7.9 - 6 / u, 'y'], {fixed: true, highlight: false, anchorX: 'left', anchorY: 'top', fontSize: 16});
+
+function f(t) { var w = t - fH; return fA * w * w * w + fB * w * w + fC * w + fK; }
+var curve = board.create('functiongraph', [f, -8, 8], {strokeColor: '#1565c0', strokeWidth: 3, fixed: true, highlight: false});
+var P = board.create('point', [px, py], {name: '', size: 5, strokeColor: '#c62828', fillColor: '#c62828', fixed: true});
 [[/jsxgraph]]
 <p>When looking at the graph of a continuous function, to calculate the <strong>instantaneous rate of change</strong> at a single, specific point, which of the following statements describe what you must do?</p>
 <p><em>Select all that apply.</em></p>
@@ -203,7 +207,7 @@ letter(sx, sy, 'S');
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2025010100</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
       <text><![CDATA[/* ---------- the graph: a continuous function with one marked point P ----------
