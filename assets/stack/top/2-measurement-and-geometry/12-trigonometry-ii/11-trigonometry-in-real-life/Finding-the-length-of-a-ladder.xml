@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Finding the length of a ladder</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>
+A ladder rests against a vertical wall. The ladder reaches a height of {@height@} metres up the wall and makes an angle of {@theta@} degrees with the horizontal ground.
+</p>
+
+<p>Use the information to calculate the length of the ladder.</p>
+
+[[jsxgraph]]
+
+/* Retrieve the STACK variables */
+var theta = {#theta#};
+var h = {#height#};
+
+/* Convert the angle to radians and calculate horizontal distance */
+var angleRad = theta * Math.PI / 180;
+var x = h / Math.tan(angleRad);
+
+/* Initialise the JSXGraph board */
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-3, h + 2, x + 2, -2],
+    axis: false,
+    showCopyright: false,
+    showNavigation: false,
+    keepaspectratio: false
+});
+
+/* Define the triangle vertices */
+var A = board.create('point', [0, 0], {
+    name: 'A',
+    fixed: true,
+    size: 3
+});
+
+var B = board.create('point', [0, h], {
+    name: 'B',
+    fixed: true,
+    size: 3
+});
+
+var C = board.create('point', [x, 0], {
+    name: 'C',
+    fixed: true,
+    size: 3
+});
+
+/* Draw the wall */
+board.create('segment', [A, B], {
+    strokeColor: 'black',
+    strokeWidth: 3
+});
+
+/* Draw the ground */
+board.create('segment', [A, C], {
+    strokeColor: 'black',
+    strokeWidth: 3
+});
+
+/* Draw the ladder */
+board.create('segment', [B, C], {
+    strokeColor: '#2563eb',
+    strokeWidth: 3
+});
+
+/* Draw the right-angle marker */
+var s = Math.min(x, h) * 0.06;
+
+board.create('segment', [[s, 0], [s, s]], {
+    strokeColor: 'black',
+    strokeWidth: 1
+});
+
+board.create('segment', [[s, s], [0, s]], {
+    strokeColor: 'black',
+    strokeWidth: 1
+});
+
+/* Label the angle at C */
+board.create('text', [x - 0.55, 0.18, theta + '°'], {
+    fixed: true,
+    fontSize: 16,
+    strokeColor: '#2563eb'
+});
+
+/* Label the vertical height */
+board.create('text', [-2.7, h / 2, 'Height = ' + h + ' m'], {
+    fixed: true,
+    fontSize: 13,
+    strokeColor: 'black'
+});
+
+/* Label the ground */
+board.create('text', [x / 2, -1, 'Ground'], {
+    fixed: true,
+    fontSize: 13,
+    strokeColor: 'black'
+});
+
+/* Label the ladder */
+board.create('text', [0.45 * x, 0.58 * h, 'Ladder = ?'], {
+    fixed: true,
+    fontSize: 13,
+    strokeColor: '#2563eb'
+});
+
+board.update();
+
+[[/jsxgraph]]
+<p> Calculate the length of the ladder.</p>
+
+<p>[[input:ans1]]</p>
+<p>[[validation:ans1]]</p>
+<p>[[feedback:prt1]]</p>
+
+<p><strong>Instructions:</strong> Give your answer correct to 1 decimal place.</p>
+
+<p><strong>Hint:</strong> Use the sine ratio:</p>
+
+\(\sin\theta=\dfrac{\text{opposite}}{\text{hypotenuse}}\)]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Worked solution</h3>
+
+<p>We are given:</p>
+
+<ul>
+    <li>Angle with the ground: \({@theta@}^\circ\)</li>
+    <li>Vertical height: \({@height@}\text{ m}\)</li>
+</ul>
+
+<p>We need to calculate the length of the ladder.</p>
+
+<p><strong>Step 1: Identify the appropriate trigonometric ratio.</strong></p>
+
+<p>The vertical height is opposite the given angle, while the ladder is the hypotenuse. Therefore, we use the sine ratio:</p>
+
+\(\sin\theta=\dfrac{\text{opposite}}{\text{hypotenuse}}\)
+
+<p><strong>Step 2: Substitute the known values.</strong></p>
+
+\(\sin({@theta@}^\circ)=\dfrac{@height@}{L}\)
+
+<p><strong>Step 3: Rearrange to make the ladder length the subject.</strong></p>
+
+\(L=\dfrac{@height@}{\sin({@theta@}^\circ)}\)
+
+<p><strong>Step 4: Calculate the length.</strong></p>
+
+\(L\approx {@ta1@}\text{ m}\)
+
+<p><strong>Final Answer:</strong></p>
+
+\(\boxed{L={@ta1@}\text{ m}}\)
+
+
+<p>Ensure that your calculator is in degree mode.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomly select the angle between the ladder and the ground */
+theta: 50+5*rand(7);
+
+/* Randomly select the vertical height reached by the ladder */
+height: 3+rand(5);
+
+/* Convert the angle from degrees to radians */
+theta_rad: theta*%pi/180;
+
+/* Calculate the horizontal distance from the wall */
+distance: height/tan(theta_rad);
+
+/* Calculate the ladder length */
+ladder_length: height/sin(theta_rad);
+
+/* Calculate the model answer to 1 decimal place */
+ta1: round(ladder_length*10)/10;
+</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta1@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>1</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>64</deployedseed>
+    <deployedseed>76345324</deployedseed>
+    <deployedseed>486116358</deployedseed>
+    <deployedseed>300396337</deployedseed>
+    <deployedseed>2017568896</deployedseed>
+    <deployedseed>752295397</deployedseed>
+    <deployedseed>488910326</deployedseed>
+    <deployedseed>1117543088</deployedseed>
+    <deployedseed>1717922256</deployedseed>
+    <deployedseed>701353712</deployedseed>
+    <deployedseed>580511418</deployedseed>
+    <deployedseed>1147917558</deployedseed>
+    <deployedseed>1475572755</deployedseed>
+    <deployedseed>1487166797</deployedseed>
+    <deployedseed>1265397217</deployedseed>
+    <deployedseed>744245087</deployedseed>
+    <deployedseed>448172313</deployedseed>
+    <deployedseed>300507761</deployedseed>
+    <deployedseed>472494846</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description/>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

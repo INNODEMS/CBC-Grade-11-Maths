@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Finding the height of a building</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A student stands {@distance@} metres from the base of a building. The angle of elevation from the student's position to the top of the building is {@theta@} degrees.</p>
+
+<p>Use the information to calculate the height of the building.</p>
+
+[[jsxgraph height='400px' width='600px']]
+
+var theta = {#theta#};
+var d = {#distance#};
+var h = {#height#};
+
+/* Initialise the JSXGraph board */
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-0.15*d, 1.25*h, 1.25*d, -0.2*h],
+    axis: false,
+    showCopyright: false,
+    showNavigation: false,
+    keepaspectratio: false
+});
+
+/* Define the triangle vertices */
+var P = board.create('point', [0,0], {
+    name: 'P',
+    fixed: true,
+    size: 3,
+    color: 'black'
+});
+
+var Q = board.create('point', [d,0], {
+    name: 'Q',
+    fixed: true,
+    size: 3,
+    color: 'black'
+});
+
+var R = board.create('point', [d,h], {
+    name: 'R',
+    fixed: true,
+    size: 3,
+    color: 'black'
+});
+
+/* Horizontal ground */
+board.create('segment', [P,Q], {
+    strokeColor: 'black',
+    strokeWidth: 3
+});
+
+/* Vertical building */
+board.create('segment', [Q,R], {
+    strokeColor: 'black',
+    strokeWidth: 3
+});
+
+/* Line of sight */
+board.create('segment', [P,R], {
+    strokeColor: '#2563eb',
+    strokeWidth: 3
+});
+
+/* Right-angle marker */
+var s = Math.min(d,h)*0.06;
+
+board.create('segment', [[d-s,0],[d-s,s]], {
+    strokeColor: 'black',
+    strokeWidth: 1
+});
+
+board.create('segment', [[d-s,s],[d,s]], {
+    strokeColor: 'black',
+    strokeWidth: 1
+});
+
+/* Angle of elevation marker */
+board.create('angle', [Q,P,R], {
+    radius: Math.min(d,h)*0.18,
+    name: '',
+    withLabel: false,
+    strokeColor: '#2563eb',
+    strokeWidth: 2
+});
+
+/* Angle label */
+board.create('text', [0.18*d,0.08*h,theta+'°'], {
+    fixed: true,
+    fontSize: 16,
+    color: '#2563eb'
+});
+
+/* Distance label */
+board.create('text', [d/2,-0.10*h,'Distance = '+d+' m'], {
+    fixed: true,
+    fontSize: 13,
+    anchorX: 'middle'
+});
+
+/* Building height label */
+board.create('text', [d+0.04*d,h/2,'Height = ?'], {
+    fixed: true,
+    fontSize: 13
+});
+
+/* Line of sight label */
+board.create('text', [0.40*d,0.60*h,'Line of sight'], {
+    fixed: true,
+    fontSize: 13,
+    color: '#2563eb'
+});
+
+board.update();
+
+[[/jsxgraph]]
+
+<p>Calculate the height of the building.</p>
+
+<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p><strong>Instructions:</strong> Give your answer correct to 1 decimal place. Your answer should be expressed in metres.</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Worked solution</h3>
+
+<p>We are given:</p>
+
+<ul>
+    <li>Angle of elevation: \({@theta@}^\circ\)</li>
+    <li>Horizontal distance: \({@distance@}\text{ m}\)</li>
+</ul>
+
+<p>We need to calculate the height of the building.</p>
+
+<p><strong>Step 1: Identify the appropriate trigonometric ratio.</strong></p>
+
+<p>We know the adjacent side and need to find the opposite side. Therefore, we use tangent:</p>
+
+\(\tan\theta=\dfrac{\text{opposite}}{\text{adjacent}}\)
+
+<p><strong>Step 2: Substitute the known values.</strong></p>
+
+\(\tan({@theta@}^\circ)=\dfrac{h}{@distance@}\)
+
+<p><strong>Step 3: Rearrange to make the height the subject.</strong></p>
+
+\(h={@distance@}\times\tan({@theta@}^\circ)\)
+
+<p><strong>Step 4: Calculate the height.</strong></p>
+
+\(h\approx {@ta1@}\text{ m}\)
+
+<p><strong>Final Answer:</strong></p>
+
+\(\boxed{h={@ta1@}\text{ m}}\)
+
+<p>Remember to use degree mode on your calculator and round your answer to 1 decimal place.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomly select the angle of elevation */
+theta: 25+5*rand(7);
+
+/* Randomly select the horizontal distance in metres */
+distance: 15+5*rand(8);
+
+/* Convert the angle to radians */
+theta_rad: theta*%pi/180;
+
+/* Calculate the building height */
+height: distance*tan(theta_rad);
+
+/* Round the answer to 1 decimal place */
+ta1: round(height*10)/10;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta1@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Checks for the correct height of the building</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>5</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description/>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Range — a parabola in vertex form</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Consider the function \( f(x) = {@fdisp@} \).</p>
+<p>State the range of \(f\) as an inequality in \(y\).</p>
+<div>\(y\) [[input:ans_sym]] [[validation:ans_sym]] [[input:ans_val]] [[validation:ans_val]]</div>
+<div>[[feedback:prt_sym]] [[feedback:prt_val]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>In <strong>vertex form</strong> \(f(x)=a(x-h)^2+k\), the point \((h,k)\) is the vertex of the parabola. Here \(f(x) = {@fdisp@}\), so the vertex is \(({@h@},{@k@})\). Since a square is never negative, \({@(x-h)^2@} \geq 0\) for every \(x\), with equality only at \(x={@h@}\).</p>
+<ul>
+<li>If \(a &gt; 0\), the parabola opens <strong>upward</strong> and the vertex is a <strong>minimum</strong>: the range is \(y \geq k\).</li>
+<li>If \(a &lt; 0\), the parabola opens <strong>downward</strong> and the vertex is a <strong>maximum</strong>: the range is \(y \leq k\).</li>
+</ul>
+<p>Here \(a={@a@}\), so the range is \({@range_ineq@}\).</p>
+<div style="text-align:center;" role="img" aria-label="Graph of the parabola y = f(x) with its vertex marked and a dashed horizontal line through the vertex.">
+[[jsxgraph width="320px" height="220px"]]
+(function() {
+  var a = {#a#};
+  var h = {#h#};
+  var k = {#k#};
+  var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [h - 5, {#ytop#}, h + 5, {#ybot#}],
+    axis: true, grid: false,
+    showNavigation: false, showCopyright: false
+  });
+  board.create('functiongraph', [function(x) { return a * (x - h) * (x - h) + k; }], {strokeColor: '#003399', strokeWidth: 2});
+  board.create('line', [[h - 5, k], [h + 5, k]], {strokeColor: '#cc0000', dash: 2, strokeWidth: 1, fixed: true});
+  board.create('point', [h, k], {size: 4, color: '#cc0000', fixed: true, name: 'vertex', label: {offset: [10, a > 0 ? -15 : 15], anchorX: 'left'}});
+})();
+[[/jsxgraph]]
+</div>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[a : rand_with_prohib(-5,5,[0]);
+h : rand_with_prohib(-6,6,[]);
+k : rand_with_prohib(-6,6,[h]);         /* k # h, so the "used h" diagnostic never equals the answer */
+fdisp : a*(x-h)^2+k;                    /* display expression: no "1(x - -3)^2 + -4" */
+opens_up : is(a>0);
+/* dropdown: literal values, plain-text Unicode labels (LaTeX does not render in a dropdown) */
+ge_opt : "ge"; le_opt : "le";
+opts : [[ge_opt, opens_up, "≥"],[le_opt, not opens_up, "≤"]];
+ta_sym : if opens_up then ge_opt else le_opt;
+ta_val : k;
+wrong_val : h;                          /* used the x-coordinate of the vertex instead of the y-value */
+range_ineq : if opens_up then y>=k else y<=k;
+ytop : if opens_up then k+10 else k+2;  /* graph window in the worked solution */
+ybot : if opens_up then k-2 else k-10;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>\(f(x)={@fdisp@}\), range \({@range_ineq@}\).</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[Grade 11 Functions 16.4 (Range). Range of a parabola in vertex form; catches getting the inequality direction wrong for a<0, and confusing the vertex's x-coordinate with its y-coordinate.]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans_sym</name>
+      <type>dropdown</type>
+      <tans>opts</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans_val</name>
+      <type>numerical</type>
+      <tans>ta_val</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt_sym</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct direction of inequality? (dropdown: no algebraic diagnostic)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_sym</sans>
+        <tans>ta_sym</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_sym-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt_sym-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Decide whether the parabola opens upward or downward from the sign of the coefficient of the squared term. Is the vertex then the lowest or the highest point of the graph?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt_val</name>
+      <value>0.5000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct bound value (the y-coordinate of the vertex)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_val</sans>
+        <tans>ta_val</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_val-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt_val-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Used the x-coordinate of the vertex instead of the y-coordinate?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_val</sans>
+        <tans>wrong_val</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_val-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the \(x\)-coordinate of the vertex. The range is about output values, so the bound is the \(y\)-coordinate of the vertex.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt_val-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The squared term is never negative and is \(0\) at the vertex. What is the value of \(f\) at the vertex?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Fully correct</description>
+      <testinput>
+        <name>ans_sym</name>
+        <value>ta_sym</value>
+      </testinput>
+      <testinput>
+        <name>ans_val</name>
+        <value>ta_val</value>
+      </testinput>
+      <expected>
+        <name>prt_sym</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_sym-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_val</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_val-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Used vertex x-coordinate instead of y</description>
+      <testinput>
+        <name>ans_sym</name>
+        <value>ta_sym</value>
+      </testinput>
+      <testinput>
+        <name>ans_val</name>
+        <value>wrong_val</value>
+      </testinput>
+      <expected>
+        <name>prt_sym</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_sym-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_val</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_val-1-F | prt_val-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Inequality direction wrong; generic wrong value</description>
+      <testinput>
+        <name>ans_sym</name>
+        <value>if opens_up then le_opt else ge_opt</value>
+      </testinput>
+      <testinput>
+        <name>ans_val</name>
+        <value>ta_val+20</value>
+      </testinput>
+      <expected>
+        <name>prt_sym</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_sym-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_val</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_val-1-F | prt_val-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a letter in the number box, direction correct</description>
+      <testinput>
+        <name>ans_sym</name>
+        <value>ta_sym</value>
+      </testinput>
+      <testinput>
+        <name>ans_val</name>
+        <value>x</value>
+      </testinput>
+      <expected>
+        <name>prt_sym</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_sym-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_val</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

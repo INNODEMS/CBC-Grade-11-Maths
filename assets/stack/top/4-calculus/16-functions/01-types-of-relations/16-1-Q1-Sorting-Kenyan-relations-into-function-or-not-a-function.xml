@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>16.1 Q1 Sorting Kenyan relations into function or not a function</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A tea buying centre in Kericho keeps two sets of records, shown in the arrow diagrams below.</p>
+<p><strong>Records 1</strong> link {@farmers@} tea farmers to the two buying centres, {@c1@} and {@c2@}, where they deliver their green leaf. A farmer may deliver to more than one centre.</p>
+<p><strong>Records 2</strong> link one national identity card number to two different farmer profiles, because of a mistake in the records.</p>
+<div style="text-align:center;" role="img" aria-label="Two arrow diagrams. Records 1: {#farmers#} farmer points F1 to F{#farmers#} on the left, with arrows to two buying centre points; farmer F{#k#} has arrows to both centres, and the top centre receives arrows from more than one farmer. Records 2: one identity number point has two arrows, to Profile X and to Profile Y.">
+[[jsxgraph width="400px" height="260px"]]
+(function() {
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox: [-6, 5, 6, -2.8], axis: false, grid: false,
+    showNavigation: false, showCopyright: false});
+  var n = {#farmers#};
+  b.create('text', [-5.7, 4.4, 'Records 1'], {fontSize: 13, fixed: true});
+  b.create('text', [1.0, 4.4, 'Records 2'], {fontSize: 13, fixed: true});
+  // Records 1: farmer i delivers to centre (i odd: top, i even: bottom); farmer k also delivers to the other centre
+  var k = {#k#};
+  var cx = -1.6, cy = [2.6, -0.6], cname = [{#c1#}, {#c2#}];
+  for (var j = 0; j < 2; j++) {
+    b.create('point', [cx, cy[j]], {name: cname[j], size: 3, fixed: true, color: '#2e7d32',
+      label: {offset: [-25, j === 0 ? 16 : -16]}});
+  }
+  for (var i = 0; i < n; i++) {
+    var y = 3.2 - i * 4.4 / (n - 1);
+    var c = (i % 2 === 0) ? 0 : 1;
+    b.create('point', [-4.6, y], {name: 'F' + (i + 1), size: 2, fixed: true, color: '#1565c0',
+      label: {offset: [-22, 0]}});
+    b.create('arrow', [[-4.4, y], [cx - 0.2, cy[c]]], {strokeColor: '#888888', fixed: true, lastArrow: {size: 5}});
+    if (i + 1 === k) {
+      b.create('arrow', [[-4.4, y], [cx - 0.2, cy[1 - c]]], {strokeColor: '#888888', fixed: true, lastArrow: {size: 5}});
+    }
+  }
+  // Records 2: one identity number with two arrows
+  b.create('point', [1.8, 1], {name: 'ID', size: 3, fixed: true, color: '#c62828', label: {offset: [-20, 0]}});
+  b.create('point', [4.6, 2.6], {name: 'Profile X', size: 2, fixed: true, color: '#1565c0', label: {offset: [-20, 14]}});
+  b.create('point', [4.6, -0.6], {name: 'Profile Y', size: 2, fixed: true, color: '#1565c0', label: {offset: [-20, -14]}});
+  b.create('arrow', [[2.0, 1.1], [4.4, 2.5]], {strokeColor: '#c62828', fixed: true, lastArrow: {size: 5}});
+  b.create('arrow', [[2.0, 0.9], [4.4, -0.5]], {strokeColor: '#c62828', fixed: true, lastArrow: {size: 5}});
+})();
+[[/jsxgraph]]
+</div>
+<p>(a) Is Records 1, from farmers to the buying centres, a function?</p>
+<div>Records 1 is [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Is Records 2, from the identity number to the profiles, a function?</p>
+<div>Records 2 is [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>A relation is a <strong>function</strong> when every input is linked to exactly one output. Several inputs may share an output; what is not allowed is one input with two or more outputs. So the test is to look at each input in turn and count the arrows leaving it.</p>
+<p>(a) In Records 1, farmer F{#k#} delivers to both {@c1@} and {@c2@}, so that one input has two outputs. {@c1@} also receives leaf from several farmers, so an output is shared too. Inputs can have many outputs and outputs can have many inputs: the relation is many-to-many. Because at least one input has more than one output, Records 1 is not a function.</p>
+<p>(b) In Records 2, one identity number is linked to two different profiles. That single input has two outputs, so the relation is one-to-many. Records 2 is not a function.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Two arrow diagrams. Records 1 is many-to-many (farmer k delivers to both centres,
+   and each centre has several farmers), so not a function; Records 2 is one-to-many,
+   not a function. Farmer i goes to centre 1 if i is odd, centre 2 if even, so with
+   at least 3 farmers some centre always has two farmers. */
+farmers: rand([3, 4, 5]);
+k: rand(farmers) + 1;
+cpair: rand([["Litein", "Kapkatet"], ["Kapsoit", "Chepseon"], ["Sosiot", "Kipkelion"]]);
+c1: first(cpair);
+c2: second(cpair);
+/* Dropdowns share one option list; values are static atoms. */
+ta1: [[isfn, false, "a function"], [notfn, true, "not a function"]];
+ta2: [[isfn, false, "a function"], [notfn, true, "not a function"]];
+tac1: first(mcq_correct(ta1));
+tac2: first(mcq_correct(ta2));]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>farmers={@farmers@}, F{#k#} to both centres, centres {@c1@} and {@c2@}; Records 1 many-to-many (not a function), Records 2 one-to-many (not a function).</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text>This question is based on the definitions of one-to-one, one-to-many, many-to-one and many-to-many relations in Section 16.1 (Types of Relations) of the Grade 11 Functions topic.</text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>dropdown</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>dropdown</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Records 1 classified as not a function?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>tac1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Count the arrows leaving each farmer, not the arrows arriving at each centre. A relation is a function only if every input has exactly one output. Is there a farmer who delivers to more than one centre?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Records 2 classified as not a function?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>tac2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Look at the arrows leaving the identity number. A function needs each input to have exactly one output, not just at least one. Count how many outputs that single input has.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>101</deployedseed>
+    <deployedseed>102</deployedseed>
+    <deployedseed>103</deployedseed>
+    <deployedseed>104</deployedseed>
+    <deployedseed>124</deployedseed>
+    <deployedseed>106</deployedseed>
+    <deployedseed>107</deployedseed>
+    <deployedseed>108</deployedseed>
+    <deployedseed>109</deployedseed>
+    <deployedseed>112</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tac1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>tac2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Both wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>first(mcq_incorrect(ta1))</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>first(mcq_incorrect(ta2))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Mixed: (a) right, (b) wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tac1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>first(mcq_incorrect(ta2))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

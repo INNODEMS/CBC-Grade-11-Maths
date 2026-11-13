@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Trigonometric Ratios of an Obtuse Angle in a Regular Tetrahedron</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>A regular tetrahedron \(ABCD\) has edge length \(a={@a@}\) units. Let \(O\) be the centre of the tetrahedron.</p>
+
+<p>
+The diagram shows a regular tetrahedron \(ABCD\), with centre \(O\).</p>
+
+[[jsxgraph width="500px" height="420px"]]
+
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-2.5, 2.1, 2.5, -2.1],
+    axis: false,
+    grid: false,
+    keepaspectratio: true,
+    showCopyright: false,
+    showNavigation: false,
+    pan: {enabled: false},
+    zoom: {enabled: false}
+});
+
+/* Four vertices of the tetrahedron */
+var A = board.create('point', [0, 1.55], {
+    name: 'A',
+    fixed: true,
+    size: 2.5,
+    color: '#202020',
+    label: {offset: [0, 12], fontSize: 16}
+});
+
+var B = board.create('point', [1.65, -0.55], {
+    name: 'B',
+    fixed: true,
+    size: 2.5,
+    color: '#202020',
+    label: {offset: [10, -2], fontSize: 16}
+});
+
+var C = board.create('point', [-1.65, -0.55], {
+    name: 'C',
+    fixed: true,
+    size: 2.5,
+    color: '#202020',
+    label: {offset: [-15, -2], fontSize: 16}
+});
+
+var D = board.create('point', [0, -1.25], {
+    name: 'D',
+    fixed: true,
+    size: 2.5,
+    color: '#202020',
+    label: {offset: [0, -15], fontSize: 16}
+});
+
+/* Draw the tetrahedron edges */
+var edgeStyle = {
+    strokeColor: '#555555',
+    strokeWidth: 1.6,
+    fixed: true,
+    highlight: false
+};
+
+board.create('segment', [A, B], edgeStyle);
+board.create('segment', [A, C], edgeStyle);
+board.create('segment', [A, D], edgeStyle);
+board.create('segment', [B, C], edgeStyle);
+board.create('segment', [B, D], edgeStyle);
+board.create('segment', [C, D], edgeStyle);
+
+/* Centre O: centroid of the four vertices */
+var O = board.create('point', [
+    function() {
+        return (A.X()+B.X()+C.X()+D.X())/4;
+    },
+    function() {
+        return (A.Y()+B.Y()+C.Y()+D.Y())/4;
+    }
+], {
+    name: 'O',
+    fixed: true,
+    size: 3,
+    color: '#202020',
+    label: {offset: [-16, 10], fontSize: 16}
+});
+
+/* Highlight OA and OB */
+var radiusStyle = {
+    strokeColor: '#1565C0',
+    strokeWidth: 2.8,
+    fixed: true,
+    highlight: false
+};
+
+board.create('segment', [O, A], radiusStyle);
+board.create('segment', [O, B], radiusStyle);
+
+/* Mark angle AOB with a simple arc */
+board.create('angle', [A, O, B], {
+    radius: 0.38,
+    type: 'sector',
+    fillColor: '#90CAF9',
+    fillOpacity: 0.25,
+    strokeColor: '#1565C0',
+    strokeWidth: 1.5,
+    orthoType: 'none',
+    withLabel: false,
+    fixed: true,
+    highlight: false
+});
+
+/* Add a separate angle label */
+board.create('text', [
+    function() { return O.X() + 0.38; },
+    function() { return O.Y() + 0.13; },
+    '\\theta'
+], {
+    fixed: true,
+    fontSize: 17,
+    color: '#1565C0'
+});
+
+board.update();
+
+[[/jsxgraph]]
+
+
+
+<p>Consider the angle \(\theta=\angle AOB\), formed by the line segments \(OA\) and \(OB\).</p>
+
+<p><strong>(a)</strong> Determine the quadrant in which the angle \(\theta\) lies when represented in standard position.</p>
+
+<p>Enter your answer as a number: 1, 2, 3 or 4.</p>
+
+<p>[[input:ans0]] [[validation:ans0]]</p>
+
+<p><strong>(b)</strong> Determine the exact value of \(\cos\theta\).</p>
+
+<p>[[input:ans1]] [[validation:ans1]]</p>
+
+<p><strong>(c)</strong> Determine the exact value of \(\sin\theta\).</p>
+
+<p>[[input:ans2]] [[validation:ans2]]</p>
+
+<p><strong>(d)</strong> Determine the exact value of \(\tan\theta\).</p>
+
+<p>[[input:ans3]] [[validation:ans3]][[feedback:prt1]]</p>
+
+<p>Give your answers in exact form. Do not use decimal approximations.</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Worked solution</h3>
+
+<p><strong>Step 1: Find the distance from the centre to a vertex.</strong></p>
+
+<p>The height of a regular tetrahedron with edge length \(a\) is \(h=\frac{a\sqrt{6}}{3}\).</p>
+
+<p>The centre \(O\) divides the median in the ratio \(3:1\), measured from the vertex. Therefore,</p>
+
+<p>\[
+OA=OB=\frac{3}{4}h=\frac{a\sqrt{6}}{4}.
+\]</p>
+
+<p><strong>Step 2: Use the cosine rule in triangle \(AOB\).</strong></p>
+
+<p>Since \(AB=a\),</p>
+
+<p>\[
+\cos\theta=
+\frac{OA^2+OB^2-AB^2}{2(OA)(OB)}.
+\]</p>
+
+<p>Substituting the lengths gives</p>
+
+<p>\[
+\cos\theta=
+\frac{2\left(\frac{6a^2}{16}\right)-a^2}
+{2\left(\frac{6a^2}{16}\right)}
+=-\frac13.
+\]</p>
+
+<p><strong>Step 3: Identify the quadrant.</strong></p>
+
+<p>The cosine is negative. The angle is between \(0^\circ\) and \(180^\circ\), and is obtuse. Therefore, it lies in quadrant II.</p>
+
+<p><strong>Step 4: Find the sine.</strong></p>
+
+<p>Using the identity \(\sin^2\theta+\cos^2\theta=1\),</p>
+
+<p>\(\sin^2\theta=1-\left(-\frac13\right)^2=\frac89.\)</p>
+
+<p>Since the angle lies in quadrant II, sine is positive. Hence,</p>
+
+<p>\(\sin\theta=\frac{2\sqrt2}{3}.\)</p>
+
+<p><strong>Step 5: Find the tangent.</strong></p>
+
+<p>Using \(\tan\theta=\frac{\sin\theta}{\cos\theta}\),</p>
+
+<p>\(\tan\theta=\frac{\frac{2\sqrt2}{3}}{-\frac13}=-2\sqrt2.\)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Random edge length of the regular tetrahedron */
+a: 2+rand(9);
+
+/* Distance from the centre O to each vertex */
+OA: a*sqrt(6)/4;
+
+/* Length of edge AB */
+AB: a;
+
+/* Cosine rule applied to triangle AOB */
+ta_cos: (OA^2+OA^2-AB^2)/(2*OA^2);
+
+/* Exact trigonometric ratios */
+ta_sin: 2*sqrt(2)/3;
+ta_tan: -2*sqrt(2);
+
+/* Quadrant containing the angle */
+ta_quad: 2;
+</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta_sin@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans0</name>
+      <type>algebraic</type>
+      <tans>ta_quad</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta_cos</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta_sin</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta_tan</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+  </question>
+</quiz>

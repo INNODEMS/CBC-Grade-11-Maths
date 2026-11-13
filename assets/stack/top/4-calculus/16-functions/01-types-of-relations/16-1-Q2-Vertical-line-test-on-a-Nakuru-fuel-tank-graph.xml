@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>16.1 Q2 Vertical line test on a Nakuru fuel tank graph</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>At a fuel station in Nakuru, an attendant plots a relation between two measured quantities, \(x\) and \(y\). The board shows the plotted curve and a red vertical line that you can move with the slider.</p>
+<p>Slide the line across the whole graph and watch how many times it crosses the curve at each position.</p>
+<div style="text-align:center;" role="img" aria-label="Interactive graph of a curve with a red dashed vertical line controlled by a slider at the top.">
+[[jsxgraph width="400px" height="340px"]]
+(function() {
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox: [-6, 7.5, 6, -6], axis: true, grid: false,
+    showNavigation: false, showCopyright: false});
+  var isfun = {#isfun#}, a = {#a#};
+  if (isfun == 1) {
+    var xm = Math.sqrt(8.5/(0.4*a));  // keep the curve below y = 5.5, clear of the slider
+    b.create('functiongraph', [function(x) { return 0.4*a*x*x - 3; }, -xm, xm], {strokeColor: '#1565c0', strokeWidth: 2});
+  } else {
+    b.create('curve', [function(t) { return 0.4*a*t*t - 3; }, function(t) { return t; }, -4, 4], {strokeColor: '#1565c0', strokeWidth: 2});
+  }
+  var vx = b.create('slider', [[-5, 6.6], [4, 6.6], [-5, -1, 5]], {name: 'x', snapWidth: 0.1});
+  b.create('line', [[function() { return vx.Value(); }, -6], [function() { return vx.Value(); }, 7.5]],
+    {strokeColor: '#c62828', strokeWidth: 2, dash: 2, fixed: true});
+})();
+[[/jsxgraph]]
+</div>
+<p>Based on the vertical line test, does this graph represent a function?</p>
+<div>The graph [[input:ans1]] [[validation:ans1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The <strong>vertical line test</strong> says that a graph represents a function when no vertical line, in any position, crosses the curve more than once. A vertical line fixes one input \(x\); two crossings would mean that this one input has two outputs. You must slide the line across the whole graph, not test only one place.</p>
+[[if test="is(isfun=1)"]]
+<p>Here the curve is a parabola that opens upwards. Wherever you place the vertical line, it crosses the curve exactly once, so every input has exactly one output. The graph represents a function. Some horizontal lines cross it twice, but that only shows the function is many-to-one; it does not stop it being a function.</p>
+[[else]]
+<p>Here the curve is a parabola lying on its side. For example, the vertical line \(x = 1\) crosses it at two points, one above and one below the \(x\)-axis. That input has two outputs, so the graph does not represent a function.</p>
+[[/if]]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* isfun=1: an upward parabola (a function).
+   isfun=0: a sideways parabola x = 0.4*a*y^2 - 3 (fails the vertical line test). */
+isfun: rand([0, 1]);
+a: rand([1, 2]);
+ta1: [[isfn, is(isfun=1), "represents a function"], [notfn, is(isfun=0), "does not represent a function"]];
+tac1: first(mcq_correct(ta1));]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:prt1]]</text>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>isfun={@isfun@}, a={@a@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text>This question is based on the definitions of one-to-one, one-to-many, many-to-one and many-to-many relations in Section 16.1 (Types of Relations) of the Grade 11 Functions topic.</text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>dropdown</type>
+      <tans>ta1</tans>
+      <boxsize>20</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct conclusion from the vertical line test?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>tac1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[[[if test="is(isfun=0)"]]<p>It looks like you tested the line in only one place. The vertical line test must hold at every position. Slide the line along the whole graph and look for a position where it crosses the curve twice.</p>[[else]]<p>Check which test you used. The vertical line test looks for two crossings at the same input \(x\), not for two points at the same height. Points at the same height but with different \(x\) values do not break the definition of a function. Slide the vertical line across the whole graph once more.</p>[[/if]]]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>201</deployedseed>
+    <deployedseed>202</deployedseed>
+    <deployedseed>203</deployedseed>
+    <deployedseed>204</deployedseed>
+    <deployedseed>205</deployedseed>
+    <deployedseed>206</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tac1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong conclusion</description>
+      <testinput>
+        <name>ans1</name>
+        <value>first(mcq_incorrect(ta1))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

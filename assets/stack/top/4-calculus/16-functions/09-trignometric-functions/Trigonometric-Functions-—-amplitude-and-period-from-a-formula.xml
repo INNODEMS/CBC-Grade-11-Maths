@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Trigonometric Functions — amplitude and period from a formula</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Consider the function \( y = {@fx@} \), with \(x\) in radians.</p>
+<ol class="tb-parts">
+  <li><p>State the amplitude.</p>
+    <div>[[input:ans_amp]] [[validation:ans_amp]] [[feedback:prt_amp]]</div></li>
+  <li><p>State the period, in radians. Type \(\pi\) as <code>pi</code>.</p>
+    <div>[[input:ans_period]] [[validation:ans_period]] [[feedback:prt_period]]</div></li>
+</ol>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>For \(y = A\sin(Bx)\) or \(y = A\cos(Bx)\) with \(B > 0\):</p>
+<ul>
+  <li>the <strong>amplitude</strong> is \(|A|\), the height of a peak above the centre line. It is a distance, so it is never negative. A negative \(A\) only reflects the graph in the \(x\)-axis.</li>
+  <li>the <strong>period</strong> is \(\dfrac{2\pi}{B}\). The basic curve repeats every \(2\pi\), and multiplying \(x\) by \(B\) squeezes it horizontally by a factor of \(B\), so it repeats \(B\) times as often.</li>
+</ul>
+<p>Here \(A = {@amp@}\) and \(B = {@b@}\), so the amplitude is \(|{@amp@}| = {@ta_amp@}\) and the period is \(\dfrac{2\pi}{ {@b@} } = {@ta_period@}\).</p>
+<div style="text-align:center;" role="img" aria-label="Graph of the function over two periods. Dashed horizontal lines mark the maximum and minimum heights, and a bracket marks one period along the x-axis.">
+[[jsxgraph width="400px" height="240px"]]
+(function() {
+  var A = {#amp#}, B = {#b#}, T = 2*Math.PI/B, trig = {#trig#};
+  var b = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-0.15*T, 1.5*Math.abs(A) + 0.5, 2.1*T, -1.5*Math.abs(A) - 0.5], axis: true, grid: false,
+    showNavigation: false, showCopyright: false
+  });
+  b.create('functiongraph', [function(x){ return trig === 0 ? A*Math.sin(B*x) : A*Math.cos(B*x); }, 0, 2*T], {strokeColor:'#003399', strokeWidth:2});
+  b.create('line', [[0, Math.abs(A)], [1, Math.abs(A)]], {strokeColor:'#cc0000', dash:2, strokeWidth:1, fixed:true});
+  b.create('line', [[0, -Math.abs(A)], [1, -Math.abs(A)]], {strokeColor:'#cc0000', dash:2, strokeWidth:1, fixed:true});
+  b.create('segment', [[0, -1.25*Math.abs(A)], [T, -1.25*Math.abs(A)]], {strokeColor:'#006600', strokeWidth:2, fixed:true});
+  b.create('text', [T/2, -1.25*Math.abs(A) - 0.35, 'one period'], {anchorX:'middle', fixed:true, color:'#006600'});
+  b.create('text', [1.6*T, 1.25*Math.abs(A) + 0.2, 'amplitude ' + Math.abs(A)], {anchorX:'middle', fixed:true, color:'#cc0000'});
+})();
+[[/jsxgraph]]
+</div>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[amp: rand([-1,1])*rand_with_prohib(2,6,[]);
+b: rand_with_prohib(2,5,[]);
+trig: rand(2);   /* 0 sine, 1 cosine */
+fx: if trig = 0 then amp*sin(b*x) else amp*cos(b*x);
+ta_amp: abs(amp);
+ta_period: 2*%pi/b;
+validate_numeric(ex) := block([sx], sx: ev(ex, simp), if listofvars(ex) = [] and freeof(%i, sx) then "" else "Enter a real number, not an expression containing a letter, a variable or i.");
+/* amplitude diagnostics: a negative amplitude; peak-to-trough height 2|A| */
+wrong_amp_neg: -abs(amp);
+wrong_amp_double: 2*abs(amp);
+/* period diagnostics: multiplied by B; dropped the 2; worked in degrees. All distinct from 2*pi/b for b in 2..5. */
+wrong_period: 2*%pi*b;
+wrong_period2: %pi/b;
+wrong_period_deg: 360/b;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>y = {@fx@}; amplitude {@ta_amp@}, period {@ta_period@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.9 (Trigonometric Functions). Reads amplitude and period off A sin(Bx) or A cos(Bx); A may be negative. Catches a negative amplitude, the peak-to-trough height, multiplying by B instead of dividing, dropping the factor 2, and giving the period in degrees.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans_amp</name>
+      <type>numerical</type>
+      <tans>ta_amp</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans_period</name>
+      <type>algebraic</type>
+      <tans>ta_period</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options>validator:validate_numeric</options>
+    </input>
+    <prt>
+      <name>prt_amp</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct amplitude</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_amp</sans>
+        <tans>ta_amp</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_amp-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt_amp-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Negative amplitude</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_amp</sans>
+        <tans>wrong_amp_neg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_amp-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The amplitude is a height, so it is never negative. A negative coefficient reflects the graph in the \(x\)-axis but does not change its height.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt_amp-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Peak-to-trough height</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_amp</sans>
+        <tans>wrong_amp_double</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_amp-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the distance from a trough up to a peak. The amplitude is measured from the centre line \(y = 0\) up to a peak, so it is half of that.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt_amp-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>For \(y = A\sin(Bx)\) or \(y = A\cos(Bx)\), the amplitude is \(|A|\). Read \(A\) from the coefficient in front of the trigonometric function.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt_period</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct period</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_period</sans>
+        <tans>ta_period</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_period-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt_period-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Multiplied by B</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_period</sans>
+        <tans>wrong_period</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_period-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Multiplying \(x\) by \(B\) makes the graph repeat <strong>more</strong> often, so the period gets shorter. The period is \(2\pi\) divided by \(B\), not multiplied by it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt_period-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Dropped the factor 2</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_period</sans>
+        <tans>wrong_period2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_period-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Close. The basic sine and cosine curves repeat every \(2\pi\), not every \(\pi\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt_period-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Period in degrees</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_period</sans>
+        <tans>wrong_period_deg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt_period-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the period in degrees. The question asks for radians: a full turn is \(2\pi\) radians.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt_period-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The basic curve repeats every \(2\pi\). Think about how the factor \(B\) inside the bracket changes how often it repeats.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct, built from the formulas</description>
+      <testinput>
+        <name>ans_amp</name>
+        <value>abs(amp)</value>
+      </testinput>
+      <testinput>
+        <name>ans_period</name>
+        <value>2*%pi/b</value>
+      </testinput>
+      <expected>
+        <name>prt_amp</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_amp-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_period</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_period-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Negative amplitude; multiplied by B</description>
+      <testinput>
+        <name>ans_amp</name>
+        <value>wrong_amp_neg</value>
+      </testinput>
+      <testinput>
+        <name>ans_period</name>
+        <value>wrong_period</value>
+      </testinput>
+      <expected>
+        <name>prt_amp</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_amp-1-F | prt_amp-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_period</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_period-1-F | prt_period-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Peak-to-trough; dropped the 2</description>
+      <testinput>
+        <name>ans_amp</name>
+        <value>wrong_amp_double</value>
+      </testinput>
+      <testinput>
+        <name>ans_period</name>
+        <value>wrong_period2</value>
+      </testinput>
+      <expected>
+        <name>prt_amp</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_amp-1-F | prt_amp-2-F | prt_amp-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_period</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_period-1-F | prt_period-2-F | prt_period-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic amplitude; period in degrees</description>
+      <testinput>
+        <name>ans_amp</name>
+        <value>ta_amp+1</value>
+      </testinput>
+      <testinput>
+        <name>ans_period</name>
+        <value>wrong_period_deg</value>
+      </testinput>
+      <expected>
+        <name>prt_amp</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_amp-1-F | prt_amp-2-F | prt_amp-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_period</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_period-1-F | prt_period-2-F | prt_period-3-F | prt_period-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Correct amplitude; generic period</description>
+      <testinput>
+        <name>ans_amp</name>
+        <value>ta_amp</value>
+      </testinput>
+      <testinput>
+        <name>ans_period</name>
+        <value>4*%pi/b</value>
+      </testinput>
+      <expected>
+        <name>prt_amp</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_amp-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_period</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_period-1-F | prt_period-2-F | prt_period-3-F | prt_period-4-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: period containing x</description>
+      <testinput>
+        <name>ans_amp</name>
+        <value>ta_amp</value>
+      </testinput>
+      <testinput>
+        <name>ans_period</name>
+        <value>2*%pi*x</value>
+      </testinput>
+      <expected>
+        <name>prt_amp</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_amp-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_period</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

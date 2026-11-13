@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Limits of Polynomials — end behaviour at infinity</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Consider the polynomial \( f(x) = {@fx@} \).</p>
+<ol class="tb-parts">
+  <li><p>What is \( \displaystyle\lim_{x \to \infty} f(x) \)?</p>
+    <div>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div></li>
+  <li><p>What is \( \displaystyle\lim_{x \to -\infty} f(x) \)?</p>
+    <div>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div></li>
+</ol>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>For large \(|x|\), the <strong>leading term</strong> \({@p*x^n@}\) dominates every other term, so the end behaviour of \(f\) is the end behaviour of its leading term. The limit is infinite, never a finite number, because the polynomial has degree at least 1.</p>
+<ol class="tb-parts">
+  <li><p>As \(x\to\infty\), \(x^{@n@}\) is large and positive, so the sign of the limit is the sign of the leading coefficient \({@p@}\): the limit is [[if test="is(p>0)"]]\(+\infty\)[[else]]\(-\infty\)[[/if]].</p></li>
+  <li><p>As \(x\to-\infty\), the parity of the degree matters. If the degree is even, \(x^{n}\) is positive for large negative \(x\), so the behaviour is the same as at \(+\infty\). If the degree is odd, \(x^{n}\) is negative for large negative \(x\), so the sign flips. Here \(n = {@n@}\) is [[if test="n_even"]]even[[else]]odd[[/if]], so the limit is [[if test="neg_is_pos"]]\(+\infty\)[[else]]\(-\infty\)[[/if]].</p></li>
+</ol>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[p: rand_with_prohib(-5,5,[0]);
+q: rand_with_prohib(1,9,[]);
+r: rand_with_prohib(1,9,[]);
+/* two even and two odd degrees, so parity matters on about half the variants */
+n: rand([2,3,4,5]);
+n_even: evenp(n);
+fx: p*x^n + q*x + r;
+/* x -> +infinity: sign follows p. x -> -infinity: same if n even, flipped if n odd. */
+lim_pos_inf: if p > 0 then "posinf" else "neginf";
+lim_neg_inf: if n_even then lim_pos_inf else (if lim_pos_inf = "posinf" then "neginf" else "posinf");
+neg_is_pos: is(lim_neg_inf = "posinf");
+/* the other infinity: the parity error at -infinity (same sign when n is odd, flipped when n is even) */
+wrong_neg_inf: if lim_neg_inf = "posinf" then "neginf" else "posinf";
+opts1: [["posinf", is(lim_pos_inf = "posinf"), "\\(+\\infty\\)"], ["neginf", is(lim_pos_inf = "neginf"), "\\(-\\infty\\)"], ["finite", false, "a finite number"]];
+opts2: [["posinf", is(lim_neg_inf = "posinf"), "\\(+\\infty\\)"], ["neginf", is(lim_neg_inf = "neginf"), "\\(-\\infty\\)"], ["finite", false, "a finite number"]];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>f(x) = {@fx@}, leading coefficient {@p@}, degree {@n@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.7 (Limits of Polynomials). End behaviour as x tends to plus or minus infinity; catches assuming the behaviour at minus infinity always matches (or always flips from) plus infinity, ignoring degree parity.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>radio</type>
+      <tans>opts1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>nonotanswered</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>radio</type>
+      <tans>opts2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>nonotanswered</options>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description><![CDATA[Correct limit as x -> +infinity]]></description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>first(mcq_correct(opts1))</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>As \(x\) becomes very large and positive, the leading term dominates. It grows without bound, and its sign is the sign of the leading coefficient.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description><![CDATA[Correct limit as x -> -infinity]]></description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>first(mcq_correct(opts2))</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Parity error: chose the other infinity</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>wrong_neg_inf</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The leading term dominates, but its sign for large negative \(x\) depends on whether the degree is even or odd. Here the degree is \({@n@}\): is \(x^{@n@}\) positive or negative when \(x\) is large and negative?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>A polynomial of degree at least 1 grows without bound as \(x\to-\infty\), so the limit is not a finite number. Look at the sign of the leading term for large negative \(x\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>first(mcq_correct(opts1))</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>first(mcq_correct(opts2))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Parity error at -infinity</description>
+      <testinput>
+        <name>ans1</name>
+        <value>first(mcq_correct(opts1))</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wrong_neg_inf</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Finite answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA["finite"]]></value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value><![CDATA["finite"]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

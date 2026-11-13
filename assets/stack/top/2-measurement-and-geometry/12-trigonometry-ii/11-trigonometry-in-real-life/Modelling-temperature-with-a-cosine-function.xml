@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Modelling temperature with a cosine function</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>
+The temperature in a coastal town can be modelled by the function:
+</p>
+
+<p>
+\(T(t)={@D@}+{@A@}\cos\left(\dfrac{2\pi}{24}(t-{@C@})\right)\)
+</p>
+
+<p>
+where \(T(t)\) is the temperature in degrees Celsius and \(t\) is the number of hours after midnight.
+</p>
+
+
+<p>The graph below represents the temperature throughout a 24-hour period.</p>
+
+<p>Using the model and the graph, determine the following:</p>
+[[jsxgraph height='400px' width='600px']]
+
+/* Retrieve values from STACK */
+var amplitude = {#A#};
+var midline = {#D#};
+var period = {#P#};
+var maximumTime = {#C#};
+
+/* Set the vertical graph limits */
+var ymin = midline - amplitude - 2;
+var ymax = midline + amplitude + 2;
+
+/* Initialise the board */
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [0, ymax, period, ymin],
+    axis: true,
+    showCopyright: false,
+    showNavigation: false,
+    keepaspectratio: false
+});
+
+/* Define the temperature function directly in JavaScript */
+var temperature = function(t) {
+    return midline + amplitude *
+        Math.cos((2 * Math.PI / period) * (t - maximumTime));
+};
+
+/* Draw the temperature graph */
+board.create('functiongraph', [temperature, 0, period], {
+    strokeColor: 'blue',
+    strokeWidth: 3
+});
+
+/* Add graph labels */
+board.create('text', [18, ymin + 0.5, 'Time (hours)'], {
+    fixed: true,
+    fontSize: 14
+});
+
+board.create('text', [0.5, ymax - 0.5, 'Temperature (°C)'], {
+    fixed: true,
+    fontSize: 14
+});
+
+board.update();
+
+[[/jsxgraph]]
+
+<p><strong>(a)</strong> Identify the amplitude of the temperature variation.</p>
+<p>[[input:ans1]]</p>
+<p>[[validation:ans1]]</p>
+
+<p><strong>(b)</strong> Identify the midline temperature.</p>
+<p>[[input:ans2]]</p>
+<p>[[validation:ans2]]</p>
+
+<p><strong>(c)</strong> Determine the period of the temperature cycle, in hours.</p>
+<p>[[input:ans3]]</p>
+<p>[[validation:ans3]]</p>
+
+<p><strong>(d)</strong> Determine the time at which the daily maximum temperature occurs. Give your answer as the number of hours after midnight.</p>
+<p>[[input:ans4]]</p>
+<p>[[validation:ans4]][[feedback:prt1]]</p>
+
+<p><strong>Instructions:</strong> Give numerical answers. Include the appropriate units where requested.</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Woked solution</h3>
+
+<p>We are given the temperature model:</p>
+
+<p>
+\(T(t)={@D@}+{@A@}\cos\left(\dfrac{2\pi}{24}(t-{@C@})\right)\)
+</p>
+
+<p>
+where \(T(t)\) is the temperature in degrees Celsius and \(t\) is the number of hours after midnight.
+</p>
+
+<p><strong>(a) Finding the amplitude</strong></p>
+
+<p>
+A cosine function in the form
+\(T(t)=D+A\cos(B(t-C))\)
+has an amplitude equal to the absolute value of the coefficient of the cosine function.
+</p>
+
+<p>
+\(\text{Amplitude}=|A|={@A@}\)
+</p>
+
+<p>
+Therefore, the amplitude is:
+\(\boxed{{@ta1@}^\circ\text{C}}\)
+</p>
+
+<p><strong>(b) Finding the midline temperature</strong></p>
+
+<p>
+The midline is determined by the constant term outside the cosine function.
+</p>
+
+<p>
+\(\text{Midline}: T=D\)
+</p>
+
+<p>
+Substituting the given value:
+\(T={@D@}\)
+</p>
+
+<p>
+Therefore, the midline temperature is:
+\(\boxed{{@ta2@}^\circ\text{C}}\)
+</p>
+
+<p><strong>(c) Finding the period</strong></p>
+
+<p>
+The period of a cosine function of the form
+\(T(t)=D+A\cos(B(t-C))\)
+is given by:
+</p>
+
+<p>
+\(\text{Period}=\dfrac{2\pi}{|B|}\)
+</p>
+
+<p>
+In this question:
+\(B=\dfrac{2\pi}{24}\)
+</p>
+
+<p>Hence:</p>
+
+<p>
+\(\text{Period}=\dfrac{2\pi}{2\pi/24}\)
+</p>
+
+<p>
+\(\text{Period}=24\)
+</p>
+
+<p>
+Therefore, the temperature cycle has a period of:
+\(\boxed{{@ta3@}\text{ hours}}\)
+</p>
+
+<p><strong>(d) Finding the time of maximum temperature</strong></p>
+
+<p>
+The maximum value of the cosine function is \(1\). Therefore, the temperature reaches its maximum when:
+</p>
+
+<p>
+\(\cos\left(\dfrac{2\pi}{24}(t-{@C@})\right)=1\)
+</p>
+
+<p>
+For the maximum in the daily cycle, the angle inside the cosine function is zero:
+</p>
+
+<p>
+\(\dfrac{2\pi}{24}(t-{@C@})=0\)
+</p>
+
+<p>
+Multiplying both sides by \(\dfrac{24}{2\pi}\):
+</p>
+
+<p>
+\(t-{@C@}=0\)
+</p>
+
+<p>
+Therefore:
+</p>
+
+<p>
+\(t={@C@}\)
+</p>
+
+<p>
+Since \(t\) represents the number of hours after midnight, the maximum temperature occurs at:
+</p>
+
+<p>
+\(\boxed{{@ta4@}\text{ hours after midnight}}\)
+</p>
+
+<p>
+This corresponds to \({@ta4@}:00\) on a 24-hour clock.
+</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomized midline temperature */
+D: 16+rand(7);
+
+/* Randomized amplitude */
+A: 3+rand(5);
+
+/* Period of the daily cycle */
+P: 24;
+
+/* Time of maximum temperature */
+C: 12+rand(5);
+
+/* Temperature model */
+T: D+A*cos((2*%pi/P)*(t-C));
+
+/* JSXGraph expression */
+fx: D+A*cos((2*%pi/P)*(x-C));
+
+/* Model answers */
+ta1: A;
+ta2: D;
+ta3: P;
+ta4: C;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta1@}
+{@ta2@}
+{@ta3@}
+{@ta4@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta3</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>algebraic</type>
+      <tans>ta4</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1085678898</deployedseed>
+    <deployedseed>355643370</deployedseed>
+    <deployedseed>1133458913</deployedseed>
+    <deployedseed>1233660696</deployedseed>
+    <deployedseed>1957556858</deployedseed>
+    <deployedseed>133851695</deployedseed>
+    <deployedseed>451804933</deployedseed>
+    <deployedseed>261319127</deployedseed>
+    <deployedseed>1398417652</deployedseed>
+    <deployedseed>1004597593</deployedseed>
+    <deployedseed>1298345128</deployedseed>
+    <deployedseed>1704010044</deployedseed>
+    <deployedseed>378369124</deployedseed>
+    <deployedseed>165802372</deployedseed>
+    <deployedseed>1918174175</deployedseed>
+    <deployedseed>1601131516</deployedseed>
+    <deployedseed>447578833</deployedseed>
+    <deployedseed>511454347</deployedseed>
+    <deployedseed>734948116</deployedseed>
+    <deployedseed>935424547</deployedseed>
+    <deployedseed>2120706271</deployedseed>
+    <deployedseed>1891610312</deployedseed>
+    <deployedseed>1584524340</deployedseed>
+    <deployedseed>1919620349</deployedseed>
+    <deployedseed>103609866</deployedseed>
+    <deployedseed>1546914299</deployedseed>
+    <deployedseed>1039999107</deployedseed>
+    <deployedseed>2091931226</deployedseed>
+    <deployedseed>189812829</deployedseed>
+    <deployedseed>911772427</deployedseed>
+    <deployedseed>708588629</deployedseed>
+    <deployedseed>846203447</deployedseed>
+    <deployedseed>17594868</deployedseed>
+    <deployedseed>1532471373</deployedseed>
+    <deployedseed>1481102808</deployedseed>
+    <deployedseed>1050099103</deployedseed>
+    <deployedseed>614662505</deployedseed>
+    <deployedseed>1274985940</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description/>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

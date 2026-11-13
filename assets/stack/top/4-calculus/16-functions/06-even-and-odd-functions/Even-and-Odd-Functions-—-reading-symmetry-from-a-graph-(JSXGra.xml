@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Even and Odd Functions — reading symmetry from a graph (JSXGraph)</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The graph of \(y=k(x)\) is shown below.</p>
+<div style="text-align:center;" role="img" aria-label="Graph of y equals k of x on axes from x = -5 to 5. Decide its symmetry.">
+[[jsxgraph width="400px" height="340px"]]
+(function() {
+  var scenario = {#scenario#};
+  var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-5, 8, 5, -8],
+    axis: true, showCopyright: false, showNavigation: false
+  });
+  var f;
+  if (scenario === 0) { f = function(x){ return 0.3*x*x + 1; }; }            // even: symmetric about the y-axis
+  else if (scenario === 1) { f = function(x){ return 0.1*x*x*x - 1.5*x; }; } // odd: half-turn symmetry about the origin
+  else { f = function(x){ return 0.2*x*x + 0.6*x; }; }                       // neither: axis of symmetry is x = -1.5
+  board.create('functiongraph', [f, -4.5, 4.5], {strokeColor: '#1565c0', strokeWidth: 2, fixed: true});
+})();
+[[/jsxgraph]]
+</div>
+<p>Based on the symmetry of the graph, is \(k(x)\) even, odd, or neither?</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>An <strong>even</strong> function's graph is a mirror image of itself across the \(y\)-axis. An <strong>odd</strong> function's graph looks the same after a \(180^\circ\) rotation about the origin. If neither of these holds, the function is neither. In symbols, an even function satisfies \(k(-x) = k(x)\) and an odd function satisfies \(k(-x) = -k(x)\): the point \((x, y)\) on the graph is matched by \((-x, y)\) for an even function and by \((-x, -y)\) for an odd one.</p>
+[[if test="is(scenario=0)"]]<p>Here the graph is \(y = 0.3x^2 + 1\). Folding along the \(y\)-axis maps it onto itself, so \(k\) is even.</p>
+[[elif test="is(scenario=1)"]]<p>Here the graph is \(y = 0.1x^3 - 1.5x\). A half-turn about the origin maps it onto itself, so \(k\) is odd.</p>
+[[else]]<p>Here the graph is \(y = 0.2x^2 + 0.6x\), a parabola whose line of symmetry is \(x = -1.5\), not the \(y\)-axis. It is not symmetric about the \(y\)-axis and a half-turn about the origin does not map it onto itself, so \(k\) is neither even nor odd.</p>
+[[/if]]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[scenario : rand(3);
+ta : if scenario=0 then "even" elseif scenario=1 then "odd" else "neither";
+/* Booleans wrapped in is() so each option carries true or false, not an unevaluated equation */
+opts : [["even", is(scenario=0), "Even (symmetric about the y-axis)"],["odd", is(scenario=1), "Odd (symmetric about the origin)"],["neither", is(scenario=2), "Neither"]];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:prt1]]</text>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>Graph shown is {@ta@} (scenario {@scenario@})</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="description">Grade 11 Functions 16.6 (Even and Odd Functions). Classifies a function as even, odd, or neither purely from the visual symmetry of its JSXGraph-plotted graph, complementing the algebraic-substitution version of this question.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>dropdown</type>
+      <tans>opts</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct symmetry read (dropdown: no diagnostic)</description>
+        <answertest>String</answertest>
+        <sans>ans1</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Check carefully: does folding the graph along the \(y\)-axis map it onto itself (even)? Does rotating it through \(180^\circ\) about the origin map it onto itself (odd)? Or neither?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>first(mcq_correct(opts))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong choice</description>
+      <testinput>
+        <name>ans1</name>
+        <value>first(mcq_incorrect(opts))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

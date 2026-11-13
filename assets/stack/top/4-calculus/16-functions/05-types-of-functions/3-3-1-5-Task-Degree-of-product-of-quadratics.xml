@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>3.3.1.5 Task: Degree of product of quadratics</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p class="tb-exercise">Exercise</p>
+<p>Two polynomials are</p>
+<p>\[ f(x) = {@p@} \quad \text{and} \quad g(x) = {@q@}. \]</p>
+<p>Without expanding the product, write down the degree of the product \(f(x)\,g(x)\).</p>
+<div>Degree of \(f(x)\,g(x)\) = [[input:ans1]] [[validation:ans1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>The <strong>degree</strong> of a polynomial is the highest power of \(x\) with a non-zero coefficient. When two polynomials are multiplied, the highest-power term of the product comes only from multiplying the two leading terms, and powers of \(x\) <strong>add</strong> when terms are multiplied: \(x^m \times x^n = x^{m+n}\). Because neither leading coefficient is zero, their product is not zero either. So the degree of a product is the <strong>sum</strong> of the degrees, not their product.</p>
+<p>Here \(f(x)\) has leading term \({@lt1@}\), so it has degree \({@m@}\), and \(g(x)\) has leading term \({@lt2@}\), so it has degree \({@n@}\). The leading term of \(f(x)\,g(x)\) is</p>
+<p>\[ \left({@lt1@}\right)\left({@lt2@}\right) = {@lt1*lt2@}, \]</p>
+<p>so the product has degree \({@m@} + {@n@} = {@ta1@}\).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Degree m times degree n. The pair (2,2) is excluded because 2+2 = 2*2, which would let
+   "multiplied the degrees" score. n starts at 2 so that m*n never equals max(m,n): the
+   two diagnostics (m*n and "kept the larger degree") stay distinct on every seed.
+   ta1-1 (wrong test) never equals m*n or max(m,n) for these pairs. */
+pr: rand([[2,3],[2,4],[3,2],[3,3],[3,4],[4,2],[4,3],[4,4]]);
+m: first(pr);
+n: second(pr);
+a1: rand_with_prohib(-5, 5, [0]);
+b1: rand_with_prohib(-6, 6, [0]);
+c1: rand_with_prohib(-9, 9, [0]);
+a2: rand_with_prohib(-5, 5, [0]);
+b2: rand_with_prohib(-6, 6, [0]);
+c2: rand_with_prohib(-9, 9, [0]);
+p: a1*x^m + b1*x + c1;
+q: a2*x^n + b2*x^(n-1) + c2;
+lt1: a1*x^m;
+lt2: a2*x^n;
+ta1: hipow(expand(p*q), x);
+wrong_mult: m*n;
+wrong_max: max(m, n);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:prt1]]</text>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>m={@m@}, n={@n@}: f={@p@}, g={@q@}; degree {@ta1@}, multiplied degrees {@wrong_mult@}.</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text>This question is based on the degree of a polynomial in Section 16.5 (Types of Functions) of the Grade 11 Functions topic. It is carried over from an earlier question bank (item 3.3.1.5), randomised so that the degrees of the two factors vary.</text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>3</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct degree m+n</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Multiplied the degrees (m*n)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_mult</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You seem to have multiplied the degrees, \({@m@} \times {@n@} = {@wrong_mult@}\). When the leading terms are multiplied, the powers of \(x\) are <em>added</em>, because \(x^a \times x^b = x^{a+b}\). Multiply the leading term of \(f(x)\) by the leading term of \(g(x)\) and read off the power.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Kept the larger degree</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_max</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You seem to have kept the larger of the two degrees. The product has a higher degree than either factor, because multiplying by a non-constant polynomial raises the highest power of \(x\). Multiply the leading terms \({@lt1@}\) and \({@lt2@}\) and read off the power of \(x\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the degree of each factor first: it is the highest power of \(x\) in that polynomial. Then multiply the two leading terms. The power of \(x\) in that product is the degree of \(f(x)\,g(x)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>5</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
+    <deployedseed>25</deployedseed>
+    <deployedseed>15</deployedseed>
+    <deployedseed>26</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct: sum of the degrees</description>
+      <testinput>
+        <name>ans1</name>
+        <value>m+n</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Multiplied the degrees</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_mult</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Kept the larger degree</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_max</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Other wrong answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1-1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

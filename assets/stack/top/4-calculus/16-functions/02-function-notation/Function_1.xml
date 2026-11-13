@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Function_1</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A function \( f : \mathbb{R} \rightarrow \mathbb{R}\) (where \(\mathbb{R}\) denotes the real numbers) is defined by the rule \[ f(x) = {@f1@}. \]</p>
+<p>What is the output of the function \(f\) when the input is \({@n1@}\)? Give your answer as a whole number or a fraction, not as a power.</p>
+<div>\(f({@n1@}) = \) [[input:ans1]] [[validation:ans1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>To find the output of a function for a given input, substitute the input for \(x\) in the rule. Here \(f(x) = {@f1@}\) is an <strong>exponential function</strong>: the variable \(x\) is the index (the power), and the base \({@b@}\) is fixed.</p>
+[[if test="is(n1<0)"]]
+<p>The input is negative, so use the rule for a negative index, \(a^{-n} = \dfrac{1}{a^n}\). A negative index gives a reciprocal, not a negative number:</p>
+<p>\[ f({@n1@}) = {@b@}^{ {@n1@} } = \dfrac{1}{ {@b@}^{ {@negn1@} } } = {@correctanswer@}. \]</p>
+[[else]]
+<p>A positive whole-number index means repeated multiplication of the base by itself, not multiplication by the index:</p>
+<p>\[ f({@n1@}) = {@b@}^{ {@n1@} } = {@correctanswer@}. \]</p>
+[[/if]]]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* questionsimplify is 0 so that the form check can reject an unevaluated power such as 3^2. Every value is forced with ev(...,simp). */
+/* Exponential f(x) = b^x with b in {2,3,4,5} and input n1 in {-3,-2,-1,2,3}. (b, n1) = (2, 2) is excluded because 2*2 = 2^2 would void the multiplication diagnostic. */
+b: rand([2,3,4,5]);
+n1: ev(rand(if b=2 then [-3,-2,-1,3] else [-3,-2,-1,2,3]),simp);
+f1: b^x;
+negn1: ev(-n1,simp);
+/* For a negative input the answer is kept as an unsimplified quotient 1/b^k, which has the same structure as a student's typed fraction, so the form check accepts it. */
+correctanswer: if ev(n1<0,simp) then 1/ev(b^(-n1),simp) else ev(b^n1,simp);
+/* Diagnostic: for a negative input, a negative index read as a negative number (-b^|n1|, never equal to the positive answer);
+   for a positive input, the base multiplied by the index (b*n1, never equal to b^n1 once (2,2) is excluded). */
+diag1: if ev(n1<0,simp) then ev(-b^(abs(n1)),simp) else ev(b*n1,simp);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:Result]]</text>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>\(f(x) = {@f1@}\), input \({@n1@}\), output \({@correctanswer@}\)</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>Grade 11 Functions (function notation: evaluating; overlaps with 16.2 Function Notation). Evaluates an exponential function b^x at a positive or negative integer input.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>0</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>correctanswer</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>1</requirelowestterms>
+      <checkanswertype>1</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>Result</name>
+      <value>1.0000000</value>
+      <autosimplify>0</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Value equal to f(n1)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>correctanswer</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1.0000000</truescore>
+        <truepenalty>0</truepenalty>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>Result-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty>0</falsepenalty>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>Result-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Form: the power has been worked out</description>
+        <answertest>EqualComAss</answertest>
+        <sans>ans1</sans>
+        <tans>correctanswer</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1.0000000</truescore>
+        <truepenalty>0</truepenalty>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>Result-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty>0</falsepenalty>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>Result-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your answer has the right value, but it is not worked out. Calculate the power and enter the result as a single whole number or fraction.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Diagnostic: a negative index read as a negative number (n1 negative), or the base multiplied by the index (n1 positive)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>diag1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.0000000</truescore>
+        <truepenalty>0</truepenalty>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>Result-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[[[if test="is(n1<0)"]]<p>A negative index does not make the answer negative. It gives a reciprocal: \(a^{-n} = \dfrac{1}{a^n}\).</p>[[else]]<p>It looks as if you multiplied the base by the input. In \({@f1@}\) the input is a power: \(a^n\) means \(a\) multiplied by itself \(n\) times, not \(a \times n\).</p>[[/if]]]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty>0</falsepenalty>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>Result-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Substitute the input for \(x\) in the rule \(f(x) = {@f1@}\) and work out the power. For a negative index, use \(a^{-n} = \dfrac{1}{a^n}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>266012875</deployedseed>
+    <deployedseed>1694832009</deployedseed>
+    <deployedseed>172922487</deployedseed>
+    <deployedseed>1118547110</deployedseed>
+    <deployedseed>721290034</deployedseed>
+    <deployedseed>292304388</deployedseed>
+    <deployedseed>1837943153</deployedseed>
+    <deployedseed>1651935919</deployedseed>
+    <deployedseed>1870044671</deployedseed>
+    <deployedseed>1338374744</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct, worked out</description>
+      <testinput>
+        <name>ans1</name>
+        <value>correctanswer</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>Result-1-T | Result-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong value (offset)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>correctanswer-1</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>Result-1-F | Result-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Right value left as a power: fails the form check</description>
+      <testinput>
+        <name>ans1</name>
+        <value>b^n1</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>Result-1-T | Result-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Diagnostic: negative index read as negative, or base times index</description>
+      <testinput>
+        <name>ans1</name>
+        <value>diag1</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>Result-1-F | Result-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

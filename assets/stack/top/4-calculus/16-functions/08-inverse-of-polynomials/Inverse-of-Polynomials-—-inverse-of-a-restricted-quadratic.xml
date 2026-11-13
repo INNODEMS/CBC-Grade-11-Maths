@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Inverse of Polynomials — inverse of a restricted quadratic</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Let \( f(x) = {@fx@} \) for \( x \geq {@h@} \). The domain is restricted so that \(f\) is one-to-one, and so has an inverse.</p>
+<ol class="tb-parts">
+  <li><p>Find \( f^{-1}(x) \).</p>
+    <div>\( f^{-1}(x) = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div></li>
+  <li><p>Complete the domain of \(f^{-1}\).</p>
+    <div>\(x \geq\) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div></li>
+</ol>
+<p>Type \(\sqrt{x}\) as <code>sqrt(x)</code>.</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>A quadratic is not one-to-one on all of \(\mathbb{R}\), but on \(x \geq {@h@}\) (to the right of its vertex \(({@h@}, {@k@})\)) it is increasing, so it has an <strong>inverse</strong>. Swap \(x\) and \(y\) in \(y = {@fy0@}\) and solve for \(y\):</p>
+\[
+\begin{align*}
+x &= {@fy@}\\
+{@x-k@} &= {@(y-h)^2@}\\
+\pm\sqrt{ {@x-k@} } &= {@y-h@}\\
+y &= {@h@} \pm \sqrt{ {@x-k@} }
+\end{align*}
+\]
+<p>Taking the square root gives two possible branches. The <strong>domain of \(f\) becomes the range of \(f^{-1}\)</strong>: the original inputs satisfy \(x \geq {@h@}\), so the outputs of \(f^{-1}\) must satisfy \(y \geq {@h@}\). That needs the \(+\) branch:</p>
+\[ f^{-1}(x) = {@ta1@}. \]
+<p>Likewise the <strong>range of \(f\) becomes the domain of \(f^{-1}\)</strong>. On \(x \geq {@h@}\) the smallest value of \(f\) is \(f({@h@}) = {@k@}\), so the range of \(f\) is \(y \geq {@k@}\) and the domain of \(f^{-1}\) is \(x \geq {@k@}\). This is also where \(\sqrt{ {@x-k@} }\) is defined.</p>
+<p>The graph of \(f^{-1}\) is the reflection of the graph of \(f\) in the line \(y = x\). The vertex \(({@h@}, {@k@})\) reflects to the end point \(({@k@}, {@h@})\).</p>
+<div style="text-align:center;" role="img" aria-label="The half-parabola y = f(x) for x at least h, its inverse (a square-root curve), and the dashed mirror line y = x.">
+[[jsxgraph width="320px" height="320px"]]
+(function() {
+  var lo = {#bmin#}, hi = {#bmax#};
+  var b = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [lo, hi, hi, lo], axis: true, grid: false,
+    showNavigation: false, showCopyright: false
+  });
+  var h = {#h#}, k = {#k#};
+  b.create('functiongraph', [function(x){ return (x-h)*(x-h) + k; }, h, h + 4], {strokeColor:'#003399', strokeWidth:2});
+  b.create('functiongraph', [function(x){ return h + Math.sqrt(x - k); }, k, k + 16], {strokeColor:'#cc0000', strokeWidth:2});
+  b.create('functiongraph', [function(x){ return x; }], {strokeColor:'#666666', dash:2, strokeWidth:1});
+  b.create('point', [h, k], {size:3, color:'#003399', fixed:true, name:'(' + h + ', ' + k + ')', label:{offset:[8,-14]}});
+  b.create('point', [k, h], {size:3, color:'#cc0000', fixed:true, name:'(' + k + ', ' + h + ')', label:{offset:[8,10]}});
+})();
+[[/jsxgraph]]
+</div>
+<p style="text-align:center;"><span style="color:#003399;">Blue: \(y=f(x)\)</span>; <span style="color:#cc0000;">red: \(y=f^{-1}(x)\)</span>; dashed: \(y=x\).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* h and k are nonzero and distinct (and k+1 is not h, so the generic test value k+1 never hits the diagnostic), so every diagnostic is distinct from the answer and from each other */
+h: rand_with_prohib(-6,6,[0]);
+k: rand_with_prohib(-6,6,[0,h,h-1]);
+fx: (x-h)^2 + k;
+fy0: (x-h)^2 + k;
+fy: (y-h)^2 + k;
+ta1: h + sqrt(x-k);
+ta2: k;
+validate_x(ex) := if every(lambda([v], member(v, [x])), listofvars(ex)) then "" else "Write your answer in terms of x only.";
+/* prt1 diagnostics: minus branch; forgot to add h; swapped the roles of h and k */
+wrong_branch: h - sqrt(x-k);
+wrong_noshift: sqrt(x-k);
+wrong_swaphk: k + sqrt(x-h);
+/* prt2 diagnostic: gave the domain of f instead of the domain of the inverse */
+wrong_dom: h;
+/* board limits for the figure: square box containing both curves */
+bmin: min(h,k) - 2;
+bmax: max(h,k) + 10;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text><![CDATA[f(x) = {@fx@} for x >= {@h@}; f^-1(x) = {@ta1@}, domain x >= {@k@}]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.8 (Inverse of Polynomials). Finds the inverse of a domain-restricted quadratic; the key step is choosing the correct branch of the square root from the original domain restriction. Part (b), the domain of the inverse (the range of f), was added in review.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>20</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options>validator:validate_x</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>4</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct inverse with the + branch</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Chose the minus branch</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_branch</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have chosen the \(-\) branch. The domain \(x \geq {@h@}\) of \(f\) becomes the range of \(f^{-1}\), so the outputs of \(f^{-1}\) must be at least \({@h@}\). Which branch gives that?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Forgot to add h</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_noshift</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>After taking the square root you have \(y - {@h@}\) on one side, not \(y\). Finish making \(y\) the subject.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Swapped h and k</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_swaphk</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The constants have changed places. Swap \(x\) and \(y\) in \(y = {@fy0@}\) carefully, then isolate the squared bracket before taking the square root.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Swap \(x\) and \(y\) in \(y = {@fy0@}\), isolate the squared bracket, take the square root, and use the domain restriction on \(f\) to choose the sign.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct domain of the inverse</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Gave the domain of f</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>wrong_dom</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>\(x \geq {@h@}\) is the domain of \(f\). The domain of \(f^{-1}\) is the <strong>range</strong> of \(f\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The domain of \(f^{-1}\) is the range of \(f\). Find the smallest value \(f(x)\) takes for \(x \geq {@h@}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both correct, equivalent form</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sqrt(x-k)+h</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong branch; domain of f</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_branch</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wrong_dom</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Forgot the shift</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_noshift</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Swapped h and k; generic wrong domain</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_swaphk</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F | prt1-4-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Generic wrong inverse (sign inside the root)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>h+sqrt(x+k)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F | prt1-4-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: inverse in terms of y</description>
+      <testinput>
+        <name>ans1</name>
+        <value>h+sqrt(y-k)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

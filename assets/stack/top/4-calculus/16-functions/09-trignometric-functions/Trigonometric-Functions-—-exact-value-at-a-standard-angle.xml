@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Trigonometric Functions — exact value at a standard angle</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Find the exact value of \( [[if test="is(fn=0)"]]\sin[[elif test="is(fn=1)"]]\cos[[else]]\tan[[/if]]({@angledeg@}^\circ) \).</p>
+<p>Give an exact answer, not a decimal. Type \(\sqrt{3}\) as <code>sqrt(3)</code>.</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>To find a trigonometric ratio of an angle beyond \(90^\circ\), use its <strong>reference angle</strong> (the acute angle it makes with the \(x\)-axis) for the size, and the <strong>quadrant</strong> for the sign.</p>
+<ul>
+  <li>\({@angledeg@}^\circ\) lies in quadrant {@quadrant@}, and its reference angle is \({@refangle@}^\circ\). So \(\left|[[if test="is(fn=0)"]]\sin[[elif test="is(fn=1)"]]\cos[[else]]\tan[[/if]]({@angledeg@}^\circ)\right| = [[if test="is(fn=0)"]]\sin[[elif test="is(fn=1)"]]\cos[[else]]\tan[[/if]]({@refangle@}^\circ) = {@abs(ta)@}\).</li>
+  <li>The signs by quadrant are: all three positive in quadrant 1; only sine positive in quadrant 2; only tangent positive in quadrant 3; only cosine positive in quadrant 4. In quadrant {@quadrant@}, [[if test="is(fn=0)"]]sine[[elif test="is(fn=1)"]]cosine[[else]]tangent[[/if]] is [[if test="is(ta>0)"]]positive[[else]]negative[[/if]].</li>
+</ul>
+<p>So \( [[if test="is(fn=0)"]]\sin[[elif test="is(fn=1)"]]\cos[[else]]\tan[[/if]]({@angledeg@}^\circ) = {@ta@} \).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Standard angles beyond the first quadrant, excluding the quadrantal angles 180 and 270 and 360 (no reference angle, tan 270 undefined) */
+angledeg: rand([120,135,150,210,225,240,300,315,330]);
+fn: rand(3);   /* 0 sin, 1 cos, 2 tan */
+/* exact value computed by Maxima from the angle in radians (checked for every angle and function) */
+ta: if fn = 0 then sin(angledeg*%pi/180) elseif fn = 1 then cos(angledeg*%pi/180) else tan(angledeg*%pi/180);
+quadrant: if angledeg < 180 then 2 elseif angledeg < 270 then 3 else 4;
+refangle: if quadrant = 2 then 180 - angledeg elseif quadrant = 3 then angledeg - 180 else 360 - angledeg;
+/* Diagnostic: right magnitude, wrong sign for the quadrant. ta is never 0, so this is always distinct. */
+wrong_sign: -ta;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:prt1]]</text>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>fn {@fn@} (0 sin, 1 cos, 2 tan) at {@angledeg@} degrees = {@ta@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.9 (Trigonometric Functions). Exact value of sin, cos or tan at a standard angle beyond the first quadrant; catches getting the magnitude right via the reference angle but the sign wrong for the quadrant. sin, cos and tan are forbidden in the answer, so the CAS cannot evaluate it for the student.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sin, cos, tan</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct exact value with the right sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Right magnitude, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but check the sign. Which quadrant is \({@angledeg@}^\circ\) in, and is [[if test="is(fn=0)"]]sine[[elif test="is(fn=1)"]]cosine[[else]]tangent[[/if]] positive or negative there?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the reference angle (the acute angle to the \(x\)-axis) and use the exact value for that angle. Then fix the sign from the quadrant the angle is in.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Right magnitude, wrong sign</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_sign</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>2*ta</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a decimal</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(ta)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

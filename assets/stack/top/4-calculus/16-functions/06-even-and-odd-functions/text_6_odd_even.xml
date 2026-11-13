@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>text_6_odd_even</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Type each function as an expression in \(x\).</p>
+<ol class="tb-parts">
+<li><div>Give an example of an odd function. \(f_1(x)=\) [[input:ans1]] [[validation:ans1]] [[feedback:odd]]</div></li>
+<li><div>Give an example of an even function. \(f_2(x)=\) [[input:ans2]] [[validation:ans2]] [[feedback:even]]</div></li>
+<li><div>Give an example of a function which is both odd and even. \(f_3(x)=\) [[input:ans3]] [[validation:ans3]] [[feedback:oddeven]]</div></li>
+<li><div>Is the answer to part 3 unique, or are there many different possibilities? Unique: [[input:ans4]] [[validation:ans4]] [[feedback:unique]]</div></li>
+</ol>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>A function is <strong>even</strong> if \(f(-x) = f(x)\) for every \(x\), and <strong>odd</strong> if \(f(-x) = -f(x)\) for every \(x\). This question tests these properties of the expression you give, so many different answers are correct. For an odd function we check that \[ f(x)+f(-x)=0,\] and for an even function that \[ f(x)-f(-x)=0.\]</p>
+<p>Powers give the simplest examples: \(x^3\), \(x\) and \(x^5 - 2x\) are odd, while \(x^4\), \(x^2 + 1\) and any constant are even. On a graph, an even function is symmetric about the \(y\)-axis, and an odd function is unchanged by a half-turn (a rotation through \(180^\circ\)) about the origin.</p>
+<p>A function that is both odd and even satisfies \(f(x) = f(-x) = -f(x)\), so \(2f(x) = 0\) and \(f(x) = 0\) for every \(x\). The zero function is the only example, so the answer to part 3 is unique.</p>
+<p>Drag the points \(P\) and \(Q\) below. \(P'\) is the mirror image of \(P\) in the \(y\)-axis and always stays on the even curve. \(Q'\) is the image of \(Q\) under a half-turn about the origin and always stays on the odd curve.</p>
+<div style="text-align:center;" role="img" aria-label="Interactive graph of an even curve y equals x squared over 2 and an odd curve y equals x cubed over 4. A draggable point P on the even curve has its mirror image P prime in the y-axis; a draggable point Q on the odd curve has its image Q prime under a half-turn about the origin.">
+[[jsxgraph width="360px" height="300px"]]
+(function() {
+  var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-4, 5, 4, -5],
+    axis: true, grid: false, showNavigation: false, showCopyright: false
+  });
+  var evenCurve = board.create('functiongraph', [function(x){ return 0.5*x*x; }, -4, 4],
+    {strokeColor: '#1565c0', strokeWidth: 2, fixed: true, highlight: false});
+  var oddCurve = board.create('functiongraph', [function(x){ return 0.25*x*x*x; }, -4, 4],
+    {strokeColor: '#2e7d32', strokeWidth: 2, fixed: true, highlight: false});
+  var P = board.create('glider', [-1.2, 0.72, evenCurve], {name: 'P', color: '#1565c0', size: 4, label: {offset: [8, 10]}});
+  var Pm = board.create('point', [function(){ return -P.X(); }, function(){ return P.Y(); }],
+    {name: "P'", color: '#1565c0', size: 3, fixed: true, label: {offset: [-22, 10]}});
+  var Q = board.create('glider', [2.2, 2.662, oddCurve], {name: 'Q', color: '#2e7d32', size: 4, label: {offset: [10, -10]}});
+  var Qm = board.create('point', [function(){ return -Q.X(); }, function(){ return -Q.Y(); }],
+    {name: "Q'", color: '#2e7d32', size: 3, fixed: true, label: {offset: [-24, 10]}});
+  board.create('segment', [P, Pm], {strokeColor: '#1565c0', strokeWidth: 1, dash: 2, fixed: true});
+  board.create('segment', [Q, Qm], {strokeColor: '#2e7d32', strokeWidth: 1, dash: 2, fixed: true});
+  board.create('text', [0.4, -3.9, 'Even: y = x²/2 (P, P′)'], {fixed: true, color: '#1565c0'});
+  board.create('text', [0.4, -4.5, 'Odd: y = x³/4 (Q, Q′)'], {fixed: true, color: '#2e7d32'});
+})();
+[[/jsxgraph]]
+</div>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Fixed question: the student constructs examples, so there is nothing to randomise. */
+/* Only the variable x may appear: without this, an entry such as t*x (a parameter times x) would pass the odd test. */
+validate_x(ex) := if every(lambda([v], member(v, [x])), listofvars(ex)) then "" else "Use only the variable x in your function.";]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>Fixed question: examples of an odd, an even, and an odd-and-even function; is the last unique?</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>Grade 11 Functions 16.6 (Even and Odd Functions). Constructs examples of odd, even, and odd-and-even functions; the PRTs test the defining properties of whatever function is entered.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>x^3</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options>validator:validate_x</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>x^4</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options>validator:validate_x</options>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>0</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options>validator:validate_x</options>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>boolean</type>
+      <tans>true</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>even</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sa:ans2-subst(x=-x,ans2);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>f(x) - f(-x) = 0</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>0</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1.0000000</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>even-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>even-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your answer is not an even function. Look: \[ f(x)-f(-x)={@sa@} \neq 0.\] An even function satisfies \(f(-x) = f(x)\), so replacing \(x\) by \(-x\) must leave it unchanged.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>odd</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sa:subst(x=-x,ans1)+ans1;
+sb:ans1-subst(x=-x,ans1);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>f(x) + f(-x) = 0</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>0</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1.0000000</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>odd-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>odd-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Diagnostic: gave an even function instead of an odd one</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sb</sans>
+        <tans>0</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.0000000</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>odd-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your function is even, not odd: replacing \(x\) by \(-x\) leaves it unchanged, \(f(-x) = f(x)\). An odd function changes sign instead, \(f(-x) = -f(x)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>odd-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your answer is not an odd function. Look: \[ f(x)+f(-x)={@sa@} \neq 0.\] An odd function satisfies \(f(-x) = -f(x)\). Think about which powers of \(x\) change sign when \(x\) is replaced by \(-x\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>oddeven</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sa1:subst(x=-x,ans3)+ans3;
+sa2:ans3-subst(x=-x,ans3);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Odd: f(x) + f(-x) = 0 (half marks)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa1</sans>
+        <tans>0</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5000000</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>oddeven-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>oddeven-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your answer is not an odd function. Look: \[ f(x)+f(-x)={@sa1@} \neq 0.\]</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Even: f(x) - f(-x) = 0 (half marks)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa2</sans>
+        <tans>0</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.5000000</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>oddeven-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>+</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>oddeven-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your answer is not an even function. Look: \[ f(x)-f(-x)={@sa2@} \neq 0.\] A function that is both odd and even must satisfy \(f(-x) = f(x)\) and \(f(-x) = -f(x)\) at the same time.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>unique</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Uniqueness of the odd-and-even function (true/false: no diagnostic)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1.0000000</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>unique-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>unique-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Suppose \(f\) is both odd and even. Put the two conditions \(f(-x) = f(x)\) and \(f(-x) = -f(x)\) together: what must \(f(x)\) be for every \(x\)?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x^3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>cos(x)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>0</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>true</value>
+      </testinput>
+      <expected>
+        <name>even</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>even-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>odd</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>odd-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>oddeven</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>oddeven-1-T | oddeven-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>unique</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>unique-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Even given for odd (diagnostic), odd given for even, odd only for part 3, wrong on uniqueness</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x^2</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>x^3</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>x^3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>false</value>
+      </testinput>
+      <expected>
+        <name>even</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>even-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>odd</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>odd-1-F | odd-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>oddeven</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>oddeven-1-T | oddeven-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>unique</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>unique-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Neither for odd (generic route), even only for part 3</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x^3+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>x^2+1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>x^2</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>true</value>
+      </testinput>
+      <expected>
+        <name>even</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>even-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>odd</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>odd-1-F | odd-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>oddeven</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>oddeven-1-F | oddeven-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>unique</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>unique-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a parameter t in the odd function is rejected by the validator</description>
+      <testinput>
+        <name>ans1</name>
+        <value>t*x</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>x^4</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>0</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>true</value>
+      </testinput>
+      <expected>
+        <name>even</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>even-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>odd</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>oddeven</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>oddeven-1-T | oddeven-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>unique</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>unique-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
