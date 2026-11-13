@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating probabilities of non-mutually exclusive events in a sports day</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>At a sports day for <b>{@school@}</b>, there are exactly <b>{@N@} learners</b> in Form 3. The games master records the following participation data:</p>
+<ul>
+  <li><b>{@R@}</b> learners entered running events (\(R\)).</li>
+  <li><b>{@F@}</b> learners entered field events (\(F\)).</li>
+  <li><b>{@B@}</b> learners entered <b>both</b> running and field events.</li>
+</ul>
+
+<p><b>a) </b> If one learner is selected at random, find the probability that they entered <b>both</b> running and field events.</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P(R \text{ and } F) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Because the events \(R\) and \(F\) can happen at the same time, they are <b>not mutually exclusive</b>. Find the probability that the selected learner entered <b>running events OR field events</b>.</p>
+<p>\(P(R \text{ or } F) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Let \(E_1\) be the event "entered running events ONLY" and \(E_2\) be the event "entered field events ONLY". Because a learner cannot be in the "only running" group and the "only field" group simultaneously, \(E_1\) and \(E_2\) are mutually exclusive.</p>
+<p>Find the probability that the learner entered <b>exactly one</b> type of event (\(E_1 \text{ or } E_2\)).</p>
+<p>\(P(E_1 \text{ or } E_2) =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part a: Joint Probability</b><br>
+There are \({@B@}\) learners who entered both events, out of a total of \({@N@}\) learners.</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R \text{ and } F) = \frac{{@B@}}{{@N@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(R \text{ and } F) = {@ta1@} } \)</p>
+
+<p><b>Part b: General Addition Rule</b><br>
+To find the probability of \(R \text{ or } F\), we must add the individual probabilities and subtract the intersection so we do not count the learners who did both twice:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R \text{ or } F) = P(R) + P(F) - P(R \text{ and } F) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R \text{ or } F) = \frac{{@R@}}{{@N@}} + \frac{{@F@}}{{@N@}} - \frac{{@B@}}{{@N@}} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(R \text{ or } F) = \frac{{@R + F - B@}}{{@N@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(R \text{ or } F) = {@ta2@} } \)</p>
+
+<p><b>Part c: Mutually Exclusive Sub-Events</b><br>
+First, we find the number of learners in each exclusive group:</p>
+<ul>
+  <li>Running ONLY = Total Running - Both = \({@R@} - {@B@} = {@R_only@}\)</li>
+  <li>Field ONLY = Total Field - Both = \({@F@} - {@B@} = {@F_only@}\)</li>
+</ul>
+<p>Because these are mutually exclusive, we can simply add their probabilities together:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(E_1 \text{ or } E_2) = P(E_1) + P(E_2) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(E_1 \text{ or } E_2) = \frac{{@R_only@}}{{@N@}} + \frac{{@F_only@}}{{@N@}} = \frac{{@R_only + F_only@}}{{@N@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(E_1 \text{ or } E_2) = {@ta3@} } \)</p>
+<p>The Venn diagram shows the four groups of learners:</p>
+<div style="text-align:center;" role="img" aria-label="Venn diagram: running only {#R_only#}, field only {#F_only#}, both {#B#}, neither {#neither#}.">
+[[jsxgraph width="380px" height="250px"]]
+(function() {
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-5.2, 3.6, 5.2, -3.4], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false, pan:{enabled:false}, zoom:{enabled:false}});
+  b.create('polygon', [[-5,-3.2],[5,-3.2],[5,3.4],[-5,3.4]], {fillColor:'#fafafa', vertices:{visible:false}, borders:{strokeColor:'#555'}, fixed:true});
+  b.create('circle', [[-1.1,0], 2.2], {fillColor:'#90caf9', fillOpacity:0.45, strokeColor:'#1565c0', fixed:true});
+  b.create('circle', [[1.1,0], 2.2], {fillColor:'#ffcc80', fillOpacity:0.45, strokeColor:'#e65100', fixed:true});
+  b.create('text', [-1.9, 0, '' + {#R_only#}], {anchorX:'middle', anchorY:'middle', fontSize:16, fixed:true});
+  b.create('text', [1.9, 0, '' + {#F_only#}], {anchorX:'middle', anchorY:'middle', fontSize:16, fixed:true});
+  b.create('text', [0, 0, '' + {#B#}], {anchorX:'middle', anchorY:'middle', fontSize:16, fixed:true});
+  b.create('text', [3.9, -2.7, '' + {#neither#}], {anchorX:'middle', anchorY:'middle', fontSize:16, fixed:true});
+  b.create('text', [-2.6, 2.6, 'Running R'], {anchorX:'middle', fontSize:14, fixed:true});
+  b.create('text', [2.6, 2.6, 'Field F'], {anchorX:'middle', fontSize:14, fixed:true});
+})();
+[[/jsxgraph]]
+</div>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize school name */
+school : rand(["St. Jude Seregeya Secondary", "Aligula Secondary", "Eshikulu Girls High", "Tumaini Secondary", "Mlimani High", "Amani Academy"]);
+
+/* Construct the groups systematically to guarantee mathematical consistency */
+/* Expanded arrays to prevent STACK variant cache collisions */
+R_only : rand([10, 11, 12, 14, 15, 17, 18, 20, 22, 25]);
+F_only : rand([8, 9, 11, 13, 16, 19, 21, 23, 24]);
+B : rand([4, 5, 6, 7, 8, 9, 10]);
+neither : rand([2, 3, 4, 5, 8, 10, 12]);
+
+/* Calculate totals based on the distinct components */
+N : R_only + F_only + B + neither;
+R : R_only + B;
+F : F_only + B;
+
+/* Target answers using exact fractional logic */
+ta1 : B / N;
+ta2 : (R + F - B) / N;
+ta3 : (R_only + F_only) / N;
+
+/* Distractors for specific PRT feedback */
+ta2_wrong : (R + F) / N; /* Forgot to subtract the intersection */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>{@school@}, N={@N@}. R={@R@}, F={@F@}, B={@B@}. P(Both)={@ta1@}, P(Union)={@ta2@}, P(Only R or Only F)={@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>This question is based on the example Non-Mutually Exclusive Events in the section Mutually Exclusive and Independent Events of the CBC Grade 11 Mathematics textbook (INNODEMS).</p>
+<p id="concept">Mutually Exclusive Events and the Addition Rule</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>numerical</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of joint probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. The probability of the intersection is simply the number of learners who did both divided by the total population.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Identify the specific number of learners who entered <b>both</b> events, and divide it by the total number of learners in Form 3.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of union probability</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly subtracted the intersection to avoid double-counting.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they double-counted the intersection</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simply added \(P(R) + P(F)\). Because the events are not mutually exclusive, adding them directly means you counted the \({@B@}\) learners who did both events <b>twice</b>. You must subtract \(P(R \text{ and } F)\) from your total.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Use the general addition rule: \(P(R \text{ or } F) = P(R) + P(F) - P(R \text{ and } F)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of mutually exclusive union</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. Because \(E_1\) and \(E_2\) are mutually exclusive, you can directly add their probabilities without subtracting an intersection.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. First, find how many learners did <b>only</b> running (\({@R@} - {@B@}\)). Then, find how many did <b>only</b> field events (\({@F@} - {@B@}\)). Add these two groups together and divide by the total number of learners.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>891683162</deployedseed>
+    <deployedseed>1221886275</deployedseed>
+    <deployedseed>1370196004</deployedseed>
+    <deployedseed>607607694</deployedseed>
+    <deployedseed>242408678</deployedseed>
+    <deployedseed>1272077548</deployedseed>
+    <deployedseed>1271450388</deployedseed>
+    <deployedseed>863174944</deployedseed>
+    <deployedseed>2099747560</deployedseed>
+    <deployedseed>1898091866</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Diagnostic 1 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

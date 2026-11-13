@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Testing for independent events using drawn numbered cards</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A single card is drawn at random from a set of <b>{@N@} cards</b> numbered 1 to {@N@}. Define the following events:</p>
+<ul>
+  <li><b>Event \(A\):</b> The card shows a multiple of <b>{@d1@}</b>.</li>
+  <li><b>Event \(B\):</b> The card shows a multiple of <b>{@d2@}</b>.</li>
+</ul>
+
+<p><b>a) </b> Calculate the probability that the card is a multiple of <b>both</b> {@d1@} and {@d2@} (meaning it is a multiple of their product, {@d_int@}).</p>
+<p><i>(Enter your answer as a fully simplified fraction).</i></p>
+<p>\(P(A \text{ and } B) =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Two events are independent if the probability of their intersection equals the product of their individual probabilities. Find the exact product of the two individual probabilities.</p>
+<p>\(P(A) \times P(B) =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>
+
+<p><b>c) </b> Calculate the probability that the card is a multiple of {@d1@} <b>OR</b> a multiple of {@d2@}.</p>
+<p>\(P =\) [[input:ans3]]</p>
+<div>[[validation:ans3]] [[feedback:prt3]]</div>
+<p><b>d) </b> Use your answers to parts a) and b) to decide: are the events \(A\) and \(B\) independent?</p>
+<div>[[input:ans4]] [[validation:ans4]] [[feedback:prt4]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>First, we find the number of cards in each event by determining how many multiples fit into {@N@}:</p>
+<ul>
+  <li>Number of multiples of {@d1@} = \({@size_A@}\). So, \(P(A) = \frac{{@size_A@}}{{@N@}}\).</li>
+  <li>Number of multiples of {@d2@} = \({@size_B@}\). So, \(P(B) = \frac{{@size_B@}}{{@N@}}\).</li>
+  <li>Number of multiples of both (multiples of {@d_int@}) = \({@size_int@}\).</li>
+</ul>
+
+<p><b>Part a: Joint Probability</b><br>
+The probability of drawing a card that belongs to both events is the number of shared multiples divided by the total number of cards.</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A \text{ and } B) = \frac{{@size_int@}}{{@N@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(A \text{ and } B) = {@ta1@} } \)</p>
+
+<p><b>Part b: Test for Independence</b><br>
+We multiply the individual probabilities of Event \(A\) and Event \(B\):</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A) \times P(B) = \frac{{@size_A@}}{{@N@}} \times \frac{{@size_B@}}{{@N@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(A) \times P(B) = {@ta2@} } \)</p>
+<p><i>Note: Because [[if test="is_indep"]]\(P(A \text{ and } B) = P(A) \times P(B)\)[[else]]\(P(A \text{ and } B) \neq P(A) \times P(B)\)[[/if]], these events are <b>{@indep_text@}</b>.</i></p>
+
+<p><b>Part c: General Addition Rule</b><br>
+Using the addition rule, we add the probabilities of \(A\) and \(B\), then subtract the intersection to avoid double-counting:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A \text{ or } B) = P(A) + P(B) - P(A \text{ and } B) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(A \text{ or } B) = \frac{{@size_A@}}{{@N@}} + \frac{{@size_B@}}{{@N@}} - \frac{{@size_int@}}{{@N@}} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(A \text{ or } B) = {@ta3@} } \)</p>
+<p><b>Part d: Independence</b><br>Two events are <strong>independent</strong> exactly when \(P(A \text{ and } B) = P(A) \times P(B)\). Compare parts a) and b): [[if test="is_indep"]]they are equal, so \(A\) and \(B\) <b>are</b> independent.[[else]]they are different, so \(A\) and \(B\) are <b>not</b> independent.[[/if]] Whether two "multiple of" events are independent depends on how many cards there are: it happens when the multiples fit evenly into the pack.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize the total number of cards broadly */
+
+
+/* Define the divisors ensuring they share no common factors so the intersection is strictly their product */
+d1 : rand([2, 3]);
+d2_opts : if d1=2 then [3, 5, 7, 9] else [2, 4, 5, 7, 8];
+d2 : rand(d2_opts);
+d_int : d1 * d2;
+/* Half the variants use a pack that is a multiple of d1*d2 (then A and B are independent) */
+indep_mode : rand(2);
+N_other : sublist([20, 25, 30, 35, 40, 45, 50, 60, 75, 100], lambda([n], mod(n, d_int) # 0));
+N : if indep_mode = 1 then d_int*rand([2, 3, 4]) else rand(N_other);
+
+/* Calculate the sizes of each set using exact integer division (floor) to prevent float evaluation */
+size_A : floor(N / d1);
+size_B : floor(N / d2);
+size_int : floor(N / d_int);
+
+/* Target answers using exact fractional logic */
+P_A : size_A / N;
+P_B : size_B / N;
+
+ta1 : size_int / N;
+ta2 : P_A * P_B;
+ta3 : P_A + P_B - ta1;
+
+/* Feedback text logic for the worked solution */
+is_indep : if ta1 = ta2 then true else false;
+indep_sign : if is_indep then "=" else "\\neq";
+indep_text : if is_indep then "independent" else "dependent";
+
+/* Distractors */
+ta3_wrong : P_A + P_B; /* Forgot to subtract intersection */
+/* Part d: classify (dropdown) */
+ta4 : [[indep, is_indep, "Yes, A and B are independent"], [dep, not is_indep, "No, A and B are not independent"]];
+ta4v : if is_indep then indep else dep;
+ta4w : if is_indep then dep else indep;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>N={@N@}. d1={@d1@}, d2={@d2@}. P(A&B)={@ta1@}. P(A)*P(B)={@ta2@}. P(A or B)={@ta3@}. Indep={@is_indep@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>This question is based on the example Testing for Independence in the section Mutually Exclusive and Independent Events of the CBC Grade 11 Mathematics textbook (INNODEMS).</p>
+<p id="concept">Testing for Independence</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>numerical</type>
+      <tans>ta3</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>dropdown</type>
+      <tans>ta4</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of intersection</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You found the number of shared multiples and divided by the total number of cards.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Determine how many numbers between 1 and {@N@} are multiples of <b>both</b> {@d1@} and {@d2@}, and divide that count by {@N@}.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of independence test</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly multiplied the individual probabilities \(P(A)\) and \(P(B)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Find the probability of \(A\) and the probability of \(B\) separately, and multiply them together as fractions.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of union</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You correctly applied the general addition rule: \(P(A) + P(B) - P(A \text{ and } B)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they forgot to subtract intersection</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added \(P(A)\) and \(P(B)\) directly. Because these events overlap, you must subtract the intersection \(P(A \text{ and } B)\) so that you do not double-count the shared multiples.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Apply the general addition rule: \(P(A \text{ or } B) = P(A) + P(B) - P(A \text{ and } B)\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct classification</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ta4v</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Compare \(P(A \text{ and } B)\) from part a) with \(P(A) \times P(B)\) from part b). The events are independent only if these are equal.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>62787370</deployedseed>
+    <deployedseed>2091096369</deployedseed>
+    <deployedseed>1628304085</deployedseed>
+    <deployedseed>642752665</deployedseed>
+    <deployedseed>1943313667</deployedseed>
+    <deployedseed>2018045236</deployedseed>
+    <deployedseed>171485478</deployedseed>
+    <deployedseed>1874491097</deployedseed>
+    <deployedseed>707385367</deployedseed>
+    <deployedseed>80515213</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>first(mcq_correct(ta4))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Diagnostic 1 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3_wrong</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>first(mcq_correct(ta4))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F | prt3-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3+1</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>first(mcq_incorrect(ta4))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F | prt3-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>first(mcq_correct(ta4))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
