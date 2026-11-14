@@ -6,14 +6,13 @@
     </name>
     <questiontext format="html">
       <text><![CDATA[<p>Evaluate the limit</p>
-<p>\[ \lim_{x \to {@aa@}} \left( {@p@}x^2 + {@q@}x + {@r@} \right). \]</p>
-<div>[[input:ans1]] [[validation:ans1]]</div>
-<div>[[feedback:prt1]]</div>]]></text>
+<p>\[ \lim_{x \to {@aa@}} \left( {@fx@} \right). \]</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>For a polynomial, the limit as \(x\to a\) is always found by <strong>direct substitution</strong> &#8212; polynomials are continuous everywhere, so there is no need for any special limit technique.</p>
-\[ \lim_{x \to {@aa@}}({@p@}x^2+{@q@}x+{@r@}) = {@p@}({@aa@})^2+{@q@}({@aa@})+{@r@} = {@ta@}. \]
-<p>Watch the sign when squaring a negative number: \(({@aa@})^2\) is positive.</p>]]></text>
+      <text><![CDATA[<p>A polynomial is <strong>continuous</strong> everywhere, so its limit as \(x \to a\) is just its value at \(a\). The limit is found by <strong>direct substitution</strong>; no special limit technique is needed.</p>
+\[ \lim_{x \to {@aa@}}\left({@fx@}\right) = {@p@}\times({@aa@})^2 + {@q@}\times({@aa@}) + {@r@} = {@p*aa^2@} - {@-q*aa@} + {@r@} = {@ta@}. \]
+<p>Watch the signs: \(({@aa@})^2 = {@aa^2@}\) is positive, while \({@q@}\times({@aa@})\) is negative.</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -23,39 +22,43 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>p : rand_with_prohib(1,5,[]);
-q : rand_with_prohib(1,9,[]);
-r : rand_with_prohib(1,9,[]);
-aa : -rand_with_prohib(2,6,[]);
-fx : p*x^2+q*x+r;
-ta : subst(x=aa,fx);
-wrong_sign : -p*aa^2+q*aa+r;
-wrong_nosub : fx;</text>
+      <text>p: rand_with_prohib(1,5,[]);
+q: rand_with_prohib(1,9,[]);
+aa: -rand_with_prohib(2,6,[]);
+/* r is chosen so that the limit is never 0, 1 or -1 (trivial answers) */
+r0: -(p*aa^2 + q*aa);
+r: rand_with_prohib(1,9,[r0, r0+1, r0-1]);
+fx: p*x^2 + q*x + r;
+ta: subst(x=aa, fx);
+/* Diagnostics, always distinct from ta and from each other (checked over the domain):
+   the square of a negative taken as negative; the negative x-value substituted as positive. */
+wrong_sign: -p*aa^2 + q*aa + r;
+wrong_abs: p*aa^2 - q*aa + r;</text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text>[[feedback:prt1]]</text>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.7 (Limits of Polynomials). Direct-substitution limit of a polynomial at a negative x-value; catches the sign-of-square mistake and forgetting to substitute.</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text><![CDATA[lim x -> {@aa@} of {@fx@} = {@ta@}]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.7 (Limits of Polynomials). Direct-substitution limit of a polynomial at a negative x-value; catches the sign-of-square mistake and forgetting to substitute.</p>]]></text>
+      <text><![CDATA[<p>Grade 11 Functions 16.7 (Limits of Polynomials). Direct-substitution limit of a polynomial at a negative x-value; catches the sign-of-square mistake and substituting the negative value as positive. An answer still containing x is rejected at validation (numerical input).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -65,9 +68,9 @@ wrong_nosub : fx;</text>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta</tans>
-      <boxsize>15</boxsize>
+      <boxsize>6</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -77,8 +80,8 @@ wrong_nosub : fx;</text>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -91,7 +94,7 @@ wrong_nosub : fx;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correct limit value?</description>
+        <description>Correct limit value</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta</tans>
@@ -101,7 +104,7 @@ wrong_nosub : fx;</text>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -109,14 +112,14 @@ wrong_nosub : fx;</text>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-0-F</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description>Sign-of-square mistake?</description>
+        <description>Square of a negative taken as negative</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>wrong_sign</tans>
@@ -126,42 +129,42 @@ wrong_nosub : fx;</text>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-signerror</trueanswernote>
+        <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Check the squared term again: a negative number squared is positive.</text>
+          <text><![CDATA[<p>Check the squared term again: \(({@aa@})^2\) is the square of a negative number, so it is positive.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>2</falsenextnode>
-        <falseanswernote>prt1-1-F</falseanswernote>
+        <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>2</name>
-        <description>Forgot to substitute?</description>
+        <description>Substituted the x-value without its minus sign</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>wrong_nosub</tans>
+        <tans>wrong_abs</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-nosub</trueanswernote>
+        <trueanswernote>prt1-3-T</trueanswernote>
         <truefeedback format="html">
-          <text>For a polynomial limit, substitute \(x={@aa@}\) directly into the expression and simplify.</text>
+          <text><![CDATA[<p>It looks as though you substituted \(x = {@-aa@}\). The limit is as \(x \to {@aa@}\), so the linear term \({@q*x@}\) becomes negative.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text>That is not the correct limit value.</text>
+          <text><![CDATA[<p>A polynomial is continuous, so substitute \(x = {@aa@}\) directly into every term and simplify carefully, keeping track of signs.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -170,18 +173,23 @@ wrong_nosub : fx;</text>
     <deployedseed>3</deployedseed>
     <deployedseed>4</deployedseed>
     <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Correct</description>
+      <description>Correct, by substitution</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>p*aa^2+q*aa+r</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
@@ -195,7 +203,49 @@ wrong_nosub : fx;</text>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-signerror</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Substituted +|a|</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_abs</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: did not substitute (expression in x)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fx</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

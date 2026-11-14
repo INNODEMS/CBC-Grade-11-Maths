@@ -5,48 +5,59 @@
       <text>Image_1</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Determine the image set \({\rm im}(f)\) of the function\[ {@f1@}.\] Give your answer as an inequality in \(y\), e.g. \( y &lt;= \alpha\). [[input:ans1]] [[validation:ans1]]</p>]]></text>
+      <text><![CDATA[<p>Determine the image set \({\rm im}(f)\) of the function \[ {@f1@}. \]</p>
+<p>Give your answer as an inequality in \(y\), for example <code>y&lt;=5</code>. Type <code>&lt;=</code> for \(\le\) and <code>&gt;=</code> for \(\ge\).</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>The function can be rewritten by completing the square as \[{@f1@}=(x+{@n1@})^2+({@n2@})\] so that all values are larger than \({@n2@}\), and for \(x=-{@n1@}\) equals \({@n2@}\). <br /> Hence \[ {\rm im}(f) = \{y| y &gt;= {@n2@}\}\] <br /> and the answer is \[ y &gt;= {@n2@}.\]</p>]]></text>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>The <strong>image set</strong> (range) of \(f\) is the set of all output values. For a quadratic, <strong>completing the square</strong> shows it directly. Halve the coefficient of \(x\) and write</p>
+\[ {@rhs@} = {@(x+n1)^2+n2@}. \]
+<p>A square is never negative, so \({@(x+n1)^2@} \ge 0\) for every \(x\), and therefore \(f(x) \ge {@n2@}\). The value \({@n2@}\) is actually reached, at \(x={@-n1@}\), where the square is \(0\). So the smallest output is \({@n2@}\), and every larger value is also an output.</p>
+<p>Hence \({\rm im}(f) = \{\,y : y \ge {@n2@}\,\}\), and the answer is \({@correctanswer@}\).</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text/>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
       <text><![CDATA[n1:rand_with_step(1, 4, 1);
- n2:rand_with_step(-9, 9, 1);
- f1:f(x)=expand((x+n1)^2+n2);
- correctanswer:y >= n2;]]></text>
+n2:rand_with_step(-9, 9, 1);
+rhs:expand((x+n1)^2+n2);
+f1:f(x)=rhs;
+correctanswer:y >= n2;
+/* Diagnostics: both differ from correctanswer on every seed (n1 >= 1). */
+wrong_strict:y > n2;            /* excluded the minimum, which is attained at x = -n1 */
+wrong_yint:y >= n1^2+n2;        /* took the constant term f(0) as the minimum */
+validate_y(ex) := if every(lambda([w], member(w, [y])), listofvars(ex)) then "" else "Use only the variable y.";]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text><![CDATA[<p>[[feedback:Result]]</p>]]></text>
+      <text><![CDATA[<div>[[feedback:prt1]]</div>]]></text>
     </specificfeedback>
     <questionnote format="moodle_auto_format">
-      <text>Image \({@f1@} \mbox{ is }{@correctanswer@}\)</text>
+      <text>Image of \({@f1@}\) is \({@correctanswer@}\).</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
+    <questiondescription format="html">
       <text/>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -58,7 +69,7 @@
       <name>ans1</name>
       <type>algebraic</type>
       <tans>correctanswer</tans>
-      <boxsize>20</boxsize>
+      <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -66,14 +77,14 @@
       <forbidwords>solve</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
-      <requirelowestterms>1</requirelowestterms>
+      <requirelowestterms>0</requirelowestterms>
       <checkanswertype>1</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
-      <options/>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options>validator:validate_y</options>
     </input>
     <prt>
-      <name>Result</name>
+      <name>prt1</name>
       <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
@@ -82,52 +93,77 @@
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description><![CDATA[Correct image set? (Equivalent forms such as n2<=y are accepted.)]]></description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>correctanswer</tans>
         <testoptions/>
-        <quiet>1</quiet>
+        <quiet>0</quiet>
         <truescoremode>=</truescoremode>
-        <truescore>0.0000000</truescore>
-        <truepenalty>0</truepenalty>
-        <truenextnode>1</truenextnode>
-        <trueanswernote>Result-0-T </trueanswernote>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
-        <falsescore>0.0000000</falsescore>
-        <falsepenalty>0</falsepenalty>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>Result-0-F </falseanswernote>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description/>
-        <answertest>EqualComAss</answertest>
+        <description>Strict inequality?</description>
+        <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>correctanswer</tans>
+        <tans>wrong_strict</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
-        <truescore>1.0000000</truescore>
-        <truepenalty>0</truepenalty>
+        <truescore>0</truescore>
+        <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>Result-1-T </trueanswernote>
+        <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Nearly. The smallest value is actually reached: at the vertex the squared term is \(0\). So that value belongs to the image set, and the inequality should not be strict.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
-        <falsescore>0.0000000</falsescore>
-        <falsepenalty>0</falsepenalty>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>Result-1-F </falseanswernote>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Wrong way round</p>]]></text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Used the constant term as the minimum?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_yint</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have used \(f(0)\), the constant term. The minimum of a parabola is at its vertex, which is not at \(x=0\) here. Complete the square to find it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Complete the square to write \(f(x)\) as \((x+p)^2+q\). Since a square is never negative, this shows the smallest value \(f(x)\) can take.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -144,72 +180,86 @@
     <deployedseed>1710768998</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
         <value>correctanswer</value>
       </testinput>
       <expected>
-        <name>Result</name>
+        <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>Result-1-T</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value><![CDATA[y > n2]]></value>
-      </testinput>
-      <expected>
-        <name>Result</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>Result-0-F</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>3</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value><![CDATA[y < n2]]></value>
-      </testinput>
-      <expected>
-        <name>Result</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>Result-0-F</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>4</testcase>
-      <description/>
-      <testinput>
-        <name>ans1</name>
-        <value><![CDATA[y <=n2]]></value>
-      </testinput>
-      <expected>
-        <name>Result</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>Result-0-F</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>5</testcase>
-      <description/>
+      <description>Correct, written the other way round</description>
       <testinput>
         <name>ans1</name>
         <value><![CDATA[n2<=y]]></value>
       </testinput>
       <expected>
-        <name>Result</name>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Strict inequality</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_strict</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>Result-1-F</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Constant term used as the minimum</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_yint</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Generic wrong: inequality reversed</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[y<=n2]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: wrong variable</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[x>=n2]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

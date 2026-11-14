@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Predicting school arrival times using weather-dependent tree diagrams</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>The probability that it rains on a school day in Nairobi is <b>{@str_R@}</b>. If it rains, the probability that Atieno arrives late for school is <b>{@str_LR@}</b>. If it does not rain, the probability she is late is <b>{@str_LNR@}</b>.</p>
+
+<p>Draw a two-stage tree diagram for this scenario and use it to solve the following questions:</p>
+
+<p><b>a) </b> Find the probability that Atieno is late for school.</p>
+<p><i>(Enter your answer as an exact decimal).</i></p>
+<p>\(P =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>b) </b> Find the probability that it rained, but she was <b>NOT</b> late.</p>
+<p>\(P =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>First, establish the probabilities for all branches on the tree diagram:</p>
+<ul>
+  <li>\(P(\text{Rain}) = {@str_R@}\) \(\Rightarrow\) \(P(\text{No Rain}) = 1 - {@str_R@} = {@str_NR@}\)</li>
+  <li>\(P(\text{Late} \mid \text{Rain}) = {@str_LR@}\) \(\Rightarrow\) \(P(\text{Not Late} \mid \text{Rain}) = 1 - {@str_LR@} = {@str_LNR_given_R@}\)</li>
+  <li>\(P(\text{Late} \mid \text{No Rain}) = {@str_LNR@}\) \(\Rightarrow\) \(P(\text{Not Late} \mid \text{No Rain}) = 1 - {@str_LNR@} = {@str_NL_given_NR@}\)</li>
+</ul>
+
+<p><b>Part a: Probability she is Late</b><br>
+The event "Atieno is late" corresponds to two paths on the tree diagram: (Rain \(\rightarrow\) Late) and (No Rain \(\rightarrow\) Late).</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Rain, Late}) = {@str_R@} \times {@str_LR@} = {@path_R_L@} \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{No Rain, Late}) = {@str_NR@} \times {@str_LNR@} = {@path_NR_L@} \)</p>
+<p>Add these path probabilities together:</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Late}) = {@path_R_L@} + {@path_NR_L@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{Late}) = {@ta1_str@} } \)</p>
+
+<p><b>Part b: Rain and Not Late</b><br>
+This corresponds to a single path on the tree diagram: (Rain \(\rightarrow\) Not Late).</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Rain, Not Late}) = P(\text{Rain}) \times P(\text{Not Late} \mid \text{Rain}) \)</p>
+<p style="margin-left: 20px;">\( \displaystyle P(\text{Rain, Not Late}) = {@str_R@} \times {@str_LNR_given_R@} \)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\( \displaystyle \boxed{ P(\text{Rain, Not Late}) = {@ta2_str@} } \)</p>
+<p>The tree diagram:</p>
+<div style="text-align:center;" role="img" aria-label="Tree diagram: rain or no rain, then late or not late.">
+[[jsxgraph width="460px" height="182px"]]
+(function() {
+  var L1 = [['Rain', '{#float(P_R)#}'],['No rain', '{#float(P_NR)#}']], L2 = [[['Late', '{#float(P_LR)#}'],['Not late', '{#float(P_LNR_given_R)#}']],[['Late', '{#float(P_LNR)#}'],['Not late', '{#float(P_NL_given_NR)#}']]], LV = ['{#path_R_L#}','{#float(P_R*P_LNR_given_R)#}','{#path_NR_L#}','{#float(P_NR*P_NL_given_NR)#}'];
+  var n = 4, wide = LV.length ? 15 : 12;
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.4, n + 0.4, wide, 0.3], axis:false, grid:false,
+      showNavigation:false, showCopyright:false, pan:{enabled:false}, zoom:{enabled:false}});
+  function lab(p, q, t, txt) {
+    // t: how far along the branch the label sits
+    // probability label 55% along the branch, above an upward branch and below a downward one
+    var x = p[0] + t*(q[0]-p[0]), y = p[1] + t*(q[1]-p[1]);
+    var off = (q[1] >= p[1]) ? 0.32 : -0.32;
+    b.create('text', [x, y + off, txt], {anchorX:'middle', anchorY:'middle', fontSize:13, fixed:true, strokeColor:'#1565c0'});
+  }
+  var y = n, k = 0, root = [0, (n + 1)/2];
+  b.create('point', root, {name:'', size:3, fixed:true, color:'#333', showInfobox:false});
+  for (var i = 0; i < L1.length; i++) {
+    var m = L2[i].length, ymid = y - (m - 1)/2, p1 = [3.0, ymid];
+    b.create('segment', [root, p1], {strokeColor:'#555', fixed:true});
+    lab(root, p1, 0.55, L1[i][1]);
+    b.create('text', [3.15, ymid, L1[i][0]], {anchorY:'middle', fontSize:15, fixed:true});
+    for (var j = 0; j < m; j++) {
+      var s2 = [6.3, ymid], p2 = [9.2, y];
+      b.create('segment', [s2, p2], {strokeColor:'#555', fixed:true});
+      lab(s2, p2, 0.72, L2[i][j][1]);
+      b.create('text', [9.35, y, L2[i][j][0]], {anchorY:'middle', fontSize:15, fixed:true});
+      if (LV.length) b.create('text', [12.0, y, LV[k]], {anchorY:'middle', fontSize:13, fixed:true, strokeColor:'#2e7d32'});
+      y -= 1; k++;
+    }
+  }
+})();
+[[/jsxgraph]]
+</div>]]></text>
+    </generalfeedback>
+    <defaultgrade>4</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Master arrays expanded to guarantee 100 unique variants (5 x 5 x 4) */
+idx_R : rand([1, 2, 3, 4, 5]);
+num_R_list : [20, 25, 30, 35, 40];
+str_R_list : ["0.20", "0.25", "0.30", "0.35", "0.40"];
+num_R : num_R_list[idx_R];
+str_R : str_R_list[idx_R];
+
+idx_LR : rand([1, 2, 3, 4, 5]);
+num_LR_list : [50, 55, 60, 65, 70];
+str_LR_list : ["0.50", "0.55", "0.60", "0.65", "0.70"];
+num_LR : num_LR_list[idx_LR];
+str_LR : str_LR_list[idx_LR];
+
+idx_LNR : rand([1, 2, 3, 4]);
+num_LNR_list : [5, 10, 15, 20];
+str_LNR_list : ["0.05", "0.10", "0.15", "0.20"];
+num_LNR : num_LNR_list[idx_LNR];
+str_LNR : str_LNR_list[idx_LNR];
+
+/* Exact internal calculations */
+P_R : num_R / 100;
+P_NR : 1 - P_R;
+
+P_LR : num_LR / 100;
+P_LNR_given_R : 1 - P_LR;
+
+P_LNR : num_LNR / 100;
+P_NL_given_NR : 1 - P_LNR;
+
+/* Path Calculations */
+ta1 : (P_R * P_LR) + (P_NR * P_LNR);
+ta2 : P_R * P_LNR_given_R;
+
+/* Output strings for worked solution to ensure clean formatting */
+str_NR : float(P_NR);
+str_LNR_given_R : float(P_LNR_given_R);
+str_NL_given_NR : float(P_NL_given_NR);
+path_R_L : float(P_R * P_LR);
+path_NR_L : float(P_NR * P_LNR);
+
+ta1_str : float(ta1);
+ta2_str : float(ta2);
+
+/* Distractors */
+ta1_wrong_one_path : P_R * P_LR; /* Only found the "Rain and Late" path */
+ta2_wrong_independent : P_R * (1 - ta1); /* Wrongly assumed weather and lateness were independent */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>P(R)={@str_R@}, P(L|R)={@str_LR@}, P(L|NR)={@str_LNR@}. P(Late)={@ta1_str@}. P(R and NL)={@ta2_str@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>This question is based on the tree-diagram examples (second stage depends on the first) in the section Tree Diagrams of the CBC Grade 11 Mathematics textbook (INNODEMS).</p>
+<p id="concept">Tree Diagrams: Conditional Probability Paths</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct. You accurately identified both paths that lead to being late and added their probabilities.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description><![CDATA[Check if they only calculated the Rain -> Late path]]></description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong_one_path</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the probability that it rains AND she is late. However, she can also be late on a day with no rain. You must calculate both paths and add them together.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Calculate \(P(\text{Rain}) \times P(\text{Late} \mid \text{Rain})\), then calculate \(P(\text{No Rain}) \times P(\text{Late} \mid \text{No Rain})\), and add the two results.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Excellent. You correctly multiplied the probability of rain by the conditional probability of not being late given rain.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply the probability of rain by the probability of <b>not</b> being late given that it rained (\(1 - {@str_LR@}\)).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1649659312</deployedseed>
+    <deployedseed>389530939</deployedseed>
+    <deployedseed>734839324</deployedseed>
+    <deployedseed>1854803254</deployedseed>
+    <deployedseed>314890139</deployedseed>
+    <deployedseed>1778453904</deployedseed>
+    <deployedseed>1447536097</deployedseed>
+    <deployedseed>1475036883</deployedseed>
+    <deployedseed>851371629</deployedseed>
+    <deployedseed>1502321422</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Diagnostic 1 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong_one_path</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

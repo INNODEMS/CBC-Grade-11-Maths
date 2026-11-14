@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Finding a point in the third quadrant</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>
+        A point <m>P</m> on the unit circle satisfies
+        \(\sin\theta = -\dfrac{@sin_num@}{@hyp@}\)
+        and lies in the third quadrant.
+    </p>
+
+    <ol marker="(a)">
+        <li>
+            <p>Find \(\cos\theta\).</p>
+            <p>[[input:ans1]] [[validation:ans1]]</p>
+        </li>
+
+        <li>
+            <p>Find \(\tan\theta\).</p>
+            <p>[[input:ans2]] [[validation:ans2]]</p>
+        </li>
+
+        <li>
+            <p>Write down the exact coordinates of \(P\\cos\theta,\sin\theta)\).</p>
+            <p>
+                P=[[input:ans3]] [[validation:ans3]]
+            </p>
+        </li>
+
+        <li>
+            <p>
+                What is the reference angle for \(\theta\)?
+                Leave your answer as an exact expression.
+            </p>
+            <p>[[input:ans5]] [[validation:ans5]][[feedback:prt1]]</p>
+        </li>
+    </ol>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Worked solution</h3>
+<p>
+    Recall the Pythagorean identity:
+    \(\sin^2\theta+\cos^2\theta=1\).
+</p>
+
+<p>
+    Substituting the given sine value:
+</p>
+
+<p>
+    \[
+    \cos^2\theta
+    =1-\left(-\frac{@sin_num@}{@hyp@}\right)^2
+    \]
+</p>
+
+<p>
+    \[
+    =\frac{@hyp^2-sin_num^2@}{@hyp^2@}
+    =\frac{@cos_num^2@}{@hyp^2@}.
+    \]
+</p>
+
+<p>
+    Therefore, \(\cos\theta=\pm\frac{@cos_num@}{@hyp@}\).
+    Since \(\theta\) lies in the third quadrant, cosine is negative.
+</p>
+
+<p>
+    Hence,
+    \[
+    \cos\theta=-\frac{@cos_num@}{@hyp@}.
+    \]
+</p>
+
+<p><strong>(b) Finding \(\tan\theta\)</strong></p>
+
+<p>
+    Using \(\tan\theta=\frac{\sin\theta}{\cos\theta}\):
+</p>
+
+<p>
+    \[
+    \tan\theta=
+    \frac{-\frac{@sin_num@}{@hyp@}}
+    {-\frac{@cos_num@}{@hyp@}}
+    =\frac{@sin_num@}{@cos_num@}.
+    \]
+</p>
+
+<p>
+    Therefore, \(\tan\theta=\frac{@sin_num@}{@cos_num@}\).
+    Tangent is positive in the third quadrant.
+</p>
+
+<p><strong>(c) Finding the coordinates of P</strong></p>
+
+<p>
+    A point on the unit circle has coordinates
+    \(P=(\cos\theta,\sin\theta)\).
+</p>
+
+<p>
+    Therefore,
+    \[
+    P=\left(
+    -\frac{@cos_num@}{@hyp@},
+    -\frac{@sin_num@}{@hyp@}
+    \right).
+    \]
+</p>
+
+<p><strong>(d) Finding the reference angle</strong></p>
+
+<p>
+    The reference angle is the acute angle between the terminal arm
+    and the negative \(x\)-axis.
+</p>
+
+<p>
+    In the third quadrant, its tangent is positive. Thus,
+</p>
+
+<p>
+    \[
+    \tan\alpha=
+    \frac{|\sin\theta|}{|\cos\theta|}
+    =\frac{@sin_num@}{@cos_num@}.
+    \]
+</p>
+
+<p>
+    Hence, the exact reference angle is
+    \[
+    \alpha=\arctan\left(\frac{@sin_num@}{@cos_num@}\right).
+    \]
+</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Randomly select a Pythagorean triple */
+q: 1+rand(3);
+
+/* Select the two shorter sides and hypotenuse */
+sin_num: if q=1 then 3
+          elseif q=2 then 5
+          else 8;
+
+cos_num: if q=1 then 4
+          elseif q=2 then 12
+          else 15;
+
+hyp: if q=1 then 5
+     elseif q=2 then 13
+     else 17;
+
+/* Given sine value */
+given_sin: -sin_num/hyp;
+
+/* Exact trigonometric ratios in quadrant III */
+ta_cos: -cos_num/hyp;
+ta_tan: sin_num/cos_num;
+
+/* Exact coordinates of P */
+ta_x: -cos_num/hyp;
+ta_y: -sin_num/hyp;
+
+/* Reference angle */
+ta_ref: atan(sin_num/cos_num);
+</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta_cos@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta_cos</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta_tan</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta_x</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>algebraic</type>
+      <tans>ta_ref</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <qtest>
+      <testcase>1</testcase>
+      <description/>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_cos</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_tan</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta_x</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_ref</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty/>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

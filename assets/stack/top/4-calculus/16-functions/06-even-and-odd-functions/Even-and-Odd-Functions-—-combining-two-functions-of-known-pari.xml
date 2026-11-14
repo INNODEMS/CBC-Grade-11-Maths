@@ -6,17 +6,17 @@
     </name>
     <questiontext format="html">
       <text><![CDATA[<p>Suppose \(f\) is an <strong>{@f_parity@}</strong> function and \(g\) is an <strong>{@g_parity@}</strong> function (both defined for all real numbers).</p>
-<p>What can you say about the function \(h(x) = f(x)\ {@opsymbol@}\ g(x)\)?</p>
-<div>[[input:ans1]] [[validation:ans1]]</div>
-<div>[[feedback:prt1]]</div>]]></text>
+<p>What can you say about the function [[if test="is(op=0)"]]\(h(x) = f(x) + g(x)\)[[else]]\(h(x) = f(x) \times g(x)\)[[/if]]?</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>Rules for combining even (E) and odd (O) functions:</p>
-<ul>
-<li>Sum: E+E=E, O+O=O, E+O=Neither (in general)</li>
-<li>Product: E&times;E=E, O&times;O=E, E&times;O=O</li>
-</ul>
-<p>Here \(f\) is {@f_parity@} and \(g\) is {@g_parity@}, combined with {@opdesc@}, so \(h\) is {@ta@}.</p>]]></text>
+      <text><![CDATA[<p>Work from the definitions: a function is <strong>even</strong> if \(f(-x) = f(x)\) and <strong>odd</strong> if \(f(-x) = -f(x)\). Replace \(x\) by \(-x\) in \(h\), use what you know about \(f\) and \(g\), and compare the result with \(h(x)\) and \(-h(x)\).</p>
+<p>Here \(f\) is {@f_parity@} and \(g\) is {@g_parity@}, so \[ h(-x) = {@hnegdef@} = {@hneg@}. \]</p>
+[[if test="h_even"]]<p>This is exactly \(h(x)\), so \(h\) is always even.</p>
+[[elif test="h_odd"]]<p>This is exactly \(-h(x)\), so \(h\) is always odd.</p>
+[[else]]<p>This is in general neither \(h(x)\) nor \(-h(x)\), so \(h\) need not be even or odd. For example, \(x^2 + x\) is the sum of the even function \(x^2\) and the odd function \(x\), and it is neither even nor odd. (In a special case, such as when one of the functions is the zero function, the sum can still be even or odd, which is why the answer is "could be neither".)</p>
+[[/if]]
+<p>In summary, for sums: even + even is even, odd + odd is odd, and even + odd is in general neither. For products: even \(\times\) even is even, odd \(\times\) odd is even, and even \(\times\) odd is odd, just like multiplying signs.</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -31,19 +31,26 @@ g_is_even : is(rand(2)=1);
 op : rand(2);                     /* 0 = sum, 1 = product */
 f_parity : if f_is_even then "even" else "odd";
 g_parity : if g_is_even then "even" else "odd";
-opsymbol : if op=0 then "+" else "&#215;";
 opdesc : if op=0 then "addition" else "multiplication";
 /* rules: even+even=even, odd+odd=odd, even+odd=neither (in general);
           even*even=even, odd*odd=even, even*odd=odd */
 ta : if op=0 then (if f_is_even and g_is_even then "even" elseif (not f_is_even) and (not g_is_even) then "odd" else "neither")
      else (if f_is_even and g_is_even then "even" elseif (not f_is_even) and (not g_is_even) then "even" else "odd");
-opts : [["even", ta="even", "Always even"],["odd", ta="odd", "Always odd"],["neither", ta="neither", "Could be neither (not necessarily even or odd)"]];]]></text>
+h_even : is(ta="even");
+h_odd : is(ta="odd");
+/* Booleans wrapped in is() so each option carries true or false, not an unevaluated equation */
+opts : [["even", h_even, "Always even"],["odd", h_odd, "Always odd"],["neither", is(ta="neither"), "Could be neither (not necessarily even or odd)"]];
+/* For the worked solution: h(-x) written with f(-x), g(-x), then using the parities (sign +1 for even, -1 for odd) */
+sf : if f_is_even then 1 else -1;
+sg : if g_is_even then 1 else -1;
+hnegdef : if op=0 then f(-x)+g(-x) else f(-x)*g(-x);
+hneg : if op=0 then sf*f(x)+sg*g(x) else sf*sg*f(x)*g(x);]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text>[[feedback:prt1]]</text>
     </specificfeedback>
     <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.6 (Even and Odd Functions). Applies the rules for the parity of a sum or product of an even/odd function pair, reinforcing the Learner Experience 16.6.2 exploration rather than d</p>]]></text>
+      <text>f is {@f_parity@}, g is {@g_parity@}, combined by {@opdesc@}: h is {@ta@}</text>
     </questionnote>
     <questiondescription format="html">
       <text><![CDATA[<p id="description">Grade 11 Functions 16.6 (Even and Odd Functions). Applies the rules for the parity of a sum or product of an even/odd function pair, reinforcing the Learner Experience 16.6.2 exploration rather than direct substitution.</p>]]></text>
@@ -52,17 +59,17 @@ opts : [["even", ta="even", "Always even"],["odd", ta="odd", "Always odd"],["nei
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -84,8 +91,8 @@ opts : [["even", ta="even", "Always even"],["odd", ta="odd", "Always odd"],["nei
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -98,17 +105,17 @@ opts : [["even", ta="even", "Always even"],["odd", ta="odd", "Always odd"],["nei
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correctly applied the parity combination rule?</description>
+        <description>Correct parity of the combination (dropdown: no diagnostic)</description>
         <answertest>String</answertest>
         <sans>ans1</sans>
         <tans>ta</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -116,9 +123,9 @@ opts : [["even", ta="even", "Always even"],["odd", ta="odd", "Always odd"],["nei
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Try the substitution test directly: compute h(-x) in terms of f(-x) and g(-x), using the parities of f and g, and compare it with h(x) and -h(x).</text>
+          <text><![CDATA[<p>Use the substitution test directly: write \(h(-x)\) in terms of \(f(-x)\) and \(g(-x)\), use the parities of \(f\) and \(g\), and compare the result with \(h(x)\) and \(-h(x)\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -127,18 +134,37 @@ opts : [["even", ta="even", "Always even"],["odd", ta="odd", "Always odd"],["nei
     <deployedseed>3</deployedseed>
     <deployedseed>4</deployedseed>
     <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Correct</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>first(mcq_correct(opts))</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong choice</description>
+      <testinput>
+        <name>ans1</name>
+        <value>first(mcq_incorrect(opts))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

@@ -6,18 +6,23 @@
     </name>
     <questiontext format="html">
       <text><![CDATA[<p>A relation is given by the set of ordered pairs</p>
-<p>\[ \{ ({@xa@},{@ya@}),\ ({@xb@},{@yb@}),\ ({@xc@},{@yc@}) \}. \]</p>
-<p><strong>(a)</strong> Is this relation a function?</p>
-<div>[[input:ans1]] [[validation:ans1]]</div>
-<p><strong>(b)</strong> If it is a function, is it one-to-one or many-to-one? (Choose "not applicable" if it is not a function.)</p>
-<div>[[input:ans2]] [[validation:ans2]]</div>
-<div>[[feedback:prt1]] [[feedback:prt2]]</div>]]></text>
+<p>\[ \{ ({@pairs[1][1]@}, {@pairs[1][2]@}),\ ({@pairs[2][1]@}, {@pairs[2][2]@}),\ ({@pairs[3][1]@}, {@pairs[3][2]@}) \}. \]</p>
+<p>(a) Is this relation a function?</p>
+<div>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) If it is a function, is it one-to-one or many-to-one? Choose "Not applicable" if it is not a function.</p>
+<div>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>A relation fails to be a function only when the <strong>same \(x\)-value</strong> is paired with two <strong>different</strong> \(y\)-values. Repeated \(y\)-values are completely fine &#8212; that just makes the function many-to-one, not "not a function".</p>
-<p>Here, the pairs are \( ({@xa@},{@ya@}) \), \( ({@xb@},{@yb@}) \), \( ({@xc@},{@yc@}) \). Checking the \(x\)-values: {@xa@}, {@xb@}, {@xc@}.</p>]]></text>
+      <text><![CDATA[<p>A relation fails to be a <strong>function</strong> only when the <strong>same \(x\)-value</strong> is paired with two <strong>different</strong> \(y\)-values. Repeated \(y\)-values are allowed: they make the function many-to-one, not "not a function". A function is <strong>one-to-one</strong> when no \(y\)-value is repeated either.</p>
+[[if test="is(scenario=0)"]]
+<p>Here the \(x\)-value \({@p1@}\) appears twice, paired with \({@q1@}\) and with \({@q2@}\). One input has two outputs, so the relation is not a function. Part (b) is not applicable.</p>
+[[elif test="is(scenario=1)"]]
+<p>Here the \(x\)-values \({@p1@}\), \({@p2@}\) and \({@p3@}\) are all different, so each input has exactly one output and the relation is a function. The \(y\)-value \({@q1@}\) is shared by \(x = {@p1@}\) and \(x = {@p2@}\), so two inputs have the same output. The function is many-to-one.</p>
+[[else]]
+<p>Here the \(x\)-values \({@p1@}\), \({@p2@}\) and \({@p3@}\) are all different, so the relation is a function. The \(y\)-values \({@q1@}\), \({@q2@}\) and \({@q3@}\) are also all different, so no two inputs share an output. The function is one-to-one.</p>
+[[/if]]]]></text>
     </generalfeedback>
-    <defaultgrade>1</defaultgrade>
+    <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
@@ -25,51 +30,52 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[scenario : rand(3);
-p1 : rand_with_prohib(1,9,[]);
-p2 : rand_with_prohib(1,9,[p1]);
-p3 : rand_with_prohib(1,9,[p1,p2]);
-q1 : rand_with_prohib(1,9,[]);
-q2 : rand_with_prohib(1,9,[q1]);
-q3 : rand_with_prohib(1,9,[q1,q2]);
-/* scenario 0: NOT a function (repeated x with different y)
-   scenario 1: function, many-to-one (repeated y, distinct x)
-   scenario 2: function, one-to-one (all distinct) */
-xa : p1; ya : q1;
-xb : if scenario=0 then p1 else p2;
-yb : if scenario=1 then q1 else q2;
-xc : if scenario=0 then p2 else p3;
-yc : if scenario=0 then q3 elseif scenario=1 then q2 else q3;
-is_function : if scenario=0 then false else true;
-ans1_correct : if is_function then "yes" else "no";
-ans2_correct : if scenario=0 then "na" elseif scenario=1 then "manytoone" else "onetoone";
-opts1 : [["yes", is_function, "Yes, it is a function"],["no", not is_function, "No, it is not a function"]];
-opts2 : [["onetoone", scenario=2, "One-to-one"],["manytoone", scenario=1, "Many-to-one"],["na", scenario=0, "Not applicable (not a function)"]];]]></text>
+      <text><![CDATA[/* scenario 0: NOT a function (one x-value paired with two different y-values)
+   scenario 1: a function, many-to-one (one y-value shared by two x-values)
+   scenario 2: a function, one-to-one (all x-values and all y-values distinct) */
+scenario: rand(3);
+p1: rand_with_prohib(1, 9, []);
+p2: rand_with_prohib(1, 9, [p1]);
+p3: rand_with_prohib(1, 9, [p1, p2]);
+q1: rand_with_prohib(1, 9, []);
+q2: rand_with_prohib(1, 9, [q1]);
+q3: rand_with_prohib(1, 9, [q1, q2]);
+xa: p1; ya: q1;
+xb: if scenario=0 then p1 else p2;
+yb: if scenario=1 then q1 else q2;
+xc: if scenario=0 then p2 else p3;
+yc: if scenario=1 then q2 else q3;
+/* Shuffle the pairs so the repeated value is not always in the first two pairs. */
+pairs: random_permutation([[xa, ya], [xb, yb], [xc, yc]]);
+ta1: [[isfn, is(scenario>0), "Yes, it is a function"], [notfn, is(scenario=0), "No, it is not a function"]];
+ta2: [[onetoone, is(scenario=2), "One-to-one"], [manytoone, is(scenario=1), "Many-to-one"], [notapp, is(scenario=0), "Not applicable (not a function)"]];
+tac1: first(mcq_correct(ta1));
+tac2: first(mcq_correct(ta2));]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.1 (Types of Relations). Tests the classic misconception that repeated y-values make a relation fail to be a function; the actual rule concerns repeated x-values.</p>]]></text>
+      <text>scenario={@scenario@}, pairs={@pairs@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.1 (Types of Relations). Tests the classic misconception that repeated y-values make a relation fail to be a function; the actual rule concerns repeated x-values.</p>]]></text>
+      <text>This question is based on the definitions of one-to-one, one-to-many, many-to-one and many-to-many relations in Section 16.1 (Types of Relations) of the Grade 11 Functions topic. It targets the misconception that repeated y-values stop a relation being a function.</text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -80,42 +86,42 @@ opts2 : [["onetoone", scenario=2, "One-to-one"],["manytoone", scenario=1, "Many-
     <input>
       <name>ans1</name>
       <type>dropdown</type>
-      <tans>opts1</tans>
-      <boxsize>15</boxsize>
+      <tans>ta1</tans>
+      <boxsize>20</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans2</name>
       <type>dropdown</type>
-      <tans>opts2</tans>
-      <boxsize>15</boxsize>
+      <tans>ta2</tans>
+      <boxsize>20</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
       <name>prt1</name>
-      <value>0.5000000</value>
+      <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
@@ -123,58 +129,33 @@ opts2 : [["onetoone", scenario=2, "One-to-one"],["manytoone", scenario=1, "Many-
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correctly identified whether it is a function?</description>
-        <answertest>String</answertest>
+        <description>Function or not, correct?</description>
+        <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ans1_correct</tans>
+        <tans>tac1</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-0-F</falseanswernote>
-        <falsefeedback format="html">
-          <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>1</name>
-        <description>Classic misconception: rejected a many-to-one function because y-values repeat?</description>
-        <answertest>String</answertest>
-        <sans>ans1</sans>
-        <tans><![CDATA["no"]]></tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-manytoone-misconception</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[Repeated \(y\)-values do not stop a relation from being a function &#8212; only a repeated \(x\)-value with two different \(y\)-values does that. Check the \(x\)-values again.]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[That is not correct &#8212; check the definition of a function again: every \(x\)-value must give exactly one \(y\)-value.]]></text>
+          <text><![CDATA[[[if test="is(scenario=1)"]]<p>Repeated \(y\)-values do not stop a relation from being a function. Only a repeated \(x\)-value with two different \(y\)-values does that. Check the \(x\)-values again.</p>[[elif test="is(scenario=0)"]]<p>Look for an \(x\)-value that appears in more than one pair. A relation is not a function when the same \(x\)-value is paired with two different \(y\)-values.</p>[[else]]<p>A relation fails to be a function only when the same \(x\)-value is paired with two different \(y\)-values. Check whether any \(x\)-value appears more than once.</p>[[/if]]]]></text>
         </falsefeedback>
       </node>
     </prt>
     <prt>
       <name>prt2</name>
-      <value>0.5000000</value>
+      <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
@@ -182,17 +163,17 @@ opts2 : [["onetoone", scenario=2, "One-to-one"],["manytoone", scenario=1, "Many-
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correct one-to-one / many-to-one / not-applicable classification?</description>
-        <answertest>String</answertest>
+        <description>Type, or not applicable, correct?</description>
+        <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
-        <tans>ans2_correct</tans>
+        <tans>tac2</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-correct</trueanswernote>
+        <trueanswernote>prt2-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -200,9 +181,9 @@ opts2 : [["onetoone", scenario=2, "One-to-one"],["manytoone", scenario=1, "Many-
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt2-wrong</falseanswernote>
+        <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Compare the \(x\)-values and \(y\)-values again: one-to-one means every \(x\) and every \(y\) is used exactly once; many-to-one means at least one \(y\)-value is repeated for different \(x\)-values.</text>
+          <text><![CDATA[<p>Decide part (a) first: one-to-one and many-to-one describe functions only. For a function, compare the \(y\)-values. It is many-to-one when two different \(x\)-values share a \(y\)-value, and one-to-one when every \(y\)-value appears only once.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -211,52 +192,81 @@ opts2 : [["onetoone", scenario=2, "One-to-one"],["manytoone", scenario=1, "Many-
     <deployedseed>3</deployedseed>
     <deployedseed>4</deployedseed>
     <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Fully correct</description>
       <testinput>
         <name>ans1</name>
-        <value>ans1_correct</value>
+        <value>tac1</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ans2_correct</value>
+        <value>tac2</value>
       </testinput>
       <expected>
         <name>prt1</name>
-        <expectedscore>0.5000000</expectedscore>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>0.5000000</expectedscore>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-correct</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Classic many-to-one misconception</description>
+      <description>Both wrong</description>
       <testinput>
         <name>ans1</name>
-        <value><![CDATA["no"]]></value>
+        <value>first(mcq_incorrect(ta1))</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ans2_correct</value>
+        <value>first(mcq_incorrect(ta2))</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-manytoone-misconception</expectedanswernote>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>0.5000000</expectedscore>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Mixed: (a) right, (b) wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tac1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>last(mcq_incorrect(ta2))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

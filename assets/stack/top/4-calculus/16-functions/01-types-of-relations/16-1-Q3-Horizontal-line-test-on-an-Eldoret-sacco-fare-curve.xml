@@ -5,81 +5,98 @@
       <text>16.1 Q3 Horizontal line test on an Eldoret sacco fare curve</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>A matatu sacco in Eldoret charges a fare that depends on distance. The manager wants to know whether two different distances ever give exactly the same fare. The board shows the fare curve and a horizontal line you can slide up and down.</p>
-<p>Slide the horizontal line through the whole height of the graph. If some horizontal line meets the curve at two or more points, then two different distances give the same fare. Is this fare function one to one or many to one?</p>
-<p>[[input:ans1]] [[validation:ans1]]</p>
-<p>[[feedback:prt1]]</p>
-
-[[jsxgraph input-ref="ref1" width="500px" height="420px"]]
-var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1,8,10,-2], axis:true, showCopyright:false, showNavigation:false});
-var o={#one2one#};
-if (o==1){ board.create('functiongraph',[function(x){return 0.6*x+0.5;},0,9],{strokeColor:'#1565c0',strokeWidth:2}); }
-else { board.create('functiongraph',[function(x){return 0.15*(x-4)*(x-4)+1.5;},0,9],{strokeColor:'#1565c0',strokeWidth:2}); }
-var hy=board.create('slider',[[6.5,7],[9,7],[0,3,7]],{name:'line',snapWidth:0.1});
-board.create('line',[[-1,function(){return hy.Value();}],[10,function(){return hy.Value();}]],{strokeColor:'#c62828',strokeWidth:2,dash:2});
-board.create('text',[-0.5,-1.3,'Slide the red line through the whole height'],{fontSize:12,anchorX:'left'});
-[[/jsxgraph]]]]></text>
+      <text><![CDATA[<p>A matatu sacco in Eldoret charges a fare that depends on the distance travelled. The manager wants to know whether two different distances ever give exactly the same fare. The board shows the fare curve, with distance on the horizontal axis and fare on the vertical axis, and a red horizontal line that you can move with the slider.</p>
+<p>Slide the line through the whole height of the graph. If some horizontal line meets the curve at two or more points, then two different distances give the same fare.</p>
+<div style="text-align:center;" role="img" aria-label="Interactive graph of a fare curve against distance, with a red dashed horizontal line controlled by a slider.">
+[[jsxgraph width="400px" height="300px"]]
+(function() {
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox: [-1, 8, 10, -1.2], axis: true, grid: false,
+    showNavigation: false, showCopyright: false});
+  var o = {#one2one#};
+  var fare = function(x) {
+    if (o == 1) { return 0.6*x + 0.5; }
+    // rises, then a flat fare zone from 3 km to 6 km, then rises again
+    if (x < 3) { return 0.6*x + 0.5; }
+    if (x < 6) { return 2.3; }
+    return 0.6*(x - 6) + 2.3;
+  };
+  b.create('functiongraph', [fare, 0, 9], {strokeColor: '#1565c0', strokeWidth: 2});
+  var hy = b.create('slider', [[4.2, 7.3], [7.5, 7.3], [0, 3, 7]], {name: 'y', snapWidth: 0.1});
+  b.create('line', [[-1, function() { return hy.Value(); }], [10, function() { return hy.Value(); }]],
+    {strokeColor: '#c62828', strokeWidth: 2, dash: 2, fixed: true});
+  b.create('text', [8.3, -0.6, 'distance'], {fontSize: 11, fixed: true});
+  b.create('text', [0.2, 7.6, 'fare'], {fontSize: 11, fixed: true});
+})();
+[[/jsxgraph]]
+</div>
+<p>Is this fare function one-to-one or many-to-one?</p>
+<div>The fare function is [[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>A function is one to one when no horizontal line meets its graph more than once. If some horizontal line crosses the curve twice, then two different inputs share the same output, and the function is many to one.</p>
-<p>A single crossing is expected and is not a problem. The concern is two or more crossings at the same height. For this fare curve the answer is {@correct@}.</p>]]></text>
+      <text><![CDATA[<p>The <strong>horizontal line test</strong> says that a function is one-to-one when no horizontal line meets its graph more than once. A horizontal line fixes one output; two or more crossings mean that different inputs share that output, so the function is many-to-one. One crossing is expected and is not a problem.</p>
+[[if test="is(one2one=1)"]]
+<p>Here the fare rises steadily with distance. Every horizontal line meets the graph at most once, so no two distances give the same fare. The fare function is one-to-one.</p>
+[[else]]
+<p>Here the fare rises, stays flat between 3 km and 6 km, then rises again. The horizontal line at the height of the flat part meets the graph at every distance from 3 km to 6 km, so many different distances give the same fare. The fare function is many-to-one.</p>
+[[/if]]]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.3333333</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2025010100</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[/* one2one=1 -> strictly increasing (one to one);
-   one2one=0 -> has a flat/turn so a horizontal line meets it twice. */
-one2one : rand([0,1]);
-correct : if one2one=1 then "one to one" else "many to one";]]></text>
+      <text><![CDATA[/* one2one=1: fare rises steadily (one-to-one).
+   one2one=0: fare has a flat zone, so a horizontal line meets it many times (many-to-one). */
+one2one: rand([0, 1]);
+ta1: [[onetoone, is(one2one=1), "one-to-one"], [manytoone, is(one2one=0), "many-to-one"]];
+tac1: first(mcq_correct(ta1));]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text>[[feedback:prt1]]</text>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>Correct answer is {@correct@}.</text>
+    <questionnote format="html">
+      <text>one2one={@one2one@}</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text>This question is based on the definitions of one-to-one, one-to-many, many-to-one and many-to-many relations in Section 16.1 (Types of Relations) of the Grade 11 Functions topic.</text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text>That is correct. Well done.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text>You are part of the way there.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text>That is not correct yet.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
     <logicsymbol>lang</logicsymbol>
     <matrixparens>[</matrixparens>
-    <isbroken>1</isbroken>
+    <isbroken>0</isbroken>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>string</type>
-      <tans>correct</tans>
-      <boxsize>16</boxsize>
+      <type>dropdown</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>one to one</syntaxhint>
-      <syntaxattribute>1</syntaxattribute>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>0</mustverify>
@@ -92,100 +109,64 @@ correct : if one2one=1 then "one to one" else "many to one";]]></text>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text>a1 : supcase(sconcat(ans1));
-cor : supcase(correct);</text>
+        <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Correct conclusion from the horizontal line test?</description>
         <answertest>AlgEquiv</answertest>
-        <sans>is(a1=cor)</sans>
-        <tans>true</tans>
+        <sans>ans1</sans>
+        <tans>tac1</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Correct. Sliding the line through the whole graph gives the right conclusion.</p>]]></text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt-0-F</falseanswernote>
-        <falsefeedback format="html">
           <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>1</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans><![CDATA[is(a1="ONE TO ONE") and is(cor="MANY TO ONE")]]></sans>
-        <tans>true</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-mistake1</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[<p>It looks like you judged from the general upward shape rather than testing with the line. A curve that rises can still flatten and repeat a fare. Drag the horizontal line through the whole graph and you will find a height where it crosses twice, so the function is many to one.</p>]]></text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>2</falsenextnode>
-        <falseanswernote>prt-1-F</falseanswernote>
-        <falsefeedback format="html">
-          <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>2</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans>true</sans>
-        <tans>true</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-mistake2</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[<p>Remember that a single crossing is expected and is fine. Reporting many to one whenever the line touches the curve at all is too strict. The test looks for two or more crossings at the same height. Check again for a repeated height before deciding.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt-2-F</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[[[if test="is(one2one=0)"]]<p>It looks like you judged from the general upward shape rather than testing with the line. A fare curve that rises can still level off and repeat a fare. Drag the horizontal line through the whole height of the graph and look for a height where it meets the curve more than once.</p>[[else]]<p>Remember that a single crossing is expected and is fine. The test looks for two or more crossings at the same height. Drag the horizontal line through the whole height of the graph and check whether any height is reached twice.</p>[[/if]]]]></text>
         </falsefeedback>
       </node>
     </prt>
     <deployedseed>301</deployedseed>
     <deployedseed>302</deployedseed>
     <deployedseed>303</deployedseed>
+    <deployedseed>304</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Correct</description>
       <testinput>
         <name>ans1</name>
-        <value>correct</value>
+        <value>tac1</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong conclusion</description>
+      <testinput>
+        <name>ans1</name>
+        <value>first(mcq_incorrect(ta1))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

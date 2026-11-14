@@ -5,29 +5,46 @@
       <text>Trigonometric Functions — identifying sin, cos, or tan from its graph (JSXGraph)</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>The graph below shows one full period of a trigonometric function (with \(x\) in radians).</p>
-[[jsxgraph width="440px" height="300px"]]
-var funcidx = {#funcidx#};
-var board = JXG.JSXGraph.initBoard(divid, {
-    boundingbox: [-0.5, 3, 7, -3],
-    axis: true, showCopyright: false, showNavigation: false
-});
-var f;
-if (funcidx === 0) { f = board.jc.snippet('sin(x)', true, 'x', true); board.create('functiongraph',[f,-0.3,6.6],{strokeColor:'#1565c0',strokeWidth:2}); }
-else if (funcidx === 1) { f = board.jc.snippet('cos(x)', true, 'x', true); board.create('functiongraph',[f,-0.3,6.6],{strokeColor:'#1565c0',strokeWidth:2}); }
-else {
-    f = board.jc.snippet('tan(x)', true, 'x', true);
-    board.create('functiongraph',[f,-0.3,1.45],{strokeColor:'#1565c0',strokeWidth:2});
-    board.create('functiongraph',[f,1.7,4.6],{strokeColor:'#1565c0',strokeWidth:2});
-    board.create('functiongraph',[f,4.86,6.6],{strokeColor:'#1565c0',strokeWidth:2});
-}
+      <text><![CDATA[<p>The graph below shows a trigonometric function for \(0 \leq x \leq 2\pi\), with \(x\) in radians.</p>
+<div style="text-align:center;" role="img" aria-label="Graph of one of y = sin x, y = cos x or y = tan x for x from 0 to 2 pi. Tick marks show multiples of pi over 2.">
+[[jsxgraph width="400px" height="260px"]]
+(function() {
+  var funcidx = {#funcidx#};
+  var b = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-0.6, 3, 7, -3], axis: false, grid: false,
+    showNavigation: false, showCopyright: false
+  });
+  b.create('axis', [[0,0],[1,0]], {ticks:{visible:false}});
+  b.create('axis', [[0,0],[0,1]], {ticks:{insertTicks:false, ticksDistance:1, minorTicks:0}});
+  var lab = ['π/2', 'π', '3π/2', '2π'];
+  for (var i = 1; i <= 4; i++) {
+    b.create('segment', [[i*Math.PI/2, -0.1], [i*Math.PI/2, 0.1]], {strokeColor:'black', fixed:true});
+    b.create('text', [i*Math.PI/2, -0.35, lab[i-1]], {anchorX:'middle', fixed:true});
+  }
+  var opt = {strokeColor:'#003399', strokeWidth:2};
+  if (funcidx === 0) {
+    b.create('functiongraph', [function(x){ return Math.sin(x); }, 0, 2*Math.PI], opt);
+  } else if (funcidx === 1) {
+    b.create('functiongraph', [function(x){ return Math.cos(x); }, 0, 2*Math.PI], opt);
+  } else {
+    b.create('functiongraph', [function(x){ return Math.tan(x); }, 0, Math.PI/2 - 0.12], opt);
+    b.create('functiongraph', [function(x){ return Math.tan(x); }, Math.PI/2 + 0.12, 3*Math.PI/2 - 0.12], opt);
+    b.create('functiongraph', [function(x){ return Math.tan(x); }, 3*Math.PI/2 + 0.12, 2*Math.PI], opt);
+  }
+})();
 [[/jsxgraph]]
+</div>
 <p>Which function is shown?</p>
-<div>[[input:ans1]] [[validation:ans1]]</div>
-<div>[[feedback:prt1]]</div>]]></text>
+<div>[[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>Key clues: \(\sin(x)\) starts at \(0\) and rises first; \(\cos(x)\) starts at its maximum value \(1\); \(\tan(x)\) has repeated vertical asymptotes (breaks in the graph) and is unbounded.</p>]]></text>
+      <text><![CDATA[<p>Each basic trigonometric graph has features you can read off directly.</p>
+<ul>
+  <li>\(y = \sin x\) starts at \(0\) when \(x = 0\) and rises first, reaching its maximum \(1\) at \(x = \dfrac{\pi}{2}\). Its period is \(2\pi\).</li>
+  <li>\(y = \cos x\) starts at its maximum \(1\) when \(x = 0\) and falls first. Its period is \(2\pi\).</li>
+  <li>\(y = \tan x\) also starts at \(0\), but it is unbounded and has vertical asymptotes (breaks in the graph) at \(x = \dfrac{\pi}{2}\) and \(x = \dfrac{3\pi}{2}\), where \(\cos x = 0\). Its period is \(\pi\), so two branches appear on \([0, 2\pi]\).</li>
+</ul>
+<p>The graph shown is \(y = {@ta_tex@}\).</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -37,34 +54,35 @@ else {
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[funcidx : rand(3);
-ta : if funcidx=0 then "sin" elseif funcidx=1 then "cos" else "tan";
-opts : [["sin", funcidx=0, "y = sin(x)"],["cos", funcidx=1, "y = cos(x)"],["tan", funcidx=2, "y = tan(x)"]];]]></text>
+      <text><![CDATA[funcidx: rand(3);   /* 0 sin, 1 cos, 2 tan */
+/* Option values are neutral literals so the page source does not reveal the answer */
+opts: [["f1", is(funcidx=0), "y = sin(x)"], ["f2", is(funcidx=1), "y = cos(x)"], ["f3", is(funcidx=2), "y = tan(x)"]];
+ta_tex: if funcidx = 0 then sin(x) elseif funcidx = 1 then cos(x) else tan(x);]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text>[[feedback:prt1]]</text>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.9 (Trigonometric Functions). Identifies sin, cos, or tan purely from the shape of its JSXGraph-plotted graph, including recognising tan's vertical asymptotes.</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text>Graph of function {@funcidx@} (0 sin, 1 cos, 2 tan)</text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.9 (Trigonometric Functions). Identifies sin, cos, or tan purely from the shape of its JSXGraph-plotted graph, including recognising tan's vertical asymptotes.</p>]]></text>
+      <text><![CDATA[<p>Grade 11 Functions 16.9 (Trigonometric Functions). Identifies sin, cos, or tan from the shape of its JSXGraph-plotted graph, including recognising the vertical asymptotes of tan. No diagnostic node: a dropdown classification with a single concept-level hint.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -76,18 +94,18 @@ opts : [["sin", funcidx=0, "y = sin(x)"],["cos", funcidx=1, "y = cos(x)"],["tan"
       <name>ans1</name>
       <type>dropdown</type>
       <tans>opts</tans>
-      <boxsize>15</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -100,17 +118,17 @@ opts : [["sin", funcidx=0, "y = sin(x)"],["cos", funcidx=1, "y = cos(x)"],["tan"
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correctly identified the trig function from its graph?</description>
-        <answertest>String</answertest>
+        <description>Correct function</description>
+        <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ta</tans>
+        <tans>first(mcq_correct(opts))</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -118,9 +136,9 @@ opts : [["sin", funcidx=0, "y = sin(x)"],["cos", funcidx=1, "y = cos(x)"],["tan"
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Check the starting value at x=0, and whether the graph has any vertical asymptotes.</text>
+          <text><![CDATA[<p>Look at the value of the graph at \(x = 0\), whether it rises or falls first, and whether the graph has breaks (vertical asymptotes).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -134,13 +152,27 @@ opts : [["sin", funcidx=0, "y = sin(x)"],["cos", funcidx=1, "y = cos(x)"],["tan"
       <description>Correct</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>first(mcq_correct(opts))</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>first(mcq_incorrect(opts))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

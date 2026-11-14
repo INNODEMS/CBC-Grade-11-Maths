@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Finding an Angle with the Sine Rule</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Consider triangle \(ABC\), where:</p>
+
+<ul>
+    <li>\(A={@A@}^\circ\)</li>
+    <li>\(a=BC={@side_a@}\text{ cm}\)</li>
+    <li>\(b=AC={@side_b@}\text{ cm}\)</li>
+</ul>
+
+<p>The diagram below illustrates the triangle.</p>
+
+[[jsxgraph]]
+
+/* Retrieve the randomised STACK variables */
+var Adeg = {#A#};
+var a = {#side_a#};
+var b = {#side_b#};
+var c = {#side_c#};
+
+/* Convert angle A to radians */
+var Arad = Adeg * Math.PI / 180;
+
+/* Coordinates of the triangle */
+var Ax = 0;
+var Ay = 0;
+
+var Cx = b;
+var Cy = 0;
+
+var Bx = c * Math.cos(Arad);
+var By = c * Math.sin(Arad);
+
+/* Calculate suitable diagram boundaries */
+var xmin = Math.min(Ax,Bx,Cx)-2;
+var xmax = Math.max(Ax,Bx,Cx)+3;
+var ymin = Math.min(Ay,By,Cy)-2;
+var ymax = Math.max(Ay,By,Cy)+3;
+
+/* Initialise the board */
+var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [xmin,ymax,xmax,ymin],
+    axis: false,
+    showCopyright: false,
+    showNavigation: false,
+    keepaspectratio: true
+});
+
+/* Create the triangle vertices */
+var pA = board.create('point',[Ax,Ay], {
+    name: 'A',
+    fixed: true,
+    size: 3,
+    color: 'black'
+});
+
+var pB = board.create('point',[Bx,By], {
+    name: 'B',
+    fixed: true,
+    size: 3,
+    color: 'black'
+});
+
+var pC = board.create('point',[Cx,Cy], {
+    name: 'C',
+    fixed: true,
+    size: 3,
+    color: 'black'
+});
+
+/* Draw the three sides */
+board.create('segment',[pA,pB], {
+    strokeColor: 'black',
+    strokeWidth: 2
+});
+
+board.create('segment',[pB,pC], {
+    strokeColor: 'black',
+    strokeWidth: 2
+});
+
+board.create('segment',[pC,pA], {
+    strokeColor: 'black',
+    strokeWidth: 2
+});
+
+/* Mark the known angle A */
+board.create('angle',[pC,pA,pB], {
+    radius: 0.8,
+    fillColor: '#60a5fa',
+    fillOpacity: 0.3,
+    strokeColor: '#2563eb',
+    name: 'A = '+Adeg+'°',
+    withLabel: true
+});
+
+/* Mark the unknown angle B */
+board.create('angle',[pA,pB,pC], {
+    radius: 0.8,
+    fillColor: '#fbbf24',
+    fillOpacity: 0.3,
+    strokeColor: '#d97706',
+    name: 'B = ?',
+    withLabel: true
+});
+
+/* Label side a */
+board.create('text',[
+    function(){return (Bx+Cx)/2+0.3;},
+    function(){return (By+Cy)/2+0.5;},
+    'a = '+a+' cm'
+], {
+    fontSize: 14,
+    fixed: true
+});
+
+/* Label side b */
+board.create('text',[
+    b/2,
+    -0.9,
+    'b = '+b+' cm'
+], {
+    fontSize: 14,
+    fixed: true
+});
+
+board.update();
+
+[[/jsxgraph]]
+
+<p>Calculate the size of angle \(B\) using the Sine Rule.</p>
+
+<p>Give your answer correct to 1 decimal place.</p>
+
+<p>[[input:ans1]]</p>
+
+<p>[[validation:ans1]][[feedback:prt1]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Worked solution</h3>
+
+<p>We are given:</p>
+
+<ul>
+    <li>\(A={@A@}^\circ\)</li>
+    <li>\(a={@side_a@}\text{ cm}\)</li>
+    <li>\(b={@side_b@}\text{ cm}\)</li>
+</ul>
+
+<p>We need to calculate angle \(B\).</p>
+
+<p><strong>Step 1: Recall the Sine Rule.</strong></p>
+
+<p>The Sine Rule states that:</p>
+
+\(\dfrac{a}{\sin A}=\dfrac{b}{\sin B}\)
+
+<p><strong>Step 2: Rearrange the formula.</strong></p>
+
+<p>Making \(\sin B\) the subject gives:</p>
+
+\(\sin B=\dfrac{b\sin A}{a}\)
+
+<p><strong>Step 3: Substitute the known values.</strong></p>
+
+\(\sin B=\dfrac{{@side_b@}\times\sin{@A@}^\circ}{@side_a@}\)
+
+<p>Therefore:</p>
+
+\(\sin B\approx {@sin_B@}\)
+
+<p><strong>Step 4: Calculate angle B.</strong></p>
+
+<p>Take the inverse sine of both sides:</p>
+
+\(B=\sin^{-1}\left(\dfrac{{@side_b@}\times\sin{@A@}^\circ}{@side_a@}\right)\)
+
+<p>Hence:</p>
+
+\(B\approx {@ta1@}^\circ\)
+
+<p><strong>Final Answer:</strong></p>
+
+\(\boxed{B={@ta1@}^\circ}\)
+
+<p>Remember to use degree mode on your calculator and round your answer to 1 decimal place.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomly select angle A */
+A: 35+5*rand(4);
+
+/* Randomly select side a */
+side_a: 8+rand(5);
+
+/* Randomly select side b such that b < a */
+side_b: 5+rand(side_a-6);
+
+/* Convert angle A to radians */
+A_rad: A*%pi/180;
+
+/* Calculate sin(B) using the Sine Rule */
+sin_B: side_b*sin(A_rad)/side_a;
+
+/* Calculate angle B in radians */
+B_rad: asin(sin_B);
+
+/* Convert angle B to degrees */
+B_deg: B_rad*180/%pi;
+
+/* Round the teacher answer to 1 decimal place */
+ta1: round(B_deg*10)/10;
+
+/* Calculate side c using the Cosine Rule */
+side_c: float(
+    side_b*cos(A_rad)
+    +sqrt(side_a^2-side_b^2*sin(A_rad)^2)
+);]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta1@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>747644755</deployedseed>
+    <deployedseed>429557990</deployedseed>
+    <deployedseed>492615211</deployedseed>
+    <deployedseed>799436254</deployedseed>
+    <deployedseed>2024975247</deployedseed>
+    <deployedseed>768186946</deployedseed>
+    <deployedseed>474878679</deployedseed>
+    <deployedseed>1426975980</deployedseed>
+    <deployedseed>466839185</deployedseed>
+    <deployedseed>1729315250</deployedseed>
+    <deployedseed>244916863</deployedseed>
+    <deployedseed>564692169</deployedseed>
+    <deployedseed>90156509</deployedseed>
+    <deployedseed>1014352435</deployedseed>
+    <deployedseed>905520803</deployedseed>
+    <deployedseed>1270714815</deployedseed>
+    <deployedseed>497349084</deployedseed>
+    <deployedseed>486140534</deployedseed>
+    <deployedseed>526395010</deployedseed>
+    <deployedseed>66825474</deployedseed>
+    <deployedseed>587913916</deployedseed>
+    <deployedseed>1443086042</deployedseed>
+    <deployedseed>96488355</deployedseed>
+    <deployedseed>1305475562</deployedseed>
+    <deployedseed>1939566894</deployedseed>
+    <deployedseed>1299505027</deployedseed>
+    <deployedseed>352260422</deployedseed>
+  </question>
+</quiz>

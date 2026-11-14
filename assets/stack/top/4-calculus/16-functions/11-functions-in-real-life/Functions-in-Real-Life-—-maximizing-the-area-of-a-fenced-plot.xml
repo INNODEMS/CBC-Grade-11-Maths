@@ -5,17 +5,34 @@
       <text>Functions in Real Life — maximizing the area of a fenced plot</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>A farmer has {@perimeter@} metres of fencing to enclose a rectangular plot against an existing straight wall (so only three sides need fencing: two equal widths \(w\) and one length \(l\), opposite the wall).</p>
-<p>The area enclosed, as a function of the width \(w\), is</p>
+      <text><![CDATA[<p>A farmer has {@perimeter@} metres of fencing to enclose a rectangular plot against an existing straight wall. Only three sides need fencing: two equal widths \(w\) at right angles to the wall, and one length opposite the wall.</p>
+<p>The area enclosed, in square metres, as a function of the width \(w\) metres, is</p>
 <p>\[ A(w) = w({@perimeter@}-2w). \]</p>
 <p>Find the <strong>maximum possible area</strong>, in square metres.</p>
-<div>[[input:ans1]] [[validation:ans1]]</div>
-<div>[[feedback:prt1]]</div>]]></text>
+<div>[[input:ans1]] [[validation:ans1]] \(\mathrm{m}^2\)</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>\(A(w)=w({@perimeter@}-2w)={@Aexpand@}\) is a downward-opening parabola in \(w\) (the coefficient of \(w^2\) is negative), so it has a maximum at its vertex.</p>
-<p>The vertex occurs at \(w={@wvertex@}\), but that is the <strong>width</strong> that gives the maximum &#8212; you still need to substitute it back into \(A(w)\) to get the maximum <strong>area</strong>:</p>
-\[ A({@wvertex@}) = {@wvertex@}({@perimeter@}-2({@wvertex@})) = {@ta@}\ \text{m}^2. \]]]></text>
+      <text><![CDATA[<p>\(A(w) = w({@perimeter@}-2w) = {@Aexpand@}\) is a quadratic function of \(w\). The coefficient of \(w^2\) is negative, so its graph is a downward-opening parabola, and the <strong>maximum value is at the vertex</strong>.</p>
+<p>The parabola crosses the \(w\)-axis at \(w = 0\) and \(w = {@perimeter/2@}\). By symmetry, the vertex is halfway between them, at \(w = {@wvertex@}\). (Equivalently, \(w = -\dfrac{b}{2a} = -\dfrac{ {@perimeter@} }{2\times(-2)} = {@wvertex@}\).)</p>
+<p>That is the width that gives the maximum. To find the maximum <strong>area</strong> itself, substitute it back into \(A(w)\):</p>
+\[ A({@wvertex@}) = {@wvertex@}\times({@perimeter@}-2\times{@wvertex@}) = {@wvertex@}\times{@perimeter-2*wvertex@} = {@ta@}\ \mathrm{m}^2. \]
+<p>The best plot is \({@wvertex@}\,\mathrm{m}\) wide and \({@perimeter-2*wvertex@}\,\mathrm{m}\) long.</p>
+<div style="text-align:center;" role="img" aria-label="Graph of area A against width w: a downward parabola from w = 0 to w = half the fencing, with its highest point marked at the vertex.">
+[[jsxgraph width="360px" height="240px"]]
+(function() {
+  var P = {#perimeter#}, wv = {#wvertex#}, Am = {#ta#};
+  var b = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-0.12*P/2, 1.2*Am, 1.08*P/2, -0.12*Am], axis: true, grid: false,
+    showNavigation: false, showCopyright: false
+  });
+  b.create('functiongraph', [function(w){ return w*(P - 2*w); }, 0, P/2], {strokeColor:'#003399', strokeWidth:2});
+  b.create('segment', [[wv, 0], [wv, Am]], {strokeColor:'#888888', dash:2, fixed:true});
+  b.create('point', [wv, Am], {size:4, color:'#cc0000', fixed:true, name:'(' + wv + ', ' + Am + ')', label:{offset:[10,8], anchorX:'left'}});
+  b.create('text', [1.07*P/2, 0.07*Am, 'w'], {anchorX:'right', fixed:true});
+  b.create('text', [0.02*P/2, 1.12*Am, 'A'], {fixed:true});
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,37 +42,43 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>perimeter : 2*rand_with_prohib(10,40,[]);      /* keep it even so the vertex width is a whole number */
-Afun : w*(perimeter-2*w);
-Aexpand : expand(Afun);
-wvertex : -coeff(Aexpand,w,1)/(2*coeff(Aexpand,w,2));
-ta : subst(w=wvertex,Afun);
-wrong_vertexw : wvertex;                 /* gave the optimal WIDTH instead of the maximum AREA */</text>
+      <text><![CDATA[/* perimeter is a multiple of 4, so the best width P/4 and the maximum area P^2/8 = 2*kk^2 are whole numbers */
+kk: rand_with_prohib(5,20,[]);
+perimeter: 4*kk;
+Afun: w*(perimeter-2*w);
+Aexpand: expand(Afun);
+wvertex: -coeff(Aexpand,w,1)/(2*coeff(Aexpand,w,2));
+ta: subst(w=wvertex, Afun);
+/* Diagnostics (distinct from ta = 2*kk^2 and from each other for kk >= 5):
+   the best width; the best length; a square fenced on all four sides */
+wrong_vertexw: wvertex;
+wrong_length: perimeter - 2*wvertex;
+wrong_square: (perimeter/4)^2;]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text>[[feedback:prt1]]</text>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.11 (Functions in Real Life). A real-life optimization problem using the vertex of a quadratic; catches the common mistake of reporting the vertex's w-coordinate (the optimal widt</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text>Fencing {@perimeter@} m: best width {@wvertex@} m, maximum area {@ta@} m^2</text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.11 (Functions in Real Life). A real-life optimization problem using the vertex of a quadratic; catches the common mistake of reporting the vertex's w-coordinate (the optimal width) instead of substituting back to find the maximum area itself.</p>]]></text>
+      <text><![CDATA[<p>Grade 11 Functions 16.11 (Functions in Real Life). A real-life optimisation problem using the vertex of a quadratic; catches reporting the optimal width or length instead of the maximum area, and the area of a square fenced on all four sides.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -65,20 +88,20 @@ wrong_vertexw : wvertex;                 /* gave the optimal WIDTH instead of th
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta</tans>
-      <boxsize>10</boxsize>
+      <boxsize>6</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -91,7 +114,7 @@ wrong_vertexw : wvertex;                 /* gave the optimal WIDTH instead of th
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correct maximum area (not just the optimal width)?</description>
+        <description>Correct maximum area</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta</tans>
@@ -101,17 +124,92 @@ wrong_vertexw : wvertex;                 /* gave the optimal WIDTH instead of th
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-vertexonly</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>That is the width that gives the maximum area, not the maximum area itself. Substitute this width back into A(w) to find the actual maximum area.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Gave the best width</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_vertexw</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the width that gives the maximum area, not the maximum area itself. Substitute this width back into \(A(w)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave the best length</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_length</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the length of the best plot, not its area. Area is width times length.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Square fenced on four sides</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_square</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That would be the area of a square fenced on all four sides. Here the wall is one side, so only three sides use fencing. Work with the given function \(A(w)\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>\(A(w)\) is a quadratic with a negative \(w^2\) coefficient, so its maximum is at the vertex. Find the value of \(w\) at the vertex, then substitute it into \(A(w)\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -120,23 +218,28 @@ wrong_vertexw : wvertex;                 /* gave the optimal WIDTH instead of th
     <deployedseed>3</deployedseed>
     <deployedseed>4</deployedseed>
     <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Correct</description>
+      <description>Correct, from P^2/8</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>perimeter^2/8</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Gave the optimal width instead of the max area</description>
+      <description>Gave the optimal width</description>
       <testinput>
         <name>ans1</name>
         <value>wrong_vertexw</value>
@@ -145,7 +248,63 @@ wrong_vertexw : wvertex;                 /* gave the optimal WIDTH instead of th
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-vertexonly</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Gave the optimal length</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_length</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Square on four sides</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_square</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F | prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F | prt1-4-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: expression in w</description>
+      <testinput>
+        <name>ans1</name>
+        <value>Afun</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

@@ -5,20 +5,16 @@
       <text>Function Notation — solving f(x)=k</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Let \( f(x) = {@p@}x + {@r@} \).</p>
-<p>Find the value of \(x\) for which \( f(x) = {@k@} \).</p>
-<div>\( x = \) [[input:ans1]] [[validation:ans1]]</div>
-<div>[[feedback:prt1]]</div>]]></text>
+      <text><![CDATA[<p>Let \(f(x) = {@fx@}\).</p>
+<p>Find the value of \(x\) for which \(f(x) = {@k@}\). Give your answer as an exact value: a whole number or a fraction.</p>
+<div>\(x =\) [[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>We need to <strong>solve</strong> the equation \({@p@}x+{@r@}={@k@}\) for \(x\), not evaluate \(f\) at \(x={@k@}\):</p>
-\[
-\begin{align*}
-{@p@}x+{@r@} &= {@k@}\\
-{@p@}x &= {@k@}-{@r@}\\
-x &= {@ta@}
-\end{align*}
-\]]]></text>
+      <text><![CDATA[<p>In \(f(x)={@k@}\) the number \({@k@}\) is an <strong>output</strong> of \(f\), and we are asked for the <strong>input</strong> that produces it. So we must <strong>solve</strong> the equation \({@fx@}={@k@}\) for \(x\), not evaluate \(f\) at \(x={@k@}\). Undo the operations of \(f\) in reverse order: first subtract \({@r@}\) from both sides, then divide both sides by \({@p@}\).</p>
+\[ {@fx@} = {@k@} \]
+\[ {@p*x@} = {@k@}-{@r@} = {@k-r@} \]
+\[ x = \dfrac{ {@k-r@} }{ {@p@} } = {@ta@}. \]
+<p>Check: \(f({@ta@}) = {@p@}\times {@ta@} + {@r@} = {@k@}\).</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -28,36 +24,39 @@ x &= {@ta@}
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>p : rand_with_prohib(2,9,[]);
+      <text><![CDATA[p : rand_with_prohib(2,9,[]);
 r : rand_with_prohib(1,9,[]);
 k : rand_with_prohib(10,30,[]);
+fx : p*x+r;
 ta : (k-r)/p;
-wrong_eval : p*k+r;                     /* evaluated f(k) instead of solving f(x)=k */</text>
+/* Diagnostics. Both are positive and differ from ta on every seed (r >= 1). The generic test uses ta-100, which is negative, so it cannot hit either. */
+wrong_eval : p*k+r;                     /* evaluated f(k) instead of solving f(x)=k */
+wrong_sign : (k+r)/p;                   /* added r instead of subtracting it */]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text><![CDATA[<div>[[feedback:prt1]]</div>]]></text>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.2 (Function Notation). Distinguishes solving f(x)=k (find the input) from evaluating f(k) (find the output) -- a common point of confusion in function notation.</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text>\(f(x)={@fx@}\), \(k={@k@}\), \(x={@ta@}\).</text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.2 (Function Notation). Distinguishes solving f(x)=k (find the input) from evaluating f(k) (find the output) -- a common point of confusion in function notation.</p>]]></text>
+      <text>Grade 11 Functions 16.2 (Function Notation). Distinguishes solving f(x)=k (find the input) from evaluating f(k) (find the output), a common point of confusion in function notation.</text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -67,20 +66,20 @@ wrong_eval : p*k+r;                     /* evaluated f(k) instead of solving f(x
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta</tans>
-      <boxsize>15</boxsize>
+      <boxsize>6</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -103,7 +102,7 @@ wrong_eval : p*k+r;                     /* evaluated f(k) instead of solving f(x
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -111,7 +110,7 @@ wrong_eval : p*k+r;                     /* evaluated f(k) instead of solving f(x
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-0-F</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
@@ -128,17 +127,42 @@ wrong_eval : p*k+r;                     /* evaluated f(k) instead of solving f(x
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-evalinstead</trueanswernote>
+        <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[It looks like you computed \(f({@k@})\) instead. But the question gives you the <em>output</em> {@k@} and asks for the <em>input</em> \(x\) &#8212; you need to solve the equation \(f(x)={@k@}\), not evaluate \(f\) at \(x={@k@}\).]]></text>
+          <text><![CDATA[<p>It looks like you computed \(f({@k@})\). But the question gives you the <em>output</em> \({@k@}\) and asks for the <em>input</em> \(x\): you need to solve the equation \(f(x)={@k@}\), not evaluate \(f\) at \(x={@k@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Added the constant instead of subtracting it?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your first step. To undo "\(+\,{@r@}\)" you subtract \({@r@}\) from both sides; you do not add it.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text>That does not satisfy \(f(x)={@k@}\). Set \({@p@}x+{@r@}={@k@}\) and solve for \(x\).</text>
+          <text><![CDATA[<p>That does not satisfy \(f(x)={@k@}\). Set \({@fx@}={@k@}\) and solve for \(x\): subtract the constant from both sides, then divide by the coefficient of \(x\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -149,16 +173,16 @@ wrong_eval : p*k+r;                     /* evaluated f(k) instead of solving f(x
     <deployedseed>5</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Correct solution</description>
+      <description>Correct solution, from the rearrangement</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>(k-r)/p</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
@@ -172,7 +196,49 @@ wrong_eval : p*k+r;                     /* evaluated f(k) instead of solving f(x
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-evalinstead</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Sign error with the constant</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_sign</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong value</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta-100</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: a letter in the number box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

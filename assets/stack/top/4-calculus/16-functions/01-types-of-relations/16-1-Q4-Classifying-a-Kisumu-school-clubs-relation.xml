@@ -5,59 +5,84 @@
       <text>16.1 Q4 Classifying a Kisumu school clubs relation</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>At a secondary school in Kisumu, students can join school clubs such as drama, football, and debate.</p>
-<p>In this record, the way students are linked to clubs is a {@reltype@} relation. Read that description carefully.</p>
-<p>Which relation type is it? Choose one of one to one, many to one, one to many, or many to many.</p>
-<p>[[input:ans1]] [[validation:ans1]]</p>
-<p>Is this relation a function? Answer with yes it is a function or no it is not a function.</p>
-<p>[[input:ans2]] [[validation:ans2]]</p>
-<p>[[feedback:prt1]]</p>
-<p>[[feedback:prt2]]</p>]]></text>
+      <text><![CDATA[<p>At a secondary school in Kisumu, students can join clubs such as drama, football, debate and science. The school keeps a record linking people to clubs.</p>
+[[if test="is(sc=1)"]]
+<p>Each club has exactly one chairperson, and no student chairs more than one club. In this record the input is a chairperson and the output is the club that he or she chairs.</p>
+[[elif test="is(sc=2)"]]
+<p>Every student must join exactly one club, and each club has many members. In this record the input is a student and the output is the club that the student belongs to.</p>
+[[elif test="is(sc=3)"]]
+<p>Each club has exactly one patron, a teacher who looks after it, and every patron looks after several clubs. In this record the input is a patron and the output is a club that the patron looks after.</p>
+[[else]]
+<p>Students may join as many clubs as they like, and each club has many members. In this record the input is a student and the output is a club that the student belongs to.</p>
+[[/if]]
+<p>(a) What type of relation is this record?</p>
+<div>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Is this relation a function?</p>
+<div>The relation is [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>To classify a relation you must check both directions. Look at what one student can be linked to, and also at what one club can be linked to.</p>
-<p>Here the relation is {@reltype@}. A relation is a function when each input has exactly one output, so one to one and many to one relations are functions, while one to many and many to many relations are not. This relation is therefore {@isfun_txt@}.</p>]]></text>
+      <text><![CDATA[<p>To classify a relation, check both directions. First ask how many outputs one input can have. Then ask how many inputs can share one output. The type is named "inputs-to-outputs": many-to-one means many inputs share one output, and one-to-many means one input has many outputs.</p>
+[[if test="is(sc=1)"]]
+<p>Each chairperson chairs exactly one club, and each club has exactly one chairperson. One input gives one output, and no output is shared, so the relation is one-to-one.</p>
+[[elif test="is(sc=2)"]]
+<p>Each student belongs to exactly one club, but many students share the same club. Many inputs go to one output, so the relation is many-to-one.</p>
+[[elif test="is(sc=3)"]]
+<p>Each patron looks after several clubs, but each club has only one patron. One input goes to many outputs, so the relation is one-to-many.</p>
+[[else]]
+<p>A student can belong to several clubs, and a club has many students. Inputs can have many outputs and outputs can have many inputs, so the relation is many-to-many.</p>
+[[/if]]
+<p>A relation is a <strong>function</strong> when each input has exactly one output. So one-to-one and many-to-one relations are functions, while one-to-many and many-to-many relations are not. This relation is therefore {@if sc<=2 then "a function" else "not a function"@}.</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.3333333</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2025010100</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[/* scenario picks a relation type. reltype in
-   {"one to one","many to one","one to many","many to many"}.
-   isfun follows: one/many-to-one are functions. */
-sc : rand([1,2,3,4]);
-reltype : ["one to one","many to one","one to many","many to many"][sc];
-isfun_txt : if sc=1 or sc=2 then "yes it is a function" else "no it is not a function";
-club : rand(["drama","football","debate","science"]);]]></text>
+      <text><![CDATA[/* sc picks a scenario whose description determines the relation type:
+   1 chairperson -> club (one-to-one), 2 student in exactly one club (many-to-one),
+   3 patron -> clubs (one-to-many), 4 students in several clubs (many-to-many).
+   One-to-one and many-to-one relations are functions. */
+sc: rand([1, 2, 3, 4]);
+correct: [onetoone, manytoone, onetomany, manytomany][sc];
+/* The type a student gets by reading the record backwards (output to input). */
+rev: [onetoone, onetomany, manytoone, manytomany][sc];
+ta1: [[onetoone, is(correct=onetoone), "one-to-one"],
+     [onetomany, is(correct=onetomany), "one-to-many"],
+     [manytoone, is(correct=manytoone), "many-to-one"],
+     [manytomany, is(correct=manytomany), "many-to-many"]];
+ta2: [[isfn, is(sc<=2), "a function"], [notfn, is(sc>=3), "not a function"]];
+tac1: first(mcq_correct(ta1));
+tac2: first(mcq_correct(ta2));
+/* For the wrong-answer test: an option that is neither correct nor the reversal. */
+wrong1: if sc=1 then manytomany else onetoone;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>{@reltype@}, {@isfun_txt@}.</text>
+    <questionnote format="html">
+      <text>sc={@sc@}: {@correct@}</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text>This question is based on the definitions of one-to-one, one-to-many, many-to-one and many-to-many relations in Section 16.1 (Types of Relations) of the Grade 11 Functions topic.</text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text>That is correct. Well done.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text>You are part of the way there.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text>That is not correct yet.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -67,16 +92,16 @@ club : rand(["drama","football","debate","science"]);]]></text>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>string</type>
-      <tans>reltype</tans>
-      <boxsize>16</boxsize>
+      <type>dropdown</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>many to one</syntaxhint>
-      <syntaxattribute>1</syntaxattribute>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>0</mustverify>
@@ -85,16 +110,16 @@ club : rand(["drama","football","debate","science"]);]]></text>
     </input>
     <input>
       <name>ans2</name>
-      <type>string</type>
-      <tans>isfun_txt</tans>
-      <boxsize>22</boxsize>
+      <type>dropdown</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>yes it is a function</syntaxhint>
-      <syntaxattribute>1</syntaxattribute>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>0</mustverify>
@@ -107,57 +132,32 @@ club : rand(["drama","football","debate","science"]);]]></text>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text>a1 : supcase(sconcat(ans1));
-cor : supcase(reltype);</text>
+        <text>/* Reversal misconception: the student read the record from output to input. */
+isrev: is(ans1 = rev);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Relation type correct?</description>
         <answertest>AlgEquiv</answertest>
-        <sans>is(a1=cor)</sans>
-        <tans>true</tans>
+        <sans>ans1</sans>
+        <tans>tac1</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Correct relation type.</p>]]></text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt-0-F</falseanswernote>
-        <falsefeedback format="html">
           <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>1</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans>true</sans>
-        <tans>true</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-mistake1</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[<p>Check both directions of the relation before deciding. It is easy to look only at what one student can do and miss what one club can do. Reread the description and count the arrows going each way, then choose the type again.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt-1-F</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[[[if test="isrev"]]<p>Check the direction. You seem to have read the record from the club back to the person. The record goes from the input named in the question to the club. Count how many clubs one input is linked to, and how many inputs share one club.</p>[[else]]<p>Check both directions before deciding. How many outputs can one input have: one or many? How many inputs can share one output: one or many? The type is named inputs-to-outputs, so many-to-one means many inputs share one output.</p>[[/if]]]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -167,57 +167,31 @@ cor : supcase(reltype);</text>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text>a2 : supcase(sconcat(ans2));
-corf : supcase(isfun_txt);</text>
+        <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Function decision correct?</description>
         <answertest>AlgEquiv</answertest>
-        <sans>is(a2=corf)</sans>
-        <tans>true</tans>
+        <sans>ans2</sans>
+        <tans>tac2</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-correct</trueanswernote>
+        <trueanswernote>prt2-1-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Correct. You applied the rule linking relation type to whether it is a function.</p>]]></text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt-0-F</falseanswernote>
-        <falsefeedback format="html">
           <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>1</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans>true</sans>
-        <tans>true</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-mistake2</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[<p>Use the short rule rather than guessing. One to one and many to one relations are functions, because each input still has exactly one output. One to many and many to many relations are not functions. Match your relation type to that rule and answer again.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt-1-F</falseanswernote>
+        <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>A relation is a function when every input has exactly one output. Decide whether any input in this record can have more than one output. One-to-one and many-to-one relations pass this test; one-to-many and many-to-many relations fail it.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -225,28 +199,80 @@ corf : supcase(isfun_txt);</text>
     <deployedseed>402</deployedseed>
     <deployedseed>403</deployedseed>
     <deployedseed>404</deployedseed>
+    <deployedseed>405</deployedseed>
+    <deployedseed>406</deployedseed>
+    <deployedseed>407</deployedseed>
+    <deployedseed>408</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Both correct</description>
       <testinput>
         <name>ans1</name>
-        <value>reltype</value>
+        <value>tac1</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>isfun_txt</value>
+        <value>tac2</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-correct</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Both wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>first(mcq_incorrect(ta2))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Mixed: type right, function decision wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tac1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>first(mcq_incorrect(ta2))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

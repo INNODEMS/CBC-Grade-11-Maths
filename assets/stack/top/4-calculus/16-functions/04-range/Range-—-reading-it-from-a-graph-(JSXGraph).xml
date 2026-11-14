@@ -6,41 +6,45 @@
     </name>
     <questiontext format="html">
       <text><![CDATA[<p>The graph of \(y=f(x)\) is shown below. A <strong>filled</strong> dot means that \(y\)-value is <em>included</em>; an <strong>open</strong> dot means it is <em>excluded</em>.</p>
-[[jsxgraph width="440px" height="360px"]]
-var p = {#p#};
-var q = {#q#};
-var bottomClosed = {#bottomClosed#};
-var topClosed = {#topClosed#};
-
-var board = JXG.JSXGraph.initBoard(divid, {
+<div style="text-align:center;" role="img" aria-label="Graph of a straight line segment y = f(x) rising from a lower end point to an upper end point, each marked with a filled or an open dot.">
+[[jsxgraph width="320px" height="280px"]]
+(function() {
+  var p = {#p#};
+  var q = {#q#};
+  var bottomClosed = {#bottomClosed#};
+  var topClosed = {#topClosed#};
+  var board = JXG.JSXGraph.initBoard(divid, {
     boundingbox: [-5, q + 2, 5, p - 2],
-    axis: true,
-    showCopyright: false,
-    showNavigation: false
-});
-
-var f = board.jc.snippet('{#fx#}', true, 'x', true);
-board.create('functiongraph', [f, -4, 4], {strokeColor: '#1565c0', strokeWidth: 2});
-
-board.create('point', [-4, p], {
+    axis: true, grid: true,
+    defaultAxes: {
+      x: {ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0}},
+      y: {ticks: {ticksDistance: 1, insertTicks: false, minorTicks: 0}}
+    },
+    showCopyright: false, showNavigation: false
+  });
+  var f = board.jc.snippet('{#fx#}', true, 'x', true);
+  board.create('functiongraph', [f, -4, 4], {strokeColor: '#1565c0', strokeWidth: 2});
+  board.create('point', [-4, p], {
     name: '', size: 4, fixed: true,
     fillColor: bottomClosed ? '#1565c0' : '#ffffff',
     strokeColor: '#1565c0', strokeWidth: 2
-});
-board.create('point', [4, q], {
+  });
+  board.create('point', [4, q], {
     name: '', size: 4, fixed: true,
     fillColor: topClosed ? '#1565c0' : '#ffffff',
     strokeColor: '#1565c0', strokeWidth: 2
-});
+  });
+})();
 [[/jsxgraph]]
+</div>
 <p>State the range of \(f\) as a compound inequality in \(y\).</p>
-<div>[[input:ans_lo]] [[input:ans_lo_type]] [[validation:ans_lo_type]] \(y\) [[input:ans_hi_type]] [[validation:ans_hi_type]] [[input:ans_hi]]</div>
-[[validation:ans_lo]] [[validation:ans_hi]]
+<div>[[input:ans_lo]] [[validation:ans_lo]] [[input:ans_lo_type]] [[validation:ans_lo_type]] \(y\) [[input:ans_hi_type]] [[validation:ans_hi_type]] [[input:ans_hi]] [[validation:ans_hi]]</div>
 <div>[[feedback:prt_lo]] [[feedback:prt_hi]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>Read the vertical extent of the curve: the lowest \(y\)-value reached is \(y={@p@}\) ({@bottomdotdesc@}) and the highest is \(y={@q@}\) ({@topdotdesc@}).</p>
-<p>The range is \( {@p@}\ {@lofeedbacksym@}\ y\ {@hifeedbacksym@}\ {@q@} \).</p>]]></text>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>The <strong>range</strong> of a function is the set of its output values, so on a graph we read it from the <strong>vertical</strong> extent of the curve: how far down and how far up it reaches along the \(y\)-axis. The lowest \(y\)-value reached is \(y={@p@}\) ({@bottomdotdesc@}) and the highest is \(y={@q@}\) ({@topdotdesc@}).</p>
+<p>So the range is given by \({@lo_ineq@}\) and \({@hi_ineq@}\).</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -52,45 +56,47 @@ board.create('point', [4, q], {
     <questionvariables>
       <text><![CDATA[p : rand_with_prohib(-6,-2,[]);
 w : rand_with_prohib(4,8,[]);
-q : p+w;
+q : p+w;                                /* p < q on every seed, so the swap diagnostic never equals the answer */
 bottomClosed : is(rand(2)=1);
 topClosed : is(rand(2)=1);
 fx : (q-p)/8*x+((p+q)/2);              /* a simple line from (-4,p) to (4,q), decorative */
+/* dropdown option lists: [literal value, is-correct, plain-text label]. LaTeX does not render in a dropdown, so labels are Unicode. */
 lo_le : "leq"; lo_lt : "lt";
 hi_le : "leq"; hi_lt : "lt";
-loopts : [[lo_le, bottomClosed, "\\leq"], [lo_lt, not bottomClosed, "<"]];
-hiopts : [[hi_le, topClosed, "\\leq"], [hi_lt, not topClosed, "<"]];
+loopts : [[lo_le, bottomClosed, "≤"], [lo_lt, not bottomClosed, "<"]];
+hiopts : [[hi_le, topClosed, "≤"], [hi_lt, not topClosed, "<"]];
 ta_lo : if bottomClosed then lo_le else lo_lt;
 ta_hi : if topClosed then hi_le else hi_lt;
-lofeedbacksym : if bottomClosed then "&#8804;" else "<";
-hifeedbacksym : if topClosed then "&#8804;" else "<";
+/* display inequalities for the worked solution and the note */
+lo_ineq : if bottomClosed then p<=y else p<y;
+hi_ineq : if topClosed then y<=q else y<q;
 bottomdotdesc : if bottomClosed then "a filled dot, so it is included" else "an open dot, so it is excluded";
 topdotdesc : if topClosed then "a filled dot, so it is included" else "an open dot, so it is excluded";]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.4 (Range). Reads a bounded range off a JSXGraph diagram with randomly open/closed top and bottom endpoints; catches misreading endpoints and swapping upper/lower bounds.</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text>Range: \({@lo_ineq@}\) and \({@hi_ineq@}\).</text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.4 (Range). Reads a bounded range off a JSXGraph diagram with randomly open/closed top and bottom endpoints; catches misreading endpoints and swapping upper/lower bounds.</p>]]></text>
+      <text>Grade 11 Functions 16.4 (Range). Reads a bounded range off a JSXGraph diagram with randomly open/closed top and bottom endpoints; catches misreading endpoints and swapping upper/lower bounds.</text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -109,11 +115,11 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <input>
@@ -127,11 +133,11 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <input>
@@ -145,11 +151,11 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <input>
@@ -163,11 +169,11 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -225,7 +231,7 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt_hi-wrongsymbol</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[Look again at the top dot: filled means included (\(\leq\)), open means excluded (\(<\)).]]></text>
+          <text><![CDATA[<p>The value is right. Now look again at the top dot: filled means included (\(\leq\)), open means excluded (\(&lt;\)).</p>]]></text>
         </falsefeedback>
       </node>
       <node>
@@ -242,7 +248,7 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt_hi-swapped</trueanswernote>
         <truefeedback format="html">
-          <text>That is the bottom value. The upper bound is the largest y-value the curve reaches.</text>
+          <text><![CDATA[<p>That is the bottom value. The upper bound is the largest \(y\)-value the curve reaches.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -250,7 +256,7 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt_hi-wrongvalue</falseanswernote>
         <falsefeedback format="html">
-          <text>That is not the highest y-value shown on the graph.</text>
+          <text><![CDATA[<p>That is not the highest \(y\)-value shown on the graph. Find the top end of the curve and read its \(y\)-coordinate across on the \(y\)-axis.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -309,7 +315,7 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt_lo-wrongsymbol</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[Look again at the bottom dot: filled means included (\(\leq\)), open means excluded (\(<\)).]]></text>
+          <text><![CDATA[<p>The value is right. Now look again at the bottom dot: filled means included (\(\leq\)), open means excluded (\(&lt;\)).</p>]]></text>
         </falsefeedback>
       </node>
       <node>
@@ -326,7 +332,7 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt_lo-swapped</trueanswernote>
         <truefeedback format="html">
-          <text>That is the top value. The lower bound is the smallest y-value the curve reaches.</text>
+          <text><![CDATA[<p>That is the top value. The lower bound is the smallest \(y\)-value the curve reaches.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -334,7 +340,7 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt_lo-wrongvalue</falseanswernote>
         <falsefeedback format="html">
-          <text>That is not the lowest y-value shown on the graph.</text>
+          <text><![CDATA[<p>That is not the lowest \(y\)-value shown on the graph. Find the bottom end of the curve and read its \(y\)-coordinate across on the \(y\)-axis.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -364,15 +370,15 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
       </testinput>
       <expected>
         <name>prt_hi</name>
-        <expectedscore>0.5000000</expectedscore>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt_hi-correct</expectedanswernote>
+        <expectedanswernote>prt_hi-value-T | prt_hi-correct</expectedanswernote>
       </expected>
       <expected>
         <name>prt_lo</name>
-        <expectedscore>0.5000000</expectedscore>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt_lo-correct</expectedanswernote>
+        <expectedanswernote>prt_lo-value-T | prt_lo-correct</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
@@ -398,13 +404,109 @@ topdotdesc : if topClosed then "a filled dot, so it is included" else "an open d
         <name>prt_hi</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt_hi-swapped</expectedanswernote>
+        <expectedanswernote>prt_hi-value-F | prt_hi-swapped</expectedanswernote>
       </expected>
       <expected>
         <name>prt_lo</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt_lo-swapped</expectedanswernote>
+        <expectedanswernote>prt_lo-value-F | prt_lo-swapped</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Correct values, both symbols flipped</description>
+      <testinput>
+        <name>ans_hi</name>
+        <value>q</value>
+      </testinput>
+      <testinput>
+        <name>ans_hi_type</name>
+        <value>if topClosed then hi_lt else hi_le</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo</name>
+        <value>p</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo_type</name>
+        <value>if bottomClosed then lo_lt else lo_le</value>
+      </testinput>
+      <expected>
+        <name>prt_hi</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_hi-value-T | prt_hi-wrongsymbol</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_lo</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_lo-value-T | prt_lo-wrongsymbol</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong values</description>
+      <testinput>
+        <name>ans_hi</name>
+        <value>q+3</value>
+      </testinput>
+      <testinput>
+        <name>ans_hi_type</name>
+        <value>ta_hi</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo</name>
+        <value>p-3</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo_type</name>
+        <value>ta_lo</value>
+      </testinput>
+      <expected>
+        <name>prt_hi</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_hi-value-F | prt_hi-wrongvalue</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_lo</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt_lo-value-F | prt_lo-wrongvalue</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: a letter in the upper-bound box, the rest correct</description>
+      <testinput>
+        <name>ans_hi</name>
+        <value>y</value>
+      </testinput>
+      <testinput>
+        <name>ans_hi_type</name>
+        <value>ta_hi</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo</name>
+        <value>p</value>
+      </testinput>
+      <testinput>
+        <name>ans_lo_type</name>
+        <value>ta_lo</value>
+      </testinput>
+      <expected>
+        <name>prt_hi</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt_lo</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt_lo-value-T | prt_lo-correct</expectedanswernote>
       </expected>
     </qtest>
   </question>

@@ -5,82 +5,95 @@
       <text>16.1 Q2 Vertical line test on a Nakuru fuel tank graph</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>A fuel station in Nakuru records the level of fuel in a tank as trucks fill it. The interactive board shows the recorded curve and a vertical line you can slide across the graph.</p>
-<p>Slide the vertical line across the whole graph and count how many times it crosses the curve at any position. Based on the vertical line test, could this graph represent a function?</p>
-<p>[[input:ans1]] [[validation:ans1]]</p>
-<p>[[feedback:prt1]]</p>
-
-[[jsxgraph input-ref="ref1" width="500px" height="420px"]]
-var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[-6,6,6,-6], axis:true, showCopyright:false, showNavigation:false});
-var isfun={#isfun#}, a={#a#};
-if (isfun==1){ board.create('functiongraph',[function(x){return 0.4*a*x*x-3;},-5,5],{strokeColor:'#1565c0',strokeWidth:2}); }
-else { board.create('curve',[function(t){return 0.4*a*t*t-3;}, function(t){return t;}, -4,4],{strokeColor:'#1565c0',strokeWidth:2}); }
-var vx=board.create('slider',[[-5,5.3],[5,5.3],[-5,-1,5]],{name:'line',snapWidth:0.1});
-board.create('line',[[function(){return vx.Value();},-6],[function(){return vx.Value();},6]],{strokeColor:'#c62828',strokeWidth:2,straightFirst:true,straightLast:true,dash:2});
-board.create('text',[-5.5,-5.3,'Slide the red line across the whole graph'],{fontSize:12,anchorX:'left'});
-[[/jsxgraph]]]]></text>
+      <text><![CDATA[<p>At a fuel station in Nakuru, an attendant plots a relation between two measured quantities, \(x\) and \(y\). The board shows the plotted curve and a red vertical line that you can move with the slider.</p>
+<p>Slide the line across the whole graph and watch how many times it crosses the curve at each position.</p>
+<div style="text-align:center;" role="img" aria-label="Interactive graph of a curve with a red dashed vertical line controlled by a slider at the top.">
+[[jsxgraph width="400px" height="340px"]]
+(function() {
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox: [-6, 7.5, 6, -6], axis: true, grid: false,
+    showNavigation: false, showCopyright: false});
+  var isfun = {#isfun#}, a = {#a#};
+  if (isfun == 1) {
+    var xm = Math.sqrt(8.5/(0.4*a));  // keep the curve below y = 5.5, clear of the slider
+    b.create('functiongraph', [function(x) { return 0.4*a*x*x - 3; }, -xm, xm], {strokeColor: '#1565c0', strokeWidth: 2});
+  } else {
+    b.create('curve', [function(t) { return 0.4*a*t*t - 3; }, function(t) { return t; }, -4, 4], {strokeColor: '#1565c0', strokeWidth: 2});
+  }
+  var vx = b.create('slider', [[-5, 6.6], [4, 6.6], [-5, -1, 5]], {name: 'x', snapWidth: 0.1});
+  b.create('line', [[function() { return vx.Value(); }, -6], [function() { return vx.Value(); }, 7.5]],
+    {strokeColor: '#c62828', strokeWidth: 2, dash: 2, fixed: true});
+})();
+[[/jsxgraph]]
+</div>
+<p>Based on the vertical line test, does this graph represent a function?</p>
+<div>The graph [[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>The vertical line test says a graph is a function when no vertical line, in any position, crosses the curve more than once. If even one position of the vertical line meets the curve twice, the graph is not a function.</p>
-<p>You must slide the line all the way across, not test only one place. For this graph the correct answer is {@correct@}.</p>]]></text>
+      <text><![CDATA[<p>The <strong>vertical line test</strong> says that a graph represents a function when no vertical line, in any position, crosses the curve more than once. A vertical line fixes one input \(x\); two crossings would mean that this one input has two outputs. You must slide the line across the whole graph, not test only one place.</p>
+[[if test="is(isfun=1)"]]
+<p>Here the curve is a parabola that opens upwards. Wherever you place the vertical line, it crosses the curve exactly once, so every input has exactly one output. The graph represents a function. Some horizontal lines cross it twice, but that only shows the function is many-to-one; it does not stop it being a function.</p>
+[[else]]
+<p>Here the curve is a parabola lying on its side. For example, the vertical line \(x = 1\) crosses it at two points, one above and one below the \(x\)-axis. That input has two outputs, so the graph does not represent a function.</p>
+[[/if]]]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.3333333</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2025010100</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[/* isfun=1 -> a genuine function graph (parabola-like, opens up);
-   isfun=0 -> not a function (sideways parabola crosses a vertical line twice). */
-isfun : rand([0,1]);
-correct : if isfun=1 then "function" else "not a function";
-a : rand([1,2]);]]></text>
+      <text><![CDATA[/* isfun=1: an upward parabola (a function).
+   isfun=0: a sideways parabola x = 0.4*a*y^2 - 3 (fails the vertical line test). */
+isfun: rand([0, 1]);
+a: rand([1, 2]);
+ta1: [[isfn, is(isfun=1), "represents a function"], [notfn, is(isfun=0), "does not represent a function"]];
+tac1: first(mcq_correct(ta1));]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text>[[feedback:prt1]]</text>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>Correct answer is {@correct@}.</text>
+    <questionnote format="html">
+      <text>isfun={@isfun@}, a={@a@}</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text>This question is based on the definitions of one-to-one, one-to-many, many-to-one and many-to-many relations in Section 16.1 (Types of Relations) of the Grade 11 Functions topic.</text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text>That is correct. Well done.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text>You are part of the way there.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text>That is not correct yet.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
     <logicsymbol>lang</logicsymbol>
     <matrixparens>[</matrixparens>
-    <isbroken>1</isbroken>
+    <isbroken>0</isbroken>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>string</type>
-      <tans>correct</tans>
-      <boxsize>16</boxsize>
+      <type>dropdown</type>
+      <tans>ta1</tans>
+      <boxsize>20</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>function</syntaxhint>
-      <syntaxattribute>1</syntaxattribute>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>0</mustverify>
@@ -93,82 +106,31 @@ a : rand([1,2]);]]></text>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text>a1 : supcase(sconcat(ans1));
-cor : supcase(correct);</text>
+        <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Correct conclusion from the vertical line test?</description>
         <answertest>AlgEquiv</answertest>
-        <sans>is(a1=cor)</sans>
-        <tans>true</tans>
+        <sans>ans1</sans>
+        <tans>tac1</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Correct. You checked the whole graph and applied the vertical line test properly.</p>]]></text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt-0-F</falseanswernote>
-        <falsefeedback format="html">
           <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>1</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans><![CDATA[is(a1="FUNCTION") and is(cor="NOT A FUNCTION")]]></sans>
-        <tans>true</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-mistake1</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[<p>It looks like you tested the line in only one place. The vertical line test must hold at every position, not just one. Slide the line further along and you will find a place where it crosses the curve twice, which means this graph is not a function.</p>]]></text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>2</falsenextnode>
-        <falseanswernote>prt-1-F</falseanswernote>
-        <falsefeedback format="html">
-          <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>2</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans>true</sans>
-        <tans>true</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-mistake2</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[<p>Check which direction the test line runs. The vertical line test slides a vertical line across and looks for repeated crossings at the same input. It is not about repeated output heights. Slide the vertical line across the whole graph once more before deciding.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt-2-F</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[[[if test="is(isfun=0)"]]<p>It looks like you tested the line in only one place. The vertical line test must hold at every position. Slide the line along the whole graph and look for a position where it crosses the curve twice.</p>[[else]]<p>Check which test you used. The vertical line test looks for two crossings at the same input \(x\), not for two points at the same height. Points at the same height but with different \(x\) values do not break the definition of a function. Slide the vertical line across the whole graph once more.</p>[[/if]]]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -176,18 +138,34 @@ cor : supcase(correct);</text>
     <deployedseed>202</deployedseed>
     <deployedseed>203</deployedseed>
     <deployedseed>204</deployedseed>
+    <deployedseed>205</deployedseed>
+    <deployedseed>206</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Correct</description>
       <testinput>
         <name>ans1</name>
-        <value>correct</value>
+        <value>tac1</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong conclusion</description>
+      <testinput>
+        <name>ans1</name>
+        <value>first(mcq_incorrect(ta1))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

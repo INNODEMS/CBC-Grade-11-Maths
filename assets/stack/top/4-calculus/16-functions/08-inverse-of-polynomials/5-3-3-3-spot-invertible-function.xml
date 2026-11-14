@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>5.3.3.3 spot invertible function</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p class="tb-exercise">Exercise</p>
+<p>Each graph below shows a function defined on the interval drawn. Which of these functions are invertible? Select every graph that shows an invertible function.</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>A function has an <strong>inverse</strong> exactly when it is <strong>one-to-one</strong>: each output comes from only one input, so the function takes each value in its range precisely once. On a graph, use the <strong>horizontal line test</strong>: if some horizontal line meets the graph more than once, two different inputs give the same output and the function is not invertible.</p>
+<p>In this variant the graphs show (a) \(y = {@version[1]@}\), (b) \(y = {@version[2]@}\), (c) \(y = {@version[3]@}\) and (d) \(y = {@version[4]@}\).</p>
+<p>Graphs (\({@lbls[pc[1]]@}\)) and (\({@lbls[pc[2]]@}\)) are always increasing or always decreasing, so every horizontal line meets each of them at most once: these functions are invertible. Graphs (\({@lbls[pw[1]]@}\)) and (\({@lbls[pw[2]]@}\)) each meet some horizontal line two or more times, so they are not invertible.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Four invertible (strictly monotonic) functions and four that fail the horizontal line test */
+cfn1:x^3;
+cfn2:atan(x);
+cfn3:(1/2)^x;
+cfn4:-x^5;
+wfn1:x^2-1;
+wfn2:(x-1)*x*(x+1);
+wfn3:1/x^2;
+wfn4:cos(x);
+xmax:3;
+ymax:3;
+cplot1:plot(cfn1,[x,-xmax,xmax],[y,-ymax,ymax],[box, false],[yx_ratio, 1],[axes, solid]);
+cplot2:plot(cfn2,[x,-xmax,xmax],[y,-%pi/2,%pi/2],[box, false],[yx_ratio, 1],[axes, solid]);
+cplot3:plot(cfn3,[x,-xmax,xmax],[y,0,ymax],[box, false],[yx_ratio, 1],[axes, solid]);
+cplot4:plot(cfn4,[x,-xmax,xmax],[y,-ymax,ymax],[box, false],[yx_ratio, 1],[axes, solid]);
+wplot1:plot(wfn1,[x,-xmax,xmax],[y,-1,ymax],[box, false],[yx_ratio, 1],[axes, solid]);
+wplot2:plot(wfn2,[x,-xmax,xmax],[y,-ymax,ymax],[box, false],[yx_ratio, 1],[axes, solid]);
+wplot3:plot(wfn3,[x,-xmax,xmax],[y,0,ymax],[box, false],[yx_ratio, 1],[axes, solid]);
+wplot4:plot(wfn4,[x,-xmax,xmax],[y,-1,1],[box, false],[yx_ratio, 1],[axes, solid]);
+/* Each entry: [plot, formula] */
+corbase:[[cplot1,cfn1],[cplot2,cfn2],[cplot3,cfn3],[cplot4,cfn4]];
+wrongbase:[[wplot1,wfn1],[wplot2,wfn2],[wplot3,wfn3],[wplot4,wfn4]];
+/* Two invertible and two non-invertible options; each opts entry is [plot, correct?, formula] */
+sel_cor: maplist(lambda([ex], [ex[1], true, ex[2]]), rand_selection(corbase, 2));
+sel_incorr: maplist(lambda([ex], [ex[1], false, ex[2]]), rand_selection(wrongbase, 2));
+opts: random_permutation(append(sel_cor,sel_incorr));
+/* Option values are static literal strings */
+talab: ["(a)","(b)","(c)","(d)"];
+ta1:zip_with(lambda([ex1, ex2], [ex1, ex2[2], sconcat("<b>", ex1, "</b> ", ex2[1])]), talab, opts);
+version: map(lambda([o], o[3]), opts);
+corr1:mcq_correct(ta1);
+incorr1:mcq_incorrect(ta1);
+/* Positions of the invertible and non-invertible graphs, for the worked solution */
+lbls: [a,b,c,d];
+pc: sublist_indices(opts, lambda([o], o[2]));
+pw: sublist_indices(opts, lambda([o], not(o[2])));]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:prt1]]</text>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>Graphs (a) to (d): {@version@}; invertible: {@corr1@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>Grade 11 Functions (inverse functions; overlaps with 16.8 Inverse of Polynomials). Identifies invertible functions from their graphs with the horizontal line test. Adapted from the STACK sample multiselqnalpha.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>checkbox</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>LaTeX</options>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>0</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Exactly the invertible graphs selected</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>setify(ans1)</sans>
+        <tans>setify(corr1)</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1.0000000</truescore>
+        <truepenalty>0</truepenalty>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty>0.1</falsepenalty>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Only invertible graphs selected, but one missed (half marks); otherwise a non-invertible graph was selected</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>subsetp(setify(ans1),setify(corr1))</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0.5000000</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Every graph you selected is invertible, but there is another invertible function in the list. Apply the horizontal line test to each graph you did not select.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>At least one graph you selected is not invertible: {@setdifference(setify(ans1),setify(corr1))@}. Some horizontal line meets such a graph more than once, so two different inputs give the same output. A function is invertible only if every horizontal line meets its graph at most once.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1913434012</deployedseed>
+    <deployedseed>757823500</deployedseed>
+    <deployedseed>906726956</deployedseed>
+    <deployedseed>894002340</deployedseed>
+    <deployedseed>861285793</deployedseed>
+    <deployedseed>988831660</deployedseed>
+    <deployedseed>874729680</deployedseed>
+    <deployedseed>143405148</deployedseed>
+    <deployedseed>1335437209</deployedseed>
+    <deployedseed>737268208</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct: both invertible graphs</description>
+      <testinput>
+        <name>ans1</name>
+        <value>corr1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>One non-invertible graph only</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[incorr1[1]]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>One invertible plus one non-invertible graph</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[corr1[1],incorr1[1]]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Only one of the two invertible graphs (half marks)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[corr1[1]]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <tags>
+      <tag><text>multiselqnalpha</text>
+</tag>
+    </tags>
+  </question>
+</quiz>

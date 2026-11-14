@@ -5,57 +5,75 @@
       <text>16.1 Q5 Farmers and cooperative societies in Meru</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Coffee farmers in Meru each register with exactly one cooperative society. There are about {@nf@} farmers and {@nc@} cooperative societies. Each cooperative society processes coffee from many farmers, but each farmer belongs to only one society.</p>
-<p>The input is the farmer and the output is the cooperative society. Which relation type is this? Choose one to one, many to one, one to many, or many to many.</p>
-<p>[[input:ans1]] [[validation:ans1]]</p>
-<p>Choose the sentence that best explains whether it is a function.</p>
-<p>[[input:ans2]] [[validation:ans2]]</p>
-<p>[[feedback:prt1]]</p>
-<p>[[feedback:prt2]]</p>]]></text>
+      <text><![CDATA[[[if test="is(ctx=1)"]]
+<p>Coffee farmers in Meru each register with exactly one cooperative society. There are about {@nf@} farmers and {@nc@} cooperative societies. Each society processes coffee from many farmers, but each farmer belongs to only one society.</p>
+<p>The input is the farmer and the output is the cooperative society.</p>
+[[else]]
+<p>Farmers from four villages near Kericho, namely Kapsoit, Chilchila, Kabianga and Ainamoi, all deliver their tea leaves to the same collection centre in Kericho town.</p>
+<p>The input is the village and the output is the collection centre.</p>
+[[/if]]
+<p>(a) What type of relation is this?</p>
+<div>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Choose the statement that correctly explains whether this relation is a function.</p>
+<div>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>The input here is the farmer and the output is the cooperative society. Many different farmers are linked to the same society, and each farmer has exactly one society, so the relation is many to one.</p>
-<p>Because every farmer still has exactly one cooperative, the relation is a function. Many inputs sharing one output is allowed for a function.</p>]]></text>
+      <text><![CDATA[[[if test="is(ctx=1)"]]
+<p>The input is the farmer and the output is the cooperative society. Each farmer has exactly one society, and many farmers share the same society. Many inputs go to one output, so the relation is <strong>many-to-one</strong>.</p>
+[[else]]
+<p>The input is the village and the output is the collection centre. Each village delivers to exactly one centre, and all four villages share the same centre. Many inputs go to one output, so the relation is <strong>many-to-one</strong>. It is not one-to-one, because the villages share a centre, and it is not one-to-many, because no village delivers to two centres.</p>
+[[/if]]
+<p>A relation is a <strong>function</strong> when every input has exactly one output. That is true here, so the relation is a function. Many inputs sharing one output is allowed for a function; a function need not be one-to-one.</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.3333333</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2025010100</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[/* Fixed scenario meaning, numbers randomised. Many farmers each
-   register with exactly one cooperative -> many to one, and a function. */
-nf : rand([20,30,40,50]);
-nc : rand([2,3,4]);
-reltype : "many to one";
-whyfun : "it is a function because every farmer has exactly one cooperative";]]></text>
+      <text><![CDATA[/* Fixed meaning, context randomised: 1 = Meru coffee farmers to cooperative societies,
+   2 = Kericho tea villages to one collection centre (merged from Relations Q6).
+   Both are many-to-one, and both are functions. */
+ctx: rand([1, 2]);
+nf: rand([20, 30, 40, 50]);
+nc: rand([2, 3, 4]);
+correct: manytoone;
+ta1: [[onetoone, is(correct=onetoone), "one-to-one"],
+     [onetomany, is(correct=onetomany), "one-to-many"],
+     [manytoone, is(correct=manytoone), "many-to-one"],
+     [manytomany, is(correct=manytomany), "many-to-many"]];
+tac1: first(mcq_correct(ta1));
+ta2: [[fnA, false, "It is not a function, because several inputs are linked to the same output."],
+      [fnB, true, "It is a function, because every input is linked to exactly one output."],
+      [fnC, false, "It is not a function, because a function must be one-to-one."]];
+tac2: first(mcq_correct(ta2));]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>many to one, and it is a function.</text>
+    <questionnote format="html">
+      <text><![CDATA[[[if test="is(ctx=1)"]]Meru coffee, nf={@nf@}, nc={@nc@}[[else]]Kericho tea villages[[/if]]; many-to-one, a function]]></text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text>This question is based on the definitions of one-to-one, one-to-many, many-to-one and many-to-many relations in Section 16.1 (Types of Relations) of the Grade 11 Functions topic. It merges the former Relations Q6 (Kericho tea villages and one collection centre) into this question as a second context.</text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text>That is correct. Well done.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text>You are part of the way there.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text>That is not correct yet.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -65,16 +83,16 @@ whyfun : "it is a function because every farmer has exactly one cooperative";]]>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>string</type>
-      <tans>reltype</tans>
-      <boxsize>16</boxsize>
+      <type>dropdown</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>many to one</syntaxhint>
-      <syntaxattribute>1</syntaxattribute>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>0</mustverify>
@@ -83,16 +101,16 @@ whyfun : "it is a function because every farmer has exactly one cooperative";]]>
     </input>
     <input>
       <name>ans2</name>
-      <type>string</type>
-      <tans>whyfun</tans>
-      <boxsize>60</boxsize>
+      <type>radio</type>
+      <tans>ta2</tans>
+      <boxsize>1</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>it is a function because ...</syntaxhint>
-      <syntaxattribute>1</syntaxattribute>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>0</mustverify>
@@ -105,81 +123,56 @@ whyfun : "it is a function because every farmer has exactly one cooperative";]]>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text>a1 : supcase(sconcat(ans1));</text>
+        <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Many-to-one chosen?</description>
         <answertest>AlgEquiv</answertest>
-        <sans><![CDATA[is(a1="MANY TO ONE")]]></sans>
-        <tans>true</tans>
+        <sans>ans1</sans>
+        <tans>tac1</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Correct. Many farmers link to one society, so the relation is many to one.</p>]]></text>
+          <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt-0-F</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Diagnostic: reversed the direction (one-to-many)?</description>
         <answertest>AlgEquiv</answertest>
-        <sans><![CDATA[is(a1="ONE TO MANY")]]></sans>
-        <tans>true</tans>
+        <sans>ans1</sans>
+        <tans>onetomany</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-mistake1</trueanswernote>
+        <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>It looks like you read the relation backwards, treating the cooperative as the input and the farmer as the output. The question names the farmer as the input and the society as the output. With many farmers going to one society, the relation is many to one.</p>]]></text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>2</falsenextnode>
-        <falseanswernote>prt-1-F</falseanswernote>
-        <falsefeedback format="html">
-          <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>2</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans>true</sans>
-        <tans>true</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-other</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[<p>Reread which quantity is the input. Many farmers each go to a single society, so the relation is many to one.</p>]]></text>
+          <text><![CDATA[<p>It looks like you read the relation backwards, treating the output as the input. The question names the input and the output. Start from one input and count how many outputs it has, then ask whether several inputs share an output.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt-2-F</falseanswernote>
+        <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Check both directions. Does any single input have more than one output? Do several inputs share the same output? The type is named inputs-to-outputs.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -189,84 +182,112 @@ whyfun : "it is a function because every farmer has exactly one cooperative";]]>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text>a2 : supcase(sconcat(ans2));</text>
+        <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Correct explanation chosen?</description>
         <answertest>AlgEquiv</answertest>
-        <sans><![CDATA[is(sposition("IS A FUNCTION",a2)>0) and is(sposition("NOT",a2)=false)]]></sans>
-        <tans>true</tans>
+        <sans>ans2</sans>
+        <tans>tac2</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-correct</trueanswernote>
+        <trueanswernote>prt2-1-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Correct. Every farmer has exactly one cooperative, so the relation is a function.</p>]]></text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt-0-F</falseanswernote>
-        <falsefeedback format="html">
           <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>1</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
-        <sans>true</sans>
-        <tans>true</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-mistake2</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[<p>Having many farmers involved does not stop the relation being a function. What matters is that each single farmer has exactly one cooperative, which is true here. So the relation is a function even though many farmers share a society.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt-1-F</falseanswernote>
+        <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Recall the definition: a relation is a function when every input has exactly one output. Check whether that holds here. Several inputs sharing an output is allowed, and a function does not have to be one-to-one.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
     <deployedseed>501</deployedseed>
     <deployedseed>502</deployedseed>
     <deployedseed>503</deployedseed>
+    <deployedseed>504</deployedseed>
+    <deployedseed>505</deployedseed>
+    <deployedseed>506</deployedseed>
+    <deployedseed>507</deployedseed>
+    <deployedseed>508</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Both correct</description>
       <testinput>
         <name>ans1</name>
-        <value><![CDATA["many to one"]]></value>
+        <value>tac1</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>whyfun</value>
+        <value>tac2</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-correct</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Reversed direction diagnostic, (b) correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>onetomany</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>tac2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Other wrong type, wrong explanation</description>
+      <testinput>
+        <name>ans1</name>
+        <value>onetoone</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>first(mcq_incorrect(ta2))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

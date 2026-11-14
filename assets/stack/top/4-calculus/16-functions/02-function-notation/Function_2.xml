@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Function_2</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A function \( f : \mathbb{R} \rightarrow \mathbb{R}\) is defined by the rule \[ f(x) = {@f1@}. \]</p>
+<p>Which input of the function \(f\) has the output \({@output@}\)?</p>
+<div>\(x = \) [[input:ans1]] [[validation:ans1]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>To find the input that gives a known output, set the rule equal to the output and solve for \(x\): \[ {@f1@} = {@output@}. \]</p>
+[[if test="is(n1<0)"]]
+<p>The output is less than 1, so the index must be negative. Since \({@b@}^{ {@negn1@} } = {@ev(b^negn1)@}\), the rule for a negative index gives \({@b@}^{ {@n1@} } = \dfrac{1}{ {@b@}^{ {@negn1@} } } = {@output@}\). Hence \(x = {@n1@}\).</p>
+[[else]]
+<p>Write the output as a power of the base: \({@output@} = {@b@}^{ {@n1@} }\). Hence \(x = {@n1@}\).</p>
+[[/if]]
+<p>The answer is unique because an <strong>exponential function</strong> \(b^x\) with \(b &gt; 1\) is always increasing, so each output comes from exactly one input. The graph shows the horizontal line \(y = {@output@}\) meeting the curve once, at \(x = {@n1@}\).</p>
+<div style="text-align:center;" role="img" aria-label="Graph of the exponential curve y equals f of x, with a dashed horizontal line at the given output meeting the curve at one point.">
+[[jsxgraph width="320px" height="260px"]]
+(function() {
+  var base = {#b#}, n = {#n1#};
+  var out = Math.pow(base, n);
+  var ym = (n > 0) ? 1.25*out : 1.25;
+  var board = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-4.5, ym, 4.5, -ym/8],
+    axis: true, grid: false, showNavigation: false, showCopyright: false
+  });
+  board.create('functiongraph', [function(x){ return Math.pow(base, x); }, -4.5, 4.5],
+    {strokeColor: '#1565c0', strokeWidth: 2, fixed: true});
+  board.create('line', [[0, out], [1, out]],
+    {strokeColor: '#c62828', dash: 2, strokeWidth: 1, fixed: true});
+  var lab = (n < 0) ? ('(' + n + ', 1/' + Math.pow(base, -n) + ')') : ('(' + n + ', ' + out + ')');
+  board.create('point', [n, out],
+    {name: lab, size: 3, color: '#c62828', fixed: true, label: {offset: [-8, 14], anchorX: 'right'}});
+})();
+[[/jsxgraph]]
+</div>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>/* Exponential f(x) = b^x; base b in {2,3,4,5}, answer n1 in {-3,-2,-1,2,3}. n1 = 0 is excluded so the sign diagnostic -n1 never equals the answer. */
+b: rand([2,3,4,5]);
+n1: rand([-3,-2,-1,2,3]);
+negn1: -n1;
+f1: b^x;
+output: b^n1;
+correctanswer: n1;
+/* Diagnostic: sign of the index wrong (for example 2 instead of -2) */
+diag1: -n1;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text>[[feedback:Result]]</text>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>\(f(x) = {@f1@} = {@output@}\) when \(x = {@n1@}\)</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>Grade 11 Functions (function notation: finding the input for a given output; overlaps with 16.2 Function Notation). Solves b^x = output for an integer x, positive or negative.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>correctanswer</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>solve</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>Result</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct input</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>correctanswer</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1.0000000</truescore>
+        <truepenalty>0</truepenalty>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>Result-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty>0</falsepenalty>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>Result-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Diagnostic: sign of the index wrong</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>diag1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.0000000</truescore>
+        <truepenalty>0</truepenalty>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>Result-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the sign of your input. With your answer, \(f\) gives \({@ev(b^ans1,simp)@}\), not \({@output@}\). For \(b &gt; 1\), a positive index gives an output greater than 1, and a negative index gives a fraction between 0 and 1, because \(b^{-n} = \dfrac{1}{b^n}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty>0</falsepenalty>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>Result-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The value of the function for your input is \({@ev(b^ans1,simp)@}\), which is not equal to \({@output@}\). Try writing \({@output@}\) as a power of \({@b@}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>721290034</deployedseed>
+    <deployedseed>292304388</deployedseed>
+    <deployedseed>1837943153</deployedseed>
+    <deployedseed>1651935919</deployedseed>
+    <deployedseed>1870044671</deployedseed>
+    <deployedseed>1338374744</deployedseed>
+    <deployedseed>266012875</deployedseed>
+    <deployedseed>1694832009</deployedseed>
+    <deployedseed>172922487</deployedseed>
+    <deployedseed>1118547110</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>correctanswer</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>Result-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong (offset)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>correctanswer-1</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>Result-1-F | Result-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Sign of the index wrong (diagnostic)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>diag1</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>Result-1-F | Result-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a letter in the number box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>t</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

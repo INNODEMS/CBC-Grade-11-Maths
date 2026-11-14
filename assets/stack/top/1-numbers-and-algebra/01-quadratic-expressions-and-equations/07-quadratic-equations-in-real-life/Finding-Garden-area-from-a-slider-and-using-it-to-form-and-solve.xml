@@ -5,7 +5,7 @@
       <text>Finding Garden area from a slider and using it to form and solve the quadratic</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>The diagram shows a rectangular garden whose length is \({@dd@}\) metres longer than its width. Let the width be \(x\) metres.</p>
+      <text><![CDATA[<p>The grid below shows a sketchable diagram of a rectangular garden whose length is \({@dd@}\) metres longer than its width. Let the width be \(x\) metres.</p>
 <p>Drag the slider to choose a garden, and read its area from the diagram. You will use that area in part (a).</p>
 [[jsxgraph input-ref-ans0="ref_x" width="470px" height="470px"]]
 var DD = {#dd#};
@@ -15,9 +15,9 @@ var wf = function(){ return Math.round(sl.Value()); };
 var lf = function(){ return Math.round(sl.Value()) + DD; };
 var af = function(){ return wf()*lf(); };
 var p1 = brd.create('point',[0,0],{visible:false,fixed:true});
-var p2 = brd.create('point',[wf,0],{visible:false,fixed:true});
-var p3 = brd.create('point',[wf,lf],{visible:false,fixed:true});
-var p4 = brd.create('point',[0,lf],{visible:false,fixed:true});
+var p2 = brd.create('point',[lf,0],{visible:false,fixed:true});
+var p3 = brd.create('point',[lf,wf],{visible:false,fixed:true});
+var p4 = brd.create('point',[0,wf],{visible:false,fixed:true});
 var poly = brd.create('polygon',[p1,p2,p3,p4],{fillColor:'#8fce8f',fillOpacity:0.5,borders:{strokeColor:'#2f6f2f',strokeWidth:2}});
 brd.create('text',[function(){return wf()/2;}, -0.7, 'x'],{fixed:true,anchorX:'middle',fontSize:18,cssStyle:'font-style:italic'});
 brd.create('text',[-1, 16.2, function(){ return 'area = '+af()+' m²'; }],{fixed:true,anchorX:'left',fontSize:16});
@@ -31,10 +31,22 @@ stack_jxg.bind_slider(ref_x, sl);
 <div>Length \( = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>Whatever garden you choose, if the width is \(x\) then the length is \(x+{@dd@}\), so \[ \text{area} = x\,(x+{@dd@}). \]</p>
-<p>Setting this equal to the area \(A\) you read from the slider gives \[ x(x+{@dd@}) = A \quad\Longrightarrow\quad x^2 + {@dd@}x - A = 0. \]</p>
-<p>Factorising (or using the quadratic formula) gives one positive root — that is the width — and the length is \({@dd@}\) m more.</p>
-<p><em>Example:</em> a width of \({@wex@}\) m gives length \({@wex+dd@}\) m and area \({@Aex@}\) m\(^2\), and \[ x^2+{@dd@}x-{@Aex@}=(x-{@wex@})(x+{@wex+dd@})=0, \] so \(x={@wex@}\) (width) and the length is \({@wex+dd@}\) m.</p>]]></text>
+      <text><![CDATA[<p>The area of a rectangle is length × width. Writing both sides in terms of \(x\) turns the area into a quadratic equation, and solving it recovers the dimensions.</p>
+
+<p><strong>Part (a): form the equation.</strong><br>
+If the width is \(x\) metres, the length is \(x+{@dd@}\) metres, so
+\[ \text{area} = x\,(x+{@dd@}) = x^2+{@dd@}x. \]
+The slider shows you the area \(A\) of your chosen garden, so
+\[ x^2+{@dd@}x = A \quad\Longrightarrow\quad x^2+{@dd@}x-A=0. \]</p>
+
+<p><strong>Part (b): solve it.</strong><br>
+To factorise \(x^2+{@dd@}x-A\), look for two numbers that multiply to \(-A\) and add to \({@dd@}\). The quadratic formula works too.</p>
+
+<p><em>Example.</em> Suppose the slider gives a garden of width \({@wex@}\) m. Its length is \({@wex@}+{@dd@}={@wex+dd@}\) m and its area is \(A={@wex@}\times{@wex+dd@}={@Aex@}\) m\(^2\). The equation is
+\[ x^2+{@dd@}x-{@Aex@}=0. \]
+The numbers \(-{@wex@}\) and \({@wex+dd@}\) multiply to \(-{@Aex@}\) and add to \({@dd@}\), so
+\[ x^2+{@dd@}x-{@Aex@}=(x-{@wex@})(x+{@wex+dd@})=0. \]
+This gives \(x={@wex@}\) or \(x=-{@wex+dd@}\). A width can't be negative, so we reject the second root.</p>]]></text>
     </generalfeedback>
     <defaultgrade>3</defaultgrade>
     <penalty>0.3333333</penalty>
@@ -425,7 +437,7 @@ implied_area : -ev(ans1, x=0, simp);</text>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.3333333</expectedpenalty>
         <expectedanswernote>prt1-wrongarea</expectedanswernote>
       </expected>
     </qtest>
@@ -451,7 +463,7 @@ implied_area : -ev(ans1, x=0, simp);</text>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.3333333</expectedpenalty>
         <expectedanswernote>prt1-other</expectedanswernote>
       </expected>
     </qtest>
@@ -477,7 +489,7 @@ implied_area : -ev(ans1, x=0, simp);</text>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.3333333</expectedpenalty>
         <expectedanswernote>prt2-length</expectedanswernote>
       </expected>
     </qtest>
@@ -503,7 +515,7 @@ implied_area : -ev(ans1, x=0, simp);</text>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.3333333</expectedpenalty>
         <expectedanswernote>prt2-neg</expectedanswernote>
       </expected>
     </qtest>
@@ -529,7 +541,7 @@ implied_area : -ev(ans1, x=0, simp);</text>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.3333333</expectedpenalty>
         <expectedanswernote>prt3-width</expectedanswernote>
       </expected>
     </qtest>

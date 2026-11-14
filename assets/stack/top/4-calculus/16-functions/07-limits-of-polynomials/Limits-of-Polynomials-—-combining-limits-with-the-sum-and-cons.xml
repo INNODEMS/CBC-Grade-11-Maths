@@ -7,13 +7,12 @@
     <questiontext format="html">
       <text><![CDATA[<p>Given that \( \displaystyle\lim_{x\to {@aa@}} f(x) = {@Lf@} \) and \( \displaystyle\lim_{x\to {@aa@}} g(x) = {@Lg@} \), evaluate</p>
 <p>\[ \lim_{x\to {@aa@}} \big( {@ca@}f(x) + {@cb@}g(x) \big). \]</p>
-<div>[[input:ans1]] [[validation:ans1]]</div>
-<div>[[feedback:prt1]]</div>]]></text>
+<div>[[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>The limit laws let you split this apart term by term:</p>
-\[ \lim_{x\to {@aa@}}\big({@ca@}f(x)+{@cb@}g(x)\big) = {@ca@}\lim_{x\to {@aa@}}f(x) + {@cb@}\lim_{x\to {@aa@}}g(x) = {@ca@}({@Lf@})+{@cb@}({@Lg@}) = {@ta@}. \]
-<p>Don't drop the constant multipliers {@ca@} and {@cb@}, and don't multiply the two limits together &#8212; here they are added, not multiplied.</p>]]></text>
+      <text><![CDATA[<p>Two limit laws do the work here. The <strong>sum rule</strong> says the limit of a sum is the sum of the limits, and the <strong>constant multiple rule</strong> says a constant factor can be taken outside the limit:</p>
+\[ \lim_{x\to {@aa@}}\big({@ca@}f(x)+{@cb@}g(x)\big) = {@ca@}\lim_{x\to {@aa@}}f(x) + {@cb@}\lim_{x\to {@aa@}}g(x) = {@ca@}\times({@Lf@})+{@cb@}\times({@Lg@}) = {@ta@}. \]
+<p>Keep the constant multipliers \({@ca@}\) and \({@cb@}\), and add the two scaled limits rather than multiplying them.</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -23,39 +22,43 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>aa : rand_with_prohib(1,5,[]);
-Lf : rand_with_prohib(-9,9,[0]);
-Lg : rand_with_prohib(-9,9,[0]);
-ca : rand_with_prohib(2,5,[]);
-cb : rand_with_prohib(2,5,[]);
-ta : ca*Lf+cb*Lg;
-wrong_ignorecoef : Lf+Lg;                 /* ignored the constant multipliers */
-wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits together */</text>
+      <text>aa: rand_with_prohib(1,5,[]);
+Lf: rand_with_prohib(-9,9,[0]);
+ca: rand_with_prohib(2,5,[]);
+cb: rand_with_prohib(2,5,[]);
+/* Lg is chosen so that the answer, both diagnostic values and the generic
+   wrong test value ta+1 are pairwise distinct, and the answer is not 0 or 1 or -1.
+   Each prohibited value solves one coincidence equation for Lg (non-integers never match).
+   Brute-force checked over the whole domain: no collisions, never an empty choice. */
+Lg: rand_with_prohib(-9,9,[0, -(ca-1)*Lf/(cb-1), ca*Lf/(ca*cb*Lf-cb), Lf/(ca*cb*Lf-1), -ca*Lf/cb, (1-ca*Lf)/cb, (-1-ca*Lf)/cb, (-1-(ca-1)*Lf)/(cb-1), (ca*Lf+1)/(ca*cb*Lf-cb)]);
+ta: ca*Lf + cb*Lg;
+wrong_ignorecoef: Lf + Lg;
+wrong_multiplyall: ca*Lf*cb*Lg;</text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text>[[feedback:prt1]]</text>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.7 (Limits of Polynomials). Applies the sum rule and constant-multiple rule for limits; catches dropping the constant multipliers and wrongly multiplying the two limits together i</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text><![CDATA[x -> {@aa@}, lim f = {@Lf@}, lim g = {@Lg@}, {@ca@}f + {@cb@}g, answer {@ta@}]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.7 (Limits of Polynomials). Applies the sum rule and constant-multiple rule for limits; catches dropping the constant multipliers and wrongly multiplying the two limits together instead of adding.</p>]]></text>
+      <text><![CDATA[<p>Grade 11 Functions 16.7 (Limits of Polynomials). Applies the sum rule and constant-multiple rule for limits; catches dropping the constant multipliers and wrongly multiplying the two limits together instead of adding.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -65,9 +68,9 @@ wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits t
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta</tans>
-      <boxsize>10</boxsize>
+      <boxsize>6</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -77,8 +80,8 @@ wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits t
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -91,7 +94,7 @@ wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits t
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correctly applied the sum/constant-multiple limit laws?</description>
+        <description>Correct value</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta</tans>
@@ -101,7 +104,7 @@ wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits t
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -109,14 +112,14 @@ wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits t
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-0-F</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description>Dropped the constant multipliers?</description>
+        <description>Dropped the constant multipliers</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>wrong_ignorecoef</tans>
@@ -126,22 +129,22 @@ wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits t
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-ignorecoef</trueanswernote>
+        <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>You've added \(L_f+L_g\) directly, but forgotten the constant multipliers {@ca@} and {@cb@} in front of \(f(x)\) and \(g(x)\).</text>
+          <text><![CDATA[<p>You have added the two limits directly and lost the constant multipliers \({@ca@}\) and \({@cb@}\). By the constant multiple rule, each limit is multiplied by its constant.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>2</falsenextnode>
-        <falseanswernote>prt1-1-F</falseanswernote>
+        <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>2</name>
-        <description>Multiplied the two limits together instead of adding?</description>
+        <description>Multiplied the scaled limits together</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>wrong_multiplyall</tans>
@@ -151,17 +154,17 @@ wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits t
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-multiplied</trueanswernote>
+        <trueanswernote>prt1-3-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[The two scaled limits should be <strong>added</strong>, not multiplied together.]]></text>
+          <text><![CDATA[<p>The expression is a <strong>sum</strong>, so by the sum rule the two scaled limits are added, not multiplied together.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text>That is not the correct value. Apply the sum rule and the constant multiple rule for limits separately, then add.</text>
+          <text><![CDATA[<p>Use the constant multiple rule on each term, then the sum rule to add the results.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -170,23 +173,28 @@ wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits t
     <deployedseed>3</deployedseed>
     <deployedseed>4</deployedseed>
     <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Correct</description>
+      <description>Correct, built from the limit laws</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>ca*Lf+cb*Lg</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Dropped coefficients</description>
+      <description>Dropped the coefficients</description>
       <testinput>
         <name>ans1</name>
         <value>wrong_ignorecoef</value>
@@ -195,7 +203,7 @@ wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits t
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-ignorecoef</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
@@ -208,8 +216,36 @@ wrong_multiplyall : ca*Lf*cb*Lg;          /* wrongly multiplied the two limits t
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.2000000</expectedpenalty>
-        <expectedanswernote>prt1-multiplied</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: a letter</description>
+      <testinput>
+        <name>ans1</name>
+        <value>L</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

@@ -5,21 +5,37 @@
       <text>Inverse of Polynomials — inverse of a linear function</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Let \( f(x) = {@m@}x + {@b@} \).</p>
-<p>Find \( f^{-1}(x) \).</p>
-<div>\( f^{-1}(x) = \) [[input:ans1]] [[validation:ans1]]</div>
-<div>[[feedback:prt1]]</div>]]></text>
+      <text><![CDATA[<p>Let \( f(x) = {@fx@} \).</p>
+<p>Find \( f^{-1}(x) \), giving your answer in terms of \(x\).</p>
+<div>\( f^{-1}(x) = \) [[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>To find the inverse: write \(y={@m@}x+{@b@}\), swap \(x\) and \(y\) to get \(x={@m@}y+{@b@}\), then solve for \(y\):</p>
+      <text><![CDATA[<p>The <strong>inverse function</strong> \(f^{-1}\) undoes \(f\): it takes each output of \(f\) back to the input that produced it. To find it, write \(y = f(x)\), swap the roles of \(x\) and \(y\), and make \(y\) the subject.</p>
 \[
 \begin{align*}
-x &= {@m@}y+{@b@}\\
-x-{@b@} &= {@m@}y\\
-y &= \dfrac{x-{@b@}}{ {@m@} }
+x &= {@fy@}\\
+{@x-b@} &= {@m*y@}\\
+y &= {@ta@}
 \end{align*}
 \]
-<p>So \(f^{-1}(x)=\dfrac{x-{@b@}}{ {@m@} }\). A common mistake is dividing \(x\) by \({@m@}\) but forgetting to also divide \({@b@}\) by \({@m@}\), or getting the sign of \({@b@}\) wrong when moving it across.</p>]]></text>
+<p>So \(f^{-1}(x) = {@ta@}\). The whole of \({@x-b@}\) is divided by \({@m@}\), not just the \(x\). Check: \(f\big(f^{-1}(x)\big) = {@m@}\left({@ta@}\right) [[if test="is(b>0)"]]+ {@b@}[[else]]- {@-b@}[[/if]] = x\).</p>
+<p>The graph of \(f^{-1}\) is the reflection of the graph of \(f\) in the line \(y = x\), because swapping \(x\) and \(y\) swaps the coordinates of every point.</p>
+<div style="text-align:center;" role="img" aria-label="The line y = f(x), its inverse y = f inverse of x, and the dashed mirror line y = x.">
+[[jsxgraph width="320px" height="320px"]]
+(function() {
+  var b = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-10, 10, 10, -10], axis: true, grid: false,
+    showNavigation: false, showCopyright: false
+  });
+  b.create('functiongraph', [function(x){ return {#m#}*x + {#b#}; }], {strokeColor:'#003399', strokeWidth:2});
+  b.create('functiongraph', [function(x){ return (x - ({#b#}))/({#m#}); }], {strokeColor:'#cc0000', strokeWidth:2});
+  b.create('functiongraph', [function(x){ return x; }], {strokeColor:'#666666', dash:2, strokeWidth:1});
+  b.create('text', [-9.5, 9, 'blue: y = f(x)'], {fixed:true, color:'#003399'});
+  b.create('text', [-9.5, 7.8, 'red: y = f⁻¹(x)'], {fixed:true, color:'#cc0000'});
+  b.create('text', [-9.5, 6.6, 'dashed: y = x'], {fixed:true, color:'#666666'});
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -29,37 +45,42 @@ y &= \dfrac{x-{@b@}}{ {@m@} }
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>m : rand_with_prohib(-6,6,[0,1,-1]);
-b : rand_with_prohib(-9,9,[0]);
-ta : (x-b)/m;
-wrong_noswap : m*x+b;                    /* just isolated x without swapping x and y - actually gives back f, catch differently */
-wrong_reciprocal : x/m - b;              /* divided by m but forgot to also divide b by m (didn't distribute correctly) */
-wrong_signb : (x+b)/m;                   /* sign error moving b to the other side */</text>
+      <text><![CDATA[m: rand_with_prohib(-6,6,[-1,0,1]);
+b: rand_with_prohib(-9,9,[0]);
+fx: m*x + b;
+fy: m*y + b;
+ta: (x-b)/m;
+validate_x(ex) := if every(lambda([v], member(v, [x])), listofvars(ex)) then "" else "Write your answer in terms of x only.";
+/* Diagnostics (pairwise distinct and distinct from ta, since m is not 0 or 1 or -1 and b is not 0):
+   divided only x by m; sign error moving b across; the reciprocal 1/f(x) read as the inverse. */
+wrong_notdist: x/m - b;
+wrong_signb: (x+b)/m;
+wrong_recip: 1/(m*x+b);]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text>[[feedback:prt1]]</text>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.8 (Inverse of Polynomials). Finds the inverse of a linear function by swapping x and y and solving; catches failing to distribute the division across the whole numerator, and sig</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text>f(x) = {@fx@}, f^-1(x) = {@ta@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.8 (Inverse of Polynomials). Finds the inverse of a linear function by swapping x and y and solving; catches failing to distribute the division across the whole numerator, and sign errors.</p>]]></text>
+      <text><![CDATA[<p>Grade 11 Functions 16.8 (Inverse of Polynomials). Finds the inverse of a linear function by swapping x and y and solving; catches failing to divide the whole numerator, sign errors, and reading f^-1 as 1/f. Merged with the former "2.3.2.2 Task: Function inversion" (same task); answers must be in terms of x (validator).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -78,12 +99,12 @@ wrong_signb : (x+b)/m;                   /* sign error moving b to the other sid
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
-      <options/>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options>validator:validate_x</options>
     </input>
     <prt>
       <name>prt1</name>
@@ -95,7 +116,7 @@ wrong_signb : (x+b)/m;                   /* sign error moving b to the other sid
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correct inverse function?</description>
+        <description>Correct inverse</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta</tans>
@@ -105,7 +126,7 @@ wrong_signb : (x+b)/m;                   /* sign error moving b to the other sid
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -113,39 +134,39 @@ wrong_signb : (x+b)/m;                   /* sign error moving b to the other sid
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-0-F</falseanswernote>
-        <falsefeedback format="html">
-          <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>1</name>
-        <description>Divided only x by m, forgot to divide b too?</description>
-        <answertest>AlgEquiv</answertest>
-        <sans>ans1</sans>
-        <tans>wrong_reciprocal</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-notdistributed</trueanswernote>
-        <truefeedback format="html">
-          <text>You've divided \(x\) by {@m@} but the whole numerator \((x-{@b@})\) needs to be divided by {@m@}, not just the \(x\)-part.</text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>2</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
+        <name>1</name>
+        <description>Divided only x by m</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_notdist</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have divided \(x\) by \({@m@}\), but the whole of \({@x-b@}\) has to be divided by \({@m@}\), not just the \(x\) term.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
         <name>2</name>
-        <description>Sign error moving b across?</description>
+        <description>Sign error moving b across</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>wrong_signb</tans>
@@ -155,17 +176,42 @@ wrong_signb : (x+b)/m;                   /* sign error moving b to the other sid
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-signb</trueanswernote>
+        <trueanswernote>prt1-3-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[Check the sign again: since \(x-{@b@}={@m@}y\), it should be \(x\) <strong>minus</strong> {@b@} in the numerator, not plus.]]></text>
+          <text><![CDATA[<p>Check the sign of the constant. Moving \({@b@}\) to the other side of \(x = {@fy@}\) changes its sign.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Reciprocal of f</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_recip</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>\(f^{-1}(x)\) is the inverse function, not the reciprocal \(\dfrac{1}{f(x)}\). The \(-1\) is not a power here. Swap \(x\) and \(y\) in \(y = f(x)\) and solve for \(y\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text>That is not the correct inverse. Swap x and y in y = {@m@}x+{@b@}, then solve for y.</text>
+          <text><![CDATA[<p>Write \(y = {@fx@}\), swap \(x\) and \(y\), then make \(y\) the subject. You can check your answer: \(f\) applied to it should give back \(x\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -174,32 +220,37 @@ wrong_signb : (x+b)/m;                   /* sign error moving b to the other sid
     <deployedseed>3</deployedseed>
     <deployedseed>4</deployedseed>
     <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Correct</description>
+      <description>Correct, unsimplified equivalent form</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>x/m-b/m</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Forgot to distribute the division</description>
+      <description>Forgot to divide b</description>
       <testinput>
         <name>ans1</name>
-        <value>wrong_reciprocal</value>
+        <value>wrong_notdist</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-notdistributed</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
@@ -212,8 +263,50 @@ wrong_signb : (x+b)/m;                   /* sign error moving b to the other sid
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.2000000</expectedpenalty>
-        <expectedanswernote>prt1-signb</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Reciprocal</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_recip</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F | prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Generic wrong: gave f itself</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fx</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F | prt1-4-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: answer in terms of y</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fy</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

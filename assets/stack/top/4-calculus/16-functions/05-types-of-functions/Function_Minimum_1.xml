@@ -5,64 +5,78 @@
       <text>Function_Minimum_1</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Find the {@v@}-value at which the function</p>
-<p>\[f({@v@})={@p@},\]</p>
-<p>has its minimum.</p>
-<p>The function has a minimum at \( x = \) [[input:ans1]] [[validation:ans1]]</p>]]></text>
+      <text><![CDATA[<p>The quadratic function</p>
+<p>\[ f(x) = {@p@} \]</p>
+<p>has a positive coefficient of \(x^2\), so its graph is a parabola that opens upwards and its turning point is a <strong>minimum</strong>. Find the turning point by completing the square. Do not use calculus.</p>
+<p>(a) Find the \(x\)-coordinate of the turning point.</p>
+<div>\(x =\) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Find the minimum value of \(f(x)\).</p>
+<div>Minimum value of \(f(x) =\) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>To find the \({@v@}\)-value at which the function \(f({@v@})={@p@}\), has turning points, differentiate and find the values of \({@v@}\) for which the differential is equal to 0.</p>
-<p><br /> \[\begin{array}{rcl}\displaystyle \frac{d}{d{@v@}}\left({@p@}\right) &amp;=&amp; {@diffp@} \\ {@diffp@} &amp; =&amp; 0 \\ {@diffpsimp@}&amp;=&amp; 0 \end{array}\]</p>
-<p>which factorises to give</p>
-<p>\[{@v@} = {@n1@}  \mbox{ and }  {@v@} = -10\]</p>
-<p>A turning point is a minimum if \(\frac{d^2}{d{@v@}^2}\left({@p@}\right)\)&gt;0.</p>
-<p>\[\frac{d^2}{d{@v@}^2}\left({@p@}\right) = {@diffdiffp@}\]</p>
-<p>This is positive for \({@v@} = {@n1@}\) and negative for \({@v@} = -10\).</p>
-<p>Therefore the minimum value of the function \(f({@v@})\) occurs at \({@v@} = {@n1@}\).</p>]]></text>
+      <text><![CDATA[<p><strong>Completing the square</strong> rewrites a quadratic \(a x^2 + bx + c\) in the form \(a(x - h)^2 + k\). [[if test="is(a#1)"]]First take the factor \({@a@}\) out of the two \(x\) terms. [[/if]]Then use \(x^2 + qx = \left(x + \dfrac{q}{2}\right)^2 - \left(\dfrac{q}{2}\right)^2\): halve the coefficient of \(x\) inside the bracket, square the bracket, and subtract the square of that half.</p>
+<p>\[\begin{array}{rcl} f(x) &amp;=&amp; {@p@} \\ &amp;=&amp; {@step1@} \\ &amp;=&amp; {@step2@} \\ &amp;=&amp; {@step3@} \end{array}\]</p>
+<p>A square is never negative, so \({@sq@} \ge 0\) for every \(x\), and it equals \(0\) only when \(x = {@h@}\). [[if test="is(a#1)"]]Multiplying by the positive number \({@a@}\) keeps this true. [[/if]]So \(f(x) \ge {@k@}\) for every \(x\), with equality at \(x = {@h@}\).</p>
+<p>The turning point is therefore \(({@h@},\ {@k@})\). (a) Its \(x\)-coordinate is \(x = {@h@}\). (b) The minimum value of \(f(x)\) is \({@k@}\).</p>
+<p>Check: substituting \(x = {@h@}\) into the original expression gives \(f({@h@}) = {@k@}\).</p>]]></text>
     </generalfeedback>
-    <defaultgrade>1</defaultgrade>
-    <penalty>0</penalty>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text/>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>v:x;
- n1:rand(8) + 2;
- p:2*v^3+3*(10-n1)*v^2-60*n1*x+6;
- diffp:diff(p,v);
- diffpsimp:expand(diffp/6);
- diffdiffp:diff(diffp,v);
- 
- correctanswer:n1;
- wronganswer1:-10;
- wronganswer2:100;</text>
+      <text>/* f(x) = a(x - h)^2 + k with a in {1,2,3} (always positive, so the turning point is a
+   minimum on every seed), h and k non-zero integers. h # 0 keeps a non-zero x term. */
+a: rand([1, 2, 3]);
+h: rand_with_prohib(-5, 5, [0]);
+k: rand_with_prohib(-9, 9, [0]);
+b: -2*a*h;
+c: a*h^2 + k;
+p: a*x^2 + b*x + c;
+/* Worked-solution display steps. */
+step1: a*(x^2 - 2*h*x) + c;
+step2: a*((x - h)^2 - h^2) + c;
+step3: a*(x - h)^2 + k;
+sq: (x - h)^2;
+tax: h;
+tak: k;
+/* Diagnostics.
+   wx_sign: x = b/(2a), the sign error from reading (x - h)^2 as zero at x = -h. Distinct from h since h # 0.
+   wk_sign: the constant added instead of subtracted, c + a*h^2 = k + 2*a*h^2. Distinct from k since h # 0.
+   prt2 node 2 compares ans2 with f(ans1) (value consistent with a wrong x). Its test uses
+   fwrong = f(-h) = k + 4*a*h^2, which is neither k nor wk_sign. The both-wrong test uses
+   ans1 = h+1, ans2 = k-1: f(h+1) = k+a and wk_sign are never k-1. */
+wx_sign: -h;
+wk_sign: c + a*h^2;
+fwrong: ev(p, x = -h);</text>
     </questionvariables>
     <specificfeedback format="html">
-      <text><![CDATA[<p>[[feedback:Result]]</p>]]></text>
-    </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>Minimum of \(f(x) = {@p@}\) is at \({@v@} = {@correctanswer@}\)</text>
-    </questionnote>
-    <questiondescription format="moodle_auto_format">
       <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>\(f(x) = {@p@} = {@step3@}\): turning point \(({@h@}, {@k@})\), a minimum.</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text>This question is based on the turning point of a quadratic function in Section 16.5 (Types of Functions) of the Grade 11 Functions topic. It replaces an earlier calculus version (the local minimum of a cubic) with a completing-the-square task.</text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -72,9 +86,9 @@
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
-      <tans>correctanswer</tans>
-      <boxsize>20</boxsize>
+      <type>numerical</type>
+      <tans>tax</tans>
+      <boxsize>5</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -82,14 +96,32 @@
       <forbidwords>diff</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
-      <requirelowestterms>1</requirelowestterms>
-      <checkanswertype>1</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>tak</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>diff</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
-      <name>Result</name>
+      <name>prt1</name>
       <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
@@ -98,127 +130,243 @@
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
-        <answertest>Diff</answertest>
+        <description>Correct x-coordinate h</description>
+        <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>correctanswer</tans>
-        <testoptions>v</testoptions>
-        <quiet>0</quiet>
+        <tans>tax</tans>
+        <testoptions/>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
-        <truescore>1.0000000</truescore>
-        <truepenalty>0</truepenalty>
+        <truescore>1</truescore>
+        <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>Result-0-T </trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
-        <falsescore>0.0000000</falsescore>
-        <falsepenalty>0</falsepenalty>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>Result-0-F </falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Sign error: x = b/(2a)</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>wronganswer1</tans>
+        <tans>wx_sign</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
-        <truescore>0.0000000</truescore>
-        <truepenalty>0</truepenalty>
+        <truescore>0</truescore>
+        <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>Result-1-T </trueanswernote>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have the right size but the wrong sign. A bracket \((x + q)^2\) is zero when \(x = -q\), not when \(x = q\). Look at the sign inside your completed square again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Write \(f(x)\) in the form \(a(x - h)^2 + k\).[[if test="is(a#1)"]] Take the factor \({@a@}\) out of the \(x^2\) and \(x\) terms first.[[/if]] Halve the coefficient of \(x\) inside the bracket to get the number in the squared bracket. The turning point is where that squared bracket is zero.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct minimum value k</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>tak</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
-        <falsescore>0.0000000</falsescore>
-        <falsepenalty>0</falsepenalty>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Sign error on the constant: added the square of the half instead of subtracting</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>wk_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the sign of the constant. Completing the square gives \(x^2 + qx = \left(x + \dfrac{q}{2}\right)^2 - \left(\dfrac{q}{2}\right)^2\): the square of the half is <em>subtracted</em>, because expanding the bracket adds it.[[if test="is(a#1)"]] Remember to multiply it by \({@a@}\) when you remove the outer bracket.[[/if]]</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
         <falsenextnode>2</falsenextnode>
-        <falseanswernote>Result-1-F </falseanswernote>
+        <falseanswernote>prt2-2-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>2</name>
-        <description/>
+        <description>Value is f at the student's (wrong) x-coordinate</description>
         <answertest>AlgEquiv</answertest>
-        <sans>ans1</sans>
-        <tans>wronganswer2</tans>
+        <sans>ans2</sans>
+        <tans>ev(p, x = ans1)</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
-        <truescore>0.0000000</truescore>
-        <truepenalty>0</truepenalty>
+        <truescore>0</truescore>
+        <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>Result-2-T </trueanswernote>
+        <trueanswernote>prt2-3-T</trueanswernote>
         <truefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Your value is \(f\) evaluated at your answer to part (a), so the substitution is right, but that \(x\) is not where the minimum occurs. Correct part (a) first; the minimum value is \(f\) at the turning point.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
-        <falsescore>0.0000000</falsescore>
-        <falsepenalty>0</falsepenalty>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>Result-2-F </falseanswernote>
+        <falseanswernote>prt2-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Once \(f(x)\) is written as \(a(x - h)^2 + k\), the squared term is never negative and is zero at the turning point, so the minimum value is the constant \(k\) left outside the bracket. You can check it by substituting your \(x\)-coordinate into \(f(x)\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>348519769</deployedseed>
-    <deployedseed>1602523419</deployedseed>
-    <deployedseed>539764128</deployedseed>
-    <deployedseed>857030910</deployedseed>
-    <deployedseed>316869650</deployedseed>
-    <deployedseed>554393931</deployedseed>
-    <deployedseed>247320811</deployedseed>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>12</deployedseed>
+    <deployedseed>18</deployedseed>
+    <deployedseed>21</deployedseed>
+    <deployedseed>22</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Both correct</description>
       <testinput>
         <name>ans1</name>
-        <value>correctanswer</value>
+        <value>-b/(2*a)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>c - b^2/(4*a)</value>
       </testinput>
       <expected>
-        <name>Result</name>
+        <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>Result-0-T</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Sign error in x, value consistent with that x (diagnostic and follow-through)</description>
       <testinput>
         <name>ans1</name>
-        <value>wronganswer1</value>
+        <value>wx_sign</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>fwrong</value>
       </testinput>
       <expected>
-        <name>Result</name>
+        <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>Result-1-T</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>3</testcase>
-      <description/>
+      <description>Mixed: x correct, sign error on the constant (diagnostic)</description>
       <testinput>
         <name>ans1</name>
-        <value>wronganswer2</value>
+        <value>tax</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wk_sign</value>
       </testinput>
       <expected>
-        <name>Result</name>
-        <expectedscore>0.0000000</expectedscore>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>Result-2-T</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Both wrong (offsets)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tax+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>tak-1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

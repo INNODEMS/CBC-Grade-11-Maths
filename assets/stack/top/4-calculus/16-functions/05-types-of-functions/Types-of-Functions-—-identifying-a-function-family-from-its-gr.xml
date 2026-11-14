@@ -6,24 +6,34 @@
     </name>
     <questiontext format="html">
       <text><![CDATA[<p>The graph of a function is shown below.</p>
-[[jsxgraph width="420px" height="340px"]]
-var scenario = {#scenario#};
-var board = JXG.JSXGraph.initBoard(divid, {
+<div style="text-align:center;" role="img" aria-label="Graph of a function on axes from x = -5 to 5. Identify its type from the shape.">
+[[jsxgraph width="400px" height="320px"]]
+(function() {
+  var scenario = {#scenario#};
+  var board = JXG.JSXGraph.initBoard(divid, {
     boundingbox: [-5, 8, 5, -8],
     axis: true, showCopyright: false, showNavigation: false
-});
-var f;
-if (scenario === 0) { f = board.jc.snippet('0.5*x+1', true, 'x', true); board.create('functiongraph',[f,-5,5],{strokeColor:'#1565c0',strokeWidth:2}); }
-else if (scenario === 1) { f = board.jc.snippet('0.4*x^2-2', true, 'x', true); board.create('functiongraph',[f,-4.2,4.2],{strokeColor:'#1565c0',strokeWidth:2}); }
-else if (scenario === 2) { f = board.jc.snippet('0.15*x^3', true, 'x', true); board.create('functiongraph',[f,-4,4],{strokeColor:'#1565c0',strokeWidth:2}); }
-else { f = board.jc.snippet('2^x-3', true, 'x', true); board.create('functiongraph',[f,-5,3.5],{strokeColor:'#1565c0',strokeWidth:2}); }
+  });
+  // 0 linear, 1 quadratic, 2 cubic with two turning points, 3 exponential
+  var f, lo = -5, hi = 5;
+  if (scenario === 0) { f = function(x){ return 0.5*x + 1; }; }
+  else if (scenario === 1) { f = function(x){ return 0.4*x*x - 2; }; lo = -4.2; hi = 4.2; }
+  else if (scenario === 2) { f = function(x){ return 0.15*x*x*x - 1.5*x; }; lo = -4.3; hi = 4.3; }
+  else { f = function(x){ return Math.pow(2, x) - 3; }; hi = 3.5; }
+  board.create('functiongraph', [f, lo, hi], {strokeColor: '#1565c0', strokeWidth: 2, fixed: true});
+})();
 [[/jsxgraph]]
+</div>
 <p>What type of function does this graph most likely represent?</p>
-<div>[[input:ans1]] [[validation:ans1]]</div>
-<div>[[feedback:prt1]]</div>]]></text>
+<div>[[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>Key visual clues: a <strong>straight line</strong> is linear; a single <strong>symmetric U-shape</strong> (one turning point) is quadratic; an <strong>S-shaped curve</strong> with a turning point and an inflection (up to two turning points) is cubic; a curve that keeps rising (or falling) ever more steeply, flattening out toward a horizontal asymptote on one side, is exponential.</p>]]></text>
+      <text><![CDATA[<p>Each family of functions has a characteristic graph. A <strong>linear</strong> function \(y = mx + c\) has a straight-line graph, because its rate of change is constant. A <strong>quadratic</strong> function \(y = ax^2 + bx + c\) has a U-shaped (or upside-down U-shaped) graph called a parabola, with exactly one turning point and a vertical line of symmetry. A <strong>cubic</strong> function \(y = ax^3 + \dots\) has an S-shaped graph with one point of inflection; it may have two turning points or none, and its two ends go in opposite directions. An <strong>exponential</strong> function \(y = a^x + k\) flattens out towards a horizontal asymptote on one side and becomes steeper and steeper on the other.</p>
+[[if test="is(scenario=0)"]]<p>The graph shown is a straight line, so the function is linear.</p>
+[[elif test="is(scenario=1)"]]<p>The graph shown is a parabola with one turning point and a vertical line of symmetry, so the function is quadratic.</p>
+[[elif test="is(scenario=2)"]]<p>The graph shown rises, falls, then rises again: two turning points, with its two ends going in opposite directions. So the function is cubic.</p>
+[[else]]<p>The graph shown flattens out towards a horizontal asymptote on the left and becomes steeper and steeper on the right, so the function is exponential.</p>
+[[/if]]]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -33,15 +43,16 @@ else { f = board.jc.snippet('2^x-3', true, 'x', true); board.create('functiongra
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[scenario : rand(4);              /* 0 linear, 1 quadratic, 2 cubic, 3 exponential */
+      <text><![CDATA[scenario : rand(4);              /* 0 linear, 1 quadratic, 2 cubic (two turning points), 3 exponential */
 ta : if scenario=0 then "linear" elseif scenario=1 then "quadratic" elseif scenario=2 then "cubic" else "exponential";
-opts : [["linear", scenario=0, "Linear"],["quadratic", scenario=1, "Quadratic"],["cubic", scenario=2, "Cubic"],["exponential", scenario=3, "Exponential"]];]]></text>
+/* Booleans wrapped in is() so each option carries true or false, not an unevaluated equation */
+opts : [["linear", is(scenario=0), "Linear"],["quadratic", is(scenario=1), "Quadratic"],["cubic", is(scenario=2), "Cubic"],["exponential", is(scenario=3), "Exponential"]];]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text>[[feedback:prt1]]</text>
     </specificfeedback>
     <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.5 (Types of Functions). Identifies linear, quadratic, cubic, or exponential function families from the shape of a JSXGraph-plotted curve.</p>]]></text>
+      <text>Graph family shown: {@ta@} (scenario {@scenario@})</text>
     </questionnote>
     <questiondescription format="html">
       <text><![CDATA[<p id="description">Grade 11 Functions 16.5 (Types of Functions). Identifies linear, quadratic, cubic, or exponential function families from the shape of a JSXGraph-plotted curve.</p>]]></text>
@@ -50,17 +61,17 @@ opts : [["linear", scenario=0, "Linear"],["quadratic", scenario=1, "Quadratic"],
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -82,8 +93,8 @@ opts : [["linear", scenario=0, "Linear"],["quadratic", scenario=1, "Quadratic"],
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -96,17 +107,17 @@ opts : [["linear", scenario=0, "Linear"],["quadratic", scenario=1, "Quadratic"],
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correctly identified the function family from its graph?</description>
+        <description>Correct family identified (dropdown: no diagnostic)</description>
         <answertest>String</answertest>
         <sans>ans1</sans>
         <tans>ta</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -114,9 +125,9 @@ opts : [["linear", scenario=0, "Linear"],["quadratic", scenario=1, "Quadratic"],
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Look again at the overall shape: how many turning points does it have, and does it flatten out toward an asymptote anywhere?</text>
+          <text><![CDATA[<p>Look again at the overall shape. Is it a straight line? How many turning points does it have, and is it symmetric about a vertical line? Does it flatten out towards a horizontal asymptote on one side?</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -130,13 +141,13 @@ opts : [["linear", scenario=0, "Linear"],["quadratic", scenario=1, "Quadratic"],
       <description>Correct</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>first(mcq_correct(opts))</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
@@ -144,13 +155,13 @@ opts : [["linear", scenario=0, "Linear"],["quadratic", scenario=1, "Quadratic"],
       <description>Wrong family</description>
       <testinput>
         <name>ans1</name>
-        <value><![CDATA[if ta="linear" then "quadratic" else "linear"]]></value>
+        <value>first(mcq_incorrect(opts))</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-wrong</expectedanswernote>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

@@ -5,15 +5,14 @@
       <text>Function Notation — evaluating f(a) for a negative input</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Let \( f(x) = {@p@}x^2 + {@q@}x + {@r@} \).</p>
-<p>Evaluate \( f({@a@}) \).</p>
-<div>\( f({@a@}) = \) [[input:ans1]] [[validation:ans1]]</div>
-<div>[[feedback:prt1]]</div>]]></text>
+      <text><![CDATA[<p>Let \(f(x) = {@fx@}\).</p>
+<p>Evaluate \(f({@a@})\).</p>
+<div>\(f({@a@}) =\) [[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>Substitute \(x={@a@}\) into every occurrence of \(x\):</p>
-\[ f({@a@}) = {@p@}({@a@})^2 + {@q@}({@a@}) + {@r@} = {@ta@}. \]
-<p>Remember that squaring a negative number gives a <strong>positive</strong> result: \(({@a@})^2 = {@a@}^2\), not \(-{@a@}^2\).</p>]]></text>
+      <text><![CDATA[<p>Function notation \(f({@a@})\) means the <strong>output</strong> of \(f\) when the <strong>input</strong> is \(x={@a@}\). To evaluate it, replace every \(x\) in the rule by \(({@a@})\), keeping the brackets so that the negative sign travels with the number. Then follow the order of operations: the power first, then the multiplications, then the additions.</p>
+\[ f({@a@}) = {@p@}({@a@})^2 + {@q@}({@a@}) + {@r@} = {@p@}\times {@a^2@} + ({@q*a@}) + {@r@} = {@ta@}. \]
+<p>Squaring a negative number gives a <strong>positive</strong> result: \(({@a@})^2 = {@a^2@}\), not \({@-a^2@}\). Multiplying the positive coefficient \({@q@}\) by the negative input gives a <strong>negative</strong> result, \({@q*a@}\).</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -23,39 +22,40 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>p : rand_with_prohib(2,6,[]);
+      <text><![CDATA[p : rand_with_prohib(2,6,[]);
 q : rand_with_prohib(2,9,[]);
 r : rand_with_prohib(1,9,[]);
 a : -rand_with_prohib(2,6,[]);          /* always negative, to force careful sign handling */
 fx : p*x^2+q*x+r;
 ta : subst(x=a,fx);
+/* Diagnostics. ta-wrong_sign = 2*p*a^2 >= 16 and ta-wrong_lin = 2*q*a <= -8, so neither can equal ta (or ta+1). */
 wrong_sign : -p*a^2+q*a+r;              /* treated (a)^2 as if it kept the negative sign */
-wrong_noeval : fx;                      /* just copied f(x) without substituting */</text>
+wrong_lin : p*a^2-q*a+r;                /* lost the negative sign in the linear term q*a */]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text><![CDATA[<div>[[feedback:prt1]]</div>]]></text>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.2 (Function Notation). Evaluates f at a negative input; catches the very common mistake of treating a negative number squared as still negative.</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text>\(f(x)={@fx@}\), \(a={@a@}\), \(f(a)={@ta@}\).</text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.2 (Function Notation). Evaluates f at a negative input; catches the very common mistake of treating a negative number squared as still negative.</p>]]></text>
+      <text>Grade 11 Functions 16.2 (Function Notation). Evaluates f at a negative input; catches the very common mistake of treating a negative number squared as still negative, and the sign of the linear term.</text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -65,9 +65,9 @@ wrong_noeval : fx;                      /* just copied f(x) without substituting
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta</tans>
-      <boxsize>15</boxsize>
+      <boxsize>6</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -77,8 +77,8 @@ wrong_noeval : fx;                      /* just copied f(x) without substituting
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -101,7 +101,7 @@ wrong_noeval : fx;                      /* just copied f(x) without substituting
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -109,7 +109,7 @@ wrong_noeval : fx;                      /* just copied f(x) without substituting
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-0-F</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
@@ -126,42 +126,42 @@ wrong_noeval : fx;                      /* just copied f(x) without substituting
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-signerror</trueanswernote>
+        <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Check the squared term: a negative number squared is always positive. \(({@a@})^2 = {@a@}^2\), which is positive, not negative.</text>
+          <text><![CDATA[<p>Check the squared term. A negative number squared is always positive: \(({@a@})^2 = {@a^2@}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>2</falsenextnode>
-        <falseanswernote>prt1-1-F</falseanswernote>
+        <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>2</name>
-        <description>Forgot to substitute at all?</description>
+        <description>Lost the sign of the linear term?</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>wrong_noeval</tans>
+        <tans>wrong_lin</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-noeval</trueanswernote>
+        <trueanswernote>prt1-3-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[This is just \(f(x)\) unchanged &#8212; you need to replace every \(x\) with {@a@} and simplify.]]></text>
+          <text><![CDATA[<p>Your squared term looks right, but check the middle term \({@q@}({@a@})\): a positive number times a negative number is negative.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text>That is not the correct value. Substitute \(x={@a@}\) into \(f(x)\) and simplify carefully.</text>
+          <text><![CDATA[<p>Substitute \(x=({@a@})\) into every \(x\) in \(f(x)\), keeping the brackets. Work out the power first, then the products, then add the terms.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -172,16 +172,16 @@ wrong_noeval : fx;                      /* just copied f(x) without substituting
     <deployedseed>5</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Correct evaluation</description>
+      <description>Correct evaluation, from the substitution</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>p*a^2+q*a+r</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
@@ -195,21 +195,49 @@ wrong_noeval : fx;                      /* just copied f(x) without substituting
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-signerror</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>3</testcase>
-      <description>Forgot to substitute</description>
+      <description>Sign of the linear term lost</description>
       <testinput>
         <name>ans1</name>
-        <value>wrong_noeval</value>
+        <value>wrong_lin</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.2000000</expectedpenalty>
-        <expectedanswernote>prt1-noeval</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong value</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: copied f(x) without substituting (numerical input rejects letters)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>fx</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

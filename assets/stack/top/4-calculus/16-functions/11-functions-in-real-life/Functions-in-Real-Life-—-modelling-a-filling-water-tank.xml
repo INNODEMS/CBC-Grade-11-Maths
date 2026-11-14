@@ -6,16 +6,38 @@
     </name>
     <questiontext format="html">
       <text><![CDATA[<p>A water tank starts with {@start@} litres of water. A tap fills it at a constant rate of {@rate@} litres per minute.</p>
-<p><strong>(a)</strong> Write a function \(V(t)\) for the volume of water (in litres) after \(t\) minutes.</p>
-<div>\(V(t) = \) [[input:ans1]] [[validation:ans1]]</div>
-<p><strong>(b)</strong> Use your function to find the volume after {@tval@} minutes.</p>
-<div>\(V({@tval@}) = \) [[input:ans2]] [[validation:ans2]]</div>
-<div>[[feedback:prt1]] [[feedback:prt2]]</div>]]></text>
+<ol class="tb-parts">
+  <li><p>Write a function \(V(t)\) for the volume of water, in litres, after \(t\) minutes.</p>
+    <div>\(V(t) = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div></li>
+  <li><p>Use your function to find the volume after {@tval@} minutes.</p>
+    <div>\(V({@tval@}) = \) [[input:ans2]] [[validation:ans2]] litres [[feedback:prt2]]</div></li>
+</ol>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>The volume starts at {@start@} litres (this is the constant term, present even when \(t=0\)) and increases by {@rate@} litres for every minute that passes, so the rate {@rate@} multiplies \(t\):</p>
-\[ V(t) = {@start@} + {@rate@}t. \]
-<p>Then \(V({@tval@}) = {@start@}+{@rate@}({@tval@}) = {@ta2@}\) litres.</p>]]></text>
+      <text><![CDATA[<ol class="tb-parts">
+  <li><p>The volume changes at a constant rate, so \(V\) is a <strong>linear function</strong> of \(t\): \(V(t) = (\text{starting amount}) + (\text{rate})\times t\). The starting amount {@start@} litres is the constant term, the value of \(V\) when \(t = 0\). The rate {@rate@} litres per minute is the gradient, so it multiplies \(t\):</p>
+  \[ V(t) = {@ta1@}. \]</li>
+  <li><p>Substitute \(t = {@tval@}\):</p>
+  \[ V({@tval@}) = {@start@} + {@rate@}\times{@tval@} = {@ta2@}\ \text{litres}. \]</li>
+</ol>
+<div style="text-align:center;" role="img" aria-label="Straight-line graph of volume V against time t, starting at the initial volume on the V-axis, with the point at the given time marked.">
+[[jsxgraph width="360px" height="240px"]]
+(function() {
+  var V0 = {#start#}, r = {#rate#}, T = {#tval#}, VT = {#ta2#};
+  var tmax = T + 3, vmax = V0 + r*tmax;
+  var b = JXG.JSXGraph.initBoard(divid, {
+    boundingbox: [-0.12*tmax, 1.15*vmax, 1.08*tmax, -0.12*vmax], axis: true, grid: false,
+    showNavigation: false, showCopyright: false
+  });
+  b.create('functiongraph', [function(t){ return V0 + r*t; }, 0, tmax], {strokeColor:'#003399', strokeWidth:2});
+  b.create('point', [0, V0], {size:3, color:'#006600', fixed:true, name:'start ' + V0, label:{offset:[8,-12], anchorX:'left'}});
+  b.create('segment', [[T, 0], [T, VT]], {strokeColor:'#888888', dash:2, fixed:true});
+  b.create('point', [T, VT], {size:4, color:'#cc0000', fixed:true, name:'(' + T + ', ' + VT + ')', label:{offset:[-10,10], anchorX:'right'}});
+  b.create('text', [1.0*tmax, 0.06*vmax, 't'], {anchorX:'right', fixed:true});
+  b.create('text', [0.02*tmax, 1.08*vmax, 'V'], {fixed:true});
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,39 +47,44 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>start : rand_with_prohib(10,50,[]);
-rate : rand_with_prohib(2,9,[]);
-tval : rand_with_prohib(3,12,[]);
-Vfun : start+rate*t;
-ta1 : Vfun;
-wrong_swapped : rate+start*t;             /* swapped which quantity is the rate vs the starting amount */
-ta2 : subst(t=tval,Vfun);
-wrong_eval_from_swapped : subst(t=tval,wrong_swapped);</text>
+      <text><![CDATA[/* start >= 10 > rate, so the swapped model never coincides with the correct one */
+start: rand_with_prohib(10,50,[]);
+rate: rand_with_prohib(2,9,[]);
+tval: rand_with_prohib(3,12,[]);
+Vfun: start + rate*t;
+ta1: Vfun;
+ta2: subst(t=tval, Vfun);
+validate_t(ex) := if every(lambda([v], member(v, [t])), listofvars(ex)) then "" else "Write your answer in terms of t only.";
+/* prt1 diagnostics: swapped the rate and the starting amount; left out the starting amount */
+wrong_swapped: rate + start*t;
+wrong_nostart: rate*t;
+/* prt2 diagnostic: value without the starting amount */
+wrong_nostart_val: rate*tval;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.11 (Functions in Real Life). Builds a linear function from a word problem and evaluates it; catches confusing which given number is the fixed starting amount and which is the rat</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text>V(t) = {@ta1@}, V({@tval@}) = {@ta2@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.11 (Functions in Real Life). Builds a linear function from a word problem and evaluates it; catches confusing which given number is the fixed starting amount and which is the rate that multiplies time.</p>]]></text>
+      <text><![CDATA[<p>Grade 11 Functions 16.11 (Functions in Real Life). Builds a linear function from a word problem and evaluates it; catches confusing the starting amount with the rate, and leaving out the starting amount. Part (b) gives follow-through credit for correctly evaluating the student's own function from part (a).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -76,34 +103,34 @@ wrong_eval_from_swapped : subst(t=tval,wrong_swapped);</text>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
-      <options/>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options>validator:validate_t</options>
     </input>
     <input>
       <name>ans2</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta2</tans>
-      <boxsize>10</boxsize>
+      <boxsize>6</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
       <name>prt1</name>
-      <value>0.5000000</value>
+      <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
@@ -111,7 +138,7 @@ wrong_eval_from_swapped : subst(t=tval,wrong_swapped);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correctly modelled V(t)?</description>
+        <description>Correct model</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -121,31 +148,81 @@ wrong_eval_from_swapped : subst(t=tval,wrong_swapped);</text>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-swapped</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Check which number is the starting amount (present even before any time passes) and which is the rate (multiplies t).</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Swapped rate and starting amount</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_swapped</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The two numbers are the wrong way round. The rate (litres <em>per minute</em>) is the one that multiplies \(t\). The starting amount is the volume when \(t = 0\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Left out the starting amount</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_nostart</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your function gives \(V(0) = 0\), but the tank does not start empty. Include the water that is already in it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>A constant rate gives a linear function: starting amount plus rate times \(t\). Decide which given number is the starting amount (the volume when \(t = 0\)) and which is the rate (multiplies \(t\)).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
     <prt>
       <name>prt2</name>
-      <value>0.5000000</value>
+      <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text/>
+        <text>sa_eval: ev(subst(t=tval, ans1), simp);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correctly evaluated V at t=tval?</description>
+        <description>Correct volume</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -155,17 +232,67 @@ wrong_eval_from_swapped : subst(t=tval,wrong_swapped);</text>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-correct</trueanswernote>
+        <trueanswernote>prt2-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt2-wrong</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Substitute the given time into your function from part (a) and simplify.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Correct evaluation of the student's own (wrong) function</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>sa_eval</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is the correct value of your function from part (a) at \(t = {@tval@}\), so this part gets full marks. Look at the feedback on part (a) to correct the function itself.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Left out the starting amount</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>wrong_nostart_val</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have found the water added in {@tval@} minutes, but the tank already held some water at the start.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Substitute \(t = {@tval@}\) into your function from part (a) and evaluate it.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -174,52 +301,153 @@ wrong_eval_from_swapped : subst(t=tval,wrong_swapped);</text>
     <deployedseed>3</deployedseed>
     <deployedseed>4</deployedseed>
     <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Both correct</description>
       <testinput>
         <name>ans1</name>
-        <value>ta1</value>
+        <value>start+rate*t</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>start+rate*tval</value>
       </testinput>
       <expected>
         <name>prt1</name>
-        <expectedscore>0.5000000</expectedscore>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>0.5000000</expectedscore>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-correct</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Swapped rate and starting amount</description>
+      <description>Swapped model, follow-through value</description>
       <testinput>
         <name>ans1</name>
         <value>wrong_swapped</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>subst(t=tval, wrong_swapped)</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-swapped</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>0.5000000</expectedscore>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-correct</expectedanswernote>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Left out the start in both parts (follow-through)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_nostart</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wrong_nostart_val</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Correct model, value without the start</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wrong_nostart_val</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Generic wrong in both parts</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+t</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: letter in the volume box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>t</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

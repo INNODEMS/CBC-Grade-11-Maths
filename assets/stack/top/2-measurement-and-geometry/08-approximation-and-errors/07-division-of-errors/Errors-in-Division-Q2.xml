@@ -8,17 +8,17 @@
       <text><![CDATA[<p>A laboratory technician prepares a saline solution by dissolving \({@mass@}\) g of salt into \({@volume@}\) ml of water. The mass is recorded correct to 1 decimal place and the volume correct to 2 decimal places. The concentration of the solution is calculated by dividing the mass by the volume. Find:</p>
 
 <p>(a) The absolute error in the calculated concentration.</p>
-<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+<p>\(=\)  [[input:ans1]] g/ml [[validation:ans1]] [[feedback:prt1]]</p>
 
 <p>(b) The relative error in the concentration.</p>
-<p>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
+<p> \(=\) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
 
 <p>(c) The percentage error in the concentration.</p>
-<p>[[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</p>]]></text>
+<p>\(= \)  [[input:ans3]] \(\% \) [[validation:ans3]] [[feedback:prt3]]</p>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
       <text><![CDATA[<h3> Worked Solution.</h3>
-<p>The mass was recorded as \({@mass@}\) g, correct to 1 decimal place, and the volume as \({@volume@}\) ml, correct to 2 decimal places.</p>
+<p>The mass was recorded as \({@mass@}\) g,  and the volume as \({@volume@}\) ml.</p>
 
 <p><strong>Absolute errors in the individual measurements:</strong></p>
 <p>Since the mass is correct to 1 decimal place, its absolute error is half of the smallest unit (0.1 g):</p>
@@ -34,13 +34,14 @@
 <p>\[ \text{Working concentration} = \frac{{@mass@}}{{@volume@}} = {@conc@} \text{ g/ml} \]</p>
 <p>Using the maximum mass and minimum volume:</p>
 <p>\[ \text{Maximum concentration} = \frac{{@max_mass@}}{{@min_volume@}} = {@max_conc@} \text{ g/ml} \]</p>
-<p>\[ \text{Absolute error} = \text{Maximum concentration} - \text{Working concentration} = {@max_conc@} - {@conc@} = {@ta1@} \text{ g/ml} \]</p>
+<p>\[ \text{Absolute error} = \text{Maximum concentration} - \text{Working concentration} \]</p>
+<p> \[= {@max_conc@} - {@conc@} = {@ta1@} \text{ g/ml} \]</p>
 
 <p>(b) <strong>Relative error:</strong></p>
-<p>\[ \text{Relative error} = \frac{\text{Absolute error}}{\text{Working concentration}} = \frac{{@ta1@}}{{@conc@}} \approx {@ta2@} \]</p>
+<p>\[ \text{Relative error} = \frac{\text{Absolute error}}{\text{Working concentration}} = \frac{{@ta1@}}{{@conc@}} = {@ta2@} \]</p>
 
 <p>(c) <strong>Percentage error:</strong></p>
-<p>\[ \text{Percentage error} = \text{Relative error} \times 100\% = {@ta2@} \times 100\% \approx {@ta3@}\% \]</p>]]></text>
+<p>\[ \text{Percentage error} = \text{Relative error} \times 100\% = {@ta2@} \times 100\% = {@ta3@} \% \]</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -50,7 +51,7 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>mass_scale: 10;
+      <text><![CDATA[mass_scale: 10;
 mass_steps: rand(150*mass_scale/10 + 1);
 mass: float(50 + mass_steps/mass_scale);
 mass_err: float(0.5/mass_scale);
@@ -71,9 +72,12 @@ conc: float(mass / volume);
 max_conc: float(max_mass / min_volume);
 min_conc: float(min_mass / max_volume);
 
+/* 1. Set the global float format to standard decimal (~f) */
+stackfltfmt: "~f";
+
 ta1: max_conc - conc;
 ta2: ta1 / conc;
-ta3: ta2 * 100;</text>
+ta3: ta2 * 100;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
@@ -110,7 +114,7 @@ ta3: ta2 * 100;</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>15</boxsize>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -121,14 +125,14 @@ ta3: ta2 * 100;</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans2</name>
       <type>algebraic</type>
       <tans>ta2</tans>
-      <boxsize>15</boxsize>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -139,14 +143,14 @@ ta3: ta2 * 100;</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans3</name>
       <type>algebraic</type>
       <tans>ta3</tans>
-      <boxsize>15</boxsize>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -157,7 +161,7 @@ ta3: ta2 * 100;</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
@@ -171,10 +175,10 @@ ta3: ta2 * 100;</text>
       <node>
         <name>0</name>
         <description/>
-        <answertest>NumAbsolute</answertest>
+        <answertest>NumRelative</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
-        <testoptions>0.001</testoptions>
+        <testoptions>0.05</testoptions>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
@@ -205,10 +209,10 @@ ta3: ta2 * 100;</text>
       <node>
         <name>0</name>
         <description/>
-        <answertest>NumAbsolute</answertest>
+        <answertest>NumRelative</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
-        <testoptions>0.001</testoptions>
+        <testoptions>0.05</testoptions>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
@@ -239,10 +243,10 @@ ta3: ta2 * 100;</text>
       <node>
         <name>0</name>
         <description/>
-        <answertest>NumAbsolute</answertest>
+        <answertest>NumRelative</answertest>
         <sans>ans3</sans>
         <tans>ta3</tans>
-        <testoptions>0.1</testoptions>
+        <testoptions>0.05</testoptions>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
@@ -281,5 +285,73 @@ ta3: ta2 * 100;</text>
     <deployedseed>1048140263</deployedseed>
     <deployedseed>624735532</deployedseed>
     <deployedseed>1494805123</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All parts correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>All parts wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F</expectedanswernote>
+      </expected>
+    </qtest>
   </question>
 </quiz>

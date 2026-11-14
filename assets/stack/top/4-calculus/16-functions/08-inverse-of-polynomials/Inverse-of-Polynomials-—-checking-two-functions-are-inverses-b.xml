@@ -5,17 +5,21 @@
       <text>Inverse of Polynomials — checking two functions are inverses by composition</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Let \( f(x) = {@m@}x + {@b@} \) and \( g(x) = {@displaygx@} \).</p>
-<p><strong>(a)</strong> Find and fully simplify \( f(g(x)) \).</p>
-<div>\( f(g(x)) = \) [[input:ans1]] [[validation:ans1]]</div>
-<p><strong>(b)</strong> Hence, is \(g\) the inverse of \(f\)?</p>
-<div>[[input:ans2]] [[validation:ans2]]</div>
-<div>[[feedback:prt1]] [[feedback:prt2]]</div>]]></text>
+      <text><![CDATA[<p>Let \( f(x) = {@fx@} \) and \( g(x) = {@gx@} \).</p>
+<ol class="tb-parts">
+  <li><p>Find \( f(g(x)) \) and simplify it.</p>
+    <div>\( f(g(x)) = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div></li>
+  <li><p>Hence, is \(g\) the inverse of \(f\)?</p>
+    <div>[[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div></li>
+</ol>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>\(g\) is the inverse of \(f\) exactly when \(f(g(x))=x\) for every \(x\). Here:</p>
-\[ f(g(x)) = {@ta_composed@}. \]
-<p>{@verdicttext@}</p>]]></text>
+      <text><![CDATA[<p>\(g\) is the <strong>inverse</strong> of \(f\) exactly when composing them gives the identity, \(f(g(x)) = x\) for every \(x\). (For linear functions this one check is enough; in general \(g(f(x)) = x\) is also needed.)</p>
+<ol class="tb-parts">
+  <li><p>Substitute the whole expression \(g(x)\) for every \(x\) in \(f\):</p>
+  \[ f(g(x)) = {@m@}\left({@gx@}\right) [[if test="is(b>0)"]]+ {@b@}[[else]]- {@-b@}[[/if]] = {@ta_composed@}. \]</li>
+  <li><p>[[if test="is_identity"]]This simplifies to exactly \(x\), so \(g\) is the inverse of \(f\).[[else]]This does not simplify to \(x\), so \(g\) is not the inverse of \(f\), even though it looks similar. The inverse of \(f\) is \({@(x-b)/m@}\).[[/if]]</p></li>
+</ol>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,43 +29,43 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[m : rand_with_prohib(-6,6,[0,1,-1]);
-b : rand_with_prohib(-9,9,[0]);
-is_true_inverse : is(rand(2)=1);
-/* the correct inverse is (x-b)/m; the "fake" g is a plausible-looking but wrong alternative */
-gx : if is_true_inverse then (x-b)/m else (x+b)/m;
-displaygx : if is_true_inverse then sconcat("(x-",b,")/",m) else sconcat("(x+",b,")/",m);
-fgx : ratsimp(subst(x=gx, m*x+b));
-ta_composed : fgx;
-is_identity : is(ratsimp(fgx-x)=0);
-ans2_correct : if is_identity then "yes" else "no";
-opts2 : [["yes", is_identity, "Yes, g is the inverse of f"],["no", not is_identity, "No, g is not the inverse of f"]];
-verdicttext : if is_identity then "Since this simplifies to exactly x, g IS the inverse of f." else "Since this does NOT simplify to x, g is NOT the inverse of f (despite looking plausible).";]]></text>
+      <text><![CDATA[m: rand_with_prohib(-6,6,[0,1,-1]);
+b: rand_with_prohib(-9,9,[0]);
+is_true_inverse: is(rand(2)=1);
+fx: m*x + b;
+/* the true inverse is (x-b)/m; the impostor has the wrong sign on b */
+gx: if is_true_inverse then (x-b)/m else (x+b)/m;
+ta_composed: ratsimp(m*gx + b);
+is_identity: is(ratsimp(ta_composed - x) = 0);
+/* Diagnostic: multiplied f and g instead of composing. A quadratic, so never equal to ta_composed. */
+wrong_product: expand(fx*gx);
+opts2: [["yes", is_identity, "Yes"], ["no", not is_identity, "No"]];
+validate_x(ex) := if every(lambda([v], member(v, [x])), listofvars(ex)) then "" else "Write your answer in terms of x only.";]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.8 (Inverse of Polynomials). Uses composition f(g(x))=x to verify whether a proposed g really is the inverse of a linear f; the proposed g is sometimes a plausible-looking but inc</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text>f(x) = {@fx@}, g(x) = {@gx@}, f(g(x)) = {@ta_composed@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.8 (Inverse of Polynomials). Uses composition f(g(x))=x to verify whether a proposed g really is the inverse of a linear f; the proposed g is sometimes a plausible-looking but incorrect alternative (wrong sign on b).</p>]]></text>
+      <text><![CDATA[<p>Grade 11 Functions 16.8 (Inverse of Polynomials). Uses composition f(g(x))=x to verify whether a proposed g really is the inverse of a linear f; the proposed g is sometimes a plausible-looking but incorrect alternative (wrong sign on b). Catches multiplying f and g instead of composing.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -73,24 +77,6 @@ verdicttext : if is_identity then "Since this simplifies to exactly x, g IS the 
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta_composed</tans>
-      <boxsize>20</boxsize>
-      <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
-      <syntaxhint/>
-      <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
-      <allowwords/>
-      <forbidfloat>0</forbidfloat>
-      <requirelowestterms>0</requirelowestterms>
-      <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
-      <options/>
-    </input>
-    <input>
-      <name>ans2</name>
-      <type>dropdown</type>
-      <tans>opts2</tans>
       <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
@@ -98,16 +84,34 @@ verdicttext : if is_identity then "Since this simplifies to exactly x, g IS the 
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options>validator:validate_x</options>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>dropdown</type>
+      <tans>opts2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
       <name>prt1</name>
-      <value>0.5000000</value>
+      <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
@@ -115,7 +119,7 @@ verdicttext : if is_identity then "Since this simplifies to exactly x, g IS the 
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correctly computed and simplified f(g(x))?</description>
+        <description>Correct f(g(x))</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta_composed</tans>
@@ -125,23 +129,48 @@ verdicttext : if is_identity then "Since this simplifies to exactly x, g IS the 
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Substitute the whole expression for g(x) into every x in f(x), then simplify fully.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Multiplied f and g</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_product</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>\(f(g(x))\) is a composition, not a product. Do not multiply \(f(x)\) by \(g(x)\): put the expression for \(g(x)\) in place of \(x\) inside \(f\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Substitute the whole expression for \(g(x)\) in place of every \(x\) in \(f(x)\), then simplify fully.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
     <prt>
       <name>prt2</name>
-      <value>0.5000000</value>
+      <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
@@ -149,17 +178,17 @@ verdicttext : if is_identity then "Since this simplifies to exactly x, g IS the 
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correctly concluded whether g is the inverse of f?</description>
-        <answertest>String</answertest>
+        <description>Correct verdict</description>
+        <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
-        <tans>ans2_correct</tans>
+        <tans>first(mcq_correct(opts2))</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-correct</trueanswernote>
+        <trueanswernote>prt2-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -167,9 +196,9 @@ verdicttext : if is_identity then "Since this simplifies to exactly x, g IS the 
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt2-wrong</falseanswernote>
+        <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>g is the inverse of f only when f(g(x)) simplifies to exactly x for every x -- check your answer to part (a) again.</text>
+          <text><![CDATA[<p>\(g\) is the inverse of \(f\) only when \(f(g(x))\) simplifies to exactly \(x\) for every \(x\). Look again at your simplified answer to part (a).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -178,52 +207,105 @@ verdicttext : if is_identity then "Since this simplifies to exactly x, g IS the 
     <deployedseed>3</deployedseed>
     <deployedseed>4</deployedseed>
     <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Correct on both parts</description>
       <testinput>
         <name>ans1</name>
-        <value>ta_composed</value>
+        <value>ratsimp(subst(x=gx, fx))</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ans2_correct</value>
+        <value>first(mcq_correct(opts2))</value>
       </testinput>
       <expected>
         <name>prt1</name>
-        <expectedscore>0.5000000</expectedscore>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>0.5000000</expectedscore>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-correct</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Correct composition but wrong verdict</description>
+      <description>Multiplied f and g; wrong verdict</description>
       <testinput>
         <name>ans1</name>
-        <value>ta_composed</value>
+        <value>wrong_product</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value><![CDATA[if ans2_correct="yes" then "no" else "yes"]]></value>
+        <value>first(mcq_incorrect(opts2))</value>
       </testinput>
       <expected>
         <name>prt1</name>
-        <expectedscore>0.5000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt2-wrong</expectedanswernote>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Generic wrong composition; correct verdict</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_composed+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>first(mcq_correct(opts2))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: answer in terms of y</description>
+      <testinput>
+        <name>ans1</name>
+        <value>subst(x=y, ta_composed)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>first(mcq_correct(opts2))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

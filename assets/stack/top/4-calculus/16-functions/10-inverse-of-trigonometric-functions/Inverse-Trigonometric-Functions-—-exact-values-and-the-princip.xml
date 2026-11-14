@@ -5,18 +5,19 @@
       <text>Inverse Trigonometric Functions — exact values and the principal range</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Find the exact value of \( {@invname@}({@val@}) \), giving your answer in radians (a multiple of \(\pi\)).</p>
-<div>[[input:ans1]] [[validation:ans1]]</div>
-<div>[[feedback:prt1]]</div>]]></text>
+      <text><![CDATA[<p>Find the exact value of \( [[if test="is(fn=0)"]]\sin^{-1}[[elif test="is(fn=1)"]]\cos^{-1}[[else]]\tan^{-1}[[/if]]\left({@val@}\right) \), giving your answer in radians as a multiple of \(\pi\).</p>
+<p>Type \(\pi\) as <code>pi</code>, for example <code>3*pi/4</code>.</p>
+<div>[[input:ans1]] [[validation:ans1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>The inverse trig functions are defined with a restricted (<strong>principal</strong>) range so that they give exactly one answer:</p>
+      <text><![CDATA[<p>An inverse trigonometric function must give exactly one output, so it is defined on a restricted <strong>principal range</strong>:</p>
 <ul>
-<li>\(\sin^{-1}\) always returns a value in \([-\pi/2,\pi/2]\)</li>
-<li>\(\cos^{-1}\) always returns a value in \([0,\pi]\)</li>
-<li>\(\tan^{-1}\) always returns a value in \((-\pi/2,\pi/2)\)</li>
+  <li>\(\sin^{-1}\) returns a value in \(\left[-\dfrac{\pi}{2}, \dfrac{\pi}{2}\right]\);</li>
+  <li>\(\cos^{-1}\) returns a value in \(\left[0, \pi\right]\);</li>
+  <li>\(\tan^{-1}\) returns a value in \(\left(-\dfrac{\pi}{2}, \dfrac{\pi}{2}\right)\).</li>
 </ul>
-<p>Even though other angles also satisfy the underlying trig equation, only the one inside the principal range is the correct value of the inverse function. Here \( {@invname@}({@val@}) = {@ta@} \).</p>]]></text>
+<p>We need the angle \(\theta\) in \([[if test="is(fn=0)"]]\left[-\dfrac{\pi}{2}, \dfrac{\pi}{2}\right][[elif test="is(fn=1)"]]\left[0, \pi\right][[else]]\left(-\dfrac{\pi}{2}, \dfrac{\pi}{2}\right)[[/if]]\) with \([[if test="is(fn=0)"]]\sin[[elif test="is(fn=1)"]]\cos[[else]]\tan[[/if]]\theta = {@val@}\). The reference angle with \([[if test="is(fn=0)"]]\sin[[elif test="is(fn=1)"]]\cos[[else]]\tan[[/if]]\theta = {@abs(val)@}\) is \({@k*%pi@}\).[[if test="is(val<0)"]] The value is negative, so [[if test="is(fn=1)"]]\(\theta\) lies in the second quadrant: \(\cos^{-1}(-a) = \pi - \cos^{-1}(a)\).[[else]]\(\theta\) is negative: \([[if test="is(fn=0)"]]\sin^{-1}[[elif test="is(fn=1)"]]\cos^{-1}[[else]]\tan^{-1}[[/if]](-a) = -[[if test="is(fn=0)"]]\sin^{-1}[[elif test="is(fn=1)"]]\cos^{-1}[[else]]\tan^{-1}[[/if]](a)\).[[/if]][[/if]] Infinitely many other angles have the same ratio, but only this one lies in the principal range.</p>
+<p>So \( [[if test="is(fn=0)"]]\sin^{-1}[[elif test="is(fn=1)"]]\cos^{-1}[[else]]\tan^{-1}[[/if]]\left({@val@}\right) = {@ta@} \).</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -26,50 +27,48 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[funcidx : rand(3);                    /* 0 arcsin, 1 arccos, 2 arctan */
-invname : if funcidx=0 then "sin^{-1}" elseif funcidx=1 then "cos^{-1}" else "tan^{-1}";
-signidx : rand(2);                     /* 0 = positive input, 1 = negative input (not available for arccos in this simple set) */
-baseidx : rand_with_prohib(1,3,[]);     /* which of a small standard-value table to use */
-/* standard values, kept simple: use k = pi/6, pi/4, pi/3 as principal outputs for POSITIVE inputs */
-basepi : [1/6,1/4,1/3][baseidx];
-val_pos : if funcidx=0 then (if baseidx=1 then 1/2 elseif baseidx=2 then sqrt(2)/2 else sqrt(3)/2)
-          elseif funcidx=1 then (if baseidx=1 then sqrt(3)/2 elseif baseidx=2 then sqrt(2)/2 else 1/2)
-          else (if baseidx=1 then 1/sqrt(3) elseif baseidx=2 then 1 else sqrt(3));
-usesign : if funcidx=1 then 0 else signidx;   /* keep arccos example with a positive input only, for simplicity */
-val : if usesign=1 then -val_pos else val_pos;
-/* principal value ranges: arcsin in [-pi/2,pi/2], arccos in [0,pi], arctan in (-pi/2,pi/2) */
-ta : if funcidx=0 then (if usesign=1 then -basepi*%pi else basepi*%pi)
-     elseif funcidx=1 then (if usesign=1 then %pi-basepi*%pi else basepi*%pi)
-     else (if usesign=1 then -basepi*%pi else basepi*%pi);
-/* common mistake: giving a coterminal / out-of-principal-range angle instead */
-wrong_outofrange : if funcidx=0 then (if usesign=1 then %pi+basepi*%pi else %pi-basepi*%pi)
-                    elseif funcidx=1 then (if usesign=1 then -( %pi-basepi*%pi) else -basepi*%pi)
-                    else (if usesign=1 then %pi-basepi*%pi else %pi+basepi*%pi);]]></text>
+      <text><![CDATA[fn: rand(3);          /* 0 inverse sine, 1 inverse cosine, 2 inverse tangent */
+s: rand([-1,1]);      /* sign of the input */
+k: rand([1/6,1/4,1/3]);
+/* Design backwards: the principal value first, then the input value from it */
+ta: if fn = 1 then (if s = 1 then k*%pi else %pi - k*%pi) else s*k*%pi;
+val: if fn = 0 then sin(ta) elseif fn = 1 then cos(ta) else tan(ta);
+validate_numeric(ex) := block([sx], sx: ev(ex, simp), if listofvars(ex) = [] and freeof(%i, sx) then "" else "Enter a real number, not an expression containing a letter, a variable or i.");
+/* Diagnostics, checked pairwise distinct (and distinct from ta+pi/12) for all 18 variants:
+   1. another angle with the same ratio, outside the principal range;
+   2. the principal value in degrees;
+   3. sign error: -ta for inverse sine and tangent; for inverse cosine, -k*pi (the
+      odd-function rule wrongly applied, or a negative angle). */
+wrong_outofrange: if fn = 0 then (if s = 1 then %pi - k*%pi else %pi + k*%pi)
+                  elseif fn = 1 then (if s = 1 then 2*%pi - k*%pi else %pi + k*%pi)
+                  else (if s = 1 then %pi + k*%pi else %pi - k*%pi);
+wrong_deg: ta*180/%pi;
+wrong_sign: if fn = 1 then -k*%pi else -ta;]]></text>
     </questionvariables>
     <specificfeedback format="html">
-      <text/>
+      <text>[[feedback:prt1]]</text>
     </specificfeedback>
-    <questionnote format="html">
-      <text><![CDATA[<p>Grade 11 Functions 16.10 (Inverse of Trigonometric Functions). Evaluates arcsin/arccos/arctan at a standard value; catches giving a mathematically valid but out-of-principal-range angle instead of the</p>]]></text>
+    <questionnote format="moodle_auto_format">
+      <text>fn {@fn@} (0 asin, 1 acos, 2 atan) of {@val@} = {@ta@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="description">Grade 11 Functions 16.10 (Inverse of Trigonometric Functions). Evaluates arcsin/arccos/arctan at a standard value; catches giving a mathematically valid but out-of-principal-range angle instead of the one true value the inverse function returns.</p>]]></text>
+      <text><![CDATA[<p>Grade 11 Functions 16.10 (Inverse of Trigonometric Functions). Evaluates inverse sine, cosine or tangent at a standard value, including negative inputs; catches an out-of-principal-range angle, an answer in degrees, and sign errors (including the odd-function rule misapplied to inverse cosine). Inverse and forward trig functions are forbidden in the answer so the CAS cannot evaluate it for the student.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -81,19 +80,19 @@ wrong_outofrange : if funcidx=0 then (if usesign=1 then %pi+basepi*%pi else %pi-
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta</tans>
-      <boxsize>12</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>asin, acos, atan, arcsin, arccos, arctan, sin, cos, tan</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
-      <options/>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options>validator:validate_numeric</options>
     </input>
     <prt>
       <name>prt1</name>
@@ -105,7 +104,7 @@ wrong_outofrange : if funcidx=0 then (if usesign=1 then %pi+basepi*%pi else %pi-
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correct principal value?</description>
+        <description>Correct principal value</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta</tans>
@@ -115,7 +114,7 @@ wrong_outofrange : if funcidx=0 then (if usesign=1 then %pi+basepi*%pi else %pi-
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -123,14 +122,14 @@ wrong_outofrange : if funcidx=0 then (if usesign=1 then %pi+basepi*%pi else %pi-
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-0-F</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description>Gave a coterminal/out-of-range angle instead of the principal value?</description>
+        <description>Same ratio, outside the principal range</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>wrong_outofrange</tans>
@@ -140,17 +139,67 @@ wrong_outofrange : if funcidx=0 then (if usesign=1 then %pi+basepi*%pi else %pi-
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-outofrange</trueanswernote>
+        <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>That angle does satisfy the underlying trig ratio, but it lies outside the principal range of this inverse function, so it is not the value the inverse function returns.</text>
+          <text><![CDATA[<p>That angle does have the right ratio, but it lies outside the principal range \([[if test="is(fn=0)"]]\left[-\dfrac{\pi}{2}, \dfrac{\pi}{2}\right][[elif test="is(fn=1)"]]\left[0, \pi\right][[else]]\left(-\dfrac{\pi}{2}, \dfrac{\pi}{2}\right)[[/if]]\), so it is not the value the inverse function returns.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Answer in degrees</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_deg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the angle in degrees. Give it in radians, as a multiple of \(\pi\): \(180^\circ = \pi\) radians.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Sign error</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrong_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the sign. [[if test="is(fn=1)"]]\(\cos^{-1}\) only returns angles in \([0, \pi]\), so its value is never negative. For a negative input use \(\cos^{-1}(-a) = \pi - \cos^{-1}(a)\).[[else]]The output of this inverse function has the same sign as its input.[[/if]]</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text>That is not the correct exact value.</text>
+          <text><![CDATA[<p>Find the angle in the principal range \([[if test="is(fn=0)"]]\left[-\dfrac{\pi}{2}, \dfrac{\pi}{2}\right][[elif test="is(fn=1)"]]\left[0, \pi\right][[else]]\left(-\dfrac{\pi}{2}, \dfrac{\pi}{2}\right)[[/if]]\) whose [[if test="is(fn=0)"]]sine[[elif test="is(fn=1)"]]cosine[[else]]tangent[[/if]] is \({@val@}\). Start from the exact values at \(\dfrac{\pi}{6}\), \(\dfrac{\pi}{4}\) and \(\dfrac{\pi}{3}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -159,6 +208,11 @@ wrong_outofrange : if funcidx=0 then (if usesign=1 then %pi+basepi*%pi else %pi-
     <deployedseed>3</deployedseed>
     <deployedseed>4</deployedseed>
     <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Correct</description>
@@ -170,12 +224,12 @@ wrong_outofrange : if funcidx=0 then (if usesign=1 then %pi+basepi*%pi else %pi-
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Out-of-principal-range angle</description>
+      <description>Out-of-range angle</description>
       <testinput>
         <name>ans1</name>
         <value>wrong_outofrange</value>
@@ -184,7 +238,63 @@ wrong_outofrange : if funcidx=0 then (if usesign=1 then %pi+basepi*%pi else %pi-
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-outofrange</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Degrees</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_deg</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Sign error</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrong_sign</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F | prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Generic wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta+%pi/12</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F | prt1-4-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: contains a variable</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x*%pi</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>
