@@ -4,27 +4,24 @@
     <name>
       <text>Solving a disjoint compound inequality requiring an OR statement</text>
     </name>
-    <questiontext format="moodle_auto_format">
+    <questiontext format="html">
       <text><![CDATA[<p>Solve each part of the following compound inequality:</p>
 <p style="margin-left: 20px;">
-\( \displaystyle {@a@}x - {@b@} \le {@c@} \qquad \text{OR} \qquad {@d@}x + {@e@} > {@f@} \)
+\( \displaystyle {@a*x@} - {@b@} \le {@c@} \qquad \text{OR} \qquad {@d*x@} + {@e@} > {@f@} \)
 </p>
 <p><i>(Enter the boundary values in the boxes below.)</i></p>
-<p>\( x \le \) [[input:ans1]] &nbsp;&nbsp;&nbsp; <b>OR</b> &nbsp;&nbsp;&nbsp; \( x > \) [[input:ans2]]</p>
-
-<div><b>First boundary:</b> [[validation:ans1]] [[feedback:prt1]]</div>
-<div><b>Second boundary:</b> [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+<p>\( x \le \) [[input:ans1]] &nbsp;&nbsp;&nbsp; [[validation:ans1]] [[feedback:prt1]]<b>OR</b> &nbsp;&nbsp;&nbsp; \( x > \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
+    <generalfeedback format="html">
       <text><![CDATA[<p><b>Worked Solution:</b></p>
 <p>For an "OR" compound inequality, we solve each linear inequality completely separately.</p>
 
 <p>First, we solve the left inequality:</p>
 <p style="margin-left: 20px;">
 \( \displaystyle \begin{aligned}
-{@a@}x - {@b@} &\le {@c@} \\
-{@a@}x &\le {@c@} + {@b@} \\
-{@a@}x &\le {@c + b@} \\
+{@a*x@} - {@b@} &\le {@c@} \\
+{@a*x@} &\le {@c@} + {@b@} \\
+{@a*x@} &\le {@c + b@} \\
 x &\le \frac{{@c + b@}}{{@a@}} \\
 x &\le {@ta1@}
 \end{aligned} \)
@@ -33,9 +30,9 @@ x &\le {@ta1@}
 <p>Next, we solve the right inequality:</p>
 <p style="margin-left: 20px;">
 \( \displaystyle \begin{aligned}
-{@d@}x + {@e@} &> {@f@} \\
-{@d@}x &> {@f@} - {@e@} \\
-{@d@}x &> {@f - e@} \\
+{@d*x@} + {@e@} &> {@f@} \\
+{@d*x@} &> {@f@} - {@e@} \\
+{@d*x@} &> {@f - e@} \\
 x &> \frac{{@f - e@}}{{@d@}} \\
 x &> {@ta2@}
 \end{aligned} \)
@@ -44,14 +41,41 @@ x &> {@ta2@}
 <p>Hence, the solution is the combination of both regions:</p>
 <p style="margin-left: 20px;">
 \( \displaystyle \boxed{x \le {@ta1@} \quad \text{OR} \quad x > {@ta2@}} \)
-</p>]]></text>
+</p>
+<p>On a number line the two parts do not meet:</p>
+<div style="text-align:center;" role="img" aria-label="Number line: closed circle at {#ta1#} shaded left, open circle at {#ta2#} shaded right.">
+[[jsxgraph width="420px" height="110px"]]
+(function() {
+  var lo = Math.floor({#ta1#}) - 2, hi = Math.ceil({#ta2#}) + 2, P = [[null,{#ta1#},false,true],[{#ta2#},null,false,false]];
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[lo - 0.5, 1.6, hi + 0.5, -1.4], axis:false, grid:false,
+      showNavigation:false, showCopyright:false, pan:{enabled:false}, zoom:{enabled:false}});
+  b.create('arrow', [[lo - 0.4, 0], [hi + 0.4, 0]], {strokeColor:'#333', fixed:true});
+  var step = (hi - lo) > 24 ? 5 : ((hi - lo) > 12 ? 2 : 1);
+  for (var t = Math.ceil(lo/step)*step; t <= hi; t += step) {
+    b.create('segment', [[t, -0.15], [t, 0.15]], {strokeColor:'#333', fixed:true});
+    b.create('text', [t, -0.6, '' + t], {anchorX:'middle', fontSize:12, fixed:true});
+  }
+  for (var i = 0; i < P.length; i++) {
+    var a = P[i][0], c = P[i][1], y = 0.55;
+    var x1 = (a === null) ? lo - 0.3 : a, x2 = (c === null) ? hi + 0.3 : c;
+    if (a === null) b.create('arrow', [[x2, y], [x1, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    else if (c === null) b.create('arrow', [[x1, y], [x2, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    else b.create('segment', [[x1, y], [x2, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    if (a !== null) b.create('point', [a, y], {name:'', size:5, fixed:true, strokeColor:'#1565c0', strokeWidth:2,
+        fillColor: P[i][2] ? '#1565c0' : '#ffffff', showInfobox:false});
+    if (c !== null) b.create('point', [c, y], {name:'', size:5, fixed:true, strokeColor:'#1565c0', strokeWidth:2,
+        fillColor: P[i][3] ? '#1565c0' : '#ffffff', showInfobox:false});
+  }
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2026010500</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
       <text><![CDATA[/* Reverse engineer to ensure clean integer limits */
@@ -79,20 +103,20 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
       <text><![CDATA[<p>\(x \le {@ta1@} \text{ OR } x > {@ta2@}\)</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="concept">Compound Inequalities (Disjoint "OR")</p>
-<p id="description">Grade 11 CBE: Solving a disjoint compound inequality by treating the two conditions as separate algebraic statements.</p>]]></text>
+      <text><![CDATA[<p>This question is based on compound inequalities joined by OR (the solution set has two parts) in the section Compound Inequalities of the CBC Grade 11 Mathematics textbook (INNODEMS).</p>
+<p id="concept">Compound Inequalities (Disjoint "OR")</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
@@ -118,7 +142,7 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -136,7 +160,7 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -181,7 +205,7 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
         <tans>m1_ans1</tans>
         <testoptions>0.01</testoptions>
         <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
@@ -189,7 +213,7 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
         <truefeedback format="html">
           <text><![CDATA[<p>Check your algebra on the left inequality. To group the constants, you must <b>add</b> \({@b@}\) to both sides, not subtract it.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
@@ -240,7 +264,7 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
         <tans>m1_ans2</tans>
         <testoptions>0.01</testoptions>
         <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
@@ -248,7 +272,7 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
         <truefeedback format="html">
           <text><![CDATA[<p>Check your algebra on the right inequality. To group the constants, you must <b>subtract</b> \({@e@}\) from both sides, not add it.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
@@ -268,33 +292,19 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
     <deployedseed>2084467803</deployedseed>
     <deployedseed>362057514</deployedseed>
     <deployedseed>263308590</deployedseed>
-    <deployedseed>1133281944</deployedseed>
-    <deployedseed>417341625</deployedseed>
-    <deployedseed>622346851</deployedseed>
-    <deployedseed>1610026348</deployedseed>
-    <deployedseed>983387385</deployedseed>
-    <deployedseed>1354380193</deployedseed>
-    <deployedseed>761741158</deployedseed>
-    <deployedseed>2065540881</deployedseed>
-    <deployedseed>1053456479</deployedseed>
-    <deployedseed>423794818</deployedseed>
-    <deployedseed>973101319</deployedseed>
-    <deployedseed>1201174398</deployedseed>
-    <deployedseed>975169818</deployedseed>
-    <deployedseed>1507837851</deployedseed>
-    <deployedseed>1348020450</deployedseed>
-    <deployedseed>1629976146</deployedseed>
-    <deployedseed>487983623</deployedseed>
-    <deployedseed>251264790</deployedseed>
-    <deployedseed>1914034935</deployedseed>
-    <deployedseed>1411715492</deployedseed>
-    <deployedseed>1993051095</deployedseed>
-    <deployedseed>1176353660</deployedseed>
-    <deployedseed>1960962360</deployedseed>
-    <deployedseed>286720916</deployedseed>
+    <deployedseed>2031813559</deployedseed>
+    <deployedseed>2136498942</deployedseed>
+    <deployedseed>534782390</deployedseed>
+    <deployedseed>625716493</deployedseed>
+    <deployedseed>1484520179</deployedseed>
+    <deployedseed>1518241318</deployedseed>
+    <deployedseed>1430781360</deployedseed>
+    <deployedseed>736379080</deployedseed>
+    <deployedseed>238222463</deployedseed>
+    <deployedseed>686024992</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Both limits correct</description>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -318,7 +328,7 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Wrong operations applied to the constants</description>
+      <description>Diagnostic 1 in each part that has one</description>
       <testinput>
         <name>ans1</name>
         <value>m1_ans1</value>
@@ -331,18 +341,18 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-T</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt2-2-T</expectedanswernote>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>3</testcase>
-      <description>Generic wrong answers</description>
+      <description>Other wrong answers</description>
       <testinput>
         <name>ans1</name>
         <value>ta1+1</value>
@@ -355,13 +365,37 @@ m1_ans2 : (f + e) / d; /* added instead of subbed */]]></text>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-F</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt2-2-F</expectedanswernote>
+        <expectedanswernote>prt2-1-F | prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>
