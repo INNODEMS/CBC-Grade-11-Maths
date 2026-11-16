@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Forming and solving a compound inequality for a greenhouse temperature range</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>{@fname@}, a farmer in {@place@}, needs to keep the indoor temperature (\(T\)) of a greenhouse such that it is strictly greater than <b>\({@L@}^\circ\text{C}\)</b> and less than or equal to <b>\({@U@}^\circ\text{C}\)</b>.</p>
+
+<p>Because the greenhouse traps the sun's heat, the air inside is always <b>\({@H@}^\circ\text{C}\) warmer</b> than the air outside. If the outdoor temperature is \(t\), then \(T = t + {@H@}\).</p>
+
+<p>By substituting \(T\) into the compound inequality, determine the range of outdoor temperatures (\(t\)) that keep the greenhouse within this range.</p>
+<p><i>(Enter the lower and upper bounds of \(t\) in the boxes below.)</i></p>
+
+<p>[[input:ans1]] \( < t \le \) [[input:ans2]]  [[validation:ans1]] [[feedback:prt1]]  [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<h3>Worked Solution:</h3>
+
+<p>First, we translate the initial temperature constraints into a single compound inequality. The indoor temperature \(T\) must be greater than \({@L@}\) and less than or equal to \({@U@}\):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle {@L@} < T \le {@U@} \)
+</p>
+
+<p>Next, we substitute the expression for the indoor temperature (\(T = t + {@H@}\)) into the middle of the inequality:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle {@L@} < t + {@H@} \le {@U@} \)
+</p>
+
+<p>To isolate the outdoor temperature \(t\), we subtract \({@H@}\) from all three parts of the inequality:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@L@} - {@H@} &< t \le {@U@} - {@H@} \\
+{@ta1@} &< t \le {@ta2@}
+\end{aligned} \)
+</p>
+
+<p>Hence, the required range for the outdoor temperature is:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{{@ta1@} < t \le {@ta2@}} \)
+</p>
+<div style="text-align:center;" role="img" aria-label="Number line: open circle at {#ta1#}, closed circle at {#ta2#}, shaded between.">
+[[jsxgraph width="420px" height="110px"]]
+(function() {
+  var lo = Math.floor({#ta1#}) - 2, hi = Math.ceil({#ta2#}) + 2, P = [[{#ta1#},{#ta2#},false,true]];
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[lo - 0.5, 1.6, hi + 0.5, -1.4], axis:false, grid:false,
+      showNavigation:false, showCopyright:false, pan:{enabled:false}, zoom:{enabled:false}});
+  b.create('arrow', [[lo - 0.4, 0], [hi + 0.4, 0]], {strokeColor:'#333', fixed:true});
+  var step = (hi - lo) > 24 ? 5 : ((hi - lo) > 12 ? 2 : 1);
+  for (var t = Math.ceil(lo/step)*step; t <= hi; t += step) {
+    b.create('segment', [[t, -0.15], [t, 0.15]], {strokeColor:'#333', fixed:true});
+    b.create('text', [t, -0.6, '' + t], {anchorX:'middle', fontSize:12, fixed:true});
+  }
+  for (var i = 0; i < P.length; i++) {
+    var a = P[i][0], c = P[i][1], y = 0.55;
+    var x1 = (a === null) ? lo - 0.3 : a, x2 = (c === null) ? hi + 0.3 : c;
+    if (a === null) b.create('arrow', [[x2, y], [x1, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    else if (c === null) b.create('arrow', [[x1, y], [x2, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    else b.create('segment', [[x1, y], [x2, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    if (a !== null) b.create('point', [a, y], {name:'', size:5, fixed:true, strokeColor:'#1565c0', strokeWidth:2,
+        fillColor: P[i][2] ? '#1565c0' : '#ffffff', showInfobox:false});
+    if (c !== null) b.create('point', [c, y], {name:'', size:5, fixed:true, strokeColor:'#1565c0', strokeWidth:2,
+        fillColor: P[i][3] ? '#1565c0' : '#ffffff', showInfobox:false});
+  }
+})();
+[[/jsxgraph]]
+</div>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Local Context */
+names : ["Mwakidize", "Nafula", "Kiplagat", "Mutua", "Akinyi"];
+fname : rand(names);
+places : ["Molo", "Kinangop", "Timau", "Kieni"];
+place : rand(places);
+
+/* Temperature Bounds */
+L : rand_with_step(12, 16, 1);
+U : rand_with_step(24, 29, 1);
+H : rand_with_step(8, 12, 1);
+
+/* Target Answers */
+ta1 : L - H;
+ta2 : U - H;
+
+/* Mistake Catchers */
+/* Mistake: Added the heater temp instead of subtracting */
+m1_L : L + H;
+m1_U : U + H;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>\({@L@} < t + {@H@} \le {@U@} \implies {@ta1@} < t \le {@ta2@}\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>This question is based on the example of the matatu trip between Nairobi and Nakuru (forming a compound inequality) in the section Compound Inequalities of the CBC Grade 11 Mathematics textbook (INNODEMS). Context reworded: the greenhouse is warmer than outside, rather than an unexplained heater that adds a fixed amount.</p>
+<p id="concept">Compound Inequalities (Real Life Constraints)</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they added the heater temp instead of subtracting</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>m1_L</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>To isolate \(t\) in the expression \(t + {@H@}\), you must <b>subtract</b> \({@H@}\) from all parts of the inequality, not add it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they added the heater temp instead of subtracting</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>m1_U</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>To isolate \(t\) in the expression \(t + {@H@}\), you must <b>subtract</b> \({@H@}\) from all parts of the inequality, not add it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1454926149</deployedseed>
+    <deployedseed>1999632484</deployedseed>
+    <deployedseed>1375373389</deployedseed>
+    <deployedseed>994523405</deployedseed>
+    <deployedseed>1369784828</deployedseed>
+    <deployedseed>1002172452</deployedseed>
+    <deployedseed>222143592</deployedseed>
+    <deployedseed>1828944267</deployedseed>
+    <deployedseed>2108853083</deployedseed>
+    <deployedseed>1694082361</deployedseed>
+    <deployedseed>708200351</deployedseed>
+    <deployedseed>1505818104</deployedseed>
+    <deployedseed>1599628681</deployedseed>
+    <deployedseed>1080661413</deployedseed>
+    <deployedseed>712846474</deployedseed>
+    <deployedseed>1376601631</deployedseed>
+    <deployedseed>133089835</deployedseed>
+    <deployedseed>679543746</deployedseed>
+    <deployedseed>596715724</deployedseed>
+    <deployedseed>201778113</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Diagnostic 1 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>m1_L</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>m1_U</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Solving a continuous compound inequality with three parts</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Solve the following compound inequality:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle {@L@} \le {@a*x@} {@sign_b@} {@abs_b@} < {@U@} \)
+</p>
+<p><i>(Enter the lower limit and upper limit in the boxes provided.)</i></p>
+
+<p>[[input:ans1]] \( \le x < \) [[input:ans2]] [[validation:ans1]] [[feedback:prt1]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+<p>To solve a continuous compound inequality, we isolate \(x\) in the middle. We achieve this by applying the exact same operations to all three parts of the inequality simultaneously.</p>
+
+<p>First, we remove the constant term from the middle by {@op_word@} {@abs_b@} {@prep_word@} all three parts:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@L@} {@inv_sign@} {@abs_b@} &\le {@a*x@} < {@U@} {@inv_sign@} {@abs_b@} \\
+{@L_step1@} &\le {@a*x@} < {@U_step1@}
+\end{aligned} \)
+</p>
+
+<p>Next, we divide all three parts by the coefficient of \(x\), which is \({@a@}\):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+\frac{{@L_step1@}}{{@a@}} &\le x < \frac{{@U_step1@}}{{@a@}} \\
+{@ta1@} &\le x < {@ta2@}
+\end{aligned} \)
+</p>
+
+<p>Hence, the correct solution for this compound inequality is:</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \boxed{{@ta1@} \le x < {@ta2@}} \)
+</p>
+<div style="text-align:center;" role="img" aria-label="Number line: closed circle at {#ta1#}, open circle at {#ta2#}, shaded between.">
+[[jsxgraph width="420px" height="110px"]]
+(function() {
+  var lo = Math.floor({#ta1#}) - 2, hi = Math.ceil({#ta2#}) + 2, P = [[{#ta1#},{#ta2#},true,false]];
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[lo - 0.5, 1.6, hi + 0.5, -1.4], axis:false, grid:false,
+      showNavigation:false, showCopyright:false, pan:{enabled:false}, zoom:{enabled:false}});
+  b.create('arrow', [[lo - 0.4, 0], [hi + 0.4, 0]], {strokeColor:'#333', fixed:true});
+  var step = (hi - lo) > 24 ? 5 : ((hi - lo) > 12 ? 2 : 1);
+  for (var t = Math.ceil(lo/step)*step; t <= hi; t += step) {
+    b.create('segment', [[t, -0.15], [t, 0.15]], {strokeColor:'#333', fixed:true});
+    b.create('text', [t, -0.6, '' + t], {anchorX:'middle', fontSize:12, fixed:true});
+  }
+  for (var i = 0; i < P.length; i++) {
+    var a = P[i][0], c = P[i][1], y = 0.55;
+    var x1 = (a === null) ? lo - 0.3 : a, x2 = (c === null) ? hi + 0.3 : c;
+    if (a === null) b.create('arrow', [[x2, y], [x1, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    else if (c === null) b.create('arrow', [[x1, y], [x2, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    else b.create('segment', [[x1, y], [x2, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    if (a !== null) b.create('point', [a, y], {name:'', size:5, fixed:true, strokeColor:'#1565c0', strokeWidth:2,
+        fillColor: P[i][2] ? '#1565c0' : '#ffffff', showInfobox:false});
+    if (c !== null) b.create('point', [c, y], {name:'', size:5, fixed:true, strokeColor:'#1565c0', strokeWidth:2,
+        fillColor: P[i][3] ? '#1565c0' : '#ffffff', showInfobox:false});
+  }
+})();
+[[/jsxgraph]]
+</div>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Reverse engineer to ensure clean integer limits */
+ta1 : rand_with_step(-6, 2, 1);
+ta2 : rand_with_step(3, 9, 1);
+
+/* Middle expression coefficients: ax + b */
+a : rand_with_step(2, 5, 1);
+b_val : rand([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5]);
+
+/* Calculate the outer bounds */
+L : a * ta1 + b_val;
+U : a * ta2 + b_val;
+
+/* Display helpers for the constant b */
+abs_b : abs(b_val);
+sign_b : if is(b_val > 0) then "+" else "-";
+
+/* Worked solution helpers */
+inv_sign : if is(b_val > 0) then "-" else "+";
+op_word : if is(b_val > 0) then "subtracting" else "adding";
+prep_word : if is(b_val > 0) then "from" else "to";
+L_step1 : L - b_val;
+U_step1 : U - b_val;
+
+/* Mistake Catchers */
+/* Mistake 1: Added b instead of subtracting (or vice versa) */
+m1_L : (L + b_val) / a;
+m1_U : (U + b_val) / a;
+
+/* Mistake 2: Handled b correctly, but forgot to divide by a */
+m2_L : L_step1;
+m2_U : U_step1;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>\({@L@} \le {@a@}x + {@b_val@} < {@U@} \implies {@ta1@} \le x < {@ta2@}\)</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>This question is based on the example 2x + 4 < 5 + 3x < 8 + 2x (a three-part inequality) in the section Compound Inequalities of the CBC Grade 11 Mathematics textbook (INNODEMS).</p>
+<p id="concept">Compound Inequalities (Continuous)</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check correctness of lower limit</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check wrong sign operation</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>m1_L</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your first step on the left side. Because the middle term contains \( {@sign_b@} {@abs_b@} \), you must do the <b>opposite</b> operation ({@op_word@}) to the left side.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check forgot to divide</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans1</sans>
+        <tans>m2_L</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You handled the constant correctly on the left side, but you forgot the final step. You must divide by the coefficient of \(x\) (which is \({@a@}\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check correctness of upper limit</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check wrong sign operation</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>m1_U</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your first step for the upper limit. Because the middle term contains \( {@sign_b@} {@abs_b@} \), you must do the <b>opposite</b> operation ({@op_word@}) to the right side.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check forgot to divide</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans2</sans>
+        <tans>m2_U</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You handled the constant correctly on the right side, but you forgot the final step. You must divide by the coefficient of \(x\) (which is \({@a@}\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>2029375304</deployedseed>
+    <deployedseed>394734111</deployedseed>
+    <deployedseed>1613597869</deployedseed>
+    <deployedseed>249697864</deployedseed>
+    <deployedseed>1935350620</deployedseed>
+    <deployedseed>1066245466</deployedseed>
+    <deployedseed>409794219</deployedseed>
+    <deployedseed>774279836</deployedseed>
+    <deployedseed>1901351622</deployedseed>
+    <deployedseed>759125540</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Diagnostic 1 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>m1_L</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>m1_U</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Diagnostic 2 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>m2_L</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>m2_U</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
