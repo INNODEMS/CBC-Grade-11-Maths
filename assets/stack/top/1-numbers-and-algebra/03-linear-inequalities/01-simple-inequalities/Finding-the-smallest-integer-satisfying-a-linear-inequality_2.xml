@@ -4,10 +4,10 @@
     <name>
       <text>Finding the smallest integer satisfying a linear inequality</text>
     </name>
-    <questiontext format="moodle_auto_format">
+    <questiontext format="html">
       <text><![CDATA[<p><b>(a)</b> Solve the following inequality for \(x\):</p>
 <p style="margin-left: 20px;">
-\( \displaystyle {@a@}x - {@b@} \ge {@c@}x + {@d@} \)
+\( \displaystyle {@a*x@} - {@b@} \ge {@c*x@} + {@d@} \)
 </p>
 <p><i>(Enter your answer as an inequality. Use <b>&gt;=</b> for \(\ge\). Leave any decimals as simplified fractions.)</i></p>
 <p>Inequality: [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
@@ -15,14 +15,14 @@
 <p><b>(b)</b> Based on your solution, what is the <b>smallest integer value</b> of \(x\) that makes this inequality true?</p>
 <p>\(x = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
+    <generalfeedback format="html">
       <text><![CDATA[<p><b>Worked Solution:</b></p>
 
 <p><b>Part (a): Solving the Inequality</b></p>
 <p>First, we group the terms with \(x\) on the left side and the constant terms on the right side.</p>
 <p style="margin-left: 20px;">
 \( \displaystyle \begin{aligned}
-{@a@}x - {@c@}x &\ge {@d@} + {@b@} \\
+{@a*x@} - {@c*x@} &\ge {@d@} + {@b@} \\
 {@a - c@}x &\ge {@d + b@} \\
 x &\ge \frac{{@d + b@}}{{@a - c@}}
 \end{aligned} \)
@@ -40,14 +40,41 @@ x &\ge \frac{{@d + b@}}{{@a - c@}}
 <p>Hence, the <b>smallest</b> integer in this set is:</p>
 <p style="margin-left: 20px;">
 \( \displaystyle \boxed{{@ta2@}} \)
-</p>]]></text>
+</p>
+<p>On a number line the solution starts at \({@frac@}\) (closed circle) and goes to the right; the first whole number on it is \({@ta2@}\).</p>
+<div style="text-align:center;" role="img" aria-label="Number line: closed circle at {#float(frac)#}, shaded to the right.">
+[[jsxgraph width="420px" height="110px"]]
+(function() {
+  var lo = Math.floor({#float(frac)#}-3) - 2, hi = Math.ceil({#float(frac)#}+4) + 2, P = [[{#float(frac)#},null,true,false]];
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[lo - 0.5, 1.6, hi + 0.5, -1.4], axis:false, grid:false,
+      showNavigation:false, showCopyright:false, pan:{enabled:false}, zoom:{enabled:false}});
+  b.create('arrow', [[lo - 0.4, 0], [hi + 0.4, 0]], {strokeColor:'#333', fixed:true});
+  var step = (hi - lo) > 24 ? 5 : ((hi - lo) > 12 ? 2 : 1);
+  for (var t = Math.ceil(lo/step)*step; t <= hi; t += step) {
+    b.create('segment', [[t, -0.15], [t, 0.15]], {strokeColor:'#333', fixed:true});
+    b.create('text', [t, -0.6, '' + t], {anchorX:'middle', fontSize:12, fixed:true});
+  }
+  for (var i = 0; i < P.length; i++) {
+    var a = P[i][0], c = P[i][1], y = 0.55;
+    var x1 = (a === null) ? lo - 0.3 : a, x2 = (c === null) ? hi + 0.3 : c;
+    if (a === null) b.create('arrow', [[x2, y], [x1, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    else if (c === null) b.create('arrow', [[x1, y], [x2, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    else b.create('segment', [[x1, y], [x2, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    if (a !== null) b.create('point', [a, y], {name:'', size:5, fixed:true, strokeColor:'#1565c0', strokeWidth:2,
+        fillColor: P[i][2] ? '#1565c0' : '#ffffff', showInfobox:false});
+    if (c !== null) b.create('point', [c, y], {name:'', size:5, fixed:true, strokeColor:'#1565c0', strokeWidth:2,
+        fillColor: P[i][3] ? '#1565c0' : '#ffffff', showInfobox:false});
+  }
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2026010500</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
       <text><![CDATA[/* Randomise parameters */
@@ -81,19 +108,20 @@ wrong_int : floor(float(frac));]]></text>
       <text><![CDATA[<p>\({@a@}x - {@b@} \ge {@c@}x + {@d@} \implies {@ta1@} \implies int: {@ta2@}\)</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="concept">Simple Inequalities (Variables Both Sides & Integer Limits)</p>]]></text>
+      <text><![CDATA[<p>This question is based on the example 3x - 9 < 6 + x (collecting terms on one side) in the section Simple Inequalities of the CBC Grade 11 Mathematics textbook (INNODEMS).</p>
+<p id="concept">Simple Inequalities (Variables Both Sides & Integer Limits)</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
@@ -119,7 +147,7 @@ wrong_int : floor(float(frac));]]></text>
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -137,7 +165,7 @@ wrong_int : floor(float(frac));]]></text>
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -216,7 +244,7 @@ wrong_int : floor(float(frac));]]></text>
         <tans>wrong_int</tans>
         <testoptions>0.1</testoptions>
         <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
@@ -224,7 +252,7 @@ wrong_int : floor(float(frac));]]></text>
         <truefeedback format="html">
           <text><![CDATA[<p>You rounded the decimal down. However, the inequality states that \(x\) must be <b>greater than or equal to</b> the fraction. The integer \({@wrong_int@}\) is less than the fraction, so it does not satisfy the inequality. You need the next integer up.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
@@ -244,59 +272,9 @@ wrong_int : floor(float(frac));]]></text>
     <deployedseed>826806240</deployedseed>
     <deployedseed>144774941</deployedseed>
     <deployedseed>190314436</deployedseed>
-    <deployedseed>1684262882</deployedseed>
-    <deployedseed>1096137280</deployedseed>
-    <deployedseed>2028184429</deployedseed>
-    <deployedseed>1203996632</deployedseed>
-    <deployedseed>457321831</deployedseed>
-    <deployedseed>1896542791</deployedseed>
-    <deployedseed>1710006345</deployedseed>
-    <deployedseed>1503078474</deployedseed>
-    <deployedseed>1496319819</deployedseed>
-    <deployedseed>1757701389</deployedseed>
-    <deployedseed>1634116058</deployedseed>
-    <deployedseed>1720833688</deployedseed>
-    <deployedseed>1909637388</deployedseed>
-    <deployedseed>1178611386</deployedseed>
-    <deployedseed>318209874</deployedseed>
-    <deployedseed>190495937</deployedseed>
-    <deployedseed>290493531</deployedseed>
-    <deployedseed>1012540320</deployedseed>
-    <deployedseed>297710718</deployedseed>
-    <deployedseed>79115318</deployedseed>
-    <deployedseed>696111986</deployedseed>
-    <deployedseed>239819645</deployedseed>
-    <deployedseed>1924079209</deployedseed>
-    <deployedseed>2033788394</deployedseed>
-    <deployedseed>788268875</deployedseed>
-    <deployedseed>1408970000</deployedseed>
-    <deployedseed>1775362203</deployedseed>
-    <deployedseed>502179166</deployedseed>
-    <deployedseed>847872873</deployedseed>
-    <deployedseed>1265693499</deployedseed>
-    <deployedseed>1748905856</deployedseed>
-    <deployedseed>736207104</deployedseed>
-    <deployedseed>589360569</deployedseed>
-    <deployedseed>1795110697</deployedseed>
-    <deployedseed>889588046</deployedseed>
-    <deployedseed>1183468181</deployedseed>
-    <deployedseed>1120637075</deployedseed>
-    <deployedseed>341849168</deployedseed>
-    <deployedseed>1082754342</deployedseed>
-    <deployedseed>876854616</deployedseed>
-    <deployedseed>143094223</deployedseed>
-    <deployedseed>1754710975</deployedseed>
-    <deployedseed>1431943624</deployedseed>
-    <deployedseed>252219481</deployedseed>
-    <deployedseed>2018122063</deployedseed>
-    <deployedseed>1527422322</deployedseed>
-    <deployedseed>796044599</deployedseed>
-    <deployedseed>1167196407</deployedseed>
-    <deployedseed>1060316045</deployedseed>
-    <deployedseed>182472222</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -309,13 +287,85 @@ wrong_int : floor(float(frac));]]></text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Diagnostic 1 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wrong_int</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>(if atom(ta1) then ta1+3 else apply(op(ta1), [lhs(ta1), rhs(ta1)+1/7]))</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>x</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

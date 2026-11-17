@@ -4,23 +4,23 @@
     <name>
       <text>Solving a linear inequality requiring a sign reversal</text>
     </name>
-    <questiontext format="moodle_auto_format">
+    <questiontext format="html">
       <text><![CDATA[<p>Solve the following inequality for \(x\):</p>
 <p style="margin-left: 20px;">
-\( \displaystyle {@a@} - {@b@}x > {@c@} \)
+\( \displaystyle {@a@} - {@b*x@} > {@c@} \)
 </p>
 <p><i>(Enter your answer as an inequality. Use <b>&lt;</b> for less than and <b>&gt;</b> for greater than. For example, <code>x < 5</code>)</i></p>
 <p>Equation: [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
+    <generalfeedback format="html">
       <text><![CDATA[<p><b>Worked Solution:</b></p>
 <p>To solve the inequality, we need to isolate \(x\).</p>
 
 <p>First, we group the constant terms on the right side by subtracting \({@a@}\) from both sides.</p>
 <p style="margin-left: 20px;">
 \( \displaystyle \begin{aligned}
--{@b@}x &> {@c@} - ({@a@}) \\
--{@b@}x &> {@c - a@}
+-{@b*x@} &> {@c@} - ({@a@}) \\
+-{@b*x@} &> {@c - a@}
 \end{aligned} \)
 </p>
 
@@ -36,14 +36,41 @@ x &< {@x_val@}
 <p>Hence, the correct solution for this inequality is:</p>
 <p style="margin-left: 20px;">
 \( \displaystyle \boxed{x < {@x_val@}} \)
-</p>]]></text>
+</p>
+<p>On a number line, the solution \(x < {@x_val@}\) is an open circle at \({@x_val@}\) with the line going to the left:</p>
+<div style="text-align:center;" role="img" aria-label="Number line: open circle at {#x_val#}, shaded to the left.">
+[[jsxgraph width="420px" height="110px"]]
+(function() {
+  var lo = Math.floor({#x_val#}-5) - 2, hi = Math.ceil({#x_val#}+3) + 2, P = [[null,{#x_val#},false,false]];
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[lo - 0.5, 1.6, hi + 0.5, -1.4], axis:false, grid:false,
+      showNavigation:false, showCopyright:false, pan:{enabled:false}, zoom:{enabled:false}});
+  b.create('arrow', [[lo - 0.4, 0], [hi + 0.4, 0]], {strokeColor:'#333', fixed:true});
+  var step = (hi - lo) > 24 ? 5 : ((hi - lo) > 12 ? 2 : 1);
+  for (var t = Math.ceil(lo/step)*step; t <= hi; t += step) {
+    b.create('segment', [[t, -0.15], [t, 0.15]], {strokeColor:'#333', fixed:true});
+    b.create('text', [t, -0.6, '' + t], {anchorX:'middle', fontSize:12, fixed:true});
+  }
+  for (var i = 0; i < P.length; i++) {
+    var a = P[i][0], c = P[i][1], y = 0.55;
+    var x1 = (a === null) ? lo - 0.3 : a, x2 = (c === null) ? hi + 0.3 : c;
+    if (a === null) b.create('arrow', [[x2, y], [x1, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    else if (c === null) b.create('arrow', [[x1, y], [x2, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    else b.create('segment', [[x1, y], [x2, y]], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    if (a !== null) b.create('point', [a, y], {name:'', size:5, fixed:true, strokeColor:'#1565c0', strokeWidth:2,
+        fillColor: P[i][2] ? '#1565c0' : '#ffffff', showInfobox:false});
+    if (c !== null) b.create('point', [c, y], {name:'', size:5, fixed:true, strokeColor:'#1565c0', strokeWidth:2,
+        fillColor: P[i][3] ? '#1565c0' : '#ffffff', showInfobox:false});
+  }
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2026010500</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
       <text><![CDATA[/* Reverse engineer to ensure clean integer answers */
@@ -51,7 +78,7 @@ x_val : rand_with_step(-5, 6, 1);
 
 /* We will use a negative coefficient to force the student to flip the inequality sign */
 b : rand_with_step(2, 6, 1); 
-a : rand_with_step(-8, 12, 1);
+a : rand_with_prohib(-8, 12, [0]);   /* a = 0 would print 0 - bx */
 
 /* We want the equation to be a - b * x > c */
 c : a - b * x_val;
@@ -70,20 +97,20 @@ mistake_sign : x > x_val;]]></text>
       <text><![CDATA[<p>\({@a@} - {@b@}x > {@c@} \implies {@ta1@}\)</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="concept">Simple Inequalities (Negative Coefficients)</p>
-<p id="description">Grade 11 CBE: Solving a basic linear inequality requiring the reversal of the inequality sign when dividing by a negative coefficient.</p>]]></text>
+      <text><![CDATA[<p>This question is based on the example 15 - 2x >= 7 (dividing by a negative number reverses the sign) in the section Simple Inequalities of the CBC Grade 11 Mathematics textbook (INNODEMS).</p>
+<p id="concept">Simple Inequalities (Negative Coefficients)</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
@@ -109,7 +136,7 @@ mistake_sign : x > x_val;]]></text>
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -154,7 +181,7 @@ mistake_sign : x > x_val;]]></text>
         <tans>mistake_sign</tans>
         <testoptions/>
         <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
@@ -162,7 +189,7 @@ mistake_sign : x > x_val;]]></text>
         <truefeedback format="html">
           <text><![CDATA[<p>Your numerical value is correct, but you have the wrong inequality sign. <b>Remember:</b> When you divide both sides of an inequality by a negative number, you must reverse the inequality symbol.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
@@ -182,59 +209,9 @@ mistake_sign : x > x_val;]]></text>
     <deployedseed>306026953</deployedseed>
     <deployedseed>687842654</deployedseed>
     <deployedseed>213613350</deployedseed>
-    <deployedseed>1761462729</deployedseed>
-    <deployedseed>992373708</deployedseed>
-    <deployedseed>1461810856</deployedseed>
-    <deployedseed>1264473645</deployedseed>
-    <deployedseed>1700829839</deployedseed>
-    <deployedseed>317780110</deployedseed>
-    <deployedseed>790853196</deployedseed>
-    <deployedseed>1257289230</deployedseed>
-    <deployedseed>2118057577</deployedseed>
-    <deployedseed>468417337</deployedseed>
-    <deployedseed>624179687</deployedseed>
-    <deployedseed>1548782377</deployedseed>
-    <deployedseed>2022090801</deployedseed>
-    <deployedseed>225840377</deployedseed>
-    <deployedseed>1245503659</deployedseed>
-    <deployedseed>2023527169</deployedseed>
-    <deployedseed>1567313491</deployedseed>
-    <deployedseed>1512489103</deployedseed>
-    <deployedseed>946205911</deployedseed>
-    <deployedseed>134033622</deployedseed>
-    <deployedseed>924628505</deployedseed>
-    <deployedseed>62385256</deployedseed>
-    <deployedseed>301539410</deployedseed>
-    <deployedseed>513196904</deployedseed>
-    <deployedseed>1678993498</deployedseed>
-    <deployedseed>968028773</deployedseed>
-    <deployedseed>299170760</deployedseed>
-    <deployedseed>1215581163</deployedseed>
-    <deployedseed>1750555755</deployedseed>
-    <deployedseed>700732584</deployedseed>
-    <deployedseed>1965363047</deployedseed>
-    <deployedseed>1080402455</deployedseed>
-    <deployedseed>1959070873</deployedseed>
-    <deployedseed>1790774961</deployedseed>
-    <deployedseed>894057654</deployedseed>
-    <deployedseed>539466804</deployedseed>
-    <deployedseed>1628091795</deployedseed>
-    <deployedseed>783116897</deployedseed>
-    <deployedseed>354325874</deployedseed>
-    <deployedseed>455946945</deployedseed>
-    <deployedseed>733694415</deployedseed>
-    <deployedseed>1102819347</deployedseed>
-    <deployedseed>1123112074</deployedseed>
-    <deployedseed>1307343539</deployedseed>
-    <deployedseed>1065230561</deployedseed>
-    <deployedseed>1609488778</deployedseed>
-    <deployedseed>1006801302</deployedseed>
-    <deployedseed>1738840898</deployedseed>
-    <deployedseed>40735041</deployedseed>
-    <deployedseed>392658147</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Correct Answer</description>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -248,7 +225,7 @@ mistake_sign : x > x_val;]]></text>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Forgot to flip sign</description>
+      <description>Diagnostic 1 in each part that has one</description>
       <testinput>
         <name>ans1</name>
         <value>mistake_sign</value>
@@ -257,7 +234,21 @@ mistake_sign : x > x_val;]]></text>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-T</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>(if atom(ta1) then ta1+3 else apply(op(ta1), [lhs(ta1), rhs(ta1)+1/7]))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
       </expected>
     </qtest>
   </question>
