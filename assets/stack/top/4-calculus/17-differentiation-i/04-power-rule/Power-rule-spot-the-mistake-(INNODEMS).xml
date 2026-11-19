@@ -18,7 +18,8 @@
 <div>[[ if test="notn=1" ]]\( f'(x) = \)[[/ if ]][[ if test="notn=2" ]]\( \dfrac{dy}{dx} = \)[[/ if ]][[ if test="notn=3" ]]\( \dfrac{d}{dx}\!\left({@expr@}\right) = \)[[/ if ]] [[input:fix]] [[validation:fix]] [[feedback:prtfix]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[[[ if test="is_ok" ]]<p>This working is <b>correct</b> — every step follows the power rule, and the answer \( {@ta1@} \) is right.</p>[[/ if ]][[ if test="not(is_ok)" ]]<p>The working contains a mistake: {@err_name@}</p>[[/ if ]]
+      <text><![CDATA[<h3>Worked Solution</h3>
+[[ if test="is_ok" ]]<p>This working is <b>correct</b> — every step follows the power rule, and the answer \( {@ta1@} \) is right.</p>[[/ if ]][[ if test="not(is_ok)" ]]<p>The working contains a mistake: {@err_name@}</p>[[/ if ]]
 <p>Applied correctly, the power rule gives</p>
 [[ if test="notn=1" ]]\[ f'(x) = {@ev(step_disp,simp=false)@} = {@ta1@}. \][[/ if ]][[ if test="notn=2" ]]\[ \dfrac{dy}{dx} = {@ev(step_disp,simp=false)@} = {@ta1@}. \][[/ if ]][[ if test="notn=3" ]]\[ \dfrac{d}{dx}\!\left({@expr@}\right) = {@ev(step_disp,simp=false)@} = {@ta1@}. \][[/ if ]]
 <p>Bring the exponent \( {@n@} \) down as a multiplying factor and reduce the power to \( {@m@} \); the constant multiple \( {@c@} \) stays put.</p>]]></text>
@@ -94,8 +95,12 @@ opt_order : maplist(first, diag_ta);]]></text>
     <questionnote format="moodle_auto_format">
       <text>\( c={@c@},\ n={@n@},\ \text{notn}={@notn@},\ \text{err}={@errtag@};\ \text{shown}={@buggy_final@};\ \text{opts}={@opt_order@} \)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="author">Daniel Murunga</p>
+<p id="concept"></p>
+<p id="reviewer"></p>
+<p id="reviewer"></p>
+<p id="description">Given a student's power-rule working for c x^n, which may contain a mistake, the student identifies what is wrong (if anything) and writes the correct derivative.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -135,7 +140,7 @@ opt_order : maplist(first, diag_ta);]]></text>
       <checkanswertype>0</checkanswertype>
       <mustverify>0</mustverify>
       <showvalidation>0</showvalidation>
-      <options>casstring</options>
+      <options>casstring, nonotanswered</options>
     </input>
     <input>
       <name>fix</name>
@@ -227,7 +232,7 @@ opt_order : maplist(first, diag_ta);]]></text>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prtdiag-missed</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>There <em>is</em> a mistake here. Compare the working with the power rule, line by line: has the power been brought down as a factor, and has the exponent dropped by \( 1 \)?</p>]]></text>
+          <text><![CDATA[<p>There <em>is</em> a mistake here. Compare the working with the power rule, line by line: has the constant multiple been kept, has the power been brought down as a factor, and has the exponent dropped by \( 1 \)?</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -235,7 +240,7 @@ opt_order : maplist(first, diag_ta);]]></text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prtdiag-wrong</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>You spotted that something is off, but not the right cause. Check both parts of the rule: the coefficient (did the power come down as a factor?) and the exponent (did it drop by exactly \( 1 \)?).</p>]]></text>
+          <text><![CDATA[<p>You spotted that something is off, but not the right cause. Check each part of the rule: was the constant multiple kept, did the power come down as a factor, and did the exponent drop by exactly \( 1 \)?</p>]]></text>
         </falsefeedback>
       </node>
     </prt>

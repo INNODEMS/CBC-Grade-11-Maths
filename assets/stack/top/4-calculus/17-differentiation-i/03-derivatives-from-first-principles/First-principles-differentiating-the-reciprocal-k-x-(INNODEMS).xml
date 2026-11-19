@@ -74,12 +74,13 @@ board.create('text', [
 <p>Compare this exact value with the estimate you read from the graph.</p>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>For \( f(x) = {@fdisp@} \), form the difference quotient and combine over the common denominator \( x(x+h) \):</p>
-\[ \frac{f(x+h)-f(x)}{h} = \frac{\dfrac{ {@k@} }{x+h} - \dfrac{ {@k@} }{x}}{h} = \frac{ {@k@}\bigl(x-(x+h)\bigr)}{h\,x(x+h)} = \frac{ {@negk@}\,h}{h\,x(x+h)} = \frac{ {@negk@} }{x(x+h)}. \]
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>For \( f(x) = {@fdisp@} \), form the difference quotient and combine over the common denominator \( x(x+h) \):</p>
+\[ \frac{f(x+h)-f(x)}{h} = \frac{\dfrac{ {@k@} }{x+h} - \dfrac{ {@k@} }{x}}{h} = \frac{ {@k@}\bigl(x-(x+h)\bigr)}{h\,x(x+h)} = \frac{ {@negk*h@} }{h\,x(x+h)} = \frac{ {@negk@} }{x(x+h)}. \]
 <p>The factor of \( h \) cancels &mdash; which is exactly why you cannot put \( h = 0 \) at the start: before cancelling, that gives \( \tfrac{0}{0} \), an indeterminate form. Now let \( h \to 0 \), so \( x+h \to x \):</p>
 \[ f'(x) = \lim_{h\to 0} \frac{ {@negk@} }{x(x+h)} = \frac{ {@negk@} }{x\cdot x} = {@fpx@}. \]
 <p>At \( x = {@a@} \): \( f'({@a@}) = {@fpa@} \approx {@dispdp(holef,3)@} \), which matches the value the graph was closing in on.</p>
-<p>Notice \( f'(x) = {@fpx@} = {@negk@}\,x^{-2} \). This is the same result the <strong>power rule</strong> gives with \( n = -1 \), which you meet in the next section.</p>]]></text>
+<p>Notice \( f'(x) = {@fpx@} = [[if test="is(negk=1)"]]x^{-2}[[elif test="is(negk=-1)"]]-x^{-2}[[else]]{@negk@}\,x^{-2}[[/if]] \). This is the same result the <strong>power rule</strong> gives with \( n = -1 \), which you meet in the next section.</p>]]></text>
     </generalfeedback>
     <defaultgrade>5</defaultgrade>
     <penalty>0</penalty>
@@ -131,8 +132,12 @@ xR : hmax + 0.3;]]></text>
     <questionnote format="moodle_auto_format">
       <text>\( f(x)={@fdisp@},\ a={@a@},\ f'(x)={@fpx@},\ f'({@a@})={@fpa@} \)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="author">Daniel Murunga</p>
+<p id="concept"></p>
+<p id="reviewer"></p>
+<p id="reviewer"></p>
+<p id="description">Given f(x) = k/x, the student estimates the limit of the difference quotient from an interactive graph, explains why h = 0 cannot be substituted, then finds f'(x) from first principles and evaluates it at a point.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -190,7 +195,7 @@ xR : hmax + 0.3;]]></text>
       <checkanswertype>0</checkanswertype>
       <mustverify>0</mustverify>
       <showvalidation>0</showvalidation>
-      <options/>
+      <options>nonotanswered</options>
     </input>
     <input>
       <name>ans3</name>
@@ -352,7 +357,7 @@ xR : hmax + 0.3;]]></text>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt2-inf</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Not quite. The denominator \( h \to 0 \), but the numerator \( f({@a@}+h)-f({@a@}) \) also \( \to 0 \). So it is \( \tfrac{0}{0} \), not \( \tfrac{k}{0} \).</p>]]></text>
+          <text><![CDATA[<p>Not quite. The denominator \( h \to 0 \), but the numerator \( f({@a@}+h)-f({@a@}) \) also \( \to 0 \). So it is \( \tfrac{0}{0} \), not a non-zero number divided by \( 0 \).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -397,8 +402,13 @@ xR : hmax + 0.3;]]></text>
       <feedbackvariables>
         <text>/* Detect an un-cancelled h: if gcd(numerator, denominator) still involves h,
    the student combined the fractions but did not cancel the common h. */
+/* Only a single fraction (polynomial over polynomial) can have an uncancelled h.
+   A compound fraction such as (k/(x+h)-k/x)/h goes on to the SingleFrac test. */
+/* Simplify top and bottom separately (this cannot cancel across them), so that a
+   leading minus such as -(3*h) still counts as a polynomial. */
+singlefr : is(polynomialp(ev(num(ans3), simp), [x, h]) and polynomialp(ev(denom(ans3), simp), [x, h]));
 gg : errcatch(gcd(num(ans3), denom(ans3)));
-notcancelled : if emptyp(gg) then false else not freeof(h, first(gg));
+notcancelled : if not(singlefr) or emptyp(gg) then false else not freeof(h, first(gg));
 nc : if notcancelled then 1 else 0;</text>
       </feedbackvariables>
       <node>
@@ -490,7 +500,7 @@ nc : if notcancelled then 1 else 0;</text>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt3-sign</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Sign slip. Over the common denominator the numerator is \( x-(x+h) = -h \), so the result is <em>negative</em>.</p>]]></text>
+          <text><![CDATA[<p>Sign slip. Over the common denominator, \( \dfrac{ {@k@} }{x+h} - \dfrac{ {@k@} }{x} = \dfrac{ {@ev(negk*h,simp)@} }{x(x+h)} \). Subtract in the order \( f(x+h) - f(x) \) and keep that sign.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -498,7 +508,7 @@ nc : if notcancelled then 1 else 0;</text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt3-miss</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Combine \( \dfrac{ {@k@} }{x+h} - \dfrac{ {@k@} }{x} \) over the common denominator \( x(x+h) \); the numerator becomes \( -{@k@}h \), then cancel the \( h \).</p>]]></text>
+          <text><![CDATA[<p>Combine \( \dfrac{ {@k@} }{x+h} - \dfrac{ {@k@} }{x} \) over the common denominator \( x(x+h) \); the numerator becomes \( {@ev(negk*h,simp)@} \), then cancel the \( h \).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -601,7 +611,7 @@ lim3 : if emptyp(lim3) then und else first(lim3);</text>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt4-sign</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Check the sign. The numerator over the common denominator was \( -{@k@}h \), so \( f'(x) \) keeps that sign.</p>]]></text>
+          <text><![CDATA[<p>Check the sign. The numerator over the common denominator was \( {@ev(negk*h,simp)@} \), so \( f'(x) \) keeps that sign.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -726,10 +736,14 @@ sub4 : if emptyp(sub4) then und else first(sub4);</text>
     </prt>
     <deployedseed>1001</deployedseed>
     <deployedseed>1002</deployedseed>
-    <deployedseed>1003</deployedseed>
     <deployedseed>1004</deployedseed>
-    <deployedseed>1005</deployedseed>
-    <deployedseed>1006</deployedseed>
+    <deployedseed>12122</deployedseed>
+    <deployedseed>14344</deployedseed>
+    <deployedseed>17677</deployedseed>
+    <deployedseed>18788</deployedseed>
+    <deployedseed>37697</deployedseed>
+    <deployedseed>41030</deployedseed>
+    <deployedseed>46585</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>All correct.</description>
