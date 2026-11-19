@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Opposite angles of a cyclic quadrilateral</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>\(ABCD\) is a cyclic quadrilateral. Angle \(ABC = {@x@}^\circ\) and angle \(DAB = {@y@}^\circ\).</p>
+
+<div style="text-align:center;" role="img" aria-label="A cyclic quadrilateral ABCD inside a circle. The angle at B is marked {#x#} degrees and the angle at A is marked {#y#} degrees.">
+[[jsxgraph width="380px" height="380px"]]
+var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.5,1.5,1.5,-1.5], axis:false, showCopyright:false, showNavigation:false, keepAspectRatio:true});
+var r = Math.PI/180;
+var a0 = 200*r;
+var angs = [a0, a0+{#pp#}*r, a0+({#pp#}+{#qq#})*r, a0+({#pp#}+{#qq#}+{#rr#})*r];
+var names = ['A','B','C','D'];
+var P = [];
+for (var i=0; i<4; i++) {
+  P.push(board.create('point',[Math.cos(angs[i]),Math.sin(angs[i])],
+    {name:names[i], fixed:true, size:2, label:{offset:[14*Math.cos(angs[i])-4, 14*Math.sin(angs[i])]}}));
+}
+board.create('circle',[[0,0],1],{fixed:true,strokeColor:'#333'});
+board.create('polygon',P,{fixed:true,fillColor:'none',borders:{strokeColor:'#333'},vertices:{visible:true}});
+board.create('nonreflexangle',[P[0],P[1],P[2]],{radius:0.22,withLabel:false,fillColor:'#1f5fa8',fillOpacity:0.3,strokeColor:'#1f5fa8',fixed:true,label:{fontSize:13,strokeColor:'#000'}});
+board.create('nonreflexangle',[P[3],P[0],P[1]],{radius:0.22,withLabel:false,fillColor:'#2e9d5b',fillOpacity:0.3,strokeColor:'#2e9d5b',fixed:true,label:{fontSize:13,strokeColor:'#000'}});
+function angLabel(brd, A, V, C, t) { var ax = A.X() - V.X(), ay = A.Y() - V.Y(), cx = C.X() - V.X(), cy = C.Y() - V.Y(); var la = Math.sqrt(ax*ax + ay*ay), lc = Math.sqrt(cx*cx + cy*cy); var ux = ax/la + cx/lc, uy = ay/la + cy/lc, lu = Math.sqrt(ux*ux + uy*uy); var h = Math.acos(Math.max(-1, Math.min(1, (ax*cx + ay*cy)/(la*lc))))/2; var d = Math.min(0.72, Math.max(0.44, 0.15/Math.tan(h))); brd.create('text', [V.X() + d*ux/lu, V.Y() + d*uy/lu, t], {anchorX:'middle', anchorY:'middle', fontSize:13, fixed:true, highlight:false, cssStyle:'background:rgba(255,255,255,0.85);padding:0 2px;border-radius:3px'}); }
+angLabel(board, P[0], P[1], P[2], '{#x#}°');
+angLabel(board, P[3], P[0], P[1], '{#y#}°');
+[[/jsxgraph]]
+</div>
+
+<p>(a) Find angle \(ADC\). [[input:ans1]]\(^\circ\) [[validation:ans1]]</p>
+<div>[[feedback:prt1]]</div>
+
+<p>(b) Find angle \(BCD\). [[input:ans2]]\(^\circ\) [[validation:ans2]]</p>
+<div>[[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<h4>Worked solution</h4>
+<p><strong>(a)</strong> Opposite angles of a cyclic quadrilateral add up to \(180^\circ\).
+\(ADC = 180 - {@x@} = {@ta1@}^\circ\).</p>
+<p><strong>(b)</strong> Angle \(BCD\) is opposite angle \(DAB\), so
+\(BCD = 180 - {@y@} = {@ta2@}^\circ\).</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text>x: rand(delete(90, makelist(5*i,i,14,21)));
+y: rand(sublist(makelist(5*i,i,14,19), lambda([t], not(member(t, [90, x, 180-x])))));   /* never 90, equal or supplementary */
+rr: 60;
+pp: 420-2*x-2*y;
+qq: 2*y-rr;
+ss: 2*x-rr;
+ta1: 180-x;
+ta2: 180-y;</text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>{@ta1@},{@ta2@},x = {@x@}, y = {@y@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>This question is based on the theorem that opposite angles of a cyclic quadrilateral add up to 180° in the section Angles in a Cyclic Quadrilateral of the CBC Grade 11 Mathematics textbook (INNODEMS). The angles are never 90° and never equal or supplementary to each other, so the wrong-pair and equal-angles mistakes can be told apart.</p>
+<p id="concept">Opposite angles of a cyclic quadrilateral</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>numerical</type>
+      <tans>ta1</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>numerical</type>
+      <tans>ta2</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>x</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text>Opposite angles of a cyclic quadrilateral add up to \(180^\circ\); they are not equal.</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>180-y</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text>That uses angle \(DAB\), which is next to \(ADC\). The angle opposite \(ADC\) is \(ABC\).</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>Angle \(ADC\) is opposite angle \(ABC\). Opposite angles of a cyclic quadrilateral add up to \(180^\circ\).</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>y</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text>Opposite angles of a cyclic quadrilateral add up to \(180^\circ\); they are not equal.</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>180-x</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text>That uses angle \(ABC\), which is next to \(BCD\). The angle opposite \(BCD\) is \(DAB\).</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>Angle \(BCD\) is opposite angle \(DAB\). Opposite angles of a cyclic quadrilateral add up to \(180^\circ\).</text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>779211275</deployedseed>
+    <deployedseed>1061353730</deployedseed>
+    <deployedseed>1063216654</deployedseed>
+    <deployedseed>2121852924</deployedseed>
+    <deployedseed>2016149893</deployedseed>
+    <deployedseed>122633640</deployedseed>
+    <deployedseed>2082450259</deployedseed>
+    <deployedseed>762313730</deployedseed>
+    <deployedseed>649069191</deployedseed>
+    <deployedseed>1107834585</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Diagnostic 1 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>x</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>y</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Diagnostic 2 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>180-y</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>180-x</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

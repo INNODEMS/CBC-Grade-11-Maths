@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Formulating inequalities for a dietary supplement program</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A dairy farmer in Nyandarua mixes \( x \) kg of maize germ with \( y \) kg of sunflower cake to feed the herd each day.</p>
+<ul>
+<li>The cows can eat at most <b>{@W@} kg</b> of the mixture in a day.</li>
+<li>Each kg of maize germ provides <b>{@A@} units</b> of protein, and each kg of sunflower cake provides <b>{@B@} units</b>.</li>
+<li>The herd needs <b>at least {@N@} units</b> of protein each day.</li>
+</ul>
+
+<p><b>a) </b> Write the two linear inequalities that model these conditions. <i>(Use \( \le \) or \( \ge \) as appropriate. Do not include \(x \ge 0\) and \(y \ge 0\).)</i></p>
+
+<p>Amount the cows can eat: [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+<p>Protein needed: [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
+
+<p><b>b) </b> One week the farmer cannot buy any maize germ, so \(x = 0\).</p>
+<p>Using your protein inequality, what is the smallest amount of sunflower cake (\(y\)) that meets the herd's protein need?</p>
+<p>Smallest amount of sunflower cake: [[input:ans3]] kg [[validation:ans3]] [[feedback:prt3]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p><b>Part a: Forming the constraints</b></p>
+<p>1. <b>Amount the cows can eat:</b> the total mass of the mixture is \(x + y\) kg, and it can be at most \({@W@}\) kg. "At most" means less than or equal to (\( \le \)):</p>
+<p style="margin-left: 20px;">\( \displaystyle \boxed{{@ta1@}} \)</p>
+<p>2. <b>Protein needed:</b> the protein from the maize germ is \({@A*x@}\) units and from the sunflower cake \({@B*y@}\) units. Together they must be at least \({@N@}\). "At least" means greater than or equal to (\( \ge \)):</p>
+<p style="margin-left: 20px;">\( \displaystyle \boxed{{@ta2@}} \)</p>
+<p><b>Part b: When there is no maize germ</b></p>
+<p>Substitute \( x = 0 \) into the protein inequality and solve for \(y\):</p>
+<p style="margin-left: 20px;">
+\( \displaystyle \begin{aligned}
+{@A*x+B*y@} &amp;\ge {@N@} \\
+{@B*y@} &amp;\ge {@N@} \\
+y &amp;\ge {@ta3@}
+\end{aligned} \)
+</p>
+<p>So the farmer needs at least <b>{@ta3@} kg</b> of sunflower cake. This is within the limit of \({@W@}\) kg the cows can eat, so it is possible.</p>
+<p>The graph shows both conditions; every point in the shaded region is a mixture that works.</p>
+<div style="text-align:center;" role="img" aria-label="Graph of x + y at most {#W#} and the protein condition, with the region that satisfies both shaded.">
+[[jsxgraph width="380px" height="340px"]]
+(function() {
+  var X = {#W*1.05#}, Y = {#W*1.05#}, C = [[1,1,{#W#},true,false],[{#A#},{#B#},{#N#},false,false]];
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-X*0.12, Y*1.1, X*1.1, -Y*0.2], axis:true, grid:false,
+      showNavigation:false, showCopyright:false, pan:{enabled:false}, zoom:{enabled:false}});
+  // clip the first-quadrant box by each half-plane (Sutherland-Hodgman)
+  var poly = [[0,0],[X,0],[X,Y],[0,Y]];
+  function inside(p, c) { var v = c[0]*p[0] + c[1]*p[1] - c[2]; return c[3] ? v <= 1e-9 : v >= -1e-9; }
+  function cut(p, q, c) { var fp = c[0]*p[0] + c[1]*p[1] - c[2], fq = c[0]*q[0] + c[1]*q[1] - c[2], t = fp/(fp - fq);
+    return [p[0] + t*(q[0]-p[0]), p[1] + t*(q[1]-p[1])]; }
+  for (var k = 0; k < C.length; k++) {
+    var out = [];
+    for (var i = 0; i < poly.length; i++) {
+      var p = poly[i], q = poly[(i+1) % poly.length], ip = inside(p, C[k]), iq = inside(q, C[k]);
+      if (ip) out.push(p);
+      if (ip !== iq) out.push(cut(p, q, C[k]));
+    }
+    poly = out;
+  }
+  if (poly.length > 2) b.create('polygon', poly, {fillColor:'#a5d6a7', fillOpacity:0.55, vertices:{visible:false},
+      borders:{visible:false}, fixed:true});
+  var cols = ['#1565c0', '#c62828', '#6a1b9a'];
+  for (var k = 0; k < C.length; k++) {
+    var c = C[k];
+    b.create('line', [[c[1] === 0 ? c[2]/c[0] : 0, c[1] === 0 ? 0 : c[2]/c[1]], [c[1] === 0 ? c[2]/c[0] : 1, c[1] === 0 ? 1 : (c[2]-c[0])/c[1]]],
+      {strokeColor:cols[k % 3], strokeWidth:2, dash: c[4] ? 2 : 0, fixed:true});
+  }
+  b.create('text', [X*1.08, -Y*0.15, 'maize germ x'], {fontSize:13, fixed:true, anchorX:'right'});
+  b.create('text', [X*0.02, Y*1.06, 'sunflower cake y'], {fontSize:13, fixed:true});
+})();
+[[/jsxgraph]]
+</div>]]></text>
+    </generalfeedback>
+    <defaultgrade>3</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Use 20 predefined tuples [W, A, B, N] to allow for more deployable variants. */
+/* Every tuple guarantees clean division for N/B, and ensures N/B <= W so the serving is physically possible. */
+tuples : [
+    [100, 3, 5, 360], 
+    [120, 2, 6, 300], 
+    [150, 4, 5, 400], 
+    [100, 2, 8, 320],
+    [80,  3, 4, 240],
+    [110, 5, 6, 330],
+    [130, 3, 5, 450],
+    [140, 2, 7, 350],
+    [90,  4, 6, 360],
+    [160, 5, 8, 480],
+    [125, 3, 5, 375],
+    [105, 4, 7, 280],
+    [115, 2, 5, 250],
+    [135, 3, 9, 450],
+    [145, 5, 4, 400],
+    [95,  2, 4, 200],
+    [155, 6, 5, 450],
+    [85,  3, 5, 250],
+    [100, 4, 8, 320],
+    [120, 3, 4, 360]
+];
+tup : rand(tuples);
+W : tup[1];
+A : tup[2];
+B : tup[3];
+N : tup[4];
+
+/* Define target answers */
+ta1 : x + y <= W;
+ta2 : A*x + B*y >= N;
+ta3 : N / B;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text><![CDATA[<p>Weight: {@ta1@}. Nutrient: {@ta2@}. Min y: {@ta3@}</p>]]></text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>This question is based on the example of Ben's maize and beans (an upper limit and a minimum requirement) in the section Inequalities in Real Life of the CBC Grade 11 Mathematics textbook (INNODEMS). Context rewritten: finger millet was given 3 to 6 mg of iron per gram, about 100 times too much. It is now a dairy feed mix with protein units; the numbers and marking are unchanged.</p>
+<p id="concept">Inequalities in Real Life (Formulation)</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>numerical</type>
+      <tans>ta3</tans>
+      <boxsize>5</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of weight inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct constraint. "Must not exceed" means less than or equal to.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they flipped the symbol</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans><![CDATA[x + y >= W]]></tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your inequality symbol. "Must not exceed" means it has to be smaller than or equal to the limit, not greater than.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect inequality. The total mass of the mixture (\(x + y\)) must be limited by the maximum capacity.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Algebraic equivalence of nutrient inequality</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Correct constraint. "At least" means greater than or equal to.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if they flipped the symbol</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans><![CDATA[A*x + B*y <= N]]></tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your inequality symbol. "At least" means it must be equal to or higher than the target, not lower than.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect inequality. Multiply each amount by the protein it provides, and ensure the sum satisfies the minimum target.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check absolute correctness of minimum amaranth</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions>0.01</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Set \(x = 0\) in your protein inequality, and solve for \(y\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>762461524</deployedseed>
+    <deployedseed>999439913</deployedseed>
+    <deployedseed>1585906128</deployedseed>
+    <deployedseed>419044783</deployedseed>
+    <deployedseed>1414982695</deployedseed>
+    <deployedseed>1270464091</deployedseed>
+    <deployedseed>330877047</deployedseed>
+    <deployedseed>883715878</deployedseed>
+    <deployedseed>1145450698</deployedseed>
+    <deployedseed>424632743</deployedseed>
+    <deployedseed>2139912337</deployedseed>
+    <deployedseed>772295374</deployedseed>
+    <deployedseed>374219533</deployedseed>
+    <deployedseed>463093132</deployedseed>
+    <deployedseed>501820765</deployedseed>
+    <deployedseed>1964341939</deployedseed>
+    <deployedseed>1157670042</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Diagnostic 1 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[x + y >= W]]></value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value><![CDATA[A*x + B*y <= N]]></value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>(if atom(ta1) then ta1+3 else apply(op(ta1), [lhs(ta1), rhs(ta1)+1/7]))</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>(if atom(ta2) then ta2+3 else apply(op(ta2), [lhs(ta2), rhs(ta2)+1/7]))</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3+3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>x</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>
