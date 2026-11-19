@@ -2,19 +2,33 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Permutations in Real Life - License plates</text>
+      <text>Counting license plate arrangements and ordered interview selections</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) A license plate consists of 3 distinct letters followed by 3 distinct digits. How many such plates are possible?</p>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> A license plate consists of \({@pnletters@}\) distinct letters followed by \({@pndigits@}\) distinct digits. How many such plates are possible?</p>
 <p>Number of plates = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) A group of \({@pn2@}\) friends is choosing \({@pr2@}\) of themselves to be interviewed, one after another. In how many orders can they be chosen?</p>
+
+<p><b>(b)</b> A group of \({@pn2@}\) friends is choosing \({@pr2@}\) of themselves to be interviewed, one after another. In how many orders can they be chosen?</p>
 <p>Number of orders = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>For the letters: \(_{26}P_3 = {@pL@}\). For the digits: \(_{10}P_3 = {@pD@}\).</p>
-<p>Since both parts of the plate happen together, multiply the two counts: \({@pL@} \times {@pD@} = {@ta1@}\)</p>
-<p>For part (b), this is a straightforward permutation: \(_{ {@pn2@} }P_{ {@pr2@} } = \dfrac{ {@pn2@}!}{({@pn2@}-{@pr2@})!} = {@ta2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>Because order matters and no item is repeated in either situation, use the permutation formula:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nP_r = \frac{n!}{(n - r)!}\)</p>
+
+<p><b>Part (a): License plates with {@pnletters@} distinct letters and {@pndigits@} distinct digits</b><br>
+Calculate the number of ordered arrangements for the \({@pnletters@}\) letters chosen from \(26\) letters, and for the \({@pndigits@}\) digits chosen from \(10\) digits (\(0\)–\(9\)):</p>
+<p style="margin-left: 20px;">\(\displaystyle \text{Letters: } {}_{26}P_{{@pnletters@}} = \frac{26!}{(26 - {@pnletters@})!} = \frac{26!}{{@remL@}!} = \frac{{@numL_factors@} \times {@remL@}!}{{@remL@}!} = {@numL_factors@} = {@pL@}\)</p>
+<p style="margin-left: 20px;">\(\displaystyle \text{Digits: } {}_{10}P_{{@pndigits@}} = \frac{10!}{(10 - {@pndigits@})!} = \frac{10!}{{@remD@}!} = \frac{{@numD_factors@} \times {@remD@}!}{{@remD@}!} = {@numD_factors@} = {@pD@}\)</p>
+<p>By the Fundamental Counting Principle, because both parts of the plate are chosen together, multiply the two counts:</p>
+<p style="margin-left: 20px;">\(\displaystyle \text{Total plates} = {@pL@} \times {@pD@} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of plates} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Choosing {@pr2@} friends in order from {@pn2@} friends</b><br>
+Substitute \(n = {@pn2@}\) and \(r = {@pr2@}\) into the permutation formula, expand \({@pn2@}!\) down to \({@rem2@}!\), and cancel \({@rem2@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn2@}}P_{{@pr2@}} = \frac{{@pn2@}!}{({@pn2@} - {@pr2@})!} = \frac{{@pn2@}!}{{@rem2@}!} = \frac{{@num2_factors@} \times {@rem2@}!}{{@rem2@}!} = {@num2_factors@} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of orders} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -24,25 +38,49 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pletters:26;
-pnletters:3;
-pdigits:10;
-pndigits:3;
-pL:pletters!/(pletters-pnletters)!;
-pD:pdigits!/(pdigits-pndigits)!;
-ta1:pL*pD;
-pn2:8+rand(8);
-pr2:2+rand(3);
-ta2:pn2!/(pn2-pr2)!;</text>
+      <text><![CDATA[/* Independent arrays yielding 3 x 3 x 8 x 3 = 216 distinct variants with non-colliding distractors */
+pletters : 26;
+pnletters : rand([2, 3, 4]);
+remL : pletters - pnletters;
+pL : factorial(pletters) / factorial(remL);
+
+pdigits : 10;
+pndigits : rand([2, 3, 4]);
+remD : pdigits - pndigits;
+pD : factorial(pdigits) / factorial(remD);
+
+ta1 : pL * pD;
+
+pn2 : rand([8, 9, 10, 11, 12, 13, 14, 15]);
+pr2 : rand([2, 3, 4]);
+rem2 : pn2 - pr2;
+ta2 : factorial(pn2) / factorial(rem2);
+
+/* Step-by-step expansion helpers */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+
+numL_factors : apply("mycross", makelist(pletters - i, i, 0, pnletters - 1));
+numD_factors : apply("mycross", makelist(pdigits - i, i, 0, pndigits - 1));
+num2_factors : apply("mycross", makelist(pn2 - i, i, 0, pr2 - 1));
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+ta1_added : pL + pD;
+ta1_rep : (pletters^pnletters) * (pdigits^pndigits);
+ta1_comb : binomial(pletters, pnletters) * binomial(pdigits, pndigits);
+
+ta2_comb : binomial(pn2, pr2);
+ta2_rep : pn2^pr2;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>n2={@pn2@}, r2={@pr2@}</text>
+      <text>Part A: {@pnletters@}L + {@pndigits@}D ({@ta1@}); Part B: {@pn2@}P{@pr2@} = {@ta2@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Permutations in Real-Life Contexts: License Plates and Ordered Selections</p>
+<p id="description">Grade 11 CBE: Combining independent permutation counts via the Fundamental Counting Principle and evaluating nPr = n!/(n - r)!.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -70,12 +108,12 @@ ta2:pn2!/(pn2-pr2)!;</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>10</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -88,12 +126,12 @@ ta2:pn2!/(pn2-pr2)!;</text>
       <name>ans2</name>
       <type>algebraic</type>
       <tans>ta2</tans>
-      <boxsize>10</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -112,7 +150,7 @@ ta2:pn2!/(pn2-pr2)!;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of license plates</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -137,27 +175,77 @@ ta2:pn2!/(pn2-pr2)!;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student added pL + pD instead of multiplying</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pL+pD</tans>
+        <tans>ta1_added</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>The letters and digits are chosen together, so multiply the two counts rather than adding them.</text>
+          <text><![CDATA[<p>You added \({@pL@} + {@pD@} = {@ta1_added@}\). Because every letter arrangement can be paired with every digit arrangement, multiply the two counts: \({@pL@} \times {@pD@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student allowed repeated letters and digits</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_rep</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \(26^{{@pnletters@}} \times 10^{{@pndigits@}}\), which allows repeated letters and digits. Because all characters must be distinct, use permutations: \({}_{26}P_{{@pnletters@}} \times {}_{10}P_{{@pndigits@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student used combinations instead of permutations</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_comb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You used combinations \({}_{26}C_{{@pnletters@}} \times {}_{10}C_{{@pndigits@}}\), which ignores character order. On a license plate, order matters, so use permutations: \({}_{26}P_{{@pnletters@}} \times {}_{10}P_{{@pndigits@}}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Calculate \({}_{26}P_{{@pnletters@}} = {@pL@}\) for the distinct letters and \({}_{10}P_{{@pndigits@}} = {@pD@}\) for the distinct digits, then multiply them together.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -171,7 +259,7 @@ ta2:pn2!/(pn2-pr2)!;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of interview orders</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -188,10 +276,60 @@ ta2:pn2!/(pn2-pr2)!;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Use the nPr formula: divide n! by (n−r)!, where n is the total group size and r is the number being chosen.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student used combinations instead of permutations</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_comb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated combinations \({}_{{@pn2@}}C_{{@pr2@}} = {@ta2_comb@}\), which ignores the order of interviews. Because they are interviewed one after another in order, use permutations: \(\displaystyle {}_{{@pn2@}}P_{{@pr2@}} = \frac{{@pn2@}!}{({@pn2@} - {@pr2@})!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student allowed selecting the same friend repeatedly</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_rep</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \({@pn2@}^{{@pr2@}} = {@ta2_rep@}\), which allows the same friend to be chosen more than once. Because \({@pr2@}\) different friends are chosen, evaluate \({}_{{@pn2@}}P_{{@pr2@}} = {@num2_factors@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Use the \({}_nP_r\) formula: divide \({@pn2@}!\) by \(({@pn2@} - {@pr2@})! = {@rem2@}!\), giving \({@num2_factors@}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -216,9 +354,72 @@ ta2:pn2!/(pn2-pr2)!;</text>
     <deployedseed>601872507</deployedseed>
     <deployedseed>1087948900</deployedseed>
     <deployedseed>1855388888</deployedseed>
+    <deployedseed>993923242</deployedseed>
+    <deployedseed>208280248</deployedseed>
+    <deployedseed>2025195815</deployedseed>
+    <deployedseed>869271646</deployedseed>
+    <deployedseed>555687369</deployedseed>
+    <deployedseed>977773556</deployedseed>
+    <deployedseed>584844023</deployedseed>
+    <deployedseed>980532218</deployedseed>
+    <deployedseed>675241069</deployedseed>
+    <deployedseed>1153378260</deployedseed>
+    <deployedseed>1616091240</deployedseed>
+    <deployedseed>1054628965</deployedseed>
+    <deployedseed>2075605406</deployedseed>
+    <deployedseed>696917515</deployedseed>
+    <deployedseed>2095691802</deployedseed>
+    <deployedseed>309329161</deployedseed>
+    <deployedseed>1500520965</deployedseed>
+    <deployedseed>1786164473</deployedseed>
+    <deployedseed>60324537</deployedseed>
+    <deployedseed>1253206339</deployedseed>
+    <deployedseed>829357085</deployedseed>
+    <deployedseed>589993541</deployedseed>
+    <deployedseed>2045826772</deployedseed>
+    <deployedseed>1693232984</deployedseed>
+    <deployedseed>1462239744</deployedseed>
+    <deployedseed>2023879132</deployedseed>
+    <deployedseed>410507859</deployedseed>
+    <deployedseed>1878116776</deployedseed>
+    <deployedseed>358458080</deployedseed>
+    <deployedseed>1130940646</deployedseed>
+    <deployedseed>1072164978</deployedseed>
+    <deployedseed>240556168</deployedseed>
+    <deployedseed>710010726</deployedseed>
+    <deployedseed>1832028253</deployedseed>
+    <deployedseed>2015043585</deployedseed>
+    <deployedseed>1605102567</deployedseed>
+    <deployedseed>1250845380</deployedseed>
+    <deployedseed>1910613609</deployedseed>
+    <deployedseed>476707055</deployedseed>
+    <deployedseed>2147024868</deployedseed>
+    <deployedseed>877072960</deployedseed>
+    <deployedseed>857470016</deployedseed>
+    <deployedseed>369343531</deployedseed>
+    <deployedseed>1232055185</deployedseed>
+    <deployedseed>1612873528</deployedseed>
+    <deployedseed>1698738176</deployedseed>
+    <deployedseed>2027289484</deployedseed>
+    <deployedseed>1051429605</deployedseed>
+    <deployedseed>13516816</deployedseed>
+    <deployedseed>1855139087</deployedseed>
+    <deployedseed>1677963353</deployedseed>
+    <deployedseed>210095644</deployedseed>
+    <deployedseed>142349504</deployedseed>
+    <deployedseed>2053147142</deployedseed>
+    <deployedseed>186383524</deployedseed>
+    <deployedseed>1849271309</deployedseed>
+    <deployedseed>1817557748</deployedseed>
+    <deployedseed>1657017948</deployedseed>
+    <deployedseed>1508095457</deployedseed>
+    <deployedseed>574270908</deployedseed>
+    <deployedseed>341759265</deployedseed>
+    <deployedseed>646806548</deployedseed>
+    <deployedseed>564929989</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -231,21 +432,69 @@ ta2:pn2!/(pn2-pr2)!;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Adding letter and digit permutations in Part A and using combinations in Part B</description>
       <testinput>
         <name>ans1</name>
-        <value>pL+pD</value>
+        <value>ta1_added</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_comb</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Allowing repeated characters in Part A and repeated selections in Part B</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_rep</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_rep</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Using combinations instead of permutations in Part A</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_comb</value>
       </testinput>
       <testinput>
         <name>ans2</name>
@@ -255,13 +504,13 @@ ta2:pn2!/(pn2-pr2)!;</text>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

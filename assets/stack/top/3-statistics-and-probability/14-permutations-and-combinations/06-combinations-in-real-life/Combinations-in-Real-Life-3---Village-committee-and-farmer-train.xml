@@ -2,21 +2,37 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Combinations in Real Life 3 - Village committee and farmer training</text>
+      <text>Forming a village water committee and selecting dairy cooperative trainees</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) A village water committee is to be formed by selecting \({@pm@}\) men from \({@pa@}\) volunteers and \({@pw@}\) women from \({@pb@}\) volunteers. How many different committees are possible?</p>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> A village water committee is to be formed by selecting \({@pm@}\) men from \({@pa@}\) volunteers and \({@pw@}\) women from \({@pb@}\) volunteers. How many different committees are possible?</p>
 <p>Number of committees = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) A dairy farmers' cooperative has \({@pn2@}\) members. Four members will be chosen to attend a training on improved dairy farming. How many different groups of 4 members can be chosen?</p>
+
+<p><b>(b)</b> A dairy farmers' cooperative has \({@pn2@}\) members. \({@pr2@}\) members will be chosen to attend a training on improved dairy farming. How many different groups of \({@pr2@}\) members can be chosen?</p>
 <p>Number of groups = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>Choose the men and the women separately, then multiply because both selections happen together.</p>
-<p>Men: \(_{ {@pa@} }C_{ {@pm@} } = {@pMen@}\). Women: \(_{ {@pb@} }C_{ {@pw@} } = {@pWomen@}\).</p>
-<p>\(\text{Committees} = {@pMen@} \times {@pWomen@} = {@ta1@}\)</p>
-<p>For part (b), the order in which members are chosen does not matter, so this is \(_{ {@pn2@} }C_4\):</p>
-<p>\(_{ {@pn2@} }C_4 = \dfrac{ {@pn2@}!}{4!\,{@pn2-4@}!} = {@ta2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>Because the order in which members are selected does not create a different committee or group, use the combination formula:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nC_r = \frac{n!}{r!(n - r)!}\)</p>
+
+<p><b>Part (a): Forming the village water committee</b><br>
+Select the men and the women separately:</p>
+<ul>
+  <li><b>Selecting \({@pm@}\) men from \({@pa@}\) volunteers:</b><br>
+  \(\displaystyle {}_{{@pa@}}C_{{@pm@}} = \frac{{@pa@}!}{{@pm@}!\,({@pa@} - {@pm@})!} = \frac{{@pa@}!}{{@pm@}!\,{@men_rem@}!} = \frac{{@men_num_factors@} \times {@men_rem@}!}{({@men_den_factors@}) \times {@men_rem@}!} = \frac{{@men_num_factors@}}{{@men_den_factors@}} = \frac{{@men_num_prod@}}{{@men_den_prod@}} = {@pMen@}\)</li>
+  <li style="margin-top: 8px;"><b>Selecting \({@pw@}\) women from \({@pb@}\) volunteers:</b><br>
+  \(\displaystyle {}_{{@pb@}}C_{{@pw@}} = \frac{{@pb@}!}{{@pw@}!\,({@pb@} - {@pw@})!} = \frac{{@pb@}!}{{@pw@}!\,{@women_rem@}!} = \frac{{@women_num_factors@} \times {@women_rem@}!}{({@women_den_factors@}) \times {@women_rem@}!} = \frac{{@women_num_factors@}}{{@women_den_factors@}} = \frac{{@women_num_prod@}}{{@women_den_prod@}} = {@pWomen@}\)</li>
+</ul>
+<p>By the Fundamental Counting Principle, multiply the two independent counts together:</p>
+<p style="margin-left: 20px;">\(\displaystyle \text{Total committees} = {}_{{@pa@}}C_{{@pm@}} \times {}_{{@pb@}}C_{{@pw@}} = {@pMen@} \times {@pWomen@} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of committees} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Selecting \({@pr2@}\) trainees from \({@pn2@}\) cooperative members</b><br>
+Substitute \(n = {@pn2@}\) and \(r = {@pr2@}\), simplify \(({@pn2@} - {@pr2@})! = {@rem2@}!\), and cancel {@rem2@}!: </p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,({@pn2@} - {@pr2@})!} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!} = \frac{{@b_num_factors@} \times {@rem2@}!}{({@b_den_factors@}) \times {@rem2@}!} = \frac{{@b_num_factors@}}{{@b_den_factors@}} = \frac{{@b_num_prod@}}{{@b_den_prod@}} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of groups} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -26,24 +42,60 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pa:6+rand(4);
-pm:2+rand(2);
-pb:6+rand(4);
-pw:2+rand(2);
-pMen:pa!/(pm!*(pa-pm)!);
-pWomen:pb!/(pw!*(pb-pw)!);
-ta1:pMen*pWomen;
-pn2:15+rand(11);
-ta2:pn2!/(4!*(pn2-4)!);</text>
+      <text><![CDATA[/* Independent arrays yielding 5 x 2 x 5 x 2 x 10 x 3 = 3,000 unique variants with strictly non-colliding distractors */
+pa : rand([6, 7, 8, 9, 10]);
+pm : rand([2, 3]);
+pb : rand([6, 7, 8, 9, 10]);
+pw : rand([2, 3]);
+
+men_rem : pa - pm;
+women_rem : pb - pw;
+
+pMen : binomial(pa, pm);
+pWomen : binomial(pb, pw);
+ta1 : pMen * pWomen;
+
+pn2 : rand([14, 15, 16, 18, 19, 20, 21, 22, 24, 25]);
+pr2 : rand([3, 4, 5]);
+rem2 : pn2 - pr2;
+ta2 : binomial(pn2, pr2);
+
+/* Step-by-step factorial expansion and intermediate quotient helpers */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+
+men_num_factors : apply("mycross", makelist(pa - i, i, 0, pm - 1));
+men_den_factors : apply("mycross", makelist(pm - i, i, 0, pm - 1));
+men_num_prod : factorial(pa) / factorial(men_rem);
+men_den_prod : factorial(pm);
+
+women_num_factors : apply("mycross", makelist(pb - i, i, 0, pw - 1));
+women_den_factors : apply("mycross", makelist(pw - i, i, 0, pw - 1));
+women_num_prod : factorial(pb) / factorial(women_rem);
+women_den_prod : factorial(pw);
+
+b_num_factors : apply("mycross", makelist(pn2 - i, i, 0, pr2 - 1));
+b_den_factors : apply("mycross", makelist(pr2 - i, i, 0, pr2 - 1));
+b_num_prod : factorial(pn2) / factorial(rem2);
+b_den_prod : factorial(pr2);
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+ta1_add : pMen + pWomen;
+ta1_pool : binomial(pa + pb, pm + pw);
+ta1_perm : (factorial(pa) / factorial(men_rem)) * (factorial(pb) / factorial(women_rem));
+
+ta2_perm : factorial(pn2) / factorial(rem2);
+ta2_no_rem : factorial(pn2) / factorial(pr2);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>a={@pa@}, m={@pm@}, b={@pb@}, w={@pw@}, n2={@pn2@}</text>
+      <text>Part A: {@pa@}C{@pm@} * {@pb@}C{@pw@} = {@ta1@}; Part B: {@pn2@}C{@pr2@} = {@ta2@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Applying Combinations in Real-Life Committee and Group Selection</p>
+<p id="description">Grade 11 CBE: Solving real-life selection problems using combinations and the Fundamental Counting Principle.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -76,7 +128,7 @@ ta2:pn2!/(4!*(pn2-4)!);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -94,7 +146,7 @@ ta2:pn2!/(4!*(pn2-4)!);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -113,7 +165,7 @@ ta2:pn2!/(4!*(pn2-4)!);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of committees</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -138,27 +190,77 @@ ta2:pn2!/(4!*(pn2-4)!);</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student added pMen + pWomen instead of multiplying</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pMen+pWomen</tans>
+        <tans>ta1_add</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>The men and the women are both chosen for the same committee, so multiply the two counts rather than adding them.</text>
+          <text><![CDATA[<p>You added \({}_{{@pa@}}C_{{@pm@}} + {}_{{@pb@}}C_{{@pw@}} = {@pMen@} + {@pWomen@} = {@ta1_add@}\). Because both the men and the women are selected together for the same committee, multiply the two counts: \({@pMen@} \times {@pWomen@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student ignored gender quotas and pooled all volunteers together</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_pool</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You computed \({}_{{@pa+pb@}}C_{{@pm+pw@}} = {@ta1_pool@}\) by pooling all volunteers together. The committee must have exactly \({@pm@}\) men from \({@pa@}\) and \({@pw@}\) women from \({@pb@}\), so compute \({}_{{@pa@}}C_{{@pm@}} \times {}_{{@pb@}}C_{{@pw@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student used permutations instead of combinations</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_perm</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You used permutations \({}_{{@pa@}}P_{{@pm@}} \times {}_{{@pb@}}P_{{@pw@}} = {@ta1_perm@}\). Since committee members have unranked roles, order does not matter: use combinations \({}_{{@pa@}}C_{{@pm@}} \times {}_{{@pb@}}C_{{@pw@}}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Select the men in \({}_{{@pa@}}C_{{@pm@}}\) ways and the women in \({}_{{@pb@}}C_{{@pw@}}\) ways, then multiply the two results together.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -172,7 +274,7 @@ ta2:pn2!/(4!*(pn2-4)!);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of trainee groups</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -189,10 +291,60 @@ ta2:pn2!/(4!*(pn2-4)!);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>The order in which members are chosen doesn't matter: use nC4 = n! ÷ (4! × (n−4)!).</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student used permutations nPr instead of combinations nCr</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_perm</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the permutation \(\displaystyle {}_{{@pn2@}}P_{{@pr2@}} = \frac{{@pn2@}!}{{@rem2@}!} = {@ta2_perm@}\). Because the order in which trainees are chosen does not change the group, divide by \({@pr2@}! = {@b_den_prod@}\) using \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student omitted (n - r)! in the denominator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_no_rem</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided \({@pn2@}!\) by \({@pr2@}!\) alone, forgetting \(({@pn2@} - {@pr2@})! = {@rem2@}!\) in the denominator. Evaluate \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Order does not matter when selecting a group of trainees, so evaluate \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,({@pn2@} - {@pr2@})!} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -216,9 +368,29 @@ ta2:pn2!/(4!*(pn2-4)!);</text>
     <deployedseed>890842731</deployedseed>
     <deployedseed>79663834</deployedseed>
     <deployedseed>1592900525</deployedseed>
+    <deployedseed>1534515662</deployedseed>
+    <deployedseed>873432442</deployedseed>
+    <deployedseed>2009105476</deployedseed>
+    <deployedseed>1212527305</deployedseed>
+    <deployedseed>689049442</deployedseed>
+    <deployedseed>1700442330</deployedseed>
+    <deployedseed>858173890</deployedseed>
+    <deployedseed>1984076558</deployedseed>
+    <deployedseed>1976006645</deployedseed>
+    <deployedseed>441775426</deployedseed>
+    <deployedseed>370062227</deployedseed>
+    <deployedseed>643781494</deployedseed>
+    <deployedseed>2010586880</deployedseed>
+    <deployedseed>343955351</deployedseed>
+    <deployedseed>1681764455</deployedseed>
+    <deployedseed>1343390324</deployedseed>
+    <deployedseed>1446927013</deployedseed>
+    <deployedseed>27502596</deployedseed>
+    <deployedseed>261817020</deployedseed>
+    <deployedseed>711612765</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -231,21 +403,69 @@ ta2:pn2!/(4!*(pn2-4)!);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Adding counts in Part A and using permutations nPr in Part B</description>
       <testinput>
         <name>ans1</name>
-        <value>pMen+pWomen</value>
+        <value>ta1_add</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_perm</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Ignoring gender separation in Part A and omitting (n - r)! in Part B</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_pool</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_no_rem</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Using permutations in Part A and correct answer in Part B</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_perm</value>
       </testinput>
       <testinput>
         <name>ans2</name>
@@ -255,13 +475,13 @@ ta2:pn2!/(4!*(pn2-4)!);</text>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

@@ -2,20 +2,32 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Permutations II  - Items together and fixed positions</text>
+      <text>Arranging books with grouping and fixed-position restrictions</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) There are \({@pblock@}\) different Mathematics books and \({@pother@}\) different Science books. In how many ways can they be arranged on a shelf if all the Mathematics books must stay together?</p>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> There are \({@pblock@}\) different Mathematics books and \({@pother@}\) different Science books. In how many ways can they be arranged on a shelf if all the Mathematics books must stay together?</p>
 <p>Number of ways = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) \({@pn2@}\) different books are arranged on a shelf, with one particular book fixed at the start. In how many ways can the rest be arranged?</p>
+
+<p><b>(b)</b> \({@pn2@}\) different books are arranged on a shelf, with one particular book fixed at the start. In how many ways can the rest be arranged?</p>
 <p>Number of ways = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>Treat the \({@pblock@}\) Mathematics books as one block. This gives \({@pother@} + 1 = {@ptotal@}\) items to arrange: \({@ptotal@}!\).</p>
-<p>Within the block, the Mathematics books can be arranged in \({@pblock@}!\) ways.</p>
-<p>\(\text{Total} = {@ptotal@}! \times {@pblock@}! = {@ta1@}\)</p>
-<p>For part (b), with one book fixed in position, only the remaining \({@pn2@} - 1 = {@pn2-1@}\) books need arranging: \(({@pn2@}-1)! = {@ta2@}\).</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part (a): Grouping the Mathematics books together</b><br>
+Treat the \({@pblock@}\) Mathematics books as <b>one single block</b>. Together with the \({@pother@}\) Science books, there are \({@pother@} + 1 = {@ptotal@}\) items to arrange, which can be ordered in \({@ptotal@}!\) ways.<br>
+Within the block, the \({@pblock@}\) different Mathematics books can also be arranged among themselves in \({@pblock@}!\) ways.</p>
+<p>Evaluate each factorial separately:</p>
+<p style="margin-left: 20px;">\(\displaystyle {@ptotal@}! = {@exp_ptotal@} = {@val_ptotal_fact@}\)</p>
+<p style="margin-left: 20px;">\(\displaystyle {@pblock@}! = {@exp_pblock@} = {@val_pblock_fact@}\)</p>
+<p>By the Fundamental Counting Principle, multiply the two counts together:</p>
+<p style="margin-left: 20px;">\(\displaystyle \text{Total ways} = {@ptotal@}! \times {@pblock@}! = {@val_ptotal_fact@} \times {@val_pblock_fact@} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of ways} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Fixing one book at the start</b><br>
+Because \(1\) particular book is fixed in the first position, only the remaining \({@pn2@} - 1 = {@prem2@}\) books are free to be arranged:</p>
+<p style="margin-left: 20px;">\(\displaystyle ({@pn2@} - 1)! = {@prem2@}! = {@exp_prem2@} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of ways} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,21 +37,42 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pother:2+rand(3);
-pblock:2+rand(3);
-ptotal:pother+1;
-ta1:ptotal!*pblock!;
-pn2:4+rand(5);
-ta2:(pn2-1)!;</text>
+      <text><![CDATA[/* Independent arrays yielding 4 x 4 x 7 = 112 distinct variants */
+pblock : rand([2, 3, 4, 5]);
+pother : rand([2, 3, 4, 5]);
+ptotal : pother + 1;
+
+val_ptotal_fact : factorial(ptotal);
+val_pblock_fact : factorial(pblock);
+ta1 : val_ptotal_fact * val_pblock_fact;
+
+pn2 : rand([4, 5, 6, 7, 8, 9, 10]);
+prem2 : pn2 - 1;
+ta2 : factorial(prem2);
+
+/* Unsimplified n-ary multiplication strings for step-by-step factorial expansion */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+exp_ptotal : apply("mycross", makelist(ptotal - i, i, 0, ptotal - 1));
+exp_pblock : apply("mycross", makelist(pblock - i, i, 0, pblock - 1));
+exp_prem2 : apply("mycross", makelist(prem2 - i, i, 0, prem2 - 1));
+
+/* Distractors for targeted PRT feedback */
+ta1_no_internal : val_ptotal_fact;
+ta1_unrestricted : factorial(pblock + pother);
+ta1_added : val_ptotal_fact + val_pblock_fact;
+
+ta2_unrestricted : factorial(pn2);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>other={@pother@}, block={@pblock@}, n2={@pn2@}</text>
+      <text><![CDATA[<p>Part A: {@pblock@} Maths + {@pother@} Science ({@ptotal@}! * {@pblock@}! = {@ta1@}); Part B: {@pn2@} books, 1 fixed ({@prem2@}! = {@ta2@})</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Restricted Permutations: Grouping and Fixed Positions</p>
+<p id="description">Grade 11 CBE: Calculating arrangements when a subset of items must stay together as a block and when one item is fixed in position.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -72,7 +105,7 @@ ta2:(pn2-1)!;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -90,7 +123,7 @@ ta2:(pn2-1)!;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -109,7 +142,7 @@ ta2:(pn2-1)!;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of arrangements with block</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -134,27 +167,77 @@ ta2:(pn2-1)!;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student forgot internal arrangements of the Mathematics block</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ptotal!</tans>
+        <tans>ta1_no_internal</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Don't forget the Mathematics books can also be ordered within their block: multiply by the block's own factorial as well.</text>
+          <text><![CDATA[<p>You arranged the \({@ptotal@}\) items (\({@ptotal@}! = {@val_ptotal_fact@}\)), but remember that the \({@pblock@}\) different Mathematics books can also be ordered within their block in \({@pblock@}! = {@val_pblock_fact@}\) ways. Multiply \({@ptotal@}! \times {@pblock@}!\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student ignored the grouping restriction</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_unrestricted</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \({@pblock + pother@}!\), which assumes the books can be arranged in any order. Because all \({@pblock@}\) Mathematics books must stay together, treat them as one single block first (\({@pother@} + 1 = {@ptotal@}\) items), then multiply by \({@pblock@}!\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student added factorials instead of multiplying</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_added</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added \({@ptotal@}! + {@pblock@}!\). By the Fundamental Counting Principle, multiply the \({@ptotal@}!\) block arrangements by the \({@pblock@}!\) internal arrangements: \({@ptotal@}! \times {@pblock@}!\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Treat the \({@pblock@}\) Mathematics books as one single block (giving \({@pother@} + 1 = {@ptotal@}\) items to arrange in \({@ptotal@}!\) ways), and multiply by the \({@pblock@}!\) ways to order the Mathematics books inside the block.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -168,7 +251,7 @@ ta2:(pn2-1)!;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of arrangements with 1 fixed book</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -185,10 +268,35 @@ ta2:(pn2-1)!;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>With one book fixed in place, only arrange the remaining books: that's (total − 1)!, not the full total!.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student computed total! without fixing the first book</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_unrestricted</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \({@pn2@}!\), which arranges all \({@pn2@}\) books. Because \(1\) book is fixed at the start, only the remaining \({@pn2@} - 1 = {@prem2@}\) books need arranging: \({@prem2@}!\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. With \(1\) book fixed in place at the start, only arrange the remaining \({@pn2@} - 1 = {@prem2@}\) books: evaluate \({@prem2@}!\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -212,12 +320,103 @@ ta2:(pn2-1)!;</text>
     <deployedseed>1501880277</deployedseed>
     <deployedseed>1267104254</deployedseed>
     <deployedseed>934556801</deployedseed>
+    <deployedseed>803179352</deployedseed>
+    <deployedseed>1893697406</deployedseed>
+    <deployedseed>904421812</deployedseed>
+    <deployedseed>47937259</deployedseed>
+    <deployedseed>2020997744</deployedseed>
+    <deployedseed>1330393580</deployedseed>
+    <deployedseed>1469810098</deployedseed>
+    <deployedseed>146405973</deployedseed>
+    <deployedseed>2113057181</deployedseed>
+    <deployedseed>966827499</deployedseed>
+    <deployedseed>315547217</deployedseed>
+    <deployedseed>1252354095</deployedseed>
+    <deployedseed>189276854</deployedseed>
+    <deployedseed>523450741</deployedseed>
+    <deployedseed>677196639</deployedseed>
+    <deployedseed>241628157</deployedseed>
+    <deployedseed>156791000</deployedseed>
+    <deployedseed>1897953131</deployedseed>
+    <deployedseed>386746768</deployedseed>
+    <deployedseed>1088080285</deployedseed>
+    <deployedseed>2081856010</deployedseed>
+    <deployedseed>525007449</deployedseed>
+    <deployedseed>682077453</deployedseed>
+    <deployedseed>1407901884</deployedseed>
+    <deployedseed>1099231248</deployedseed>
+    <deployedseed>1634363964</deployedseed>
+    <deployedseed>761665916</deployedseed>
+    <deployedseed>2090530500</deployedseed>
+    <deployedseed>648088607</deployedseed>
+    <deployedseed>508362087</deployedseed>
+    <deployedseed>2067512502</deployedseed>
+    <deployedseed>393914294</deployedseed>
+    <deployedseed>1158324993</deployedseed>
+    <deployedseed>1672988216</deployedseed>
+    <deployedseed>508060062</deployedseed>
+    <deployedseed>201808941</deployedseed>
+    <deployedseed>334469238</deployedseed>
+    <deployedseed>1463722443</deployedseed>
+    <deployedseed>264007480</deployedseed>
+    <deployedseed>1459909706</deployedseed>
+    <deployedseed>202828368</deployedseed>
+    <deployedseed>82704726</deployedseed>
+    <deployedseed>1088177637</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
-        <value>ptotal!</value>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Omitting internal block arrangements in Part A and ignoring fixed book in Part B</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_no_internal</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_unrestricted</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Ignoring grouping restriction in Part A</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_unrestricted</value>
       </testinput>
       <testinput>
         <name>ans2</name>
@@ -227,13 +426,37 @@ ta2:(pn2-1)!;</text>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Adding factorials instead of multiplying in Part A</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_added</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

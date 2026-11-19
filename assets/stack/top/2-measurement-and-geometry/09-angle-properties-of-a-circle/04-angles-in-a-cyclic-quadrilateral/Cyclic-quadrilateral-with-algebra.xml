@@ -4,9 +4,10 @@
     <name>
       <text>Cyclic quadrilateral with algebra</text>
     </name>
-    <questiontext format="moodle_auto_format">
+    <questiontext format="html">
       <text><![CDATA[<p>\(ABCD\) is a cyclic quadrilateral. Angle \(ABC = (2x + {@m@})^\circ\) and angle \(ADC = (3x - {@ll@})^\circ\).</p>
 
+<div style="text-align:center;" role="img" aria-label="A cyclic quadrilateral ABCD inside a circle. The angle at B is marked (2x + {#m#}) degrees and the angle at D is marked (3x minus {#ll#}) degrees.">
 [[jsxgraph width="380px" height="380px"]]
 var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.5,1.5,1.5,-1.5], axis:false, showCopyright:false, showNavigation:false, keepAspectRatio:true});
 var r = Math.PI/180;
@@ -20,18 +21,24 @@ for (var i=0; i<4; i++) {
 }
 board.create('circle',[[0,0],1],{fixed:true,strokeColor:'#333'});
 board.create('polygon',P,{fixed:true,fillColor:'none',borders:{strokeColor:'#333'},vertices:{visible:true}});
+board.create('nonreflexangle',[P[0],P[1],P[2]],{radius:0.22,withLabel:false,fillColor:'#1f5fa8',fillOpacity:0.3,strokeColor:'#1f5fa8',fixed:true,label:{fontSize:13,strokeColor:'#000'}});
+board.create('nonreflexangle',[P[2],P[3],P[0]],{radius:0.22,withLabel:false,fillColor:'#c0392b',fillOpacity:0.3,strokeColor:'#c0392b',fixed:true,label:{fontSize:13,strokeColor:'#000'}});
+function angLabel(brd, A, V, C, t) { var ax = A.X() - V.X(), ay = A.Y() - V.Y(), cx = C.X() - V.X(), cy = C.Y() - V.Y(); var la = Math.sqrt(ax*ax + ay*ay), lc = Math.sqrt(cx*cx + cy*cy); var ux = ax/la + cx/lc, uy = ay/la + cy/lc, lu = Math.sqrt(ux*ux + uy*uy); var h = Math.acos(Math.max(-1, Math.min(1, (ax*cx + ay*cy)/(la*lc))))/2; var d = Math.min(0.72, Math.max(0.44, 0.15/Math.tan(h))); brd.create('text', [V.X() + d*ux/lu, V.Y() + d*uy/lu, t], {anchorX:'middle', anchorY:'middle', fontSize:13, fixed:true, highlight:false, cssStyle:'background:rgba(255,255,255,0.85);padding:0 2px;border-radius:3px'}); }
+angLabel(board, P[0], P[1], P[2], '(2x+{#m#})°');
+angLabel(board, P[2], P[3], P[0], '(3x−{#ll#})°');
 [[/jsxgraph]]
+</div>
 
 <p>(a) Find the value of \(x\). [[input:ans1]] [[validation:ans1]]</p>
 <div>[[feedback:prt1]]</div>
 
-<p>(b) Find angle \(ABC\). [[input:ans2]] [[validation:ans2]]</p>
+<p>(b) Find angle \(ABC\). [[input:ans2]]\(^\circ\) [[validation:ans2]]</p>
 <div>[[feedback:prt2]]</div>
 
-<p>(c) Find angle \(ADC\). [[input:ans3]] [[validation:ans3]]</p>
+<p>(c) Find angle \(ADC\). [[input:ans3]]\(^\circ\) [[validation:ans3]]</p>
 <div>[[feedback:prt3]]</div>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
+    <generalfeedback format="html">
       <text><![CDATA[<h4>Worked solution</h4>
 <p><strong>(a)</strong> Opposite angles of a cyclic quadrilateral add up to \(180^\circ\):</p>
 <p>\((2x + {@m@}) + (3x - {@ll@}) = 180\)<br>
@@ -49,8 +56,8 @@ Check: \({@ta2@} + {@ta3@} = 180\), as required.</p>]]></text>
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>x0: rand_with_step(36,44,1);
-m: rand_with_step(10,30,5);
+      <text>x0: rand_with_step(36,43,1);
+m: rand_with_step(15,25,5);   /* m = 10, x = 40 made 'set them equal' give the right x; x = 44, m = 20 and x = 39, m = 30 made two mistakes give the same x */
 ll: 5*x0+m-180;
 ta1: x0;
 ta2: 2*x0+m;
@@ -66,19 +73,20 @@ rr: 60;</text>
       <text>{@ta1@},{@ta2@},{@ta3@},x = {@x0@}, m = {@m@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p>This question is based on the theorem that opposite angles of a cyclic quadrilateral add up to 180° in the section Angles in a Cyclic Quadrilateral of the CBC Grade 11 Mathematics textbook (INNODEMS).</p>
+<p id="concept">Opposite angles of a cyclic quadrilateral, with algebra</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
@@ -92,9 +100,9 @@ rr: 60;</text>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta1</tans>
-      <boxsize>15</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -104,15 +112,15 @@ rr: 60;</text>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans2</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta2</tans>
-      <boxsize>15</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -122,15 +130,15 @@ rr: 60;</text>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans3</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta3</tans>
-      <boxsize>15</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -140,8 +148,8 @@ rr: 60;</text>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -171,10 +179,60 @@ rr: 60;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>m+ll</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text>You have set the two angles equal. Opposite angles of a cyclic quadrilateral add up to \(180^\circ\); they are not equal.</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>(360+ll-m)/5</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text>You have made the two angles add up to \(360^\circ\). Opposite angles of a cyclic quadrilateral add up to \(180^\circ\).</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>\(ABC\) and \(ADC\) are opposite angles of a cyclic quadrilateral, so they add up to \(180^\circ\).</text>
         </falsefeedback>
       </node>
     </prt>
@@ -205,10 +263,35 @@ rr: 60;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>2*ans1+m</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text>This is \(2x + {@m@}\) with your value of \(x\), so your method is right. Check part (a).</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>Substitute your value of \(x\) into \(2x + {@m@}\).</text>
         </falsefeedback>
       </node>
     </prt>
@@ -239,10 +322,60 @@ rr: 60;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt3-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>3*ans1-ll</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text>This is \(3x - {@ll@}\) with your value of \(x\), so your method is right. Check part (a).</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>180-ans2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text>This is \(180^\circ\) minus your answer to part (b), so your method is right. Check part (b).</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>Substitute your value of \(x\) into \(3x - {@ll@}\), and check that your answers to (b) and (c) add up to \(180^\circ\).</text>
         </falsefeedback>
       </node>
     </prt>
@@ -256,14 +389,9 @@ rr: 60;</text>
     <deployedseed>101548843</deployedseed>
     <deployedseed>584096693</deployedseed>
     <deployedseed>1197779960</deployedseed>
-    <deployedseed>1425169749</deployedseed>
-    <deployedseed>1318569465</deployedseed>
-    <deployedseed>418498546</deployedseed>
-    <deployedseed>1056851832</deployedseed>
-    <deployedseed>1044479937</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -280,19 +408,257 @@ rr: 60;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt3-1-T ]</expectedanswernote>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Diagnostic 1 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>m+ll</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Diagnostic 2 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>(360+ll-m)/5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Follow-through: earlier parts wrong, this part consistent with them</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>2*(ta1+3)+m</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Follow-through: earlier parts wrong, this part consistent with them</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>3*(ta1+3)-ll</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F | prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Follow-through: earlier parts wrong, this part consistent with them</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+3</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>180-(ta2+3)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F | prt3-2-F | prt3-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+3</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3+3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F | prt3-2-F | prt3-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>8</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

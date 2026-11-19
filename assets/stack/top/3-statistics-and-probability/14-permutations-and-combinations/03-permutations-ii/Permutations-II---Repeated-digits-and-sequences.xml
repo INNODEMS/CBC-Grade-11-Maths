@@ -2,20 +2,30 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Permutations II - Repeated digits and sequences</text>
+      <text>Arranging repeated digits and coin-toss outcome sequences</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) How many unique numbers can be formed by arranging all of the digits \({@pA@}\) threes, \({@pB@}\) sevens, and \({@pC@}\) nines (all in one number)?</p>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> How many unique numbers can be formed by arranging all of the digits \({@pA@}\) threes, \({@pB@}\) sevens, and \({@pC@}\) nines (all in one number)?</p>
 <p>Number of arrangements = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) A coin is flipped \({@pnc@}\) times. How many different sequences of outcomes have exactly \({@pH@}\) Heads and \({@pT@}\) Tails?</p>
+
+<p><b>(b)</b> A coin is flipped \({@pnc@}\) times. How many different sequences of outcomes have exactly \({@pH@}\) Heads and \({@pT@}\) Tails?</p>
 <p>Number of sequences = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>Total digits = \({@pA@} + {@pB@} + {@pC@} = {@pn@}\). Divide by the factorial of each repeated digit:</p>
-<p>\(P = \dfrac{ {@pn@}!}{ {@pA@}!\,{@pB@}!\,{@pC@}!} = {@ta1@}\)</p>
-<p>For part (b), total flips = \({@pH@} + {@pT@} = {@pnc@}\). This is the same idea: arrange H's and T's, dividing by the repeats of each:</p>
-<p>\(P = \dfrac{ {@pnc@}!}{ {@pH@}!\,{@pT@}!} = {@ta2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>When arranging \(n\) items that contain identical groups of sizes \(r_1, r_2, \dots\), divide \(n!\) by the factorial of each repeated group:</p>
+<p style="margin-left: 20px;">\(\displaystyle P = \frac{n!}{r_1! \times r_2! \times \cdots}\)</p>
+
+<p><b>Part (a): Arranging {@pA@} threes, {@pB@} sevens, and {@pC@} nines</b><br>
+Total number of digits: \(n = {@pA@} + {@pB@} + {@pC@} = {@pn@}\). Substitute into the formula, expand \({@pn@}!\) until it matches \({@d1@}!\), and cancel:</p>
+<p style="margin-left: 20px;">\(\displaystyle P = \frac{{@pn@}!}{{@pA@}! \times {@pB@}! \times {@pC@}!} = \frac{{@num1_factors@} \times {@d1@}!}{{@d1@}! \times ({@den1_d2@}) \times ({@den1_d3@})} = \frac{{@num1_val@}}{{@den1_val@}} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of arrangements} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Sequences with {@pH@} Heads and {@pT@} Tails in {@pnc@} flips</b><br>
+Total number of flips: \(n = {@pH@} + {@pT@} = {@pnc@}\). Treating the identical Heads and identical Tails as two repeated groups, expand \({@pnc@}!\) until it matches \({@big2@}!\) and cancel:</p>
+<p style="margin-left: 20px;">\(\displaystyle P = \frac{{@pnc@}!}{{@pH@}! \times {@pT@}!} = \frac{{@num2_factors@} \times {@big2@}!}{{@big2@}! \times ({@den2_small@})} = \frac{{@num2_val@}}{{@den2_val@}} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of sequences} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,24 +35,63 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pA:2+rand(3);
-pB:2+rand(3);
-pC:2+rand(2);
-pn:pA+pB+pC;
-ta1:pn!/(pA!*pB!*pC!);
-pH:3+rand(5);
-pT:2+rand(4);
-pnc:pH+pT;
-ta2:pnc!/(pH!*pT!);</text>
+      <text><![CDATA[/* Independent pools yielding 23 x 20 = 460 distinct variants with non-colliding distractors */
+triple_a : rand([
+  [2, 2, 3], [2, 2, 4],
+  [2, 3, 3], [2, 3, 4], [2, 4, 2], [2, 4, 3], [2, 4, 4],
+  [3, 2, 3], [3, 2, 4], [3, 3, 2], [3, 3, 3], [3, 4, 2], [3, 4, 3], [3, 4, 4],
+  [4, 2, 2], [4, 2, 3], [4, 2, 4], [4, 3, 2], [4, 3, 3], [4, 3, 4], [4, 4, 2], [4, 4, 3], [4, 4, 4]
+]);
+pA : triple_a[1];
+pB : triple_a[2];
+pC : triple_a[3];
+pn : pA + pB + pC;
+ta1 : factorial(pn) / (factorial(pA) * factorial(pB) * factorial(pC));
+
+pH : rand([3, 4, 5, 6, 7]);
+pT : rand([2, 3, 4, 5]);
+pnc : pH + pT;
+ta2 : factorial(pnc) / (factorial(pH) * factorial(pT));
+
+/* Step-by-step expansion helpers */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+
+sorted1 : sort([pA, pB, pC], ">");
+d1 : sorted1[1];
+d2 : sorted1[2];
+d3 : sorted1[3];
+rem1 : pn - d1;
+num1_factors : apply("mycross", makelist(pn - i, i, 0, rem1 - 1));
+den1_d2 : apply("mycross", makelist(d2 - i, i, 0, d2 - 1));
+den1_d3 : apply("mycross", makelist(d3 - i, i, 0, d3 - 1));
+num1_val : factorial(pn) / factorial(d1);
+den1_val : factorial(d2) * factorial(d3);
+
+big2 : max(pH, pT);
+small2 : min(pH, pT);
+num2_factors : apply("mycross", makelist(pnc - i, i, 0, small2 - 1));
+den2_small : apply("mycross", makelist(small2 - i, i, 0, small2 - 1));
+num2_val : factorial(pnc) / factorial(big2);
+den2_val : factorial(small2);
+
+/* Distractors for targeted PRT feedback (guaranteed distinct across 100% of seeds) */
+ta1_omit_one : factorial(pn) / (factorial(pA) * factorial(pB));
+ta1_no_div : factorial(pn);
+ta1_no_fact : factorial(pn) / (pA * pB * pC);
+
+ta2_no_div : factorial(pnc);
+ta2_no_fact : factorial(pnc) / (pH * pT);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>A={@pA@}, B={@pB@}, C={@pC@}, H={@pH@}, T={@pT@}</text>
+      <text>Part A: {@pn@}!/({@pA@}!*{@pB@}!*{@pC@}!) = {@ta1@}; Part B: {@pnc@}!/({@pH@}!*{@pT@}!) = {@ta2@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Permutations with Repeated Digits and Binary Sequences</p>
+<p id="description">Grade 11 CBE: Calculating distinct arrangements of repeated digits and coin-toss outcome sequences using n!/(r1! * r2! * ...).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -75,7 +124,7 @@ ta2:pnc!/(pH!*pT!);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -93,7 +142,7 @@ ta2:pnc!/(pH!*pT!);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -112,7 +161,7 @@ ta2:pnc!/(pH!*pT!);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of unique numbers</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -137,27 +186,77 @@ ta2:pnc!/(pH!*pT!);</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student omitted one repeated group</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pn!/(pA!*pB!)</tans>
+        <tans>ta1_omit_one</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>You've left out one of the repeated groups: divide by the factorial of all three digit counts, not just two of them.</text>
+          <text><![CDATA[<p>You left out one of the repeated digit groups: divide \({@pn@}!\) by the factorial of all three digit counts (\({@pA@}! \times {@pB@}! \times {@pC@}!\)), not just two of them.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student computed n! without dividing by repeated groups</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_no_div</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \({@pn@}!\), which assumes all \({@pn@}\) digits are distinct. Divide by \({@pA@}! \times {@pB@}! \times {@pC@}!\) because swapping identical digits produces the same number.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student omitted factorials in denominator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_no_fact</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember to take the factorial of each repeat count in the denominator: divide \({@pn@}!\) by \({@pA@}! \times {@pB@}! \times {@pC@}!\), not \({@pA@} \times {@pB@} \times {@pC@}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Find the total number of digits \(n = {@pA@} + {@pB@} + {@pC@} = {@pn@}\) and divide \({@pn@}!\) by the factorial of each repeated digit group: \(\frac{{@pn@}!}{{@pA@}! \times {@pB@}! \times {@pC@}!}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -171,7 +270,7 @@ ta2:pnc!/(pH!*pT!);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of coin-flip sequences</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -188,10 +287,60 @@ ta2:pnc!/(pH!*pT!);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Treat Heads and Tails like two repeated groups: total flips factorial, divided by Heads factorial and Tails factorial.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student computed n! without dividing by repeated groups</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_no_div</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \({@pnc@}!\), which assumes all \({@pnc@}\) outcomes are distinct. Divide by \({@pH@}! \times {@pT@}!\) to account for the identical Heads and identical Tails.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student omitted factorials in denominator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_no_fact</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember to take the factorial of each outcome count in the denominator: divide \({@pnc@}!\) by \({@pH@}! \times {@pT@}!\), not \({@pH@} \times {@pT@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Treat the \({@pH@}\) Heads and \({@pT@}\) Tails as two repeated groups: divide \({@pnc@}!\) by \({@pH@}! \times {@pT@}!\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -215,9 +364,54 @@ ta2:pnc!/(pH!*pT!);</text>
     <deployedseed>967811384</deployedseed>
     <deployedseed>1861613776</deployedseed>
     <deployedseed>959233775</deployedseed>
+    <deployedseed>1735569051</deployedseed>
+    <deployedseed>449862106</deployedseed>
+    <deployedseed>1327181231</deployedseed>
+    <deployedseed>933142589</deployedseed>
+    <deployedseed>1687969862</deployedseed>
+    <deployedseed>423308139</deployedseed>
+    <deployedseed>697955535</deployedseed>
+    <deployedseed>169024606</deployedseed>
+    <deployedseed>1078921268</deployedseed>
+    <deployedseed>903255465</deployedseed>
+    <deployedseed>931929992</deployedseed>
+    <deployedseed>166933086</deployedseed>
+    <deployedseed>1022505643</deployedseed>
+    <deployedseed>2007550410</deployedseed>
+    <deployedseed>1344008271</deployedseed>
+    <deployedseed>266902058</deployedseed>
+    <deployedseed>135718842</deployedseed>
+    <deployedseed>1562937372</deployedseed>
+    <deployedseed>1124217585</deployedseed>
+    <deployedseed>1068165711</deployedseed>
+    <deployedseed>605759509</deployedseed>
+    <deployedseed>754094226</deployedseed>
+    <deployedseed>1662878661</deployedseed>
+    <deployedseed>271517289</deployedseed>
+    <deployedseed>762873865</deployedseed>
+    <deployedseed>807328588</deployedseed>
+    <deployedseed>1292786742</deployedseed>
+    <deployedseed>651620106</deployedseed>
+    <deployedseed>1666449394</deployedseed>
+    <deployedseed>1858733095</deployedseed>
+    <deployedseed>1472294419</deployedseed>
+    <deployedseed>1085027106</deployedseed>
+    <deployedseed>291710675</deployedseed>
+    <deployedseed>1667468345</deployedseed>
+    <deployedseed>1053736787</deployedseed>
+    <deployedseed>1845237091</deployedseed>
+    <deployedseed>753955548</deployedseed>
+    <deployedseed>710499572</deployedseed>
+    <deployedseed>754805812</deployedseed>
+    <deployedseed>1493549829</deployedseed>
+    <deployedseed>1170234659</deployedseed>
+    <deployedseed>1396647053</deployedseed>
+    <deployedseed>793217481</deployedseed>
+    <deployedseed>1931483853</deployedseed>
+    <deployedseed>1864650348</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -230,21 +424,69 @@ ta2:pnc!/(pH!*pT!);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Omitting one repeated group in Part A and forgetting to divide in Part B</description>
       <testinput>
         <name>ans1</name>
-        <value>pn!/(pA!*pB!)</value>
+        <value>ta1_omit_one</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_no_div</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Forgetting to divide in Part A and omitting factorials in Part B</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_no_div</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_no_fact</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Omitting factorials in denominator in Part A</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_no_fact</value>
       </testinput>
       <testinput>
         <name>ans2</name>
@@ -254,13 +496,13 @@ ta2:pnc!/(pH!*pT!);</text>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

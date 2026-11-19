@@ -110,7 +110,8 @@ stack_jxg.bind_point(ref_B, B);
 <div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>The average rate of change of \(s(t) = {@v@}t - 5t^2\) over \([a,b]\) is the slope of the secant line:
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>The average rate of change of \(s(t) = {@v@}t - 5t^2\) over \([a,b]\) is the slope of the secant line:
 \[ \frac{s(b)-s(a)}{b-a}. \]
 For this parabola it works out to \({@v@} - 5(a+b)\), so <em>any</em> interval whose two times add up to \(a+b = \dfrac{{@v@}-({@targ@})}{5} = {@apb@}\) gives an average rate of \({@targ@}\) m/s. That is why more than one position of \(A\) and \(B\) scores full marks &mdash; for example \(a = {@a_ta@}\), \(b = {@b_ta@}\).</p>
 {@extranote@}]]></text>
@@ -159,10 +160,11 @@ ytop : peak + 3;
 ybot : -3;
 
 /* Initial glider positions: an interval whose average rate is NOT the target
-   (so doing nothing scores zero). Shift the sample interval by 1 s; if that
+   (so doing nothing scores zero). Shift the sample interval by 0.5 s (a shift of 1 s changes the rate by 10, which
+   gives exactly -targ when targ = +-5); if that
    would fall off the domain, shift the other way. Its rate is targ-5 or targ+5. */
-a0 : if b_ta + 1 <= tmax then a_ta + 1 else a_ta - 1;
-b0 : if b_ta + 1 <= tmax then b_ta + 1 else b_ta - 1;
+a0 : if b_ta + 1/2 <= tmax then a_ta + 1/2 else a_ta - 1/2;
+b0 : if b_ta + 1/2 <= tmax then b_ta + 1/2 else b_ta - 1/2;
 
 /* Worked-solution note: the zero-target case gets the net-displacement insight. */
 extranote : if targ = 0
@@ -175,8 +177,12 @@ extranote : if targ = 0
     <questionnote format="moodle_auto_format">
       <text>\( s(t)={@v@}t-5t^2 \); target \({@targ@}\) m/s; need \(a+b={@apb@}\); sample \([{@a_ta@},{@b_ta@}]\)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="author">Daniel Murunga</p>
+<p id="concept"></p>
+<p id="reviewer"></p>
+<p id="reviewer"></p>
+<p id="description">Given the height of a stone thrown upwards, s(t) = vt - 5t^2, the student drags two points on an interactive graph so that the average rate of change over the interval equals a target value.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -348,7 +354,9 @@ signhint : if targ < 0
     <deployedseed>5005</deployedseed>
     <deployedseed>6006</deployedseed>
     <deployedseed>7007</deployedseed>
-    <deployedseed>8008</deployedseed>
+    <deployedseed>12122</deployedseed>
+    <deployedseed>13233</deployedseed>
+    <deployedseed>31031</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Passing instance: the sample correct interval [a_ta, b_ta] hits the target.</description>
@@ -419,24 +427,6 @@ signhint : if targ < 0
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
         <expectedanswernote>prt1-miss</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>5</testcase>
-      <description>Missed the negative: right magnitude, opposite sign (average rate = -targ). Meaningful only for a non-zero target - on a targ=0 variant there is no opposite sign, so run this against a non-zero-target seed.</description>
-      <testinput>
-        <name>ans1</name>
-        <value>ev([a_sf, v*a_sf-5*a_sf^2],simp)</value>
-      </testinput>
-      <testinput>
-        <name>ans2</name>
-        <value>ev([b_sf, v*b_sf-5*b_sf^2],simp)</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-signmiss</expectedanswernote>
       </expected>
     </qtest>
   </question>

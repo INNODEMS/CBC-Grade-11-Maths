@@ -18,7 +18,8 @@
 <div>[[feedback:prt3]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p><strong>Step 1.</strong> \( f'(x) = {@dfx@} \), so the tangent has gradient \( f'({@aa@}) = {@mt@} \).</p>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p><strong>Step 1.</strong> \( f'(x) = {@dfx@} \), so the tangent has gradient \( f'({@aa@}) = {@mt@} \).</p>
 <p><strong>Step 2.</strong> Perpendicular gradients multiply to \( -1 \), so the normal has gradient</p>
 \[ m_{\text{normal}} = -\frac{1}{f'({@aa@})} = -\frac{1}{{@mt@}} = {@mn@}. \]
 <p>(Turn the tangent gradient upside down <em>and</em> change its sign.)</p>
@@ -42,13 +43,22 @@ y &= {@mn@}\left(x - ({@aa@})\right) + ({@fa@}) \\
       <text><![CDATA[/* f(x) = c3 x^3 + c2 x^2 + c1 x + c0 (quadratic when c3 = 0) at x = aa.
    The tangent gradient mt is never 0 (normal would be vertical) and never +/-1
    (so that -1/m, 1/m, -m and m are four different numbers). */
-cands : sublist(
-  create_list([u3, u2, u1, u0, u], u3, [0, 1], u2, -3, 3, u1, -4, 4, u0, -5, 5, u, [-2, -1, 1, 2]),
-  lambda([z], block([m, fv],
-    m  : 3*z[1]*z[5]^2 + 2*z[2]*z[5] + z[3],
-    fv : z[1]*z[5]^3 + z[2]*z[5]^2 + z[3]*z[5] + z[4],
-    is((z[1] # 0 or z[2] # 0) and m # 0 and abs(m) # 1 and abs(m) <= 12 and fv # 0 and abs(fv) <= 15 and abs(fv) # abs(m) and fv*m # 2*z[5]))));
-pick : rand(cands);
+/* Chosen in two small stages (filtering all 5544 tuples at once timed out).
+   Stage 1: the x^3, x^2, x coefficients and the point, with tangent gradient m. */
+cands1 : sublist(
+  create_list([u3, u2, u1, u], u3, [0, 1], u2, -3, 3, u1, -4, 4, u, [-2, -1, 1, 2]),
+  lambda([z], block([m, b0],
+    m  : 3*z[1]*z[4]^2 + 2*z[2]*z[4] + z[3],
+    b0 : z[1]*z[4]^3 + z[2]*z[4]^2 + z[3]*z[4],
+    is((z[1] # 0 or z[2] # 0) and m # 0 and abs(m) # 1 and abs(m) <= 12 and abs(b0) <= 10))));
+p1 : rand(cands1);
+m1 : 3*p1[1]*p1[4]^2 + 2*p1[2]*p1[4] + p1[3];
+b1 : p1[1]*p1[4]^3 + p1[2]*p1[4]^2 + p1[3]*p1[4];
+/* Stage 2: the constant term, keeping f(a) non-zero and distinct from the gradients. */
+cands0 : sublist(makelist(j, j, -5, 5),
+  lambda([u0], block([fv], fv : b1 + u0,
+    is(fv # 0 and abs(fv) <= 15 and abs(fv) # abs(m1) and fv*m1 # 2*p1[4]))));
+pick : [p1[1], p1[2], p1[3], rand(cands0), p1[4]];
 fx  : pick[1]*x^3 + pick[2]*x^2 + pick[3]*x + pick[4];
 aa  : pick[5];
 dfx : diff(fx, x);
@@ -66,8 +76,12 @@ w_sign    : expand(mn*(x + aa) + fa);]]></text>
     <questionnote format="moodle_auto_format">
       <text>\( f(x)={@fx@},\ a={@aa@},\ m_t={@mt@},\ m_n={@mn@},\ y={@nl@} \)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="author">Daniel Murunga</p>
+<p id="concept"></p>
+<p id="reviewer"></p>
+<p id="reviewer"></p>
+<p id="description">Given a random cubic or quadratic and an x-value, the student finds the gradient of the tangent, the gradient of the normal, and the equation of the normal there.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -480,6 +494,8 @@ w_sign    : expand(mn*(x + aa) + fa);]]></text>
     <deployedseed>1006</deployedseed>
     <deployedseed>1007</deployedseed>
     <deployedseed>1008</deployedseed>
+    <deployedseed>11011</deployedseed>
+    <deployedseed>12122</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>All correct</description>
@@ -554,7 +570,7 @@ w_sign    : expand(mn*(x + aa) + fa);]]></text>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt2-nominus</expectedanswernote>
       </expected>
       <expected>
@@ -582,7 +598,7 @@ w_sign    : expand(mn*(x + aa) + fa);]]></text>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt2-norecip</expectedanswernote>
       </expected>
     </qtest>
@@ -604,13 +620,13 @@ w_sign    : expand(mn*(x + aa) + fa);]]></text>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt2-tangent</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt3-tangentline</expectedanswernote>
       </expected>
     </qtest>
@@ -632,7 +648,7 @@ w_sign    : expand(mn*(x + aa) + fa);]]></text>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt1-height</expectedanswernote>
       </expected>
       <expected>
@@ -666,7 +682,7 @@ w_sign    : expand(mn*(x + aa) + fa);]]></text>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt3-noshift</expectedanswernote>
       </expected>
     </qtest>
@@ -688,7 +704,7 @@ w_sign    : expand(mn*(x + aa) + fa);]]></text>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt3-sign</expectedanswernote>
       </expected>
     </qtest>
@@ -710,19 +726,19 @@ w_sign    : expand(mn*(x + aa) + fa);]]></text>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt1-incorrect</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt2-incorrect</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt3-incorrect</expectedanswernote>
       </expected>
     </qtest>

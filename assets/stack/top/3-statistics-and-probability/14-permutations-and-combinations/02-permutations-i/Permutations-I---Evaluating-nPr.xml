@@ -2,18 +2,29 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Permutations I - Evaluating nPr</text>
+      <text>Evaluating permutations using the nPr formula</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) Evaluate \(_{ {@pn@} }P_{ {@pr@} }\).</p>
-<p>\(_{ {@pn@} }P_{ {@pr@} } = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) Evaluate \(_{ {@pn2@} }P_{ {@pr2@} }\).</p>
-<p>\(_{ {@pn2@} }P_{ {@pr2@} } = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> Evaluate \({}_{{@pn@}}P_{{@pr@}}\).</p>
+<p>\({}_{{@pn@}}P_{{@pr@}} =\) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p><b>(b)</b> Evaluate \({}_{{@pn2@}}P_{{@pr2@}}\).</p>
+<p>\({}_{{@pn2@}}P_{{@pr2@}} =\) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>\(_{ {@pn@} }P_{ {@pr@} } = \dfrac{ {@pn@}!}{({@pn@}-{@pr@})!} = \dfrac{ {@pn@}!}{ {@pn-pr@}!}\), which expands to the product of \({@pr@}\) descending numbers starting at \({@pn@}\), giving \({@pans1@}\).</p>
-<p>\(_{ {@pn2@} }P_{ {@pr2@} } = \dfrac{ {@pn2@}!}{({@pn2@}-{@pr2@})!} = \dfrac{ {@pn2@}!}{ {@pn2-pr2@}!}\), which expands to the product of \({@pr2@}\) descending numbers starting at \({@pn2@}\), giving \({@pans2@}\).</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>Use the permutation formula \(\displaystyle {}_nP_r = \frac{n!}{(n - r)!}\).</p>
+
+<p><b>Part (a): Evaluating \({}_{{@pn@}}P_{{@pr@}}\)</b><br>
+Substitute \(n = {@pn@}\) and \(r = {@pr@}\), expand \({@pn@}!\) until it matches \({@k1@}!\), and cancel the common factor:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn@}}P_{{@pr@}} = \frac{{@pn@}!}{({@pn@} - {@pr@})!} = \frac{{@pn@}!}{{@k1@}!} = \frac{{@prod1@} \times {@k1@}!}{{@k1@}!} = {@prod1@} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ {}_{{@pn@}}P_{{@pr@}} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Evaluating \({}_{{@pn2@}}P_{{@pr2@}}\)</b><br>
+Substitute \(n = {@pn2@}\) and \(r = {@pr2@}\), expand \({@pn2@}!\) until it matches \({@k2@}!\), and cancel the common factor:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn2@}}P_{{@pr2@}} = \frac{{@pn2@}!}{({@pn2@} - {@pr2@})!} = \frac{{@pn2@}!}{{@k2@}!} = \frac{{@prod2@} \times {@k2@}!}{{@k2@}!} = {@prod2@} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ {}_{{@pn2@}}P_{{@pr2@}} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -23,23 +34,40 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pn:6+rand(6);
-pr:2+rand(3);
-pans1:pn!/(pn-pr)!;
-pn2:8+rand(5);
-pr2:2+rand(2);
-pans2:pn2!/(pn2-pr2)!;
-ta1:pans1;
-ta2:pans2;</text>
+      <text><![CDATA[/* Independent arrays yielding 10 x 3 x 10 x 3 = 900 distinct variants */
+pn : rand([6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+pr : rand([2, 3, 4]);
+k1 : pn - pr;
+ta1 : factorial(pn) / factorial(k1);
+
+pn2_pool : delete(pn, [7, 8, 9, 10, 11, 12, 14, 15, 16, 18, 20]);
+pn2 : rand(pn2_pool);
+pr2 : rand([2, 3, 4]);
+k2 : pn2 - pr2;
+ta2 : factorial(pn2) / factorial(k2);
+
+/* Build unsimplified n-ary products of the remaining r descending factors */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+prod1 : apply("mycross", makelist(pn - i, i, 0, pr - 1));
+prod2 : apply("mycross", makelist(pn2 - i, i, 0, pr2 - 1));
+
+/* Distractors for targeted PRT feedback */
+ta1_wrong_fact : factorial(pn);
+ta1_wrong_comb : binomial(pn, pr);
+
+ta2_wrong_fact : factorial(pn2);
+ta2_wrong_comb : binomial(pn2, pr2);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>n={@pn@}, r={@pr@}, n2={@pn2@}, r2={@pr2@}</text>
+      <text><![CDATA[<p>Part A: {@pn@}P{@pr@} = {@ta1@}; Part B: {@pn2@}P{@pr2@} = {@ta2@}</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Evaluating Permutations</p>
+<p id="description">Grade 11 CBE: Evaluating nPr expressions by applying n!/(n-r)!, expanding the numerator, and cancelling common factorial terms.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -72,7 +100,7 @@ ta2:pans2;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -90,7 +118,7 @@ ta2:pans2;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -109,7 +137,7 @@ ta2:pans2;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact permutation value</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -134,27 +162,52 @@ ta2:pans2;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student computed n! instead of nPr</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pn!</tans>
+        <tans>ta1_wrong_fact</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Remember nPr only multiplies r descending terms, not the full n!: divide n! by (n−r)! first.</text>
+          <text><![CDATA[<p>Remember \({}_{{@pn@}}P_{{@pr@}}\) multiplies only \({@pr@}\) descending terms starting at \({@pn@}\), not the full \({@pn@}!\). Divide \({@pn@}!\) by \(({@pn@} - {@pr@})! = {@k1@}!\) first.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student divided by r! (computed nCr)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong_comb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided by \({@pr@}!\), which gives combinations \({}_{{@pn@}}C_{{@pr@}}\). For permutations \({}_{{@pn@}}P_{{@pr@}}\), do not divide by \(r!\); multiply \({@prod1@}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Divide \({@pn@}!\) by \(({@pn@} - {@pr@})! = {@k1@}!\), which leaves \({@pr@}\) descending factors starting at \({@pn@}\): \({@prod1@}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -168,7 +221,7 @@ ta2:pans2;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact permutation value</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -185,10 +238,60 @@ ta2:pans2;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Use the same approach: divide n! by (n−r)!, which leaves r descending terms starting at n.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student computed n! instead of nPr</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong_fact</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember \({}_{{@pn2@}}P_{{@pr2@}}\) multiplies only \({@pr2@}\) descending terms starting at \({@pn2@}\), not the full \({@pn2@}!\). Divide \({@pn2@}!\) by \(({@pn2@} - {@pr2@})! = {@k2@}!\) first.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student divided by r! (computed nCr)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong_comb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided by \({@pr2@}!\), which gives combinations \({}_{{@pn2@}}C_{{@pr2@}}\). For permutations \({}_{{@pn2@}}P_{{@pr2@}}\), do not divide by \(r!\); multiply \({@prod2@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Divide \({@pn2@}!\) by \(({@pn2@} - {@pr2@})! = {@k2@}!\), which leaves \({@pr2@}\) descending factors starting at \({@pn2@}\): \({@prod2@}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -212,9 +315,139 @@ ta2:pans2;</text>
     <deployedseed>301914858</deployedseed>
     <deployedseed>1825411962</deployedseed>
     <deployedseed>2098462883</deployedseed>
+    <deployedseed>489180227</deployedseed>
+    <deployedseed>805274881</deployedseed>
+    <deployedseed>1753567875</deployedseed>
+    <deployedseed>1442427398</deployedseed>
+    <deployedseed>1622495147</deployedseed>
+    <deployedseed>2058755078</deployedseed>
+    <deployedseed>1393695508</deployedseed>
+    <deployedseed>752462105</deployedseed>
+    <deployedseed>235211680</deployedseed>
+    <deployedseed>333662445</deployedseed>
+    <deployedseed>768577468</deployedseed>
+    <deployedseed>1994883717</deployedseed>
+    <deployedseed>131226021</deployedseed>
+    <deployedseed>2032699111</deployedseed>
+    <deployedseed>83191957</deployedseed>
+    <deployedseed>1373263026</deployedseed>
+    <deployedseed>1123763711</deployedseed>
+    <deployedseed>1245272329</deployedseed>
+    <deployedseed>1951002371</deployedseed>
+    <deployedseed>2035896231</deployedseed>
+    <deployedseed>463990798</deployedseed>
+    <deployedseed>1215338191</deployedseed>
+    <deployedseed>134167336</deployedseed>
+    <deployedseed>806862900</deployedseed>
+    <deployedseed>1011108834</deployedseed>
+    <deployedseed>120609206</deployedseed>
+    <deployedseed>416616118</deployedseed>
+    <deployedseed>744777896</deployedseed>
+    <deployedseed>1538022554</deployedseed>
+    <deployedseed>1160257386</deployedseed>
+    <deployedseed>1579982026</deployedseed>
+    <deployedseed>1282883950</deployedseed>
+    <deployedseed>446378804</deployedseed>
+    <deployedseed>1879563851</deployedseed>
+    <deployedseed>1025642393</deployedseed>
+    <deployedseed>1910346318</deployedseed>
+    <deployedseed>1397628141</deployedseed>
+    <deployedseed>865766028</deployedseed>
+    <deployedseed>1632432236</deployedseed>
+    <deployedseed>292894246</deployedseed>
+    <deployedseed>1311662183</deployedseed>
+    <deployedseed>979004550</deployedseed>
+    <deployedseed>78016378</deployedseed>
+    <deployedseed>2016506897</deployedseed>
+    <deployedseed>880163459</deployedseed>
+    <deployedseed>1011299585</deployedseed>
+    <deployedseed>1245908901</deployedseed>
+    <deployedseed>1460323361</deployedseed>
+    <deployedseed>1938973837</deployedseed>
+    <deployedseed>960912793</deployedseed>
+    <deployedseed>851506016</deployedseed>
+    <deployedseed>1617805170</deployedseed>
+    <deployedseed>1324428632</deployedseed>
+    <deployedseed>1603707296</deployedseed>
+    <deployedseed>1126125210</deployedseed>
+    <deployedseed>2007243521</deployedseed>
+    <deployedseed>1556582913</deployedseed>
+    <deployedseed>259691262</deployedseed>
+    <deployedseed>1793087101</deployedseed>
+    <deployedseed>629339788</deployedseed>
+    <deployedseed>210944041</deployedseed>
+    <deployedseed>1809355465</deployedseed>
+    <deployedseed>1460029539</deployedseed>
+    <deployedseed>1066981022</deployedseed>
+    <deployedseed>1747849944</deployedseed>
+    <deployedseed>298233011</deployedseed>
+    <deployedseed>1236164330</deployedseed>
+    <deployedseed>1435222579</deployedseed>
+    <deployedseed>1913005104</deployedseed>
+    <deployedseed>1719529174</deployedseed>
+    <deployedseed>173851691</deployedseed>
+    <deployedseed>146730244</deployedseed>
+    <deployedseed>202782698</deployedseed>
+    <deployedseed>1617228580</deployedseed>
+    <deployedseed>538202076</deployedseed>
+    <deployedseed>1968773140</deployedseed>
+    <deployedseed>671840986</deployedseed>
+    <deployedseed>582688594</deployedseed>
+    <deployedseed>366647759</deployedseed>
+    <deployedseed>1313144893</deployedseed>
+    <deployedseed>1748498651</deployedseed>
+    <deployedseed>1786946780</deployedseed>
+    <deployedseed>1599413307</deployedseed>
+    <deployedseed>1763718030</deployedseed>
+    <deployedseed>2104098089</deployedseed>
+    <deployedseed>760023233</deployedseed>
+    <deployedseed>182897186</deployedseed>
+    <deployedseed>885416960</deployedseed>
+    <deployedseed>1055468926</deployedseed>
+    <deployedseed>2042174376</deployedseed>
+    <deployedseed>1157063912</deployedseed>
+    <deployedseed>1593889941</deployedseed>
+    <deployedseed>1478446713</deployedseed>
+    <deployedseed>627728807</deployedseed>
+    <deployedseed>186453833</deployedseed>
+    <deployedseed>1461531928</deployedseed>
+    <deployedseed>447319532</deployedseed>
+    <deployedseed>909579129</deployedseed>
+    <deployedseed>120933766</deployedseed>
+    <deployedseed>614120131</deployedseed>
+    <deployedseed>1987155996</deployedseed>
+    <deployedseed>2046893632</deployedseed>
+    <deployedseed>1678043503</deployedseed>
+    <deployedseed>1393750198</deployedseed>
+    <deployedseed>372045482</deployedseed>
+    <deployedseed>1179398675</deployedseed>
+    <deployedseed>472572916</deployedseed>
+    <deployedseed>1010728456</deployedseed>
+    <deployedseed>959636418</deployedseed>
+    <deployedseed>1704862146</deployedseed>
+    <deployedseed>2075300931</deployedseed>
+    <deployedseed>1789052794</deployedseed>
+    <deployedseed>183272786</deployedseed>
+    <deployedseed>884910867</deployedseed>
+    <deployedseed>1038314360</deployedseed>
+    <deployedseed>963243466</deployedseed>
+    <deployedseed>473218793</deployedseed>
+    <deployedseed>1522290144</deployedseed>
+    <deployedseed>1167340064</deployedseed>
+    <deployedseed>1747665085</deployedseed>
+    <deployedseed>1329278227</deployedseed>
+    <deployedseed>1762737452</deployedseed>
+    <deployedseed>1822889375</deployedseed>
+    <deployedseed>1825342074</deployedseed>
+    <deployedseed>2044082055</deployedseed>
+    <deployedseed>591807408</deployedseed>
+    <deployedseed>1350531922</deployedseed>
+    <deployedseed>1614892994</deployedseed>
+    <deployedseed>1536726490</deployedseed>
+    <deployedseed>96535344</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -227,37 +460,61 @@ ta2:pans2;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Using n! instead of nPr in both parts</description>
       <testinput>
         <name>ans1</name>
-        <value>pn!</value>
+        <value>ta1_wrong_fact</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_wrong_fact</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Dividing by r! (confusing permutations with combinations)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong_comb</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong_comb</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

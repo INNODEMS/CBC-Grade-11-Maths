@@ -2,18 +2,37 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Permutations I - Solving for n</text>
+      <text>Solving for n in permutation equations</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) If \(_nP_2 = {@pP@}\), find \(n\).</p>
-<p>\(n = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) If \(_nP_3 = {@pP2@}\), find \(n\).</p>
-<p>\(n = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> If \({}_nP_2 = {@pP@}\), find the value of \(n\).</p>
+<p>\(n =\) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p><b>(b)</b> If \({}_nP_3 = {@pP2@}\), find the value of \(n\).</p>
+<p>\(n =\) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>\(_nP_2 = n(n-1) = {@pP@}\). Look for two consecutive numbers whose product is \({@pP@}\): \({@pn@} \times {@pn-1@} = {@pP@}\), so \(n = {@pn@}\).</p>
-<p>\(_nP_3 = n(n-1)(n-2) = {@pP2@}\). Look for three consecutive numbers whose product is \({@pP2@}\): \({@pn2@} \times {@pn2-1@} \times {@pn2-2@} = {@pP2@}\), so \(n = {@pn2@}\).</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part (a): Solving \({}_nP_2 = {@pP@}\)</b><br>
+Use the permutation formula \(\displaystyle {}_nP_r = \frac{n!}{(n - r)!}\) with \(r = 2\) to rewrite the left-hand side:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nP_2 = \frac{n!}{(n - 2)!} = \frac{n(n - 1)(n - 2)!}{(n - 2)!} = n(n - 1)\)</p>
+<p>Set this product equal to \({@pP@}\) and solve the resulting quadratic equation:</p>
+<p style="margin-left: 20px;">\(\displaystyle n(n - 1) = {@pP@}\)</p>
+<p style="margin-left: 20px;">\(\displaystyle n^2 - n - {@pP@} = 0\)</p>
+<p style="margin-left: 20px;">\(\displaystyle (n - {@pn@})(n + {@pn_m1@}) = 0\)</p>
+<p style="margin-left: 20px;">\(\displaystyle n = {@pn@} \quad \text{or} \quad n = -{@pn_m1@}\)</p>
+<p>Since \(n\) must be an integer with \(n \ge 2\), we reject \(n = -{@pn_m1@}\). Checking the consecutive descending product confirms \({@pn@} \times {@pn_m1@} = {@pP@}\).</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ n = {@ta1@} }\)</p>
+
+<p><b>Part (b): Solving \({}_nP_3 = {@pP2@}\)</b><br>
+Use \(\displaystyle {}_nP_r = \frac{n!}{(n - r)!}\) with \(r = 3\) to rewrite the left-hand side:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nP_3 = \frac{n!}{(n - 3)!} = \frac{n(n - 1)(n - 2)(n - 3)!}{(n - 3)!} = n(n - 1)(n - 2)\)</p>
+<p>Find three consecutive descending positive integers (with \(n \ge 3\)) whose product equals \({@pP2@}\):</p>
+<p style="margin-left: 20px;">\(\displaystyle n(n - 1)(n - 2) = {@pP2@}\)</p>
+<p style="margin-left: 20px;">\(\displaystyle {@pn2@} \times {@pn2_m1@} \times {@pn2_m2@} = {@pP2@}\)</p>
+<p>Because \(n\) is the largest of the three consecutive integers, \(n = {@ta2@}\).</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ n = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -23,21 +42,34 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pn:5+rand(7);
-pP:pn*(pn-1);
-pn2:4+rand(6);
-pP2:pn2*(pn2-1)*(pn2-2);
-ta1:pn;
-ta2:pn2;</text>
+      <text>/* Independent arrays yielding 14 x 11 = 154 distinct variants */
+pn : rand([5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20]);
+pn_m1 : pn - 1;
+pP : pn * pn_m1;
+ta1 : pn;
+
+pn2_pool : delete(pn, [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+pn2 : rand(pn2_pool);
+pn2_m1 : pn2 - 1;
+pn2_m2 : pn2 - 2;
+pP2 : pn2 * pn2_m1 * pn2_m2;
+ta2 : pn2;
+
+/* Distractors for targeted PRT feedback */
+ta1_smaller_factor : pn_m1;
+ta1_neg_root : -pn_m1;
+ta2_mid_factor : pn2_m1;
+ta2_small_factor : pn2_m2;</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>P={@pP@}, n={@pn@}, P2={@pP2@}, n2={@pn2@}</text>
+      <text><![CDATA[<p>Part A: nP2 = {@pP@}, n = {@ta1@}; Part B: nP3 = {@pP2@}, n = {@ta2@}</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Solving Permutation Equations for n</p>
+<p id="description">Grade 11 CBE: Determining the unknown total number of objects n from given values of nP2 and nP3.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -70,7 +102,7 @@ ta2:pn2;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -88,7 +120,7 @@ ta2:pn2;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -107,7 +139,7 @@ ta2:pn2;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact value of n</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -132,27 +164,52 @@ ta2:pn2;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student entered the smaller factor (n - 1)</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pn+1</tans>
+        <tans>ta1_smaller_factor</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Check which of the two consecutive numbers is n: it's the larger one, since nPr starts counting down from n.</text>
+          <text><![CDATA[<p>You entered \(n - 1 = {@pn_m1@}\), the smaller of the two consecutive factors. Because \({}_nP_2 = n(n - 1)\) starts counting down from \(n\), \(n\) is the larger factor ({@pn@}).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student entered the negative quadratic root</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_neg_root</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Although \(n = -{@pn_m1@}\) satisfies the quadratic equation \(n^2 - n - {@pP@} = 0\), \(n\) in \({}_nP_2\) must be an integer with \(n \ge 2\). Use the positive root \(n = {@pn@}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Rewrite \({}_nP_2 = n(n - 1) = {@pP@}\) and find two consecutive positive integers whose product is \({@pP@}\); \(n\) is the larger integer.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -166,7 +223,7 @@ ta2:pn2;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact value of n</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -183,10 +240,60 @@ ta2:pn2;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Look for three consecutive numbers whose product matches the given value — n is the largest of the three.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student entered one of the smaller consecutive factors</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_mid_factor</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered \(n - 1 = {@pn2_m1@}\). Because \({}_nP_3 = n(n - 1)(n - 2)\) starts at \(n\), \(n\) is the largest of the three consecutive integers ({@pn2@}).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student entered the smallest consecutive factor (n - 2)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_small_factor</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered \(n - 2 = {@pn2_m2@}\), the smallest of the three consecutive factors. Because \({}_nP_3 = n(n - 1)(n - 2)\) starts counting down from \(n\), \(n\) is the largest factor ({@pn2@}).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Rewrite \({}_nP_3 = n(n - 1)(n - 2) = {@pP2@}\) and find three consecutive positive integers whose product is \({@pP2@}\); \(n\) is the largest of the three.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -210,9 +317,53 @@ ta2:pn2;</text>
     <deployedseed>1849872767</deployedseed>
     <deployedseed>1217461497</deployedseed>
     <deployedseed>2128984451</deployedseed>
+    <deployedseed>592601195</deployedseed>
+    <deployedseed>359830243</deployedseed>
+    <deployedseed>217296685</deployedseed>
+    <deployedseed>1330133090</deployedseed>
+    <deployedseed>1282949591</deployedseed>
+    <deployedseed>378754550</deployedseed>
+    <deployedseed>1092499856</deployedseed>
+    <deployedseed>1684771266</deployedseed>
+    <deployedseed>1242324944</deployedseed>
+    <deployedseed>678582458</deployedseed>
+    <deployedseed>1580595468</deployedseed>
+    <deployedseed>1121278737</deployedseed>
+    <deployedseed>1296348374</deployedseed>
+    <deployedseed>2060918602</deployedseed>
+    <deployedseed>540101647</deployedseed>
+    <deployedseed>584852747</deployedseed>
+    <deployedseed>887103191</deployedseed>
+    <deployedseed>382742028</deployedseed>
+    <deployedseed>1208034288</deployedseed>
+    <deployedseed>1870803080</deployedseed>
+    <deployedseed>1922942171</deployedseed>
+    <deployedseed>1145686154</deployedseed>
+    <deployedseed>1922081475</deployedseed>
+    <deployedseed>427690416</deployedseed>
+    <deployedseed>769661066</deployedseed>
+    <deployedseed>1577024306</deployedseed>
+    <deployedseed>1985293486</deployedseed>
+    <deployedseed>801030759</deployedseed>
+    <deployedseed>2055578334</deployedseed>
+    <deployedseed>1376907897</deployedseed>
+    <deployedseed>1423159470</deployedseed>
+    <deployedseed>1663141407</deployedseed>
+    <deployedseed>1552159244</deployedseed>
+    <deployedseed>2091087777</deployedseed>
+    <deployedseed>918709401</deployedseed>
+    <deployedseed>1125179218</deployedseed>
+    <deployedseed>535707922</deployedseed>
+    <deployedseed>1959275290</deployedseed>
+    <deployedseed>898998238</deployedseed>
+    <deployedseed>1629016156</deployedseed>
+    <deployedseed>472846970</deployedseed>
+    <deployedseed>797672974</deployedseed>
+    <deployedseed>278390841</deployedseed>
+    <deployedseed>964763820</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -225,37 +376,61 @@ ta2:pn2;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Entering smaller consecutive factors in both parts</description>
       <testinput>
         <name>ans1</name>
-        <value>pn+1</value>
+        <value>ta1_smaller_factor</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_mid_factor</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Entering negative root in Part A and smallest factor in Part B</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_neg_root</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_small_factor</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

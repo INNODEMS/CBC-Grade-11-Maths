@@ -2,20 +2,30 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Combinations 2 - Committees and handshakes</text>
+      <text>Selecting student committees and counting handshakes at a meeting</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) A committee of 3 students is to be chosen from a class of \({@pn1@}\). In how many ways can this be done?</p>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> A committee of \({@pr1@}\) students is to be chosen from a class of \({@pn1@}\). In how many ways can this be done?</p>
 <p>Number of ways = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) There are \({@pn2@}\) people at a meeting and everyone shakes hands with everyone else exactly once. How many handshakes take place?</p>
+
+<p><b>(b)</b> There are \({@pn2@}\) people at a meeting and everyone shakes hands with everyone else exactly once. How many handshakes take place?</p>
 <p>Number of handshakes = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>A committee has no specific roles, so order does not matter. This is \(_{ {@pn1@} }C_3\):</p>
-<p>\(_{ {@pn1@} }C_3 = \dfrac{ {@pn1@} \times {@pn1-1@} \times {@pn1-2@} }{3 \times 2 \times 1} = {@ta1@}\)</p>
-<p>For part (b), a handshake needs 2 people and A shaking B's hand is the same as B shaking A's, so this is \(_{ {@pn2@} }C_2\):</p>
-<p>\(_{ {@pn2@} }C_2 = \dfrac{ {@pn2@} \times {@pn2-1@} }{2} = {@ta2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>Because order does not matter in either selection, use the combination formula:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nC_r = \frac{n!}{r!(n - r)!}\)</p>
+
+<p><b>Part (a): Choosing a committee of {@pr1@} students from {@pn1@} students</b><br>
+A committee has no ranked roles, so selecting the same \({@pr1@}\) students in any order counts as one committee. Substitute \(n = {@pn1@}\) and \(r = {@pr1@}\), simplify \(({@pn1@} - {@pr1@})! = {@rem1@}!\), and cancel \({@rem1@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,({@pn1@} - {@pr1@})!} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!} = \frac{{@num1_factors@} \times {@rem1@}!}{({@den1_factors@}) \times {@rem1@}!} = \frac{{@num1_factors@}}{{@den1_factors@}} = \frac{{@num1_prod@}}{{@den1_prod@}} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of ways} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Counting handshakes among {@pn2@} people</b><br>
+Each handshake involves \(r = 2\) people, and person A shaking person B's hand is the same handshake as B shaking A's. Substitute \(n = {@pn2@}\) and \(r = 2\), simplify \(({@pn2@} - 2)! = {@rem2@}!\), and cancel \({@rem2@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn2@}}C_{2} = \frac{{@pn2@}!}{2!\,({@pn2@} - 2)!} = \frac{{@pn2@}!}{2!\,{@rem2@}!} = \frac{{@num2_factors@} \times {@rem2@}!}{(2 \times 1) \times {@rem2@}!} = \frac{{@num2_factors@}}{2 \times 1} = \frac{{@num2_prod@}}{2} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of handshakes} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,19 +35,44 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pn1:10+rand(10);
-ta1:pn1*(pn1-1)*(pn1-2)/6;
-pn2:8+rand(8);
-ta2:pn2*(pn2-1)/2;</text>
+      <text><![CDATA[/* Independent arrays yielding 3 x 7 x 10 = 210 distinct variants with non-colliding distractors */
+pr1 : rand([3, 4, 5]);
+pn1 : rand([9, 10, 11, 12, 13, 14, 15]);
+rem1 : pn1 - pr1;
+ta1 : binomial(pn1, pr1);
+
+pn2 : rand([6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+rem2 : pn2 - 2;
+ta2 : binomial(pn2, 2);
+
+/* Step-by-step expansion and intermediate quotient helpers */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+
+num1_factors : apply("mycross", makelist(pn1 - i, i, 0, pr1 - 1));
+den1_factors : apply("mycross", makelist(pr1 - i, i, 0, pr1 - 1));
+num1_prod : factorial(pn1) / factorial(rem1);
+den1_prod : factorial(pr1);
+
+num2_factors : apply("mycross", [pn2, pn2 - 1]);
+num2_prod : pn2 * (pn2 - 1);
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+ta1_perm : factorial(pn1) / factorial(rem1);
+ta1_rep : pn1^pr1;
+
+ta2_perm : pn2 * (pn2 - 1);
+ta2_sq : pn2^2;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>n1={@pn1@}, n2={@pn2@}</text>
+      <text>Part A: {@pn1@}C{@pr1@} = {@ta1@}; Part B: {@pn2@}C2 = {@ta2@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Combinations in Real-Life Contexts: Committees and Handshakes</p>
+<p id="description">Grade 11 CBE: Evaluating unordered selections using nCr = n!/[r!(n - r)!] for committees and pairwise handshakes.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -70,7 +105,7 @@ ta2:pn2*(pn2-1)/2;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -88,7 +123,7 @@ ta2:pn2*(pn2-1)/2;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -107,7 +142,7 @@ ta2:pn2*(pn2-1)/2;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of committees</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -132,27 +167,52 @@ ta2:pn2*(pn2-1)/2;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student computed permutations nPr instead of combinations nCr</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pn1*(pn1-1)*(pn1-2)</tans>
+        <tans>ta1_perm</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>A committee has no order, so choosing A, B, C is the same as C, B, A. Divide by 3! to remove the repeated orderings.</text>
+          <text><![CDATA[<p>You calculated permutations \({}_{{@pn1@}}P_{{@pr1@}} = {@ta1_perm@}\), which treats different orderings of the same students as distinct committees. Because order does not matter, divide by \({@pr1@}! = {@den1_prod@}\): evaluate \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@ta1_perm@}}{{@den1_prod@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student computed n^r allowing repetition and order</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_rep</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \({@pn1@}^{{@pr1@}} = {@ta1_rep@}\), which allows the same student to be picked repeatedly and counts order. Choose \({@pr1@}\) distinct students without order using \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Order does not matter on a committee, so use combinations: \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!} = \frac{{@num1_prod@}}{{@den1_prod@}}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -166,7 +226,7 @@ ta2:pn2*(pn2-1)/2;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of handshakes</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -183,10 +243,60 @@ ta2:pn2*(pn2-1)/2;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Each handshake involves a pair of people, and the order within the pair doesn't matter. Use nC2 = n(n−1) ÷ 2.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student double-counted handshakes as n(n - 1)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_perm</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \({@pn2@} \times {@pn2 - 1@} = {@ta2_perm@}\), which counts A shaking B's hand separately from B shaking A's hand. Divide by \(2! = 2\) to avoid counting each handshake twice: \(\displaystyle {}_{{@pn2@}}C_2 = \frac{{@ta2_perm@}}{2}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student computed n^2</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_sq</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \({@pn2@}^2 = {@ta2_sq@}\), which includes people shaking their own hands and counts each pair twice. Choose \(2\) distinct people without order: \(\displaystyle {}_{{@pn2@}}C_2 = \frac{{@pn2@} \times {@pn2 - 1@}}{2}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Each handshake chooses a pair of \(2\) people where order does not matter: evaluate \(\displaystyle {}_{{@pn2@}}C_2 = \frac{{@pn2@} \times {@pn2 - 1@}}{2}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -210,9 +320,11 @@ ta2:pn2*(pn2-1)/2;</text>
     <deployedseed>1540249635</deployedseed>
     <deployedseed>1317505142</deployedseed>
     <deployedseed>1272901986</deployedseed>
+    <deployedseed>361831646</deployedseed>
+    <deployedseed>572294451</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -225,37 +337,61 @@ ta2:pn2*(pn2-1)/2;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Using permutations in Part A and double-counting handshakes in Part B</description>
       <testinput>
         <name>ans1</name>
-        <value>pn1*(pn1-1)*(pn1-2)</value>
+        <value>ta1_perm</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_perm</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Using n^r in Part A and n^2 in Part B</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_rep</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_sq</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

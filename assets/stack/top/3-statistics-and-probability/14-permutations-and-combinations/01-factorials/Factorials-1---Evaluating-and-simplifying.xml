@@ -2,19 +2,29 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Factorials 1 - Evaluating and simplifying</text>
+      <text>Evaluating and simplifying factorial expressions</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) Evaluate \({@pn@}!\).</p>
-<p>\({@pn@}! = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) Simplify \(\dfrac{ {@pm+2@}!}{ {@pm@}!}\) and give your answer as a number.</p>
-<p>Answer = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> Evaluate \({@pn@}!\).</p>
+<p>\({@pn@}! =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>(b)</b> Simplify \(\displaystyle \frac{{@pm_top@}!}{{@pm@}!}\) and give your answer as a whole number.</p>
+<p>\(\displaystyle \frac{{@pm_top@}!}{{@pm@}!} =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>\({@pn@}! = {@pn@} \times ({@pn@}-1) \times \dots \times 1 = {@pF1@}\).</p>
-<p>For part (b), expand the larger factorial only as far as the smaller one:</p>
-<p>\(\dfrac{ {@pm+2@}!}{ {@pm@}!} = \dfrac{ {@pm+2@} \times {@pm+1@} \times {@pm@}!}{ {@pm@}!} = {@pm+2@} \times {@pm+1@} = {@ta2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part (a):</b><br>
+Multiply every positive integer from \({@pn@}\) down to \(1\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {@pn@}! = {@pn_exp@} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ {@pn@}! = {@ta1@} }\)</p>
+
+<p><b>Part (b):</b><br>
+Expand the larger factorial in the numerator only as far as \({@pm@}!\), then cancel the common factor:</p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@pm_top@}!}{{@pm@}!} = \frac{{@pm_top@} \times {@pm_mid@} \times {@pm@}!}{{@pm@}!} = {@pm_top@} \times {@pm_mid@} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \frac{{@pm_top@}!}{{@pm@}!} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -24,20 +34,35 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pn:4+rand(6);
-pF1:pn!;
-ta1:pF1;
-pm:3+rand(8);
-ta2:(pm+1)*(pm+2);</text>
+      <text><![CDATA[/* Independent arrays yielding 7 x 18 = 126 unique variants */
+pn : rand([4, 5, 6, 7, 8, 9, 10]);
+ta1 : factorial(pn);
+
+/* Build an unsimplified n-ary multiplication expression for the worked solution */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+pn_exp : apply("mycross", makelist(pn - i, i, 0, pn - 1));
+
+/* Part (b) variables */
+pm : rand([3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 20, 24, 25, 30]);
+pm_mid : pm + 1;
+pm_top : pm + 2;
+ta2 : pm_top * pm_mid;
+
+/* Distractors for targeted PRT feedback */
+ta1_wrong_two_terms : pn * (pn - 1);
+ta2_wrong_denom_mult : pm_top * pm;
+ta2_wrong_one_term : pm_top;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>n={@pn@}, m={@pm@}</text>
+      <text><![CDATA[<p>n={@pn@} ({@pn@}!={@ta1@}), m={@pm@} ({@pm_top@}!/{@pm@}!={@ta2@})</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Evaluating and Simplifying Factorials</p>
+<p id="description">Grade 11 CBE: Evaluating single factorials by full integer expansion and simplifying quotients of consecutive factorials.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -88,7 +113,7 @@ ta2:(pm+1)*(pm+2);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -107,7 +132,7 @@ ta2:(pm+1)*(pm+2);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact factorial value</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -132,19 +157,19 @@ ta2:(pm+1)*(pm+2);</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student only multiplied the first two terms</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pn*(pn-1)</tans>
+        <tans>ta1_wrong_two_terms</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Remember n! means the product of every integer from n down to 1, not just n and n−1.</text>
+          <text><![CDATA[<p>Remember \(n!\) means the product of every positive integer from \(n\) down to \(1\), not just \(n \times (n - 1)\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -152,7 +177,7 @@ ta2:(pm+1)*(pm+2);</text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Multiply all integers from {@pn@} down to 1: {@pn_exp@}.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -166,7 +191,7 @@ ta2:(pm+1)*(pm+2);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check simplified quotient</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -183,34 +208,118 @@ ta2:(pm+1)*(pm+2);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Expand the larger factorial only as far as the smaller one, then cancel. You should be left with two factors multiplied together.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student multiplied (m+2) by m</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong_denom_mult</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You multiplied {@pm_top@} by {@pm@}. Remember that {@pm@}! cancels completely with the denominator, leaving {@pm_top@} &times; {@pm_mid@}.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Expand {@pm_top@}! as {@pm_top@} &times; {@pm_mid@} &times; {@pm@}!, cancel {@pm@}!, and multiply the remaining two factors.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>1142134549</deployedseed>
-    <deployedseed>771677697</deployedseed>
-    <deployedseed>85436045</deployedseed>
-    <deployedseed>810475975</deployedseed>
-    <deployedseed>1824144888</deployedseed>
-    <deployedseed>1209941208</deployedseed>
-    <deployedseed>1689708117</deployedseed>
-    <deployedseed>2140412609</deployedseed>
-    <deployedseed>780175051</deployedseed>
-    <deployedseed>1758311023</deployedseed>
-    <deployedseed>1337830783</deployedseed>
-    <deployedseed>1937971692</deployedseed>
-    <deployedseed>2016387734</deployedseed>
-    <deployedseed>1895866697</deployedseed>
-    <deployedseed>193848032</deployedseed>
-    <deployedseed>321485525</deployedseed>
-    <deployedseed>833689918</deployedseed>
-    <deployedseed>49197386</deployedseed>
+    <deployedseed>814728153</deployedseed>
+    <deployedseed>1378995672</deployedseed>
+    <deployedseed>1292519031</deployedseed>
+    <deployedseed>1394164684</deployedseed>
+    <deployedseed>233460744</deployedseed>
+    <deployedseed>1920621844</deployedseed>
+    <deployedseed>622089808</deployedseed>
+    <deployedseed>1544739713</deployedseed>
+    <deployedseed>1602052339</deployedseed>
+    <deployedseed>804350802</deployedseed>
+    <deployedseed>926979003</deployedseed>
+    <deployedseed>1487828835</deployedseed>
+    <deployedseed>2103874439</deployedseed>
+    <deployedseed>1294613775</deployedseed>
+    <deployedseed>1088989304</deployedseed>
+    <deployedseed>1311052467</deployedseed>
+    <deployedseed>135163743</deployedseed>
+    <deployedseed>97566967</deployedseed>
+    <deployedseed>35188782</deployedseed>
+    <deployedseed>1651141880</deployedseed>
+    <deployedseed>1313499241</deployedseed>
+    <deployedseed>498618648</deployedseed>
+    <deployedseed>1371437855</deployedseed>
+    <deployedseed>1873284846</deployedseed>
+    <deployedseed>1925235946</deployedseed>
+    <deployedseed>1202013065</deployedseed>
+    <deployedseed>154036814</deployedseed>
+    <deployedseed>509238353</deployedseed>
+    <deployedseed>866983010</deployedseed>
+    <deployedseed>669005275</deployedseed>
+    <deployedseed>198746970</deployedseed>
+    <deployedseed>802253066</deployedseed>
+    <deployedseed>838030395</deployedseed>
+    <deployedseed>384628695</deployedseed>
+    <deployedseed>1353026085</deployedseed>
+    <deployedseed>348805182</deployedseed>
+    <deployedseed>767102715</deployedseed>
+    <deployedseed>1977877387</deployedseed>
+    <deployedseed>392044916</deployedseed>
+    <deployedseed>357132761</deployedseed>
+    <deployedseed>1850410064</deployedseed>
+    <deployedseed>455644252</deployedseed>
+    <deployedseed>2130955971</deployedseed>
+    <deployedseed>1760863395</deployedseed>
+    <deployedseed>579939589</deployedseed>
+    <deployedseed>979820155</deployedseed>
+    <deployedseed>1530804281</deployedseed>
+    <deployedseed>1488001011</deployedseed>
+    <deployedseed>439722680</deployedseed>
+    <deployedseed>1444159894</deployedseed>
+    <deployedseed>2096991589</deployedseed>
+    <deployedseed>890596537</deployedseed>
+    <deployedseed>1064443065</deployedseed>
+    <deployedseed>1659087665</deployedseed>
+    <deployedseed>597502538</deployedseed>
+    <deployedseed>764577757</deployedseed>
+    <deployedseed>1833519952</deployedseed>
+    <deployedseed>1091986606</deployedseed>
+    <deployedseed>473285769</deployedseed>
+    <deployedseed>1636202828</deployedseed>
+    <deployedseed>1051479548</deployedseed>
+    <deployedseed>887066094</deployedseed>
+    <deployedseed>882972873</deployedseed>
+    <deployedseed>38241095</deployedseed>
+    <deployedseed>2087015596</deployedseed>
+    <deployedseed>364437878</deployedseed>
+    <deployedseed>1619542085</deployedseed>
+    <deployedseed>1303115003</deployedseed>
+    <deployedseed>2003627523</deployedseed>
+    <deployedseed>1619732635</deployedseed>
+    <deployedseed>2092575283</deployedseed>
+    <deployedseed>1514386265</deployedseed>
+    <deployedseed>1468658310</deployedseed>
+    <deployedseed>109850313</deployedseed>
+    <deployedseed>1028090779</deployedseed>
+    <deployedseed>1782572702</deployedseed>
+    <deployedseed>1896815491</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -223,37 +332,37 @@ ta2:(pm+1)*(pm+2);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Common misconceptions in both parts</description>
       <testinput>
         <name>ans1</name>
-        <value>pn*(pn-1)</value>
+        <value>ta1_wrong_two_terms</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_wrong_denom_mult</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
       </expected>
     </qtest>
   </question>
