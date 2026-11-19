@@ -1,45 +1,301 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
-  <question type="ordering">
+  <question type="stack">
     <name>
-      <text>Changing the Subject 4 - Put the steps in order (ordering)</text>
+      <text>Changing the Subject 4 - Put the steps in order (drag and drop)</text>
     </name>
-    <questiontext format="moodle_auto_format">
+    <questiontext format="html">
       <text><![CDATA[<p>A boda boda rider's speed is given by the formula \(v = u + at\), where \(v\) is the final speed, \(u\) is the starting speed, \(a\) is the acceleration and \(t\) is the time.</p>
-<p>Starting from \(v = u + at\), put the steps below in the correct order to make \(t\) the subject of the formula.</p>]]></text>
+<p>Starting from \(v = u + at\), make \(t\) the subject of the formula.</p>
+<p>Drag the steps you need into the answer area and put them in the correct order. </p>
+[[parsons input="ans1"]]
+{
+  "steps": {# parsons_encode(steps) #},
+  "headers": ["Your solution (in order):"],
+  "available_header": "Steps to choose from:"
+}
+[[/parsons]]
+<div>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>To make \(t\) the subject, undo the operations around it in reverse order. First subtract \(u\) from both sides, because \(u\) is added. Then divide both sides by \(a\), because \(t\) is multiplied by \(a\).</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<h3>Worked solution</h3>
+
+<p><strong>Step 1: subtract \(u\) from both sides.</strong> \(u\) is added to \(at\), so subtracting \(u\) removes it from the right-hand side:</p>
+\[ v - u = u + at - u \quad\Longrightarrow\quad v - u = at. \]
+<p><strong>Step 2: divide both sides by \(a\).</strong> \(t\) is multiplied by \(a\), so dividing by \(a\) leaves \(t\) on its own. The <em>whole</em> left-hand side \(v - u\) is divided by \(a\), not just one term (we need \(a \neq 0\)):</p>
+\[ \dfrac{v - u}{a} = \dfrac{at}{a} \quad\Longrightarrow\quad \dfrac{v - u}{a} = t. \]
+<p><strong>Step 3: rewrite with \(t\) on the left.</strong> Swapping the two sides does not change the equation, and it is usual to write the subject first:</p>
+\[ t = \dfrac{v - u}{a}. \]
+<p><strong>The correct order is:</strong></p>
+<ol>
+<li>Subtract \(u\) from both sides: \(v - u = at\)</li>
+<li>Divide both sides by \(a\): \(\dfrac{v - u}{a} = t\)</li>
+<li>Rewrite with \(t\) on the left: \(t = \dfrac{v - u}{a}\)</li>
+</ol>
+<p><strong>Why the other two steps are wrong.</strong></p>
+<ul>
+<li>"Add \(u\) to both sides: \(v + u = at\)". Adding \(u\) to the right-hand side gives \(u + at + u\), so \(u\) does not disappear. Moving \(u\) to the other side without changing its sign is a common mistake. To remove a term that is <em>added</em>, <em>subtract</em> it.</li>
+<li>"Divide both sides by \(a\): \(\dfrac{v}{a} = u + t\)". Dividing the right-hand side by \(a\) gives \(\dfrac{u}{a} + t\), because <em>every</em> term must be divided, so \(u\) has been left undivided. Removing \(u\) first, by subtracting, avoids this.</li>
+</ul>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.3333333</penalty>
     <hidden>0</hidden>
     <idnumber/>
-    <layouttype>VERTICAL</layouttype>
-    <selecttype>ALL</selecttype>
-    <selectcount>2</selectcount>
-    <gradingtype>ABSOLUTE_POSITION</gradingtype>
-    <showgrading>SHOW</showgrading>
-    <numberingstyle>none</numberingstyle>
-    <correctfeedback format="html">
-      <text>Your answer is correct.</text>
-    </correctfeedback>
-    <partiallycorrectfeedback format="html">
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[stack_include_contrib("prooflib.mac");
+/* All steps offered to the student: [key, text]. */
+steps : [
+  ["sub",     "Subtract \\(u\\) from both sides: \\(v - u = at\\)"],
+  ["div",     "Divide both sides by \\(a\\): \\(\\dfrac{v - u}{a} = t\\)"],
+  ["rew",     "Rewrite with \\(t\\) on the left: \\(t = \\dfrac{v - u}{a}\\)"],
+  ["addu",    "Add \\(u\\) to both sides: \\(v + u = at\\)"],
+  ["divpart", "Divide both sides by \\(a\\): \\(\\dfrac{v}{a} = u + t\\)"]
+];
+/* Shuffle the order in which the steps are offered. */
+steps : random_permutation(steps);
+/* Teacher's answer: the correct steps in order. */
+ta : proof("sub", "div", "rew");
+/* The correct keys, used to spot "right steps, wrong order". */
+correct_keys : ["sub", "div", "rew"];]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="moodle_auto_format">
+      <text>Step order offered: {@map(first, steps)@}</text>
+    </questionnote>
+    <questiondescription format="moodle_auto_format">
+      <text/>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text>Correct answer, well done.</text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
       <text>Your answer is partially correct.</text>
-    </partiallycorrectfeedback>
-    <incorrectfeedback format="html">
-      <text>Your answer is incorrect.</text>
-    </incorrectfeedback>
-    <shownumcorrect>1</shownumcorrect>
-    <answer fraction="1" format="moodle_auto_format">
-      <text>Subtract \(u\) from both sides: \(v - u = at\)</text>
-    </answer>
-    <answer fraction="2" format="moodle_auto_format">
-      <text>Divide both sides by \(a\): \(\dfrac{v - u}{a} = t\)</text>
-    </answer>
-    <answer fraction="3" format="moodle_auto_format">
-      <text>Rewrite with \(t\) on the left: \(t = \dfrac{v - u}{a}\)</text>
-    </answer>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text>Incorrect answer.</text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>dot</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>parsons</type>
+      <tans>[ta, steps]</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>/* The student's steps as a proof object, then as a list of keys. */
+sa : parsons_decode(ans1);
+sl : args(sa);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct steps in the correct order</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-0-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description><![CDATA[Used the "divide only part of the side by a" distractor?]]></description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[member("divpart", sl)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>One of your steps divides only part of the right-hand side by \(a\). When you divide one side of an equation by a number, <em>every</em> term on that side must be divided. While \(u\) is still added to \(at\), which operation should you undo first?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description><![CDATA[Used the "move u across without changing sign" distractor?]]></description>
+        <answertest>AlgEquiv</answertest>
+        <sans><![CDATA[member("addu", sl)]]></sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>One of your steps adds \(u\) to both sides. Check what that does to the right-hand side: \(u + at + u\) still contains \(u\), so it hasn't been removed. To remove a term that is <em>added</em>, use the inverse operation.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Right steps, wrong order (otherwise: steps missing)?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sort(sl)</sans>
+        <tans>sort(correct_keys)</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have chosen the right steps, but they are not in the right order. Look at the equation each step starts from. Undo the operations on \(t\) in the reverse order to the one they were applied in, and write the subject on the left at the end.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your solution is missing at least one step. Keep going until \(t\) is on its own and the formula is written in the form \(t = \dots\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1001</deployedseed>
+    <deployedseed>2002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>4004</deployedseed>
+    <deployedseed>5005</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct steps in the correct order</description>
+      <testinput>
+        <name>ans1</name>
+        <value>parsons_answer(ta, steps)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-0-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Uses the divide-only-part distractor</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[parsons_answer(proof("divpart", "sub", "rew"), steps)]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Uses the add-u distractor</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[parsons_answer(proof("addu", "div", "rew"), steps)]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Right steps, wrong order</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[parsons_answer(proof("div", "sub", "rew"), steps)]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Incomplete: final rewrite step missing</description>
+      <testinput>
+        <name>ans1</name>
+        <value><![CDATA[parsons_answer(proof("sub", "div"), steps)]]></value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedanswernote>prt1-3-F</expectedanswernote>
+      </expected>
+    </qtest>
   </question>
 </quiz>

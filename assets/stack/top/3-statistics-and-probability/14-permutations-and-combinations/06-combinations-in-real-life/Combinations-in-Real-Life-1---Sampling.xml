@@ -2,20 +2,30 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Combinations in Real Life 1 - Sampling</text>
+      <text>Selecting clinical trial groups and quality-control samples using combinations</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) A doctor selects \({@pr1@}\) patients from a group of \({@pn1@}\) volunteers to test a new vitamin. How many different groups can be formed?</p>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> A doctor selects \({@pr1@}\) patients from a group of \({@pn1@}\) volunteers to test a new vitamin. How many different groups can be formed?</p>
 <p>Number of groups = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) A factory inspector picks 3 smartphones at random from a box of \({@pn2@}\) to check for defects. How many different samples can the inspector choose?</p>
+
+<p><b>(b)</b> A factory inspector picks \({@pr2@}\) smartphones at random from a box of \({@pn2@}\) to check for defects. How many different samples can the inspector choose?</p>
 <p>Number of samples = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>All the selected patients receive the same vitamin, so order does not matter. This is \(_{ {@pn1@} }C_{ {@pr1@} }\):</p>
-<p>\(_{ {@pn1@} }C_{ {@pr1@} } = \dfrac{ {@pn1@}!}{ {@pr1@}!\,{@pn1-pr1@}!} = {@ta1@}\)</p>
-<p>For part (b), testing phones A, B, C is the same as testing C, B, A, so this is \(_{ {@pn2@} }C_3\):</p>
-<p>\(_{ {@pn2@} }C_3 = \dfrac{ {@pn2@} \times {@pn2-1@} \times {@pn2-2@} }{3 \times 2 \times 1} = {@ta2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>Because the order in which items are chosen does not create a different group or sample, use the combination formula:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nC_r = \frac{n!}{r!(n - r)!}\)</p>
+
+<p><b>Part (a): Selecting \({@pr1@}\) patients from \({@pn1@}\) volunteers</b><br>
+All selected patients receive the same vitamin, so order does not matter. Substitute \(n = {@pn1@}\) and \(r = {@pr1@}\), simplify \(({@pn1@} - {@pr1@})! = {@rem1@}!\), and cancel \({@rem1@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,({@pn1@} - {@pr1@})!} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!} = \frac{{@num1_factors@} \times {@rem1@}!}{({@den1_factors@}) \times {@rem1@}!} = \frac{{@num1_factors@}}{{@den1_factors@}} = \frac{{@num1_prod@}}{{@den1_prod@}} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of groups} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Picking \({@pr2@}\) smartphones from a box of \({@pn2@}\)</b><br>
+Picking smartphones A, B, C is the same sample as picking C, B, A, so order does not matter. Substitute \(n = {@pn2@}\) and \(r = {@pr2@}\), simplify \(({@pn2@} - {@pr2@})! = {@rem2@}!\), and cancel \({@rem2@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,({@pn2@} - {@pr2@})!} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!} = \frac{{@num2_factors@} \times {@rem2@}!}{({@den2_factors@}) \times {@rem2@}!} = \frac{{@num2_factors@}}{{@den2_factors@}} = \frac{{@num2_prod@}}{{@den2_prod@}} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of samples} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,20 +35,47 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pn1:10+rand(6);
-pr1:3+rand(3);
-ta1:pn1!/(pr1!*(pn1-pr1)!);
-pn2:15+rand(11);
-ta2:pn2*(pn2-1)*(pn2-2)/6;</text>
+      <text><![CDATA[/* Independent arrays yielding 6 x 3 x 10 x 3 = 540 unique variants with strictly non-colliding distractors */
+pn1 : rand([10, 11, 12, 13, 14, 15]);
+pr1 : rand([3, 4, 5]);
+rem1 : pn1 - pr1;
+ta1 : binomial(pn1, pr1);
+
+pn2 : rand([15, 16, 17, 18, 19, 20, 21, 22, 24, 25]);
+pr2 : rand([2, 3, 4]);
+rem2 : pn2 - pr2;
+ta2 : binomial(pn2, pr2);
+
+/* Step-by-step factorial expansion and intermediate quotient helpers */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+
+num1_factors : apply("mycross", makelist(pn1 - i, i, 0, pr1 - 1));
+den1_factors : apply("mycross", makelist(pr1 - i, i, 0, pr1 - 1));
+num1_prod : factorial(pn1) / factorial(rem1);
+den1_prod : factorial(pr1);
+
+num2_factors : apply("mycross", makelist(pn2 - i, i, 0, pr2 - 1));
+den2_factors : apply("mycross", makelist(pr2 - i, i, 0, pr2 - 1));
+num2_prod : factorial(pn2) / factorial(rem2);
+den2_prod : factorial(pr2);
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+ta1_perm : factorial(pn1) / factorial(rem1);
+ta1_no_rem : factorial(pn1) / factorial(pr1);
+
+ta2_perm : factorial(pn2) / factorial(rem2);
+ta2_no_rem : factorial(pn2) / factorial(pr2);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>n1={@pn1@}, r1={@pr1@}, n2={@pn2@}</text>
+      <text>Part A: {@pn1@}C{@pr1@} = {@ta1@}; Part B: {@pn2@}C{@pr2@} = {@ta2@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Applying Combinations to Real-Life Sampling Problems</p>
+<p id="description">Grade 11 CBE: Solving real-life sampling problems involving clinical trial groups and quality-control inspections using combinations.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -71,7 +108,7 @@ ta2:pn2*(pn2-1)*(pn2-2)/6;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -89,7 +126,7 @@ ta2:pn2*(pn2-1)*(pn2-2)/6;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -108,7 +145,7 @@ ta2:pn2*(pn2-1)*(pn2-2)/6;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of patient groups</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -133,27 +170,52 @@ ta2:pn2*(pn2-1)*(pn2-2)/6;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student used permutations nPr instead of combinations nCr</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pn1!/(pn1-pr1)!</tans>
+        <tans>ta1_perm</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>That is nPr. The patients are not ranked, so order doesn't matter: also divide by r!.</text>
+          <text><![CDATA[<p>You calculated the permutation \(\displaystyle {}_{{@pn1@}}P_{{@pr1@}} = \frac{{@pn1@}!}{{@rem1@}!} = {@ta1_perm@}\). Because the patients are not ranked, order does not matter: also divide by \({@pr1@}! = {@den1_prod@}\) using \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student omitted (n - r)! in the denominator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_no_rem</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided \({@pn1@}!\) by \({@pr1@}!\) alone, forgetting \(({@pn1@} - {@pr1@})! = {@rem1@}!\) in the denominator. Evaluate \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Order does not matter when selecting a group of patients, so evaluate \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,({@pn1@} - {@pr1@})!} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -167,7 +229,7 @@ ta2:pn2*(pn2-1)*(pn2-2)/6;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of smartphone samples</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -184,10 +246,60 @@ ta2:pn2*(pn2-1)*(pn2-2)/6;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Testing the same phones in a different order gives the same sample: use nC3 = n(n−1)(n−2) ÷ 6.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student used permutations nPr instead of combinations nCr</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_perm</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the permutation \(\displaystyle {}_{{@pn2@}}P_{{@pr2@}} = \frac{{@pn2@}!}{{@rem2@}!} = {@ta2_perm@}\). Testing the same smartphones in a different order gives the same sample, so also divide by \({@pr2@}! = {@den2_prod@}\) using \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student omitted (n - r)! in the denominator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_no_rem</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided \({@pn2@}!\) by \({@pr2@}!\) alone, forgetting \(({@pn2@} - {@pr2@})! = {@rem2@}!\) in the denominator. Evaluate \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Order does not matter when selecting a sample of smartphones, so evaluate \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,({@pn2@} - {@pr2@})!} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -211,9 +323,53 @@ ta2:pn2*(pn2-1)*(pn2-2)/6;</text>
     <deployedseed>884366732</deployedseed>
     <deployedseed>1417790564</deployedseed>
     <deployedseed>810091640</deployedseed>
+    <deployedseed>964823783</deployedseed>
+    <deployedseed>733934537</deployedseed>
+    <deployedseed>757899546</deployedseed>
+    <deployedseed>37393801</deployedseed>
+    <deployedseed>1381068941</deployedseed>
+    <deployedseed>2005544629</deployedseed>
+    <deployedseed>926701797</deployedseed>
+    <deployedseed>568803260</deployedseed>
+    <deployedseed>1929596217</deployedseed>
+    <deployedseed>2053845943</deployedseed>
+    <deployedseed>1204342544</deployedseed>
+    <deployedseed>478585359</deployedseed>
+    <deployedseed>222807284</deployedseed>
+    <deployedseed>940697618</deployedseed>
+    <deployedseed>2057039672</deployedseed>
+    <deployedseed>1780086737</deployedseed>
+    <deployedseed>887556290</deployedseed>
+    <deployedseed>1201595367</deployedseed>
+    <deployedseed>1382680638</deployedseed>
+    <deployedseed>868037559</deployedseed>
+    <deployedseed>846656209</deployedseed>
+    <deployedseed>1264892308</deployedseed>
+    <deployedseed>624901194</deployedseed>
+    <deployedseed>1552636574</deployedseed>
+    <deployedseed>2079252297</deployedseed>
+    <deployedseed>178789498</deployedseed>
+    <deployedseed>1542186757</deployedseed>
+    <deployedseed>38639844</deployedseed>
+    <deployedseed>1591135811</deployedseed>
+    <deployedseed>1493813182</deployedseed>
+    <deployedseed>1621526562</deployedseed>
+    <deployedseed>1107219105</deployedseed>
+    <deployedseed>675107137</deployedseed>
+    <deployedseed>322936853</deployedseed>
+    <deployedseed>619534690</deployedseed>
+    <deployedseed>723818739</deployedseed>
+    <deployedseed>1643694954</deployedseed>
+    <deployedseed>2041383759</deployedseed>
+    <deployedseed>1672767287</deployedseed>
+    <deployedseed>67320514</deployedseed>
+    <deployedseed>698649246</deployedseed>
+    <deployedseed>603916715</deployedseed>
+    <deployedseed>469928416</deployedseed>
+    <deployedseed>136239232</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -226,37 +382,61 @@ ta2:pn2*(pn2-1)*(pn2-2)/6;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Using permutations nPr instead of combinations nCr in both parts</description>
       <testinput>
         <name>ans1</name>
-        <value>pn1!/(pn1-pr1)!</value>
+        <value>ta1_perm</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_perm</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Omitting (n - r)! in the denominator in both parts</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_no_rem</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_no_rem</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

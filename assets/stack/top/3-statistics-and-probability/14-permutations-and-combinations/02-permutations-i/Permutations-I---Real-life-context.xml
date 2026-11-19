@@ -2,20 +2,31 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Permutations I  - Real-life context</text>
+      <text>Applying permutations to elect club leadership committees</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) A club has \({@pn1@}\) members. In how many ways can they elect a President, Secretary, and Treasurer?</p>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> A club has \({@pn1@}\) members. In how many ways can they elect a President, Secretary, and Treasurer?</p>
 <p>Number of ways = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) A different club has \({@pn2@}\) members. In how many ways can they elect just a Chairperson and a Vice-Chairperson?</p>
+
+<p><b>(b)</b> A different club has \({@pn2@}\) members. In how many ways can they elect just a Chairperson and a Vice-Chairperson?</p>
 <p>Number of ways = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>Three different positions are being filled in order from \({@pn1@}\) members, so this is \(_{ {@pn1@} }P_3\):</p>
-<p>\(_{ {@pn1@} }P_3 = {@pn1@} \times ({@pn1@}-1) \times ({@pn1@}-2) = {@pways1@}\)</p>
-<p>For part (b), two positions are being filled from \({@pn2@}\) members, so this is \(_{ {@pn2@} }P_2\):</p>
-<p>\(_{ {@pn2@} }P_2 = {@pn2@} \times ({@pn2@}-1) = {@pways2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part (a):</b><br>
+Because President, Secretary, and Treasurer are \(3\) distinct positions, the order of selection matters. We use the permutation formula \(\displaystyle {}_nP_r = \frac{n!}{(n - r)!}\) with \(n = {@pn1@}\) and \(r = 3\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn1@}}P_{3} = \frac{{@pn1@}!}{({@pn1@} - 3)!} = \frac{{@pn1@}!}{{@pn1_m3@}!}\)</p>
+<p style="margin-left: 20px;">Expand \({@pn1@}!\) until it matches \({@pn1_m3@}!\) and cancel the common factor:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn1@}}P_{3} = \frac{{@pn1@} \times {@pn1_m1@} \times {@pn1_m2@} \times {@pn1_m3@}!}{{@pn1_m3@}!} = {@pn1@} \times {@pn1_m1@} \times {@pn1_m2@} = {@pn1_step1@} \times {@pn1_m2@} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ {}_{{@pn1@}}P_{3} = {@ta1@} }\)</p>
+
+<p><b>Part (b):</b><br>
+Because Chairperson and Vice-Chairperson are \(2\) distinct positions, order matters. Use \(\displaystyle {}_nP_r = \frac{n!}{(n - r)!}\) with \(n = {@pn2@}\) and \(r = 2\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn2@}}P_{2} = \frac{{@pn2@}!}{({@pn2@} - 2)!} = \frac{{@pn2@}!}{{@pn2_m2@}!}\)</p>
+<p style="margin-left: 20px;">Expand \({@pn2@}!\) until it matches \({@pn2_m2@}!\) and cancel the common factor:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn2@}}P_{2} = \frac{{@pn2@} \times {@pn2_m1@} \times {@pn2_m2@}!}{{@pn2_m2@}!} = {@pn2@} \times {@pn2_m1@} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ {}_{{@pn2@}}P_{2} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,21 +36,37 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pn1:10+rand(10);
-pways1:pn1*(pn1-1)*(pn1-2);
-pn2:4+rand(6);
-pways2:pn2*(pn2-1);
-ta1:pways1;
-ta2:pways2;</text>
+      <text>/* Independent arrays yielding 15 x 13 = 195 distinct variants */
+pn1 : rand([8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 25]);
+pn1_m1 : pn1 - 1;
+pn1_m2 : pn1 - 2;
+pn1_m3 : pn1 - 3;
+pn1_step1 : pn1 * pn1_m1;
+ta1 : pn1_step1 * pn1_m2;
+
+pn2_pool : delete(pn1, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]);
+pn2 : rand(pn2_pool);
+pn2_m1 : pn2 - 1;
+pn2_m2 : pn2 - 2;
+ta2 : pn2 * pn2_m1;
+
+/* Distractors for targeted PRT feedback */
+ta1_wrong_fact : factorial(pn1);
+ta1_wrong_comb : ta1 / 6;
+ta1_wrong_two : pn1 * pn1_m1;
+
+ta2_wrong_fact : factorial(pn2);
+ta2_wrong_comb : ta2 / 2;</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>n1={@pn1@}, n2={@pn2@}</text>
+      <text><![CDATA[<p>Part A: {@pn1@}P3 = {@ta1@}; Part B: {@pn2@}P2 = {@ta2@}</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Permutations in Real-Life Elections</p>
+<p id="description">Grade 11 CBE: Applying nPr to determine the number of ways to elect distinct leadership positions from a club.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -72,7 +99,7 @@ ta2:pways2;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -90,7 +117,7 @@ ta2:pways2;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -109,7 +136,7 @@ ta2:pways2;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact permutation value</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -134,27 +161,77 @@ ta2:pways2;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student computed n! instead of nP3</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pn1!</tans>
+        <tans>ta1_wrong_fact</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Only 3 positions are being filled, not all of them: use nPr with r = 3, not n!.</text>
+          <text><![CDATA[<p>Only \(3\) positions are being filled, not all \({@pn1@}\) members. Use \({}_{{@pn1@}}P_{3} = \frac{{@pn1@}!}{{@pn1_m3@}!}\) instead of \({@pn1@}!\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student divided by 3! (computed nC3)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong_comb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided by \(3! = 6\), which gives combinations \({}_{{@pn1@}}C_{3}\). Because President, Secretary, and Treasurer are distinct roles, order matters—multiply \({@pn1@} \times {@pn1_m1@} \times {@pn1_m2@}\) without dividing by \(3!\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student only multiplied two factors</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_wrong_two</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>There are \(3\) distinct positions to fill, so multiply \(3\) descending factors starting at \({@pn1@}\): \({@pn1@} \times {@pn1_m1@} \times {@pn1_m2@}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Three distinct positions are filled from \({@pn1@}\) members, so evaluate \({}_{{@pn1@}}P_{3} = {@pn1@} \times {@pn1_m1@} \times {@pn1_m2@}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -168,7 +245,7 @@ ta2:pways2;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact permutation value</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -185,10 +262,60 @@ ta2:pways2;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Two positions are being filled in order: multiply the number of members by one less than that number.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student computed n! instead of nP2</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong_fact</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Only \(2\) positions are being filled, not all \({@pn2@}\) members. Use \({}_{{@pn2@}}P_{2} = \frac{{@pn2@}!}{{@pn2_m2@}!}\) instead of \({@pn2@}!\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student divided by 2! (computed nC2)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong_comb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided by \(2!\), which gives combinations \({}_{{@pn2@}}C_{2}\). Because Chairperson and Vice-Chairperson are distinct roles, order matters—multiply \({@pn2@} \times {@pn2_m1@}\) without dividing by \(2!\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Two distinct positions are filled from \({@pn2@}\) members, so evaluate \({}_{{@pn2@}}P_{2} = {@pn2@} \times {@pn2_m1@}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -212,9 +339,83 @@ ta2:pways2;</text>
     <deployedseed>1411444780</deployedseed>
     <deployedseed>524792726</deployedseed>
     <deployedseed>379535997</deployedseed>
+    <deployedseed>666231575</deployedseed>
+    <deployedseed>930725705</deployedseed>
+    <deployedseed>139430158</deployedseed>
+    <deployedseed>1406815421</deployedseed>
+    <deployedseed>1631865955</deployedseed>
+    <deployedseed>1545782461</deployedseed>
+    <deployedseed>126690173</deployedseed>
+    <deployedseed>705721168</deployedseed>
+    <deployedseed>804525103</deployedseed>
+    <deployedseed>1797062353</deployedseed>
+    <deployedseed>2083855342</deployedseed>
+    <deployedseed>1215306839</deployedseed>
+    <deployedseed>64747643</deployedseed>
+    <deployedseed>1708860935</deployedseed>
+    <deployedseed>1369488575</deployedseed>
+    <deployedseed>1096072874</deployedseed>
+    <deployedseed>1346511820</deployedseed>
+    <deployedseed>2102292751</deployedseed>
+    <deployedseed>1417010245</deployedseed>
+    <deployedseed>594266734</deployedseed>
+    <deployedseed>2045286458</deployedseed>
+    <deployedseed>1928656079</deployedseed>
+    <deployedseed>1939328151</deployedseed>
+    <deployedseed>1029643487</deployedseed>
+    <deployedseed>1994314964</deployedseed>
+    <deployedseed>118035370</deployedseed>
+    <deployedseed>1299176777</deployedseed>
+    <deployedseed>1021124015</deployedseed>
+    <deployedseed>259058915</deployedseed>
+    <deployedseed>1613156906</deployedseed>
+    <deployedseed>526179909</deployedseed>
+    <deployedseed>709665983</deployedseed>
+    <deployedseed>2143311736</deployedseed>
+    <deployedseed>2074590803</deployedseed>
+    <deployedseed>1688065914</deployedseed>
+    <deployedseed>549838266</deployedseed>
+    <deployedseed>1859167702</deployedseed>
+    <deployedseed>72094340</deployedseed>
+    <deployedseed>513824375</deployedseed>
+    <deployedseed>1543644401</deployedseed>
+    <deployedseed>688570310</deployedseed>
+    <deployedseed>1558109128</deployedseed>
+    <deployedseed>1922083917</deployedseed>
+    <deployedseed>1238937021</deployedseed>
+    <deployedseed>2143536786</deployedseed>
+    <deployedseed>857884690</deployedseed>
+    <deployedseed>2002672235</deployedseed>
+    <deployedseed>1962350880</deployedseed>
+    <deployedseed>999408734</deployedseed>
+    <deployedseed>882746679</deployedseed>
+    <deployedseed>44108949</deployedseed>
+    <deployedseed>84902925</deployedseed>
+    <deployedseed>441316531</deployedseed>
+    <deployedseed>1444184591</deployedseed>
+    <deployedseed>386889793</deployedseed>
+    <deployedseed>857636087</deployedseed>
+    <deployedseed>1753960402</deployedseed>
+    <deployedseed>124397326</deployedseed>
+    <deployedseed>1760099781</deployedseed>
+    <deployedseed>1177067034</deployedseed>
+    <deployedseed>2076023287</deployedseed>
+    <deployedseed>118350596</deployedseed>
+    <deployedseed>693170442</deployedseed>
+    <deployedseed>475164592</deployedseed>
+    <deployedseed>1510502104</deployedseed>
+    <deployedseed>1567731484</deployedseed>
+    <deployedseed>1841878868</deployedseed>
+    <deployedseed>88206550</deployedseed>
+    <deployedseed>1185154311</deployedseed>
+    <deployedseed>639799117</deployedseed>
+    <deployedseed>431772455</deployedseed>
+    <deployedseed>1699988426</deployedseed>
+    <deployedseed>1841457070</deployedseed>
+    <deployedseed>1437638594</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -227,37 +428,61 @@ ta2:pways2;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Using n! instead of nPr in both parts</description>
       <testinput>
         <name>ans1</name>
-        <value>pn1!</value>
+        <value>ta1_wrong_fact</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_wrong_fact</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Confusing permutations with combinations (dividing by r!)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong_comb</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_wrong_comb</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

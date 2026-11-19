@@ -2,19 +2,32 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Factorials 3 - Algebraic expressions and solving for n</text>
+      <text>Simplifying algebraic factorial expressions and solving factorial equations</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) Simplify \(\dfrac{(n+1)!}{(n-1)!}\), leaving your answer in terms of \(n\).</p>
-<p>Answer = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) Solve for \(n\): \(\dfrac{n!}{(n-1)!} = {@pk@}\).</p>
-<p>\(n = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> Simplify \(\displaystyle \frac{{@num_a@}}{{@den_a@}}\), leaving your answer in terms of \(n\).</p>
+<p>\(\displaystyle \frac{{@num_a@}}{{@den_a@}} =\) [[input:ans1]]</p>
+<div>[[validation:ans1]] [[feedback:prt1]]</div>
+
+<p><b>(b)</b> Solve for \(n\): \(\displaystyle \frac{{@num_b@}}{{@den_b@}} = {@pk@}\).</p>
+<p>\(n =\) [[input:ans2]]</p>
+<div>[[validation:ans2]] [[feedback:prt2]]</div>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>Expand \((n+1)!\) one step at a time: \((n+1)! = (n+1) \times n \times (n-1)!\).</p>
-<p>\(\dfrac{(n+1)!}{(n-1)!} = \dfrac{(n+1) \times n \times (n-1)!}{(n-1)!} = n(n+1)\)</p>
-<p>For part (b), \(\dfrac{n!}{(n-1)!}\) simplifies to \(n\) by the same method, so \(n = {@pk@}\) directly.</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part (a):</b><br>
+Expand the larger factorial in the numerator one factor at a time until it matches \({@den_a@}\) in the denominator, then cancel the common factor:</p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@num_a@}}{{@den_a@}} = \frac{{@exp_a@}}{{@den_a@}} = {@rem_a@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \frac{{@num_a@}}{{@den_a@}} = {@rem_a@} }\)</p>
+
+<p><b>Part (b):</b><br>
+First simplify the left-hand side by expanding \({@num_b@}\) until it matches \({@den_b@}\) and cancelling the common factor:</p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@num_b@}}{{@den_b@}} = \frac{{@exp_b@}}{{@den_b@}} = {@lhs_b@}\)</p>
+<p>Substitute this simplified expression back into the equation and solve for \(n\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {@lhs_b@} = {@pk@}\)</p>
+<p style="margin-left: 20px;">\(\displaystyle {@solve_b@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ n = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -24,18 +37,98 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pk:5+rand(46);
-ta1:n*(n+1);
-ta2:pk;</text>
+      <text><![CDATA[/* Part (a): 8 algebraic factorial quotient variants in terms of n */
+idx_a : 1 + rand(8);
+
+list_num_a : ["(n + 1)!", "(n + 2)!", "n!", "(n + 3)!", "(n - 1)!", "(n + 1)!", "(n + 2)!", "(n + 2)!"];
+list_den_a : ["(n - 1)!", "n!", "(n - 2)!", "(n + 1)!", "(n - 3)!", "(n - 2)!", "(n - 1)!", "(n + 1)!"];
+list_exp_a : [
+  "(n + 1) \\times n \\times (n - 1)!",
+  "(n + 2) \\times (n + 1) \\times n!",
+  "n \\times (n - 1) \\times (n - 2)!",
+  "(n + 3) \\times (n + 2) \\times (n + 1)!",
+  "(n - 1) \\times (n - 2) \\times (n - 3)!",
+  "(n + 1) \\times n \\times (n - 1) \\times (n - 2)!",
+  "(n + 2) \\times (n + 1) \\times n \\times (n - 1)!",
+  "(n + 2) \\times (n + 1)!"
+];
+list_rem_a : [
+  "n(n + 1)",
+  "(n + 2)(n + 1)",
+  "n(n - 1)",
+  "(n + 3)(n + 2)",
+  "(n - 1)(n - 2)",
+  "(n + 1)n(n - 1)",
+  "(n + 2)(n + 1)n",
+  "n + 2"
+];
+list_ta1 : [
+  n*(n + 1),
+  (n + 2)*(n + 1),
+  n*(n - 1),
+  (n + 3)*(n + 2),
+  (n - 1)*(n - 2),
+  (n + 1)*n*(n - 1),
+  (n + 2)*(n + 1)*n,
+  n + 2
+];
+list_ta1_short : [
+  n + 1,
+  n + 2,
+  n,
+  n + 3,
+  n - 1,
+  (n + 1)*n,
+  (n + 2)*(n + 1),
+  n + 1
+];
+
+num_a : list_num_a[idx_a];
+den_a : list_den_a[idx_a];
+exp_a : list_exp_a[idx_a];
+rem_a : list_rem_a[idx_a];
+ta1 : list_ta1[idx_a];
+ta1_wrong_one_step : list_ta1_short[idx_a];
+
+/* Part (b): 4 equation structures x 48 integer values = 192 variants (1,536 total) */
+idx_b : 1 + rand(4);
+pk : 8 + rand(48);
+
+list_num_b : ["n!", "(n + 1)!", "(n + 2)!", "(n - 1)!"];
+list_den_b : ["(n - 1)!", "n!", "(n + 1)!", "(n - 2)!"];
+list_exp_b : [
+  "n \\times (n - 1)!",
+  "(n + 1) \\times n!",
+  "(n + 2) \\times (n + 1)!",
+  "(n - 1) \\times (n - 2)!"
+];
+list_lhs_b : ["n", "n + 1", "n + 2", "n - 1"];
+list_ta2 : [pk, pk - 1, pk - 2, pk + 1];
+list_ta2_wrong_sign : [pk - 1, pk + 1, pk + 2, pk - 1];
+list_solve_b : [
+  sconcat("n = ", string(pk)),
+  sconcat("n = ", string(pk), " - 1 = ", string(pk - 1)),
+  sconcat("n = ", string(pk), " - 2 = ", string(pk - 2)),
+  sconcat("n = ", string(pk), " + 1 = ", string(pk + 1))
+];
+
+num_b : list_num_b[idx_b];
+den_b : list_den_b[idx_b];
+exp_b : list_exp_b[idx_b];
+lhs_b : list_lhs_b[idx_b];
+ta2 : list_ta2[idx_b];
+ta2_wrong_sign : list_ta2_wrong_sign[idx_b];
+solve_b : list_solve_b[idx_b];]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>k={@pk@}</text>
+      <text><![CDATA[<p>Part A: {@num_a@}/{@den_a@} = {@rem_a@}; Part B: {@num_b@}/{@den_b@} = {@pk@}, n = {@ta2@}</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Algebraic Factorial Expressions and Equations</p>
+<p id="description">Grade 11 CBE: Simplifying quotients of algebraic factorials in terms of n and solving linear factorial equations.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -63,12 +156,12 @@ ta2:pk;</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>10</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -86,7 +179,7 @@ ta2:pk;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -105,7 +198,7 @@ ta2:pk;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact algebraic simplification</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -130,19 +223,19 @@ ta2:pk;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student stopped expanding one step early</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>n+1</tans>
+        <tans>ta1_wrong_one_step</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>You've only cancelled down to n!: expand (n+1)! one more step to (n+1)·n·(n−1)! before cancelling (n−1)!.</text>
+          <text><![CDATA[<p>Check your expansion: you stopped one step early or cancelled an extra factor. Expand \({@num_a@}\) as \({@exp_a@}\) before cancelling \({@den_a@}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -150,7 +243,7 @@ ta2:pk;</text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Expand \({@num_a@}\) down to \({@den_a@}\), cancel the common factorial term, and write the remaining product in terms of \(n\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -164,7 +257,7 @@ ta2:pk;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact value of n</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -181,36 +274,118 @@ ta2:pk;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Remember n!/(n-1)! simplifies directly to n, so n equals the given value exactly — no further adjustment needed.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student made a sign or offset error when solving</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_wrong_sign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check your rearrangement: after cancelling \({@den_b@}\), the left-hand side simplifies to \({@lhs_b@}\). Solve \({@lhs_b@} = {@pk@}\) carefully for \(n\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. First simplify \(\displaystyle \frac{{@num_b@}}{{@den_b@}}\) by expanding \({@num_b@}\) as \({@exp_b@}\) and cancelling \({@den_b@}\), then solve the resulting equation for \(n\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>1262198174</deployedseed>
-    <deployedseed>1182267638</deployedseed>
-    <deployedseed>1212487236</deployedseed>
-    <deployedseed>2114929526</deployedseed>
-    <deployedseed>689889384</deployedseed>
-    <deployedseed>554087795</deployedseed>
-    <deployedseed>2127672444</deployedseed>
-    <deployedseed>154960543</deployedseed>
-    <deployedseed>881832750</deployedseed>
-    <deployedseed>386015851</deployedseed>
-    <deployedseed>196529630</deployedseed>
-    <deployedseed>1035007969</deployedseed>
-    <deployedseed>657572460</deployedseed>
-    <deployedseed>507355676</deployedseed>
-    <deployedseed>1459136612</deployedseed>
-    <deployedseed>505017475</deployedseed>
-    <deployedseed>27809379</deployedseed>
-    <deployedseed>47796006</deployedseed>
-    <deployedseed>308269664</deployedseed>
-    <deployedseed>443026451</deployedseed>
+    <deployedseed>224863617</deployedseed>
+    <deployedseed>228374798</deployedseed>
+    <deployedseed>1475920564</deployedseed>
+    <deployedseed>1470907930</deployedseed>
+    <deployedseed>237582793</deployedseed>
+    <deployedseed>230317555</deployedseed>
+    <deployedseed>1211508285</deployedseed>
+    <deployedseed>294238549</deployedseed>
+    <deployedseed>879024061</deployedseed>
+    <deployedseed>1252159746</deployedseed>
+    <deployedseed>1347636589</deployedseed>
+    <deployedseed>230279345</deployedseed>
+    <deployedseed>1176866011</deployedseed>
+    <deployedseed>179333796</deployedseed>
+    <deployedseed>467674760</deployedseed>
+    <deployedseed>1562856060</deployedseed>
+    <deployedseed>286595442</deployedseed>
+    <deployedseed>2023054686</deployedseed>
+    <deployedseed>1874447721</deployedseed>
+    <deployedseed>965739032</deployedseed>
+    <deployedseed>2040970868</deployedseed>
+    <deployedseed>2008004685</deployedseed>
+    <deployedseed>312914493</deployedseed>
+    <deployedseed>32296145</deployedseed>
+    <deployedseed>689382386</deployedseed>
+    <deployedseed>1237347969</deployedseed>
+    <deployedseed>610857021</deployedseed>
+    <deployedseed>157566189</deployedseed>
+    <deployedseed>225961539</deployedseed>
+    <deployedseed>272035341</deployedseed>
+    <deployedseed>1656135916</deployedseed>
+    <deployedseed>974593473</deployedseed>
+    <deployedseed>1531436625</deployedseed>
+    <deployedseed>2111031325</deployedseed>
+    <deployedseed>1775290038</deployedseed>
+    <deployedseed>1418238618</deployedseed>
+    <deployedseed>318088015</deployedseed>
+    <deployedseed>1408338125</deployedseed>
+    <deployedseed>2128013617</deployedseed>
+    <deployedseed>502797490</deployedseed>
+    <deployedseed>1735006577</deployedseed>
+    <deployedseed>1353365715</deployedseed>
+    <deployedseed>1260218268</deployedseed>
+    <deployedseed>1146737581</deployedseed>
+    <deployedseed>73360603</deployedseed>
+    <deployedseed>594489760</deployedseed>
+    <deployedseed>410626842</deployedseed>
+    <deployedseed>787414986</deployedseed>
+    <deployedseed>1084782727</deployedseed>
+    <deployedseed>773502873</deployedseed>
+    <deployedseed>2058975496</deployedseed>
+    <deployedseed>1812064915</deployedseed>
+    <deployedseed>1787261107</deployedseed>
+    <deployedseed>1042547587</deployedseed>
+    <deployedseed>1296769598</deployedseed>
+    <deployedseed>1939157946</deployedseed>
+    <deployedseed>302994935</deployedseed>
+    <deployedseed>1981471630</deployedseed>
+    <deployedseed>745835173</deployedseed>
+    <deployedseed>797913155</deployedseed>
+    <deployedseed>1264044387</deployedseed>
+    <deployedseed>839506353</deployedseed>
+    <deployedseed>2127524164</deployedseed>
+    <deployedseed>1881047759</deployedseed>
+    <deployedseed>758050988</deployedseed>
+    <deployedseed>543979801</deployedseed>
+    <deployedseed>1443068665</deployedseed>
+    <deployedseed>1721686731</deployedseed>
+    <deployedseed>7790852</deployedseed>
+    <deployedseed>279734940</deployedseed>
+    <deployedseed>311304568</deployedseed>
+    <deployedseed>413815287</deployedseed>
+    <deployedseed>1459919951</deployedseed>
+    <deployedseed>523068236</deployedseed>
+    <deployedseed>2058532402</deployedseed>
+    <deployedseed>1184954389</deployedseed>
+    <deployedseed>790853854</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -223,37 +398,37 @@ ta2:pk;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Incomplete expansion in part (a) and rearrangement error in part (b)</description>
       <testinput>
         <name>ans1</name>
-        <value>n+1</value>
+        <value>ta1_wrong_one_step</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_wrong_sign</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

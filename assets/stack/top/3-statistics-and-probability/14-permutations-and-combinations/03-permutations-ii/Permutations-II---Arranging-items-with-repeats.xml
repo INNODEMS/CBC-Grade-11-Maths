@@ -2,20 +2,30 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Permutations II - Arranging items with repeats</text>
+      <text>Arranging identical colored balls in a row</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) In how many ways can \({@pa@}\) identical Red balls and \({@pb@}\) identical Blue balls be arranged in a row?</p>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> In how many ways can \({@pa@}\) identical Red balls and \({@pb@}\) identical Blue balls be arranged in a row?</p>
 <p>Number of ways = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) In how many ways can \({@pc1@}\) identical Red balls, \({@pc2@}\) identical Blue balls, and \({@pc3@}\) identical Green balls be arranged in a row?</p>
+
+<p><b>(b)</b> In how many ways can \({@pc1@}\) identical Red balls, \({@pc2@}\) identical Blue balls, and \({@pc3@}\) identical Green balls be arranged in a row?</p>
 <p>Number of ways = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>Total items = \({@pa@} + {@pb@} = {@pn@}\). Divide by the factorial of each repeated group:</p>
-<p>\(P = \dfrac{ {@pn@}!}{ {@pa@}!\,{@pb@}!} = {@ta1@}\)</p>
-<p>For part (b), total items = \({@pc1@} + {@pc2@} + {@pc3@} = {@pnc@}\):</p>
-<p>\(P = \dfrac{ {@pnc@}!}{ {@pc1@}!\,{@pc2@}!\,{@pc3@}!} = {@ta2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>When arranging \(n\) items that contain identical groups of sizes \(r_1, r_2, \dots\), divide \(n!\) by the factorial of each group:</p>
+<p style="margin-left: 20px;">\(\displaystyle P = \frac{n!}{r_1! \times r_2! \times \cdots}\)</p>
+
+<p><b>Part (a): Arranging {@pa@} Red and {@pb@} Blue balls</b><br>
+Total number of balls: \(n = {@pa@} + {@pb@} = {@pn@}\). Substitute into the formula, expand \({@pn@}!\) until it matches \({@big1@}!\), and cancel:</p>
+<p style="margin-left: 20px;">\(\displaystyle P = \frac{{@pn@}!}{{@pa@}! \times {@pb@}!} = \frac{{@num1_factors@} \times {@big1@}!}{{@big1@}! \times ({@den1_small@})} = \frac{{@num1_val@}}{{@den1_val@}} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of ways} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Arranging {@pc1@} Red, {@pc2@} Blue, and {@pc3@} Green balls</b><br>
+Total number of balls: \(n = {@pc1@} + {@pc2@} + {@pc3@} = {@pnc@}\). Substitute into the formula, expand \({@pnc@}!\) until it matches \({@g1@}!\), and cancel:</p>
+<p style="margin-left: 20px;">\(\displaystyle P = \frac{{@pnc@}!}{{@pc1@}! \times {@pc2@}! \times {@pc3@}!} = \frac{{@num2_factors@} \times {@g1@}!}{{@g1@}! \times ({@den2_g2@}) \times ({@den2_g3@})} = \frac{{@num2_val@}}{{@den2_val@}} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of ways} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,24 +35,66 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pa:3+rand(4);
-pb:2+rand(3);
-pn:pa+pb;
-ta1:pn!/(pa!*pb!);
-pc1:2+rand(3);
-pc2:2+rand(3);
-pc3:1+rand(2);
-pnc:pc1+pc2+pc3;
-ta2:pnc!/(pc1!*pc2!*pc3!);</text>
+      <text><![CDATA[/* Part A: Ensure max(pa, pb) >= 3 so pa!*pb! > pa*pb in 100% of variants (19 choices) */
+pa : rand([2, 3, 4, 5, 6]);
+pb_pool : if pa = 2 then [3, 4, 5] else [2, 3, 4, 5];
+pb : rand(pb_pool);
+pn : pa + pb;
+ta1 : factorial(pn) / (factorial(pa) * factorial(pb));
+
+/* Part B: Valid triples where max >= 3 and pc1*pc2*pc3 # max! so all 4 PRT outcomes are distinct (13 choices) */
+triple_b : rand([
+  [3, 2, 2], [2, 3, 2], [2, 2, 3],
+  [3, 3, 2], [3, 2, 3], [2, 3, 3],
+  [3, 3, 3],
+  [4, 2, 2], [2, 4, 2], [2, 2, 4],
+  [4, 3, 3], [4, 4, 2], [4, 4, 3]
+]);
+pc1 : triple_b[1];
+pc2 : triple_b[2];
+pc3 : triple_b[3];
+pnc : pc1 + pc2 + pc3;
+ta2 : factorial(pnc) / (factorial(pc1) * factorial(pc2) * factorial(pc3));
+
+/* Step-by-step expansion helpers */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+
+big1 : max(pa, pb);
+small1 : min(pa, pb);
+num1_factors : apply("mycross", makelist(pn - i, i, 0, small1 - 1));
+den1_small : apply("mycross", makelist(small1 - i, i, 0, small1 - 1));
+num1_val : factorial(pn) / factorial(big1);
+den1_val : factorial(small1);
+
+sorted2 : sort([pc1, pc2, pc3], ">");
+g1 : sorted2[1];
+g2 : sorted2[2];
+g3 : sorted2[3];
+rem_count2 : pnc - g1;
+num2_factors : apply("mycross", makelist(pnc - i, i, 0, rem_count2 - 1));
+den2_g2 : apply("mycross", makelist(g2 - i, i, 0, g2 - 1));
+den2_g3 : apply("mycross", makelist(g3 - i, i, 0, g3 - 1));
+num2_val : factorial(pnc) / factorial(g1);
+den2_val : factorial(g2) * factorial(g3);
+
+/* Distractors for targeted PRT feedback (guaranteed distinct from ta1/ta2 across all seeds) */
+ta1_no_div : factorial(pn);
+ta1_no_fact : factorial(pn) / (pa * pb);
+
+ta2_no_div : factorial(pnc);
+ta2_no_fact : factorial(pnc) / (pc1 * pc2 * pc3);
+ta2_one_group : factorial(pnc) / factorial(g1);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>a={@pa@}, b={@pb@}, c1={@pc1@}, c2={@pc2@}, c3={@pc3@}</text>
+      <text>Part A: {@pn@}!/({@pa@}!*{@pb@}!) = {@ta1@}; Part B: {@pnc@}!/({@pc1@}!*{@pc2@}!*{@pc3@}!) = {@ta2@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Permutations of Identical Objects in a Row</p>
+<p id="description">Grade 11 CBE: Calculating distinct linear arrangements of identical items grouped by color using n!/(r1! * r2! * ...).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -75,7 +127,7 @@ ta2:pnc!/(pc1!*pc2!*pc3!);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -93,7 +145,7 @@ ta2:pnc!/(pc1!*pc2!*pc3!);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -112,7 +164,7 @@ ta2:pnc!/(pc1!*pc2!*pc3!);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of arrangements for two color groups</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -137,27 +189,52 @@ ta2:pnc!/(pc1!*pc2!*pc3!);</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student computed n! without dividing by repeated groups</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pn!</tans>
+        <tans>ta1_no_div</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Remember to divide by the factorial of each repeated group — swapping identical balls doesn't create a new arrangement.</text>
+          <text><![CDATA[<p>You calculated \({@pn@}!\), which assumes all \({@pn@}\) balls are distinct. Divide by \({@pa@}! \times {@pb@}!\) because swapping identical balls of the same color does not create a new arrangement.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student omitted factorials in denominator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_no_fact</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember to take the factorial of each group count in the denominator: divide \({@pn@}!\) by \({@pa@}! \times {@pb@}!\), not \({@pa@} \times {@pb@}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Find the total number of balls \(n = {@pa@} + {@pb@} = {@pn@}\) and divide \({@pn@}!\) by the factorial of each identical color group: \(\frac{{@pn@}!}{{@pa@}! \times {@pb@}!}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -171,7 +248,7 @@ ta2:pnc!/(pc1!*pc2!*pc3!);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of arrangements for three color groups</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -188,10 +265,85 @@ ta2:pnc!/(pc1!*pc2!*pc3!);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>With three repeated groups, divide the total factorial by all three group factorials, not just one or two of them.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student computed n! without dividing by repeated groups</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_no_div</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \({@pnc@}!\), which assumes all \({@pnc@}\) balls are distinct. Divide by \({@pc1@}! \times {@pc2@}! \times {@pc3@}!\) to account for the identical balls in each color group.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student omitted factorials in denominator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_no_fact</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember to take the factorial of each group count in the denominator: divide \({@pnc@}!\) by \({@pc1@}! \times {@pc2@}! \times {@pc3@}!\), not \({@pc1@} \times {@pc2@} \times {@pc3@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student divided by only one group factorial</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_one_group</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>With three repeated groups, divide \({@pnc@}!\) by all three group factorials (\({@pc1@}! \times {@pc2@}! \times {@pc3@}!\)), not just one of them.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. With three color groups totaling \(n = {@pnc@}\) balls, divide \({@pnc@}!\) by all three group factorials: \(\frac{{@pnc@}!}{{@pc1@}! \times {@pc2@}! \times {@pc3@}!}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -215,9 +367,60 @@ ta2:pnc!/(pc1!*pc2!*pc3!);</text>
     <deployedseed>70414294</deployedseed>
     <deployedseed>1337062324</deployedseed>
     <deployedseed>1900533615</deployedseed>
+    <deployedseed>1101070220</deployedseed>
+    <deployedseed>855777680</deployedseed>
+    <deployedseed>1583090366</deployedseed>
+    <deployedseed>155560452</deployedseed>
+    <deployedseed>728406619</deployedseed>
+    <deployedseed>1671382935</deployedseed>
+    <deployedseed>1215633139</deployedseed>
+    <deployedseed>44182723</deployedseed>
+    <deployedseed>874750586</deployedseed>
+    <deployedseed>616765252</deployedseed>
+    <deployedseed>400560149</deployedseed>
+    <deployedseed>813265279</deployedseed>
+    <deployedseed>1050734876</deployedseed>
+    <deployedseed>419760769</deployedseed>
+    <deployedseed>1949358591</deployedseed>
+    <deployedseed>1715470613</deployedseed>
+    <deployedseed>2079083624</deployedseed>
+    <deployedseed>1468466267</deployedseed>
+    <deployedseed>633673498</deployedseed>
+    <deployedseed>37593305</deployedseed>
+    <deployedseed>1273768423</deployedseed>
+    <deployedseed>548055791</deployedseed>
+    <deployedseed>2147323941</deployedseed>
+    <deployedseed>1728915835</deployedseed>
+    <deployedseed>463450242</deployedseed>
+    <deployedseed>736902461</deployedseed>
+    <deployedseed>1425534683</deployedseed>
+    <deployedseed>393435405</deployedseed>
+    <deployedseed>1746194796</deployedseed>
+    <deployedseed>1338144867</deployedseed>
+    <deployedseed>1478911282</deployedseed>
+    <deployedseed>2011195718</deployedseed>
+    <deployedseed>1771608628</deployedseed>
+    <deployedseed>725774692</deployedseed>
+    <deployedseed>492380416</deployedseed>
+    <deployedseed>945011251</deployedseed>
+    <deployedseed>1657836805</deployedseed>
+    <deployedseed>52294681</deployedseed>
+    <deployedseed>2013222270</deployedseed>
+    <deployedseed>1942664803</deployedseed>
+    <deployedseed>1590648623</deployedseed>
+    <deployedseed>1323176564</deployedseed>
+    <deployedseed>39065429</deployedseed>
+    <deployedseed>1187642045</deployedseed>
+    <deployedseed>1158834075</deployedseed>
+    <deployedseed>766436558</deployedseed>
+    <deployedseed>1593587766</deployedseed>
+    <deployedseed>538968140</deployedseed>
+    <deployedseed>1652418224</deployedseed>
+    <deployedseed>816611635</deployedseed>
+    <deployedseed>1520090161</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -230,37 +433,85 @@ ta2:pnc!/(pc1!*pc2!*pc3!);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Forgetting to divide by repeated group factorials</description>
       <testinput>
         <name>ans1</name>
-        <value>pn!</value>
+        <value>ta1_no_div</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_no_div</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Omitting factorials in denominator</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_no_fact</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_no_fact</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Dividing by only one group factorial in Part B</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_one_group</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-4-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

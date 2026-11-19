@@ -2,20 +2,36 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Combinations 3 - Symmetry and solving for n</text>
+      <text>Applying combination symmetry and solving combination equations for n</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) Given that \(_{ {@pn@} }C_{ {@pr@} } = {}_{ {@pn@} }C_x\) and \(x \neq {@pr@}\), find \(x\).</p>
-<p>\(x = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) Given that \(_nC_2 = {@pK@}\), find \(n\).</p>
-<p>\(n = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> Given that \({}_{{@pn@}}C_{{@pr@}} = {}_{{@pn@}}C_x\) and \(x \neq {@pr@}\), find \(x\).</p>
+<p>\(x =\) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p><b>(b)</b> Given that \({}_nC_2 = {@pK@}\), find \(n\).</p>
+<p>\(n =\) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>Choosing \({@pr@}\) items to keep is the same as choosing \({@pn-pr@}\) items to leave out, so \(_nC_r = {}_nC_{n-r}\).</p>
-<p>\(x = {@pn@} - {@pr@} = {@ta1@}\)</p>
-<p>For part (b), \(_nC_2 = \dfrac{n(n-1)}{2} = {@pK@}\), so \(n(n-1) = {@2*pK@}\).</p>
-<p>Look for two consecutive numbers whose product is \({@2*pK@}\): \({@pm@} \times {@pm-1@} = {@2*pK@}\), so \(n = {@pm@}\).</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part (a): Using combination symmetry to solve \({}_{{@pn@}}C_{{@pr@}} = {}_{{@pn@}}C_x\)</b><br>
+Selecting \(r\) items from \(n\) items leaves \(n - r\) items behind, which gives the combination symmetry property:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nC_r = {}_nC_{n - r}\)</p>
+<p>Since \({}_{{@pn@}}C_{{@pr@}} = {}_{{@pn@}}C_x\) and \(x \neq {@pr@}\), \(x\) must equal the complementary count \(n - r\):</p>
+<p style="margin-left: 20px;">\(\displaystyle x = {@pn@} - {@pr@} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ x = {@ta1@} }\)</p>
+
+<p><b>Part (b): Solving \({}_nC_2 = {@pK@}\) for \(n\)</b><br>
+Expand \({}_nC_2\) using \(\displaystyle {}_nC_r = \frac{n!}{r!(n - r)!}\) with \(r = 2\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nC_2 = \frac{n!}{2!\,(n - 2)!} = \frac{n(n - 1)(n - 2)!}{2 \times 1 \times (n - 2)!} = \frac{n(n - 1)}{2}\)</p>
+<p>Set this expression equal to \({@pK@}\) and multiply both sides by \(2\):</p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{n(n - 1)}{2} = {@pK@} \implies n(n - 1) = 2 \times {@pK@} = {@twoK@}\)</p>
+<p>We can find \(n\) either by testing consecutive positive integers or by solving the quadratic equation:</p>
+<ul>
+  <li><b>Consecutive integers:</b> Since \({@pm@} \times {@pm_minus_1@} = {@twoK@}\), the larger consecutive integer is \(n = {@pm@}\).</li>
+  <li><b>Quadratic equation:</b> Expanding gives \(n^2 - n - {@twoK@} = 0\), which factorizes as \((n - {@pm@})(n + {@pm_minus_1@}) = 0\). Since \(n \ge 2\), reject \(n = -{@pm_minus_1@}\) to get \(n = {@pm@}\).</li>
+</ul>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ n = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,21 +41,34 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>ta1:?;pn:9+rand(7);
-pr:2+rand(3);
-ta1:pn-pr;
-pm:5+rand(8);
-pK:pm*(pm-1)/2;
-ta2:pm;</text>
+      <text>/* Independent arrays yielding 8 x 3 x 10 = 240 distinct variants with strictly non-colliding distractors */
+pn : rand([9, 10, 11, 12, 13, 14, 15, 16]);
+pr : rand([2, 3, 4]);
+ta1 : pn - pr;
+
+pm : rand([5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+pm_minus_1 : pm - 1;
+pK : pm * pm_minus_1 / 2;
+twoK : 2 * pK;
+ta2 : pm;
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+ta1_same_r : pr;
+ta1_sum : pn + pr;
+
+ta2_smaller : pm_minus_1;
+ta2_plus_one : pm + 1;
+ta2_2k : twoK;</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>n={@pn@}, r={@pr@}, K={@pK@}</text>
+      <text>Part A: {@pn@}C{@pr@} = {@pn@}C{@ta1@} (x={@ta1@}); Part B: nC2 = {@pK@} (n={@ta2@})</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Combination Symmetry and Solving Combination Equations</p>
+<p id="description">Grade 11 CBE: Applying nCr = nC(n - r) and solving nC2 = K for n via factorization.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -72,7 +101,7 @@ ta2:pm;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -90,7 +119,7 @@ ta2:pm;</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -109,7 +138,7 @@ ta2:pm;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact value of x using combination symmetry</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -134,27 +163,52 @@ ta2:pm;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student entered x = r despite the condition x != r</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pr</tans>
+        <tans>ta1_same_r</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>The question says x is different from r. Use the symmetry nCr = nC(n−r) to find the other value.</text>
+          <text><![CDATA[<p>The problem states \(x \neq {@pr@}\). Use the symmetry property \({}_nC_r = {}_nC_{n - r}\) to find the other value: \(x = {@pn@} - {@pr@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student added n + r instead of subtracting n - r</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_sum</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added \({@pn@} + {@pr@} = {@ta1_sum@}\). By symmetry \({}_nC_r = {}_nC_{n - r}\), subtract \(r\) from \(n\): \(x = {@pn@} - {@pr@}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. By combination symmetry \({}_nC_r = {}_nC_{n - r}\), the two lower indices sum to \(n\): \(x = {@pn@} - {@pr@}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -168,7 +222,7 @@ ta2:pm;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact value of n</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -185,10 +239,60 @@ ta2:pm;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Write nC2 = n(n−1)/2, multiply both sides by 2, then find two consecutive numbers with that product. n is the larger one.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student entered n - 1 (the smaller consecutive integer)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_smaller</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered {@ta2_smaller@}, which is \(n - 1\). In the product \(n(n - 1) = {@twoK@}\), \(n\) is the <b>larger</b> of the two consecutive integers.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student entered 2K = n(n - 1) instead of solving for n</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_2k</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>{@twoK@} is the value of \(n(n - 1) = 2 \times {@pK@}\). Now solve \(n(n - 1) = {@twoK@}\) (or \(n^2 - n - {@twoK@} = 0\)) to find \(n\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Write \(\displaystyle {}_nC_2 = \frac{n(n - 1)}{2} = {@pK@}\), multiply both sides by \(2\) to get \(n(n - 1) = {@twoK@}\), and solve for \(n\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -212,9 +316,13 @@ ta2:pm;</text>
     <deployedseed>957242130</deployedseed>
     <deployedseed>1887897686</deployedseed>
     <deployedseed>1447182710</deployedseed>
+    <deployedseed>1071961119</deployedseed>
+    <deployedseed>321263921</deployedseed>
+    <deployedseed>287035640</deployedseed>
+    <deployedseed>1721011534</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -227,37 +335,61 @@ ta2:pm;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Entering x = r in Part A and n - 1 in Part B</description>
       <testinput>
         <name>ans1</name>
-        <value>pr</value>
+        <value>ta1_same_r</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_smaller</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Adding n + r in Part A and entering 2K = n(n - 1) in Part B</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_sum</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_2k</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
       </expected>
     </qtest>
   </question>
