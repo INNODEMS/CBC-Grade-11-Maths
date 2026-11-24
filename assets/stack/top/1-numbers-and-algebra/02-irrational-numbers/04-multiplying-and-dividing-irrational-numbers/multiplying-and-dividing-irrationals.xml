@@ -2,34 +2,31 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>multiplying and dividing irrationals</text>
+      <text>Simplifying combined multiplication and division of surds into the form k√m</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Simplify the following expression, giving your answer in the form \(k\sqrt{m}\).</p>
-\[ \frac{{@a@}\sqrt{@n@} \times {@b@}\sqrt{@m@}}{{@c@}\sqrt{@m@}} \]
-<p>[[input:ans1]] [[validation:ans1]]</p>
-<p>[[feedback:prt1]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p>Simplify the following expression, giving your answer in the form \(k\sqrt{m}\), where \(m\) has no perfect-square factors. <i>(Note: For example, write <code>3*sqrt(5)</code> to represent \(3\sqrt{5}\).)</i></p>
+<p style="text-align: center; font-size: 1.2em;">\[ \frac{{@a@}\sqrt{{@n@}} \times {@b@}\sqrt{{@m@}}}{{@c@}\sqrt{{@m@}}} \]</p>
+<p>Simplified form = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
 
-<p><strong>Step 1:</strong> Multiply the top of the fraction. Multiply the numbers outside the roots, then the numbers inside the roots.</p>
-\[ {@a@} \times {@b@} = {@ab@}, \qquad \sqrt{@n@} \times \sqrt{@m@} = \sqrt{@nm@} \]
-\[ {@a@}\sqrt{@n@} \times {@b@}\sqrt{@m@} = {@ab@}\sqrt{@nm@} \]
+<p><b>Step 1: Multiply the numerator</b><br>
+Multiply the numbers outside the square roots, then multiply the numbers inside the square roots:</p>
+<p style="margin-left: 20px;">\(\displaystyle {@a@} \times {@b@} = {@ab@}, \qquad \sqrt{{@n@}} \times \sqrt{{@m@}} = \sqrt{{@n@} \times {@m@}} = \sqrt{{@nm@}}\)</p>
+<p style="margin-left: 20px;">\(\displaystyle {@a@}\sqrt{{@n@}} \times {@b@}\sqrt{{@m@}} = {@ab@}\sqrt{{@nm@}}\)</p>
 
-<p><strong>Step 2:</strong> The fraction is now:</p>
-\[ \frac{{@ab@}\sqrt{@nm@}}{{@c@}\sqrt{@m@}} \]
+<p><b>Step 2: Rewrite the fraction and divide the outside numbers</b></p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@ab@}\sqrt{{@nm@}}}{{@c@}\sqrt{{@m@}}} \quad \Longrightarrow \quad {@ab@} \div {@c@} = {@e@}\)</p>
 
-<p><strong>Step 3:</strong> Divide the numbers outside the roots.</p>
-\[ {@ab@} \div {@c@} = {@e@} \]
+<p><b>Step 3: Divide the square roots using \(\dfrac{\sqrt{x}}{\sqrt{y}} = \sqrt{\dfrac{x}{y}}\)</b></p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{\sqrt{{@nm@}}}{\sqrt{{@m@}}} = \sqrt{\frac{{@nm@}}{{@m@}}} = \sqrt{{@n@}}\)</p>
 
-<p><strong>Step 4:</strong> Divide the roots.</p>
-\[ \frac{\sqrt{@nm@}}{\sqrt{@m@}} = \sqrt{\frac{@nm@}{@m@}} = \sqrt{@n@} \]
+<p><b>Step 4: Combine the results</b></p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@a@}\sqrt{{@n@}} \times {@b@}\sqrt{{@m@}}}{{@c@}\sqrt{{@m@}}} = {@e@} \times \sqrt{{@n@}} = {@ta1@}\)</p>
 
-<p><strong>Step 5:</strong> Put the two results together.</p>
-\[ \frac{{@a@}\sqrt{@n@} \times {@b@}\sqrt{@m@}}{{@c@}\sqrt{@m@}} = {@e@}\sqrt{@n@} \]
-
-<p><strong>Answer:</strong> \( {@e@}\sqrt{@n@} \)</p>]]></text>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \frac{{@a@}\sqrt{{@n@}} \times {@b@}\sqrt{{@m@}}}{{@c@}\sqrt{{@m@}}} = {@ta1@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -39,27 +36,44 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>simp:true;
-P: [2,3,5,7,11];
-n: rand(P);
-m: rand(delete(n,P));
-c: rand(makelist(i,i,2,8));
-k: rand(makelist(i,i,2,10));
-b: rand(makelist(i,i,2,20));
-a: c*k;
-ab: a*b;
-nm: n*m;
-e: ab/c;
-ta1: e*sqrt(n);</text>
+      <text>/* Loop-free selection across 50,000+ unique non-colliding combinations */
+P : [2, 3, 5, 7, 11, 13, 17, 19];
+n : rand(P);
+m : rand(delete(n, P));
+
+c : rand([2, 3, 4, 5, 6, 7, 8, 9]);
+
+/* Require b != c and gcd(b, n) = 1 so blist and klist are never empty */
+blist : sublist(delete(c, makelist(i, i, 2, 20)), lambda([x], gcd(x, n) = 1));
+b : rand(blist);
+
+/* Ensure gcd(k, n) = 1 so Maxima never collapses e*sqrt(n) into fractional exponents */
+klist : sublist(makelist(i, i, 2, 12), lambda([x], gcd(x, n) = 1));
+k : rand(klist);
+
+a : c * k;
+ab : a * b;
+nm : n * m;
+e : k * b;
+
+/* Correct simplified surd answer */
+ta1 : e * sqrt(n);
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+w1 : ab * sqrt(n);
+w2 : (a + b - c) * sqrt(n);
+w3 : e * sqrt(nm);
+w4 : e * n;</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}{@a@}, {@b@}, {@c@}, {@n@}, {@m@}</text>
+      <text>\(\frac{{@a@}\sqrt{{@n@}} \times {@b@}\sqrt{{@m@}}}{{@c@}\sqrt{{@m@}}} = {@ta1@}\) (a = {@a@}, b = {@b@}, c = {@c@}, n = {@n@}, m = {@m@})</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Multiplying and Dividing Irrational Numbers (Surds)</p>
+<p id="description">Grade 11 CBE: Simplifying combined multiplication and division of surds into the form k*sqrt(m).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -98,25 +112,25 @@ ta1: e*sqrt(n);</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
       <name>prt1</name>
       <value>1.0000000</value>
-      <autosimplify>1</autosimplify>
+      <autosimplify>0</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
         <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
+        <description>Check exact simplified surd form EqualComAss</description>
+        <answertest>EqualComAss</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -128,10 +142,135 @@ ta1: e*sqrt(n);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student entered an equivalent unsimplified expression or exponential notation</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your expression is mathematically equal to the answer, but it is <b>not yet simplified into the surd form</b> \(k\sqrt{m}\). Complete the multiplication and division and write <code>{@e@}*sqrt({@n@})</code>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Forgot to divide outside product by denominator coefficient c</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simplified the square roots correctly to \(\sqrt{{@n@}}\) and multiplied \({@a@} \times {@b@} = {@ab@}\), but forgot to divide by \({@c@}\) in the denominator. Evaluate \({@ab@} \div {@c@} = {@e@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Added/subtracted outside coefficients instead of multiplying and dividing</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simplified the square roots correctly to \(\sqrt{{@n@}}\), but added and subtracted the outside numbers instead of multiplying and dividing. Evaluate \(({@a@} \times {@b@}) \div {@c@} = {@e@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Forgot to divide by sqrt(m) in the denominator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simplified the outside numbers correctly (\(({@a@} \times {@b@}) \div {@c@} = {@e@}\)), but forgot to divide \(\sqrt{{@nm@}}\) by \(\sqrt{{@m@}}\) in the denominator: \(\dfrac{\sqrt{{@nm@}}}{\sqrt{{@m@}}} = \sqrt{{@n@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description>Dropped the square root sign completely</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-6-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember that \(\dfrac{\sqrt{{@nm@}}}{\sqrt{{@m@}}} = \sqrt{{@n@}}\) keeps the square root sign because \({@n@}\) is not a perfect square. Write <code>{@e@}*sqrt({@n@})</code>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-6-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply and divide the numbers outside the roots (\(({@a@} \times {@b@}) \div {@c@}\)), simplify the square roots (\(\dfrac{\sqrt{{@n@}} \times \sqrt{{@m@}}}{\sqrt{{@m@}}}\)), and write the result in the form \(k\sqrt{m}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -144,7 +283,6 @@ ta1: e*sqrt(n);</text>
     <deployedseed>1021674426</deployedseed>
     <deployedseed>1939942513</deployedseed>
     <deployedseed>1951120087</deployedseed>
-    <deployedseed>922908880</deployedseed>
     <deployedseed>1655453660</deployedseed>
     <deployedseed>1510915732</deployedseed>
     <deployedseed>1464384152</deployedseed>
@@ -155,9 +293,82 @@ ta1: e*sqrt(n);</text>
     <deployedseed>1061259845</deployedseed>
     <deployedseed>860453759</deployedseed>
     <deployedseed>444357880</deployedseed>
+    <deployedseed>798081828</deployedseed>
+    <deployedseed>589049152</deployedseed>
+    <deployedseed>503675499</deployedseed>
+    <deployedseed>1882362564</deployedseed>
+    <deployedseed>1738368039</deployedseed>
+    <deployedseed>2037053150</deployedseed>
+    <deployedseed>1268086420</deployedseed>
+    <deployedseed>346950113</deployedseed>
+    <deployedseed>765157402</deployedseed>
+    <deployedseed>1794880635</deployedseed>
+    <deployedseed>918547160</deployedseed>
+    <deployedseed>948024595</deployedseed>
+    <deployedseed>1767886997</deployedseed>
+    <deployedseed>1723534828</deployedseed>
+    <deployedseed>986952234</deployedseed>
+    <deployedseed>364846471</deployedseed>
+    <deployedseed>1381157829</deployedseed>
+    <deployedseed>453488751</deployedseed>
+    <deployedseed>1115448370</deployedseed>
+    <deployedseed>1685014377</deployedseed>
+    <deployedseed>2076377904</deployedseed>
+    <deployedseed>1194081932</deployedseed>
+    <deployedseed>1176415487</deployedseed>
+    <deployedseed>897869230</deployedseed>
+    <deployedseed>28707068</deployedseed>
+    <deployedseed>1778586445</deployedseed>
+    <deployedseed>2023138724</deployedseed>
+    <deployedseed>760111543</deployedseed>
+    <deployedseed>1491003108</deployedseed>
+    <deployedseed>130898055</deployedseed>
+    <deployedseed>1158603518</deployedseed>
+    <deployedseed>452132021</deployedseed>
+    <deployedseed>1053295141</deployedseed>
+    <deployedseed>1183186731</deployedseed>
+    <deployedseed>1720065913</deployedseed>
+    <deployedseed>470066121</deployedseed>
+    <deployedseed>802202720</deployedseed>
+    <deployedseed>67892826</deployedseed>
+    <deployedseed>903570075</deployedseed>
+    <deployedseed>93559384</deployedseed>
+    <deployedseed>1410080099</deployedseed>
+    <deployedseed>1837999274</deployedseed>
+    <deployedseed>522303296</deployedseed>
+    <deployedseed>934840422</deployedseed>
+    <deployedseed>1578090927</deployedseed>
+    <deployedseed>1108283225</deployedseed>
+    <deployedseed>925438589</deployedseed>
+    <deployedseed>1499115275</deployedseed>
+    <deployedseed>1258203113</deployedseed>
+    <deployedseed>1673601287</deployedseed>
+    <deployedseed>1687030328</deployedseed>
+    <deployedseed>1762221054</deployedseed>
+    <deployedseed>1327656530</deployedseed>
+    <deployedseed>151495633</deployedseed>
+    <deployedseed>1062399748</deployedseed>
+    <deployedseed>768801091</deployedseed>
+    <deployedseed>765569842</deployedseed>
+    <deployedseed>1729511920</deployedseed>
+    <deployedseed>347931928</deployedseed>
+    <deployedseed>331504318</deployedseed>
+    <deployedseed>1622081031</deployedseed>
+    <deployedseed>577629775</deployedseed>
+    <deployedseed>1383142312</deployedseed>
+    <deployedseed>84522735</deployedseed>
+    <deployedseed>735132047</deployedseed>
+    <deployedseed>1648276868</deployedseed>
+    <deployedseed>1376926876</deployedseed>
+    <deployedseed>425395425</deployedseed>
+    <deployedseed>1852795732</deployedseed>
+    <deployedseed>367544413</deployedseed>
+    <deployedseed>1330148877</deployedseed>
+    <deployedseed>444228831</deployedseed>
+    <deployedseed>127000132</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Correct simplified surd answer</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -166,7 +377,77 @@ ta1: e*sqrt(n);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Equivalent unsimplified fraction</description>
+      <testinput>
+        <name>ans1</name>
+        <value>(ab*'sqrt(nm))/(c*'sqrt(m))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Forgot to divide by denominator coefficient c</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Added and subtracted outside coefficients instead of multiplying and dividing</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Forgot to divide by sqrt(m) in denominator</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-5-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Dropped the square root sign completely</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-6-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

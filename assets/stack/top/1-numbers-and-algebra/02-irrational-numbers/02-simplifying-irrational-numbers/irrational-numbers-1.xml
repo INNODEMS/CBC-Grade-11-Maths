@@ -2,17 +2,27 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>irrational numbers 1</text>
+      <text>Simplifying a square root expression into simplest surd form</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Simplify \(\sqrt{@number@}\) to the simplest form.</p>
-<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p>Simplify \(\sqrt{{@number@}}\) to the simplest form. <i>(Note: Write <code>sqrt(3)</code> to represent \(\sqrt{3}\).)</i></p>
+<p> Simplified form = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<p>To simplify \( \sqrt{ {@number@} } \), look for the largest perfect-square factor of {@number@}.</p>
-<p>Since {@number@} = {@a@} × {@b@}, and {@a@} is a perfect square:</p>
-<p>\[ \sqrt{ {@number@} } = \sqrt{ {@a@} } \times \sqrt{ {@b@} } = {@sqrt(a)@}\sqrt{ {@b@} } \]</p>
-<p><strong>Key idea:</strong> an irrational number is fully simplified when the number left under the root sign has no perfect-square factors remaining. Always check for the largest such factor first otherwise you may simplify only part-way.</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>To simplify \(\sqrt{{@number@}}\), apply the product rule for surds \(\displaystyle \sqrt{a \times b} = \sqrt{a} \times \sqrt{b}\) by finding the largest perfect-square factor of \({@number@}\).</p>
+
+<p>Since \({@number@} = {@a@} \times {@b@}\), and \({@a@} = {@root_a@}^2\) is a perfect square:</p>
+<p style="margin-left: 20px;">\(\displaystyle \sqrt{{@number@}} = \sqrt{{@a@} \times {@b@}} = \sqrt{{@a@}} \times \sqrt{{@b@}} = {@ta1@}\)</p>
+
+<p><b>Key idea:</b></p>
+<ul>
+  <li>A surd is fully simplified when the number left inside the square root has no perfect-square factors (other than \(1\)).</li>
+  <li>Always check for the <b>largest</b> perfect-square factor first. Otherwise, you may only simplify the surd part-way.</li>
+</ul>
+
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \sqrt{{@number@}} = {@ta1@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -22,30 +32,31 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Perfect square factors to choose from */
-squares: [4,9,16,25];
-a: squares[rand(length(squares))+1];
+      <text>/* 9 perfect squares x 10 square-free integers = 90 unique non-colliding variants */
+root_a : rand([2, 3, 4, 5, 6, 7, 8, 9, 10]);
+a : root_a^2;
 
-/* Square-free number (2-7, excluding 4) to multiply with */
-b: rand(6)+2;
-while member(b, [4]) do b: rand(6)+2;
+b : rand([2, 3, 5, 6, 7, 10, 11, 13, 14, 15]);
 
 /* The number the student is asked to simplify */
-number: a * b;
+number : a * b;
 
 /* Correct fully-simplified answer, e.g. sqrt(16)*sqrt(3) = 4*sqrt(3) */
-ta1: sqrt(a) * sqrt(b);
+ta1 : root_a * sqrt(b);
 
-ta2: sqrt(b) * a;</text>
+/* Distractors for targeted PRT feedback */
+ta2 : a * sqrt(b);
+ta3 : root_a * b;</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}{@ta2@}{@a@}{@b@}</text>
+      <text>\sqrt{{@number@}} = {@ta1@} (a = {@a@}, b = {@b@})</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Simplifying Surds (Irrational Numbers)</p>
+<p id="description">Grade 11 CBE: Expressing square roots of composite integers in simplest form a*sqrt(b).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -73,7 +84,7 @@ ta2: sqrt(b) * a;</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>8</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -84,25 +95,25 @@ ta2: sqrt(b) * a;</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
       <name>prt1</name>
       <value>1.0000000</value>
-      <autosimplify>1</autosimplify>
+      <autosimplify>0</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
         <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
+        <description>Check exact simplified surd form EqualComAss</description>
+        <answertest>EqualComAss</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -122,30 +133,78 @@ ta2: sqrt(b) * a;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student entered an equivalent but unsimplified or partially simplified surd</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ta2</tans>
+        <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>You've correctly identified the factor pair {@a@} and {@b@}, but they're the wrong way round.</p>
-<p>Remember: the <strong>perfect square</strong> ({@a@}) is the part that goes <em>under</em> the root first, so you can take its square root - it should end up <strong>outside</strong> the root sign as \( \sqrt{ {@a@} } \).</p>
-<p>The <strong>square-free</strong> number ({@b@}) is the part that <strong>stays under</strong> the root, since it has no perfect-square factor left to simplify.</p>
-<p>Try again: \( \sqrt{ {@number@} } = \sqrt{ {@a@} \times {@b@} } = \sqrt{ {@a@} } \times \sqrt{ {@b@} } \)</p>]]></text>
+          <text><![CDATA[<p>Your expression is mathematically equal to \(\sqrt{{@number@}}\), but it is <b>not yet fully simplified</b>. Factor out the largest perfect square \({@a@}\) so that the remaining number inside the root (\({@b@}\)) has no perfect-square factors left.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student swapped the perfect square and square-free factor</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You correctly identified the factor pair \({@a@}\) and \({@b@}\), but they are the wrong way round.</p>
+<p>Take the square root of the <b>perfect square</b> \({@a@}\) so it moves <b>outside</b> the root sign as \(\sqrt{{@a@}} = {@root_a@}\), while the <b>square-free</b> factor \({@b@}\) stays <b>inside</b> the root sign.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student dropped the square root sign completely</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You correctly evaluated \(\sqrt{{@a@}} = {@root_a@}\), but \({@b@}\) is not a perfect square and must remain under the square root sign as <code>sqrt({@b@})</code>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>That's not correct. Check that you've found the <strong>largest</strong> perfect-square factor of {@number@}, and that your final answer is in the form \( a\sqrt{b} \), where \(\sqrt{@a@}\) is outside and {@b@} is inside the root.</p>]]></text>
+          <text><![CDATA[<p>Incorrect. Look for the <b>largest</b> perfect-square factor of \({@number@}\) so you can write \(\sqrt{{@number@}} = \sqrt{a} \times \sqrt{b}\) with \(\sqrt{a}\) evaluated outside the root and \(b\) remaining inside.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -164,9 +223,60 @@ ta2: sqrt(b) * a;</text>
     <deployedseed>1833594838</deployedseed>
     <deployedseed>1658341032</deployedseed>
     <deployedseed>17350116</deployedseed>
+    <deployedseed>1906489907</deployedseed>
+    <deployedseed>482555317</deployedseed>
+    <deployedseed>2029116503</deployedseed>
+    <deployedseed>2015943213</deployedseed>
+    <deployedseed>721105721</deployedseed>
+    <deployedseed>1136741402</deployedseed>
+    <deployedseed>1455332909</deployedseed>
+    <deployedseed>775543494</deployedseed>
+    <deployedseed>515345445</deployedseed>
+    <deployedseed>2141408020</deployedseed>
+    <deployedseed>491663173</deployedseed>
+    <deployedseed>85093239</deployedseed>
+    <deployedseed>679059307</deployedseed>
+    <deployedseed>1004583346</deployedseed>
+    <deployedseed>584815225</deployedseed>
+    <deployedseed>1392083071</deployedseed>
+    <deployedseed>1407288721</deployedseed>
+    <deployedseed>57888729</deployedseed>
+    <deployedseed>1592435040</deployedseed>
+    <deployedseed>1104487684</deployedseed>
+    <deployedseed>1720762940</deployedseed>
+    <deployedseed>1709359476</deployedseed>
+    <deployedseed>419745218</deployedseed>
+    <deployedseed>109481306</deployedseed>
+    <deployedseed>17291912</deployedseed>
+    <deployedseed>164779314</deployedseed>
+    <deployedseed>1420085891</deployedseed>
+    <deployedseed>1227105247</deployedseed>
+    <deployedseed>675256663</deployedseed>
+    <deployedseed>1614918164</deployedseed>
+    <deployedseed>1233081474</deployedseed>
+    <deployedseed>1739775612</deployedseed>
+    <deployedseed>309557452</deployedseed>
+    <deployedseed>214141920</deployedseed>
+    <deployedseed>585463645</deployedseed>
+    <deployedseed>536249988</deployedseed>
+    <deployedseed>1171250363</deployedseed>
+    <deployedseed>871487648</deployedseed>
+    <deployedseed>9071267</deployedseed>
+    <deployedseed>1020415099</deployedseed>
+    <deployedseed>1293417215</deployedseed>
+    <deployedseed>1563300225</deployedseed>
+    <deployedseed>1539748900</deployedseed>
+    <deployedseed>41812878</deployedseed>
+    <deployedseed>611923193</deployedseed>
+    <deployedseed>669903479</deployedseed>
+    <deployedseed>628270135</deployedseed>
+    <deployedseed>438103896</deployedseed>
+    <deployedseed>1942754960</deployedseed>
+    <deployedseed>1537736883</deployedseed>
+    <deployedseed>969379420</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct simplified surd form</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -175,7 +285,49 @@ ta2: sqrt(b) * a;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Unsimplified radical re-entered by student</description>
+      <testinput>
+        <name>ans1</name>
+        <value>'sqrt(number)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Swapped perfect square and square-free factor</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Dropped the square root sign completely</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

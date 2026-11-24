@@ -5,54 +5,44 @@
       <text>Converting radians to degrees</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>An angle \(\theta\) is given in radians as: \(\theta={@angle_rad@}\text{ radians}.\)
-</p>
-<p>Convert the given angle from radians to degrees.</p>
-<p>Show your answer in degrees.</p>
-
-<p>[[input:ans1]] &deg;</p>
-<p>[[validation:ans1]][[feedback:prt1]]</p>]]></text>
+      <text><![CDATA[<p>An angle \(\theta\) is given in radians:</p>
+\[ \theta = {@trad@}. \]
+<p>Convert \(\theta\) to degrees. Give your answer as a whole number.</p>
+<div>\(\theta = \) [[input:ans1]]\(^\circ\) [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
+      <text><![CDATA[<h3>Worked solution</h3>
+<p><strong>Step 1: use the conversion fact.</strong> A half-turn is \(\pi\) radians, which is \(180^\circ\):</p>
+\[ \pi \text{ radians} = 180^\circ, \qquad\text{so}\qquad 1 \text{ radian} = \frac{180^\circ}{\pi}. \]
 
-<p>We are given the angle:</p>
+<p><strong>Step 2: multiply by \(\dfrac{180^\circ}{\pi}\).</strong> To change radians to degrees, multiply the angle by \(\dfrac{180^\circ}{\pi}\):</p>
+\[ \theta = {@trad@} \times \frac{180^\circ}{\pi}. \]
 
-\(\theta={@angle_rad@}\text{ radians}.\)
-
-<p><strong>Step 1: Recall the conversion relationship</strong></p>
-
-<p>We know that:</p>
-
-\(\pi\text{ radians}=180^\circ.\)
-
-<p>Therefore, to convert an angle from radians to degrees, we multiply by \(\frac{180^\circ}{\pi}\).</p>
-
-<p><strong>Step 2: Apply the conversion formula</strong></p>
-
-\(\theta_{\text{degrees}}=\theta_{\text{radians}}\times\frac{180^\circ}{\pi}\).
-
-<p>Substitute the given angle:</p>
-
-\(\theta_{\text{degrees}}=\frac{@k@\pi}{6}\times\frac{180^\circ}{\pi}\).
-
-<p><strong>Step 3: Simplify</strong></p>
-
-<p>Cancel \(\pi\) from the numerator and denominator:</p>
-
-\(\theta_{\text{degrees}}=\frac{@k@\times180^\circ}{6}\).
-
-<p>Therefore:</p>
-
-\(\theta_{\text{degrees}}={@ta@}^\circ\).
-
-<h4>Final Answer</h4>
-
-<p>The equivalent angle in degrees is:</p>
-
-\(\boxed{{@ta@}^\circ}\).
-
-<p><strong>Key concept:</strong> To convert radians to degrees, multiply the angle in radians by \(\frac{180^\circ}{\pi}\).</p>]]></text>
+<p><strong>Step 3: cancel \(\pi\) and simplify.</strong> The \(\pi\) on the top cancels with the \(\pi\) on the bottom, leaving</p>
+\[ \theta = \frac{[[if test="is(pp>1)"]]{@pp@} \times [[/if]]180^\circ}{{@qq@}}[[if test="is(pp>1)"]] = {@pp@} \times {@unit@}^\circ[[/if]] = {@ta@}^\circ. \]
+<p>[[if test="is(pp>1)"]]It is easiest to divide \(180\) by \({@qq@}\) first, giving \({@unit@}\), and then multiply by \({@pp@}\).[[else]]Dividing \(180\) by \({@qq@}\) gives \({@ta@}\).[[/if]]</p>
+<div style="text-align:center;" role="img" aria-label="Circle showing the angle {#ta#} degrees measured anticlockwise from the positive x-axis.">
+[[jsxgraph width="300px" height="300px"]]
+(function() {
+  var A = {#ta#}, num = {#pp#}, den = {#qq#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.5, 1.5, 1.5, -1.5], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.4, 0], [1.45, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.4], [0, 1.45]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('circle', [[0, 0], 1], {strokeColor:'#90a4ae', strokeWidth:1.5, fixed:true, highlight:false});
+  var O = b.create('point', [0, 0], {visible:false, fixed:true});
+  var X = b.create('point', [1, 0], {visible:false, fixed:true});
+  var r = A*Math.PI/180;
+  var P = b.create('point', [Math.cos(r), Math.sin(r)], {name:'', size:3, color:'#c62828', fixed:true});
+  b.create('segment', [O, X], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  var lab = (num === 1 ? '' : num) + 'π/' + den + ' = ' + A + '°';
+  b.create('angle', [X, O, P], {radius:0.35, name:lab, fillColor:'#ffb74d', fillOpacity:0.35,
+      strokeColor:'#ef6c00', fixed:true, label:{color:'#ef6c00', fontSize:13}});
+})();
+[[/jsxgraph]]
+</div>
+<p><strong>Final answer:</strong> \({@trad@}\) radians \(= {@ta@}^\circ\).</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -62,29 +52,27 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Randomly generate an integer from 1 to 11 */
-k: 1+rand(11);
-
-/* Generate the angle in radians */
-angle_rad: k*%pi/6;
-
-/* Conversion factor from radians to degrees */
-conversion_factor: 180;
-
-/* Calculate the equivalent angle in degrees */
-angle_deg: k*conversion_factor/6;
-
-/* Teacher answer */
-ta: angle_deg;</text>
+      <text><![CDATA[/* 32 angles between 0 and 360 degrees, none of which is used in "Converting degrees to radians"
+   (that question uses multiples of 15 and 36 degrees). Each is (pp/qq)*pi with qq = 9, 18 or 10. */
+angpool : [20, 40, 80, 100, 140, 160, 200, 220, 260, 280, 320, 340,
+           10, 50, 70, 110, 130, 170, 190, 230, 250, 290, 310, 350,
+           18, 54, 126, 162, 198, 234, 306, 342];
+ta : rand(angpool);            /* the answer in degrees */
+tc : ta/180;                   /* coefficient of pi, simplified */
+pp : num(tc);
+qq : denom(tc);
+trad : tc*%pi;                 /* the angle shown in radians, e.g. 7*pi/9 */
+unit : 180/qq;                 /* degrees in pi/qq radians */
+twithpi : ta*%pi;              /* slip: left pi in the answer */]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta@}</text>
+      <text>\({@trad@} = {@ta@}^\circ\)</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p>Objective: convert an angle given as a multiple of π radians to degrees.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -119,7 +107,7 @@ ta: angle_deg;</text>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -136,7 +124,7 @@ ta: angle_deg;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Checks for correct conversion of radians to degrees</description>
+        <description/>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta</tans>
@@ -153,12 +141,204 @@ ta: angle_deg;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>twithpi</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer still contains \(\pi\). When you multiply by \(\dfrac{180^\circ}{\pi}\), the \(\pi\) on the top and the \(\pi\) on the bottom cancel, so the answer in degrees has no \(\pi\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>trad</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the angle in radians, which was given. Multiply it by \(\dfrac{180^\circ}{\pi}\) to change it to degrees.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>unit</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the size of \(\dfrac{\pi}{ {@qq@} }\) radians. The angle is \({@pp@}\) times as big, so multiply by \({@pp@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Multiply the angle by \(\dfrac{180^\circ}{\pi}\). Cancel \(\pi\), then work out the fraction that is left.</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
+    <deployedseed>6001</deployedseed>
+    <deployedseed>6002</deployedseed>
+    <deployedseed>6003</deployedseed>
+    <deployedseed>6004</deployedseed>
+    <deployedseed>6005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>6007</deployedseed>
+    <deployedseed>6008</deployedseed>
+    <deployedseed>6009</deployedseed>
+    <deployedseed>6010</deployedseed>
+    <deployedseed>6011</deployedseed>
+    <deployedseed>6012</deployedseed>
+    <deployedseed>6013</deployedseed>
+    <deployedseed>6014</deployedseed>
+    <deployedseed>6015</deployedseed>
+    <deployedseed>6016</deployedseed>
+    <deployedseed>6017</deployedseed>
+    <deployedseed>6018</deployedseed>
+    <deployedseed>6019</deployedseed>
+    <deployedseed>6020</deployedseed>
+    <deployedseed>6021</deployedseed>
+    <deployedseed>6022</deployedseed>
+    <deployedseed>6023</deployedseed>
+    <deployedseed>6024</deployedseed>
+    <deployedseed>6025</deployedseed>
+    <deployedseed>6026</deployedseed>
+    <deployedseed>6027</deployedseed>
+    <deployedseed>6028</deployedseed>
+    <deployedseed>6029</deployedseed>
+    <deployedseed>6030</deployedseed>
+    <deployedseed>6031</deployedseed>
+    <deployedseed>6032</deployedseed>
+    <deployedseed>409614966</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct value written as a calculation</description>
+      <testinput>
+        <name>ans1</name>
+        <value>pp*180/qq</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Left pi in the answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>twithpi</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Gave the angle in radians</description>
+      <testinput>
+        <name>ans1</name>
+        <value>trad</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Other wrong answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: decimal answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(ta)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+    </qtest>
   </question>
 </quiz>

@@ -5,138 +5,94 @@
       <text>Finding a point in the third quadrant</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>
-        A point <m>P</m> on the unit circle satisfies
-        \(\sin\theta = -\dfrac{@sin_num@}{@hyp@}\)
-        and lies in the third quadrant.
-    </p>
-
-    <ol marker="(a)">
-        <li>
-            <p>Find \(\cos\theta\).</p>
-            <p>[[input:ans1]] [[validation:ans1]]</p>
-        </li>
-
-        <li>
-            <p>Find \(\tan\theta\).</p>
-            <p>[[input:ans2]] [[validation:ans2]]</p>
-        </li>
-
-        <li>
-            <p>Write down the exact coordinates of \(P\\cos\theta,\sin\theta)\).</p>
-            <p>
-                P=[[input:ans3]] [[validation:ans3]]
-            </p>
-        </li>
-
-        <li>
-            <p>
-                What is the reference angle for \(\theta\)?
-                Leave your answer as an exact expression.
-            </p>
-            <p>[[input:ans5]] [[validation:ans5]][[feedback:prt1]]</p>
-        </li>
-    </ol>]]></text>
+      <text><![CDATA[<p>A point \(P\) on the unit circle lies in the <strong>third quadrant</strong>. The terminal side of the angle \(\theta\) passes through \(P\), and \(\sin\theta = -\dfrac{ {@sin_num@} }{ {@hyp@} }\).</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with the point P in the third quadrant and the right-angled triangle formed by O, P and the foot of the perpendicular from P to the x-axis.">
+[[jsxgraph width="340px" height="340px"]]
+(function() {
+  var px = {#float(ta_cos)#}, py = {#float(given_sin)#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.3, -0.13, 'x'], {fixed:true});
+  b.create('text', [-0.15, 1.3, 'y'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222', label:{offset:[6, 10]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A  = b.create('point', [1, 0],  {visible:false, fixed:true});
+  var Am = b.create('point', [-1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828', label:{offset:[-22, -16]}});
+  var Fp = b.create('point', [px, 0], {visible:false, fixed:true});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('segment', [O, Fp], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+  b.create('segment', [Fp, P], {strokeColor:'#2e7d32', strokeWidth:4, fixed:true});
+  b.create('angle', [A, O, P], {radius:0.2, name:'\u03b8', fillColor:'#ffb74d', strokeColor:'#ef6c00', fillOpacity:0.3, fixed:true});
+  b.create('text', [px/2, 0.12, 'cos \u03b8 = ?'], {fixed:true, anchorX:'middle', anchorY:'middle', color:'#1565c0'});
+  b.create('text', [px - 0.05, py/2, 'sin \u03b8 = \u2212{#sin_num#}/{#hyp#}'], {fixed:true, anchorX:'right', color:'#2e7d32'});
+  b.create('text', [px/2 + 0.1*py, py/2 - 0.1*px, '1'], {fixed:true, anchorX:'middle', anchorY:'middle'});
+})();
+[[/jsxgraph]]
+</div>
+<p>Give your answers to parts (a) to (c) as exact fractions, for example <code>-3/5</code>. Do not use decimals, and do not use <code>sin</code>, <code>cos</code>, <code>tan</code> or <code>sqrt</code> in your answers.</p>
+<p>(a) Find the exact value of \(\cos\theta\).</p>
+<div>\(\cos\theta = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) Find the exact value of \(\tan\theta\).</p>
+<div>\(\tan\theta = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(c) Write down the exact coordinates of \(P = (\cos\theta,\, \sin\theta)\). Type them as <code>[x, y]</code>.</p>
+<div>\(P = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>
+<p>(d) Find the reference angle \(\alpha\) for \(\theta\), in degrees, correct to \(1\) decimal place. You may use a calculator.</p>
+<div>\(\alpha = \) [[input:ans4]]\(^\circ\) [[validation:ans4]] [[feedback:prt4]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
-<p>
-    Recall the Pythagorean identity:
-    \(\sin^2\theta+\cos^2\theta=1\).
-</p>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p><strong>The idea.</strong> \(P = (\cos\theta,\, \sin\theta)\) is on the unit circle, so \(\sin^2\theta + \cos^2\theta = 1\) (Pythagoras' theorem with hypotenuse \(OP = 1\)). The identity gives the <em>size</em> of \(\cos\theta\), and the quadrant gives its <em>sign</em>. In the third quadrant \(P\) is to the left of the \(y\)-axis and below the \(x\)-axis, so both \(\cos\theta\) and \(\sin\theta\) are negative.</p>
 
-<p>
-    Substituting the given sine value:
-</p>
-
-<p>
-    \[
-    \cos^2\theta
-    =1-\left(-\frac{@sin_num@}{@hyp@}\right)^2
-    \]
-</p>
-
-<p>
-    \[
-    =\frac{@hyp^2-sin_num^2@}{@hyp^2@}
-    =\frac{@cos_num^2@}{@hyp^2@}.
-    \]
-</p>
-
-<p>
-    Therefore, \(\cos\theta=\pm\frac{@cos_num@}{@hyp@}\).
-    Since \(\theta\) lies in the third quadrant, cosine is negative.
-</p>
-
-<p>
-    Hence,
-    \[
-    \cos\theta=-\frac{@cos_num@}{@hyp@}.
-    \]
-</p>
+<p><strong>(a) Finding \(\cos\theta\)</strong></p>
+<p><strong>Step 1: make \(\cos^2\theta\) the subject and substitute.</strong></p>
+\[ \cos^2\theta = 1 - \sin^2\theta = 1 - \left(-\frac{ {@sin_num@} }{ {@hyp@} }\right)^2 = 1 - \frac{ {@sin_num^2@} }{ {@hyp^2@} } = \frac{ {@hyp^2@} - {@sin_num^2@} }{ {@hyp^2@} } = \frac{ {@cos_num^2@} }{ {@hyp^2@} }. \]
+<p><strong>Step 2: take the square root.</strong></p>
+\[ \cos\theta = \pm\sqrt{\frac{ {@cos_num^2@} }{ {@hyp^2@} }} = \pm\frac{ {@cos_num@} }{ {@hyp@} }. \]
+<p><strong>Step 3: choose the sign.</strong> In the third quadrant \(P\) is to the left of the \(y\)-axis, so \(\cos\theta\) is negative:</p>
+\[ \cos\theta = -\frac{ {@cos_num@} }{ {@hyp@} }. \]
 
 <p><strong>(b) Finding \(\tan\theta\)</strong></p>
+\[ \tan\theta = \frac{\sin\theta}{\cos\theta} = \dfrac{-\dfrac{ {@sin_num@} }{ {@hyp@} }}{-\dfrac{ {@cos_num@} }{ {@hyp@} }} = \frac{ {@sin_num@} }{ {@hyp@} } \times \frac{ {@hyp@} }{ {@cos_num@} } = \frac{ {@sin_num@} }{ {@cos_num@} }. \]
+<p>Dividing a negative number by a negative number gives a positive result, so \(\tan\theta\) is <em>positive</em> in the third quadrant.</p>
 
-<p>
-    Using \(\tan\theta=\frac{\sin\theta}{\cos\theta}\):
-</p>
+<p><strong>(c) The coordinates of \(P\)</strong></p>
+<p>The \(x\)-coordinate is \(\cos\theta\) and the \(y\)-coordinate is \(\sin\theta\):</p>
+\[ P = \left( -\frac{ {@cos_num@} }{ {@hyp@} },\; -\frac{ {@sin_num@} }{ {@hyp@} } \right). \]
 
-<p>
-    \[
-    \tan\theta=
-    \frac{-\frac{@sin_num@}{@hyp@}}
-    {-\frac{@cos_num@}{@hyp@}}
-    =\frac{@sin_num@}{@cos_num@}.
-    \]
-</p>
-
-<p>
-    Therefore, \(\tan\theta=\frac{@sin_num@}{@cos_num@}\).
-    Tangent is positive in the third quadrant.
-</p>
-
-<p><strong>(c) Finding the coordinates of P</strong></p>
-
-<p>
-    A point on the unit circle has coordinates
-    \(P=(\cos\theta,\sin\theta)\).
-</p>
-
-<p>
-    Therefore,
-    \[
-    P=\left(
-    -\frac{@cos_num@}{@hyp@},
-    -\frac{@sin_num@}{@hyp@}
-    \right).
-    \]
-</p>
-
-<p><strong>(d) Finding the reference angle</strong></p>
-
-<p>
-    The reference angle is the acute angle between the terminal arm
-    and the negative \(x\)-axis.
-</p>
-
-<p>
-    In the third quadrant, its tangent is positive. Thus,
-</p>
-
-<p>
-    \[
-    \tan\alpha=
-    \frac{|\sin\theta|}{|\cos\theta|}
-    =\frac{@sin_num@}{@cos_num@}.
-    \]
-</p>
-
-<p>
-    Hence, the exact reference angle is
-    \[
-    \alpha=\arctan\left(\frac{@sin_num@}{@cos_num@}\right).
-    \]
-</p>]]></text>
+<p><strong>(d) The reference angle</strong></p>
+<p>The reference angle \(\alpha\) is the acute angle between the terminal side \(OP\) and the negative \(x\)-axis (green in the diagram). In the right-angled triangle, the side opposite \(\alpha\) has length \(\dfrac{ {@sin_num@} }{ {@hyp@} }\) and the side next to it has length \(\dfrac{ {@cos_num@} }{ {@hyp@} }\), so</p>
+\[ \tan\alpha = \frac{ {@sin_num@}/{@hyp@} }{ {@cos_num@}/{@hyp@} } = \frac{ {@sin_num@} }{ {@cos_num@} }, \qquad \alpha = \tan^{-1}\left(\frac{ {@sin_num@} }{ {@cos_num@} }\right) \approx {@ref_disp@}^\circ. \]
+<p>Since \(\theta\) is in the third quadrant, \(\theta = 180^\circ + \alpha \approx 180^\circ + {@ref_disp@}^\circ = {@theta_disp@}^\circ\).</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with the point P in the third quadrant and the right-angled triangle formed by O, P and the foot of the perpendicular from P to the x-axis.">
+[[jsxgraph width="340px" height="340px"]]
+(function() {
+  var px = {#float(ta_cos)#}, py = {#float(given_sin)#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.3, -0.13, 'x'], {fixed:true});
+  b.create('text', [-0.15, 1.3, 'y'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222', label:{offset:[6, 10]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A  = b.create('point', [1, 0],  {visible:false, fixed:true});
+  var Am = b.create('point', [-1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828', label:{offset:[-22, -16]}});
+  var Fp = b.create('point', [px, 0], {visible:false, fixed:true});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('segment', [O, Fp], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+  b.create('segment', [Fp, P], {strokeColor:'#2e7d32', strokeWidth:4, fixed:true});
+  b.create('angle', [A, O, P], {radius:0.2, name:'\u03b8', fillColor:'#ffb74d', strokeColor:'#ef6c00', fillOpacity:0.3, fixed:true});
+  b.create('angle', [Am, O, P], {radius:0.42, name:'\u03b1', fillColor:'#81c784', strokeColor:'#2e7d32', fillOpacity:0.35, fixed:true});
+  b.create('text', [px/2, 0.12, 'cos \u03b8 = \u2212{#cos_num#}/{#hyp#}'], {fixed:true, anchorX:'middle', anchorY:'middle', color:'#1565c0'});
+  b.create('text', [px - 0.05, py/2, 'sin \u03b8 = \u2212{#sin_num#}/{#hyp#}'], {fixed:true, anchorX:'right', color:'#2e7d32'});
+  b.create('text', [px/2 + 0.1*py, py/2 - 0.1*px, '1'], {fixed:true, anchorX:'middle', anchorY:'middle'});
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -146,41 +102,52 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Randomly select a Pythagorean triple */
-q: 1+rand(3);
+      <text>/* Randomly select a Pythagorean triple [opposite (sin), adjacent (cos), hypotenuse].
+   Each triple appears in both orders, so the larger side can be the sine or the cosine. */
+triples : [[3,4,5], [4,3,5], [5,12,13], [12,5,13], [8,15,17], [15,8,17], [7,24,25], [24,7,25]];
+tri : rand(triples);
+sin_num : tri[1];
+cos_num : tri[2];
+hyp : tri[3];
 
-/* Select the two shorter sides and hypotenuse */
-sin_num: if q=1 then 3
-          elseif q=2 then 5
-          else 8;
-
-cos_num: if q=1 then 4
-          elseif q=2 then 12
-          else 15;
-
-hyp: if q=1 then 5
-     elseif q=2 then 13
-     else 17;
-
-/* Given sine value */
-given_sin: -sin_num/hyp;
+/* Given sine value (third quadrant: sine is negative) */
+given_sin : -sin_num/hyp;
 
 /* Exact trigonometric ratios in quadrant III */
-ta_cos: -cos_num/hyp;
-ta_tan: sin_num/cos_num;
+ta_cos : -cos_num/hyp;
+ta_tan : sin_num/cos_num;
 
 /* Exact coordinates of P */
-ta_x: -cos_num/hyp;
-ta_y: -sin_num/hyp;
+ta_x : -cos_num/hyp;
+ta_y : -sin_num/hyp;
+ta_P : [ta_x, ta_y];
 
-/* Reference angle */
-ta_ref: atan(sin_num/cos_num);</text>
+/* Reference angle in degrees, and theta = 180 + alpha */
+ref_deg : float(atan(sin_num/cos_num)*180/%pi);
+theta_deg : 180 + ref_deg;
+ref_disp : dispdp(ref_deg, 1);
+theta_disp : dispdp(theta_deg, 1);
+ref_ans : decimalplaces(ref_deg, 1);    /* model answer shown to students: an ordinary number */
+
+/* Possible student mistakes */
+cos_wrongsign : -ta_cos;           /* positive cos */
+cos_usedsin : sin_num/hyp;         /* size of sin given as cos (either sign) */
+cos_nosqrt : cos_num^2/hyp^2;      /* forgot the square root (either sign) */
+tan_wrongsign : -ta_tan;
+tan_recip : cos_num/sin_num;       /* cos/sin instead of sin/cos */
+P_swap : [ta_y, ta_x];
+P_xsign : [-ta_x, ta_y];
+P_ysign : [ta_x, -ta_y];
+P_both : [-ta_x, -ta_y];
+ref_theta : theta_deg;             /* gave theta instead of the reference angle */
+ref_comp : 90 - ref_deg;           /* used cos/sin, giving the other acute angle */
+ref_rad : float(atan(sin_num/cos_num));   /* calculator in radian mode */</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta_cos@}</text>
+      <text>\(\sin\theta = {@given_sin@}\) (Quadrant III): \(\cos\theta = {@ta_cos@}\), \(\tan\theta = {@ta_tan@}\), \(\alpha \approx {@ref_disp@}^\circ\)</text>
     </questionnote>
     <questiondescription format="html">
       <text/>
@@ -211,14 +178,14 @@ ta_ref: atan(sin_num/cos_num);</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta_cos</tans>
-      <boxsize>7</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,sqrt</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -229,14 +196,14 @@ ta_ref: atan(sin_num/cos_num);</text>
       <name>ans2</name>
       <type>algebraic</type>
       <tans>ta_tan</tans>
-      <boxsize>7</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,sqrt</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -246,15 +213,15 @@ ta_ref: atan(sin_num/cos_num);</text>
     <input>
       <name>ans3</name>
       <type>algebraic</type>
-      <tans>ta_x</tans>
-      <boxsize>7</boxsize>
+      <tans>ta_P</tans>
+      <boxsize>20</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint/>
-      <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <syntaxhint>[x, y]</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>sin,cos,tan,sqrt</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -262,15 +229,15 @@ ta_ref: atan(sin_num/cos_num);</text>
       <options/>
     </input>
     <input>
-      <name>ans5</name>
+      <name>ans4</name>
       <type>algebraic</type>
-      <tans>ta_ref</tans>
-      <boxsize>7</boxsize>
+      <tans>ref_ans</tans>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,atan,arctan</forbidwords>
       <allowwords/>
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -289,10 +256,10 @@ ta_ref: atan(sin_num/cos_num);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Correct cos</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ta1</tans>
+        <tans>ta_cos</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
@@ -306,16 +273,425 @@ ta_ref: atan(sin_num/cos_num);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>1</name>
+        <description>Right size, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>cos_wrongsign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. \(\cos\theta\) is the \(x\)-coordinate of \(P\). In the third quadrant, is \(P\) to the left or to the right of the \(y\)-axis?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Used the size of sin</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>abs(ans1)</sans>
+        <tans>cos_usedsin</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer has the same size as \(\sin\theta\). Use the identity \(\sin^2\theta + \cos^2\theta = 1\) to find the size of \(\cos\theta\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Forgot the square root</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>abs(ans1)</sans>
+        <tans>cos_nosqrt</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer looks like the value of \(\cos^2\theta\). You still need to take the square root to find \(\cos\theta\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use \(\sin^2\theta + \cos^2\theta = 1\): make \(\cos^2\theta\) the subject, substitute the value of \(\sin\theta\) and take the square root. Then use the quadrant to choose the sign.</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct tan</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta_tan</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Right size, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>tan_wrongsign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. In the third quadrant \(\sin\theta\) and \(\cos\theta\) are both negative. What sign do you get when you divide one by the other?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Divided cos by sin</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>abs(ans2)</sans>
+        <tans>tan_recip</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks as if you have divided the wrong way round. \(\tan\theta = \dfrac{\sin\theta}{\cos\theta}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use \(\tan\theta = \dfrac{\sin\theta}{\cos\theta}\) with the given value of \(\sin\theta\) and your value of \(\cos\theta\). Think about the sign of each before you divide.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct coordinates</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta_P</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>x and y swapped</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>P_swap</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks as if you have swapped the coordinates. The \(x\)-coordinate of \(P\) is \(\cos\theta\) and the \(y\)-coordinate is \(\sin\theta\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Wrong sign of x</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>P_xsign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your \(y\)-coordinate is right, but your \(x\)-coordinate has the wrong sign. In the third quadrant, is \(P\) to the left or to the right of the \(y\)-axis?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt3-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Wrong sign of y</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>P_ysign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your \(x\)-coordinate is right, but your \(y\)-coordinate has the wrong sign. Check the value of \(\sin\theta\) given in the question.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt3-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Both signs wrong</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>P_both</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Both of your signs are wrong: your point is in the first quadrant, not the third. In the third quadrant both coordinates are negative.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Write \(P\) as \([\cos\theta, \sin\theta]\): use the given value of \(\sin\theta\) and your value of \(\cos\theta\) from part (a).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct reference angle (to 1 d.p.)</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans4</sans>
+        <tans>ref_deg</tans>
+        <testoptions>0.06</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Gave theta instead of the reference angle</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans4</sans>
+        <tans>ref_theta</tans>
+        <testoptions>0.06</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That looks like the angle \(\theta\) itself. The reference angle is the <em>acute</em> angle between \(OP\) and the \(x\)-axis, so it is less than \(90^\circ\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt4-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Used cos/sin: the other acute angle</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans4</sans>
+        <tans>ref_comp</tans>
+        <testoptions>0.06</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the other acute angle in the triangle. The reference angle is at \(O\), between \(OP\) and the \(x\)-axis: the side opposite it is the vertical side, \(|\sin\theta|\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt4-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Calculator in radian mode</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans4</sans>
+        <tans>ref_rad</tans>
+        <testoptions>0.006</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer looks like an angle in radians. Set your calculator to degrees and try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>In the right-angled triangle, \(\tan\alpha = \dfrac{|\sin\theta|}{|\cos\theta|}\). Use your calculator (in degree mode) to find \(\alpha = \tan^{-1}(\dots)\), and round to \(1\) decimal place.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1101</deployedseed>
+    <deployedseed>2202</deployedseed>
+    <deployedseed>3303</deployedseed>
+    <deployedseed>6606</deployedseed>
+    <deployedseed>7707</deployedseed>
+    <deployedseed>8808</deployedseed>
+    <deployedseed>1643136218</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>All parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta_cos</value>
@@ -326,17 +702,255 @@ ta_ref: atan(sin_num/cos_num);</text>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>ta_x</value>
+        <value>ta_P</value>
       </testinput>
       <testinput>
-        <name>ans5</name>
-        <value>ta_ref</value>
+        <name>ans4</name>
+        <value>ref_deg</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Sign errors, swapped coordinates, theta instead of the reference angle</description>
+      <testinput>
+        <name>ans1</name>
+        <value>cos_wrongsign</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>tan_wrongsign</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>P_swap</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ref_theta</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Used sin for cos, cos/sin for tan, both signs wrong, other acute angle</description>
+      <testinput>
+        <name>ans1</name>
+        <value>-cos_usedsin</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>tan_recip</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>P_both</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ref_comp</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-5-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Forgot the square root, wrong x sign, wrong y sign... and radian mode</description>
+      <testinput>
+        <name>ans1</name>
+        <value>-cos_nosqrt</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_tan</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>P_xsign</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ref_rad</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_cos+10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_tan+10</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[ta_x+10, ta_y]</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ref_deg+20</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-5-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-4-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: a decimal in part (a); other parts correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(ta_cos)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_tan</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>P_ysign</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ref_deg</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
         <expectedpenalty/>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-4-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

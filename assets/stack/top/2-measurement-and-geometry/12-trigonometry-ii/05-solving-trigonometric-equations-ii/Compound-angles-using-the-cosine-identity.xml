@@ -2,59 +2,96 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Compound angles using the cosine identity</text>
+      <text>Compound arguments: solving  cos(nθ) = b for 0° ≤ θ ≤ 360°</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<h3>Trigonometric Ratios Using Compound-Angle Formulae</h3>
+      <text><![CDATA[<p>Solve the equation</p>
+\[ {@c@}\cos\left([[if test="is(n=1/2)"]]\dfrac{\theta}{2}[[else]]{@n@}\theta[[/if]]\right) = {@rhs@} \qquad\text{for } 0^\circ \le \theta \le 360^\circ. \]
+<p>Use the substitution \(u = [[if test="is(n=1/2)"]]\dfrac{\theta}{2}[[else]]{@n@}\theta[[/if]]\). Give angles in degrees; use a decimal where needed. Type a list of solutions like <code>[30, 150]</code>, in any order. </p>
 
-<p>
-Consider the following trigonometric expression: \(\cos({@A@}^\circ-{@B@}^\circ)\)
-</p>
+<p><strong>(a)</strong> Since \(0^\circ \le \theta \le 360^\circ\), find the range of values of \(u\). </p>
+<div>\(0^\circ \le u \le \) [[input:ans_umax]]\(^\circ\) [[validation:ans_umax]] [[feedback:prta]]</div>
 
-<p><strong>(a)</strong> Use the compound-angle identity for cosine to expand the expression.</p>
+<p><strong>(b)</strong> Solve the equation for \(u\), giving <strong>all</strong> the solutions in this range. </p>
+<div>\(u = \) [[input:ans_u]] [[validation:ans_u]] [[feedback:prtb]]</div>
 
-<p>[[input:ans0]]</p>
-<p>[[validation:ans0]]</p>
-
-<p>
-<strong>(b)</strong> Hence, determine the exact value of \(\cos({@A@}^\circ-{@B@}^\circ)\)
-</p>
-
-<p>[[input:ans1]]</p>
-<p>[[validation:ans1]][[feedback:prt1]]</p>
-
-<p><strong>Instructions:</strong> Give your answers in exact form. Do not use decimal approximations.</p>]]></text>
+<p><strong>(c)</strong> Hence find all the solutions for \(\theta\) with \(0^\circ \le \theta \le 360^\circ\). </p>
+<div>\(\theta = \) [[input:ans_t]] [[validation:ans_t]] [[feedback:prtc]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
       <text><![CDATA[<h3>Worked solution</h3>
+<p>We solve \({@c@}\cos\left([[if test="is(n=1/2)"]]\dfrac{\theta}{2}[[else]]{@n@}\theta[[/if]]\right) = {@rhs@}\) for \(0^\circ \le \theta \le 360^\circ\) using the substitution \(u = [[if test="is(n=1/2)"]]\dfrac{\theta}{2}[[else]]{@n@}\theta[[/if]]\).</p>
 
-<p>We are required to evaluate:</p>
+<h4>(a) The range of \(u\)</h4>
+<p>[[if test="is(n=1/2)"]]Since \(u = \dfrac{\theta}{2}\), <em>halve</em> both ends of the range of \(\theta\)[[else]]Since \(u = {@n@}\theta\), <em>multiply</em> both ends of the range of \(\theta\) by \({@n@}\)[[/if]]:</p>
+\[ 0^\circ \le \theta \le 360^\circ \quad\Longrightarrow\quad 0^\circ \le u \le {@umax@}^\circ. \]
+<p>[[if test="is(n>1)"]]So \(u\) goes round the unit circle \({@n@}\) times, and we must look for solutions in every one of those turns.[[else]]So \(u\) only goes half-way round the unit circle, and some solutions of \(\cos u = {@k@}\) will be outside this range.[[/if]]</p>
 
-\(\cos({@A@}^\circ-{@B@}^\circ)\)
+<h4>(b) Solving for \(u\)</h4>
+<p><strong>Step 1: get \(\cos u\) on its own.</strong> Divide both sides by \({@c@}\): \(\cos u = \dfrac{ {@rhs@} }{ {@c@} } = {@k@}\).</p>
+<p><strong>Step 2: find the solutions in the first turn, \(0^\circ \le u \le 360^\circ\).</strong> From the special triangles, \(\cos^{-1}\left({@k@}\right) = {@beta@}^\circ\). Cosine is symmetric about \(180^\circ\), so the other solution in the first turn is \(360^\circ - {@beta@}^\circ = {@360-beta@}^\circ\).</p>
+<p><strong>Step 3: use the full range of \(u\).</strong>
+[[if test="is(n=1/2)"]]The range is only \(0^\circ \le u \le 180^\circ\), so \({@360-beta@}^\circ\) is <em>outside</em> it and is rejected. The only solution is \(u = {@beta@}^\circ\).[[/if]]
+[[if test="is(n=2)"]]The range goes up to \(720^\circ\), so add \(360^\circ\) to each first-turn solution: \({@beta@}^\circ + 360^\circ = {@360+beta@}^\circ\) and \({@360-beta@}^\circ + 360^\circ = {@720-beta@}^\circ\). Adding another \(360^\circ\) would go past \(720^\circ\).[[/if]]
+[[if test="is(n=3)"]]The range goes up to \(1080^\circ\), so add \(360^\circ\) and then \(720^\circ\) to each first-turn solution: this gives \({@360+beta@}^\circ\), \({@720-beta@}^\circ\), \({@720+beta@}^\circ\) and \({@1080-beta@}^\circ\).[[/if]]
+So</p>
+\[ u = {@solsU@} \qquad (\text{{@nsol@} solution[[if test="is(nsol>1)"]]s[[/if]]}). \]
+<div style="text-align:center;" role="img" aria-label="Graph of y = cos u for u from 0 to {#umax#} degrees with the line y = {#float(k)#}; the crossings are the solutions for u.">
+[[jsxgraph width="480px" height="280px"]]
+(function() {
+  var k = {#float(k)#}, umax = {#float(umax)#}, us = {#float(solsU)#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-umax*0.08, 1.45, umax*1.12, -1.45], axis:false, grid:false,
+      keepaspectratio:false, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-umax*0.04, 0], [umax*1.08, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.4]], {strokeColor:'#444', fixed:true, highlight:false});
+  var step = umax > 400 ? 180 : 90;
+  for (var t = step; t <= umax + 0.1; t += step) {
+    b.create('segment', [[t, -0.04], [t, 0.04]], {strokeColor:'#444', fixed:true});
+    b.create('text', [t, k < 0 ? 0.1 : -0.1, t + '°'], {fixed:true, anchorX:'middle', anchorY:(k < 0 ? 'bottom' : 'top'), fontSize:11});
+  }
+  b.create('text', [umax*1.07, k < 0 ? 0.1 : -0.1, 'u'], {fixed:true, anchorX:'right', anchorY:(k < 0 ? 'bottom' : 'top')});
+  b.create('functiongraph', [function(t) { return Math.cos(t*Math.PI/180); }, 0, umax], {strokeColor:'#1565c0', strokeWidth:2.5, fixed:true});
+  b.create('segment', [[0, k], [umax, k]], {strokeColor:'#ef6c00', strokeWidth:2, dash:2, fixed:true});
+  us.forEach(function(t, i) {
+    b.create('point', [t, k], {name:'', size:4, color:'#c62828', fixed:true});
+    b.create('text', [t, k > 0 ? k + 0.15 + 0.22*(i % 2) : k - 0.15 - 0.22*(i % 2), t + '°'],
+        {fixed:true, anchorX:'middle', anchorY:(k > 0 ? 'bottom' : 'top'), color:'#c62828', fontSize:11});
+  });
+})();
+[[/jsxgraph]]
+</div>
 
-<p><strong>Step 1: Recall the compound-angle identity.</strong></p>
-
-\(\cos(A-B)=\cos A\cos B+\sin A\sin B\)
-
-<p><strong>Step 2: Substitute the given angles.</strong></p>
-
-\(\cos({@A@}^\circ-{@B@}^\circ)\)
-
-\(=\cos{@A@}^\circ\cos{@B@}^\circ+\sin{@A@}^\circ\sin{@B@}^\circ\)
-
-<p><strong>Step 3: Substitute the standard trigonometric values.</strong></p>
-
-<p>Using the exact values of the sine and cosine ratios for the standard angles, we obtain:</p>
-
-<p>For the selected angles:</p>
-
-\(\cos({@A@}^\circ-{@B@}^\circ)={@ta1@}\)
-
-<p><strong>Final Answer:</strong></p>
-
-\(\boxed{{@ta1@}}\)]]></text>
+<h4>(c) Converting back to \(\theta\)</h4>
+<p>[[if test="is(n=1/2)"]]Since \(u = \dfrac{\theta}{2}\), we have \(\theta = 2u\): <em>multiply</em> each solution by \(2\)[[else]]Since \(u = {@n@}\theta\), we have \(\theta = \dfrac{u}{ {@n@} }\): <em>divide</em> each solution by \({@n@}\)[[/if]]:</p>
+\[ \theta = {@solsT_disp@}. \]
+<p>Every value lies in \(0^\circ \le \theta \le 360^\circ\), as it must, because we used the matching range for \(u\). The graph of \(y = \cos\left([[if test="is(n=1/2)"]]\dfrac{\theta}{2}[[else]]{@n@}\theta[[/if]]\right)\) shows why there [[if test="is(nsol>1)"]]are {@nsol@} solutions: the curve repeats {@n@} times between \(0^\circ\) and \(360^\circ\)[[else]]is only one solution: the curve only completes half a cycle between \(0^\circ\) and \(360^\circ\)[[/if]].</p>
+<div style="text-align:center;" role="img" aria-label="Graph of y = cos of the compound argument for theta from 0 to 360 degrees, with the line y = {#float(k)#}; the crossings are the solutions for theta.">
+[[jsxgraph width="480px" height="280px"]]
+(function() {
+  var k = {#float(k)#}, n = {#float(n)#}, ts = {#float(solsT)#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-30, 1.45, 400, -1.45], axis:false, grid:false,
+      keepaspectratio:false, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-15, 0], [385, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.4]], {strokeColor:'#444', fixed:true, highlight:false});
+  for (var t = 90; t <= 360; t += 90) {
+    b.create('segment', [[t, -0.04], [t, 0.04]], {strokeColor:'#444', fixed:true});
+    b.create('text', [t, k < 0 ? 0.1 : -0.1, t + '°'], {fixed:true, anchorX:'middle', anchorY:(k < 0 ? 'bottom' : 'top'), fontSize:11});
+  }
+  b.create('text', [380, k < 0 ? 0.1 : -0.1, 'θ'], {fixed:true, anchorX:'right', anchorY:(k < 0 ? 'bottom' : 'top')});
+  b.create('functiongraph', [function(t) { return Math.cos(n*t*Math.PI/180); }, 0, 360], {strokeColor:'#2e7d32', strokeWidth:2.5, fixed:true});
+  b.create('segment', [[0, k], [360, k]], {strokeColor:'#ef6c00', strokeWidth:2, dash:2, fixed:true});
+  ts.forEach(function(t, i) {
+    b.create('point', [t, k], {name:'', size:4, color:'#c62828', fixed:true});
+    var lab = (Math.abs(t - Math.round(t)) < 1e-9) ? Math.round(t) : t.toFixed(1);
+    b.create('text', [t, k > 0 ? k + 0.15 + 0.22*(i % 2) : k - 0.15 - 0.22*(i % 2), lab + '°'],
+        {fixed:true, anchorX:'middle', anchorY:(k > 0 ? 'bottom' : 'top'), color:'#c62828', fontSize:11});
+  });
+})();
+[[/jsxgraph]]
+</div>
+<p><strong>Final answer:</strong> \(\theta = {@solsT_disp@}\).</p>]]></text>
     </generalfeedback>
-    <defaultgrade>1</defaultgrade>
+    <defaultgrade>5</defaultgrade>
     <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
@@ -62,31 +99,50 @@ Consider the following trigonometric expression: \(\cos({@A@}^\circ-{@B@}^\circ)
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Randomly select the compound angles */
-q: 1+rand(3);
+      <text><![CDATA[/* Type 1 compound-argument equation: c*cos(n*theta) = c*k for 0 <= theta <= 360.
+   n in {2, 3, 1/2}; k one of six exact values (no awkward surds); c in {2, 4}.
+   3 x 6 x 2 = 36 distinct variants. Solutions are found for u = n*theta first. */
+klist : [[1/2, 60], [-1/2, 120], [sqrt(3)/2, 30], [-sqrt(3)/2, 150], [sqrt(2)/2, 45], [-sqrt(2)/2, 135]];
+kb : rand(klist);
+k : kb[1];
+beta : kb[2];                 /* the calculator value cos^(-1)(k), between 0 and 180 */
+n : rand([2, 3, 1/2]);
+c : rand([2, 4]);
+rhs : c*k;
 
-A: if q=1 then 45
-   else 60;
+/* (a) range of u = n*theta */
+umax : 360*n;
+umax_wrong : 360/n;           /* divided instead of multiplied */
 
-B: if q=1 then 30
-   elseif q=2 then 30
-   else 45;
+/* (b) all u in [0, umax] with cos(u) = k: beta and 360 - beta, then add 360 while still in range */
+solsU : if n = 1/2 then [beta] else if n = 2 then [beta, 360-beta, 360+beta, 720-beta]
+        else [beta, 360-beta, 360+beta, 720-beta, 720+beta, 1080-beta];
+nsol : length(solsU);
+firstturn : [beta, 360-beta];  /* solutions of cos(u) = k in 0..360 only */
+/* solutions for the opposite sign, cos(u) = -k (the common sign slip) */
+bw : 180 - beta;
+wsolsU : if n = 1/2 then [bw] else if n = 2 then [bw, 360-bw, 360+bw, 720-bw]
+         else [bw, 360-bw, 360+bw, 720-bw, 720+bw, 1080-bw];
 
-/* Calculate the compound angle */
-angle: A-B;
-
-/* Exact value of cos(A-B) */
-ta1: if q=2 then sqrt(3)/2
-     else (sqrt(6)+sqrt(2))/4;</text>
+/* (c) theta = u/n */
+solsT : solsU/n;
+solsT_disp : if n = 2 and (beta = 45 or beta = 135) then float(solsT) else solsT;
+nsT : float(sort(solsT));
+nsU : float(sort(solsU));
+nsW : float(sort(wsolsU));
+nsF : float(sort(firstturn));
+nsUn : float(sort(solsU*n));  /* multiplied by n instead of dividing */]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}</text>
+      <text><![CDATA[<p>\(u \le {@umax@}\)</p>
+<p>\(u = {@solsU@}\)</p>
+<p> \(\theta = {@solsT_disp@}\)</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p>Objective: solve trigonometric equations with a compound argument (Type 1), using the substitution u = nθ, the adjusted range of u, all solutions in that range, and conversion back to θ.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -111,43 +167,61 @@ ta1: if q=2 then sqrt(3)/2
     <isbroken>0</isbroken>
     <variantsselectionseed/>
     <input>
-      <name>ans0</name>
+      <name>ans_t</name>
       <type>algebraic</type>
-      <tans>cos(A*%pi/180)*cos(B*%pi/180)+sin(A*%pi/180)*sin(B*%pi/180)</tans>
-      <boxsize>7</boxsize>
+      <tans>solsT_disp</tans>
+      <boxsize>30</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint/>
-      <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <syntaxhint>[θ1, θ2, ...]</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>1</forbidfloat>
+      <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <input>
-      <name>ans1</name>
+      <name>ans_u</name>
       <type>algebraic</type>
-      <tans>ta1</tans>
-      <boxsize>15</boxsize>
+      <tans>solsU</tans>
+      <boxsize>30</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>[u1, u2, ...]</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans_umax</name>
+      <type>algebraic</type>
+      <tans>umax</tans>
+      <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
-      <name>prt1</name>
+      <name>prta</name>
       <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
@@ -156,29 +230,546 @@ ta1: if q=2 then sqrt(3)/2
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Correct upper limit for u</description>
         <answertest>AlgEquiv</answertest>
-        <sans>ans1</sans>
-        <tans>ta1</tans>
+        <sans>ans_umax</sans>
+        <tans>umax</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-1-T</trueanswernote>
+        <trueanswernote>prta-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prta-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>1</name>
+        <description>Divided instead of multiplied (or the reverse)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans_umax</sans>
+        <tans>umax_wrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prta-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the direction. [[if test="is(n=1/2)"]]\(u = \dfrac{\theta}{2}\), so <em>halve</em> the ends of the range of \(\theta\).[[else]]\(u = {@n@}\theta\), so <em>multiply</em> the ends of the range of \(\theta\) by \({@n@}\).[[/if]]</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prta-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Replace \(\theta\) by its largest value, \(360^\circ\), in the expression for \(u\).</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
+    <prt>
+      <name>prtb</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* the student's values as a sorted list of numbers (a list or a set is accepted, in any order) */
+sl : if listp(ans_u) then ans_u else if setp(ans_u) then listify(ans_u) else [ans_u];
+L : float(sort(sl));
+okU : if length(L) = length(nsU) then is(lmax(abs(L - nsU)) <= 0.01) else false;
+ftU : if length(L) = length(nsF) then is(lmax(abs(L - nsF)) <= 0.01) else false;
+wU : if length(L) = length(nsW) then is(lmax(abs(L - nsW)) <= 0.01) else false;
+ft_short : is(ftU and n > 1);
+ft_out : is(ftU and n < 1);]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>All solutions for u</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>okU</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtb-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtb-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Only the first-turn solutions (range goes beyond 360)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ft_short</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtb-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Those are the solutions in the first turn, \(0^\circ \le u \le 360^\circ\), but \(u\) goes up to \({@umax@}^\circ\). Add \(360^\circ\) to each solution[[if test="is(n=3)"]], and then \(720^\circ\),[[/if]] to find the solutions in the other turns.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prtb-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Included a solution outside the range of u</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ft_out</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtb-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>One of your values is outside the range of \(u\), which only goes up to \({@umax@}^\circ\). Reject any solution that is larger than that.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prtb-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Solutions for the opposite sign of cos u</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>wU</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtb-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Those angles solve \(\cos u = {@-k@}\), not \(\cos u = {@k@}\). Check the sign after dividing by \({@c@}\), and use the CAST rule.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtb-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Divide by \({@c@}\) to get \(\cos u\) on its own. Find \(\cos^{-1}\) of that value and the matching angle \(360^\circ\) minus it, then add or remove multiples of \(360^\circ\) to list every solution between \(0^\circ\) and \({@umax@}^\circ\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtc</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* the student's values as a sorted list of numbers (a list or a set is accepted, in any order) */
+sl : if listp(ans_t) then ans_t else if setp(ans_t) then listify(ans_t) else [ans_t];
+L : float(sort(sl));
+okT : if length(L) = length(nsT) then is(lmax(abs(L - nsT)) <= 0.01) else false;
+gaveU : if length(L) = length(nsU) then is(lmax(abs(L - nsU)) <= 0.01) else false;
+multN : if length(L) = length(nsUn) then is(lmax(abs(L - nsUn)) <= 0.01) else false;
+/* follow-through: the student's own (b) values converted correctly */
+slu : if listp(ans_u) then ans_u else if setp(ans_u) then listify(ans_u) else [ans_u];
+Lfu : float(sort(slu/n));
+ecf : if length(L) = length(Lfu) then is(lmax(abs(L - Lfu)) <= 0.01) else false;]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>All solutions for theta</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>okT</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtc-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Correct conversion of the student's own (b)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ecf</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have converted your values of \(u\) from part (b) correctly, but your part (b) is not right. Correct it first, then convert again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prtc-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave the u values, not converted</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>gaveU</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>These are the solutions for \(u\). You still need to convert them back to \(\theta\) using [[if test="is(n=1/2)"]]\(\theta = 2u\)[[else]]\(\theta = \dfrac{u}{ {@n@} }\)[[/if]].</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prtc-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Converted the wrong way</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>multN</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have converted the wrong way. [[if test="is(n=1/2)"]]\(u = \dfrac{\theta}{2}\), so \(\theta = 2u\): multiply by \(2\).[[else]]\(u = {@n@}\theta\), so \(\theta = \dfrac{u}{ {@n@} }\): divide by \({@n@}\).[[/if]]</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtc-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Convert each solution for \(u\) from part (b) back to \(\theta\). Every value of \(\theta\) should lie between \(0^\circ\) and \(360^\circ\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>7001</deployedseed>
+    <deployedseed>7002</deployedseed>
+    <deployedseed>7003</deployedseed>
+    <deployedseed>7004</deployedseed>
+    <deployedseed>7006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>7008</deployedseed>
+    <deployedseed>7011</deployedseed>
+    <deployedseed>7014</deployedseed>
+    <deployedseed>7018</deployedseed>
+    <deployedseed>7020</deployedseed>
+    <deployedseed>7022</deployedseed>
+    <deployedseed>7023</deployedseed>
+    <deployedseed>7024</deployedseed>
+    <deployedseed>7027</deployedseed>
+    <deployedseed>7028</deployedseed>
+    <deployedseed>7031</deployedseed>
+    <deployedseed>7034</deployedseed>
+    <deployedseed>7035</deployedseed>
+    <deployedseed>7036</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All parts correct</description>
+      <testinput>
+        <name>ans_t</name>
+        <value>solsT</value>
+      </testinput>
+      <testinput>
+        <name>ans_u</name>
+        <value>solsU</value>
+      </testinput>
+      <testinput>
+        <name>ans_umax</name>
+        <value>umax</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prta-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtc-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Solutions in a different order</description>
+      <testinput>
+        <name>ans_t</name>
+        <value>reverse(solsT)</value>
+      </testinput>
+      <testinput>
+        <name>ans_u</name>
+        <value>reverse(solsU)</value>
+      </testinput>
+      <testinput>
+        <name>ans_umax</name>
+        <value>umax</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prta-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtc-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Wrong range direction; opposite-sign solutions for u, converted correctly (follow-through)</description>
+      <testinput>
+        <name>ans_t</name>
+        <value>wsolsU/n</value>
+      </testinput>
+      <testinput>
+        <name>ans_u</name>
+        <value>wsolsU</value>
+      </testinput>
+      <testinput>
+        <name>ans_umax</name>
+        <value>umax_wrong</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prta-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtb-4-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtc-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Gave the u values as the theta values</description>
+      <testinput>
+        <name>ans_t</name>
+        <value>solsU</value>
+      </testinput>
+      <testinput>
+        <name>ans_u</name>
+        <value>solsU</value>
+      </testinput>
+      <testinput>
+        <name>ans_umax</name>
+        <value>umax</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prta-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtc-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Converted the wrong way</description>
+      <testinput>
+        <name>ans_t</name>
+        <value>solsU*n</value>
+      </testinput>
+      <testinput>
+        <name>ans_u</name>
+        <value>solsU</value>
+      </testinput>
+      <testinput>
+        <name>ans_umax</name>
+        <value>umax</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prta-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtc-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans_t</name>
+        <value>solsT+1</value>
+      </testinput>
+      <testinput>
+        <name>ans_u</name>
+        <value>solsU+1</value>
+      </testinput>
+      <testinput>
+        <name>ans_umax</name>
+        <value>umax+7</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prta-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtb-4-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtc-4-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Invalid: a decimal in part (a)</description>
+      <testinput>
+        <name>ans_t</name>
+        <value>solsT</value>
+      </testinput>
+      <testinput>
+        <name>ans_u</name>
+        <value>solsU</value>
+      </testinput>
+      <testinput>
+        <name>ans_umax</name>
+        <value>float(umax)</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtc-1-T</expectedanswernote>
+      </expected>
+    </qtest>
   </question>
 </quiz>

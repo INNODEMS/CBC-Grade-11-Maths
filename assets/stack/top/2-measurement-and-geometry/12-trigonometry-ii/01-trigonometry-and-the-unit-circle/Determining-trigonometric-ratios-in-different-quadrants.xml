@@ -5,53 +5,95 @@
       <text>Determining trigonometric ratios in different quadrants</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>
-The angle \(\theta={@theta@}^\circ\) is measured in standard position.</p>
+      <text><![CDATA[<p>The angle \(\theta = {@theta@}^\circ\) is in standard position: it is measured anticlockwise from the positive \(x\)-axis. Its terminal side meets the unit circle (centre \(O\), radius \(1\)) at the point \(P\), as shown in the diagram.</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with centre O, showing the angle theta = {#theta#} degrees measured anticlockwise from the positive x-axis and the point P where its terminal side meets the circle.">
+[[jsxgraph width="320px" height="320px"]]
+(function() {
+  var th = {#float(theta*%pi/180)#};
+  var px = Math.cos(th), py = Math.sin(th);
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.3, -0.13, 'x'], {fixed:true});
+  b.create('text', [-0.15, 1.3, 'y'], {fixed:true});
+  b.create('text', [1.03, -0.12, '1'], {fixed:true});
+  b.create('text', [-1.22, -0.12, '−1'], {fixed:true});
+  b.create('text', [0.05, 1.09, '1'], {fixed:true});
+  b.create('text', [0.05, -1.1, '−1'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222', label:{offset:[-14,-12]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A = b.create('point', [1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828',
+      label:{offset:[px > 0 ? 10 : -22, py > 0 ? 14 : -16]}});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('angle', [A, O, P], {radius:0.25, name:'θ', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.35, fixed:true});
+})();
+[[/jsxgraph]]
+</div>
+<p>Use the unit circle to find the exact values of \(\sin\theta\) and \(\cos\theta\).</p>
 
-<p>Use the unit circle to determine the exact values of:
-
-1. \(\sin\theta=\) [[input:ans1]]
-   [[validation:ans1]]
-
-2. \(\cos\theta=\) [[input:ans2]]
-   [[validation:ans2]]
-</p>
-<p>
-Give your answers in exact form. Do not use decimal approximations.
-</p>
-<p>[[feedback:prt1]]</p>]]></text>
+<div>(a) \(\sin {@theta@}^\circ = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<div>(b) \(\cos {@theta@}^\circ = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
-<p><strong>Step 1: Identify the reference angle</strong></p>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>The point \(P\) where the terminal side meets the unit circle has coordinates \((\cos\theta,\, \sin\theta)\). The <em>reference angle</em> gives the size of each coordinate, and the <em>quadrant</em> gives its sign.</p>
 
-<p>The given angle is \(\theta={@theta@}^\circ\). Its reference angle is \({@ref_angle@}^\circ\).</p>
+<p><strong>Step 1: find the quadrant.</strong> \(\theta = {@theta@}^\circ\) lies in <strong>Quadrant {@quadname@}</strong>[[if test="is(quadrant=2)"]], between \(90^\circ\) and \(180^\circ\)[[/if]][[if test="is(quadrant=3)"]], between \(180^\circ\) and \(270^\circ\)[[/if]][[if test="is(quadrant=4)"]], between \(270^\circ\) and \(360^\circ\)[[/if]].</p>
 
-<p>The reference angle is the acute angle between the terminal arm and the horizontal axis. It helps us determine the magnitudes of the trigonometric ratios.</p>
+<p><strong>Step 2: find the reference angle \(\alpha\).</strong> The reference angle is the acute angle between the terminal side and the \(x\)-axis.
+[[if test="is(quadrant=2)"]]In Quadrant II, \(\alpha = 180^\circ - \theta = 180^\circ - {@theta@}^\circ = {@ref_angle@}^\circ\).[[/if]]
+[[if test="is(quadrant=3)"]]In Quadrant III, \(\alpha = \theta - 180^\circ = {@theta@}^\circ - 180^\circ = {@ref_angle@}^\circ\).[[/if]]
+[[if test="is(quadrant=4)"]]In Quadrant IV, \(\alpha = 360^\circ - \theta = 360^\circ - {@theta@}^\circ = {@ref_angle@}^\circ\).[[/if]]</p>
 
-<p><strong>Step 2: Identify the quadrant</strong></p>
+<p><strong>Step 3: use the exact values for the reference angle.</strong> From the special triangles,</p>
+\[ \sin {@ref_angle@}^\circ = {@sin_ref@}, \qquad \cos {@ref_angle@}^\circ = {@cos_ref@}. \]
+<p>These are the sizes of \(\sin\theta\) and \(\cos\theta\), without their signs.</p>
 
-<p>Determine which quadrant contains the terminal arm of \(\theta\).</p>
+<p><strong>Step 4: decide the signs from the quadrant.</strong> In Quadrant {@quadname@}, \(P\) is
+[[if test="is(quadrant=4)"]]to the <em>right</em> of the \(y\)-axis, so \(\cos\theta\) (the \(x\)-coordinate) is <em>positive</em>,[[else]]to the <em>left</em> of the \(y\)-axis, so \(\cos\theta\) (the \(x\)-coordinate) is <em>negative</em>,[[/if]]
+and
+[[if test="is(quadrant=2)"]]above the \(x\)-axis, so \(\sin\theta\) (the \(y\)-coordinate) is <em>positive</em>.[[else]]below the \(x\)-axis, so \(\sin\theta\) (the \(y\)-coordinate) is <em>negative</em>.[[/if]]</p>
 
-<p>In Quadrant II, sine is positive and cosine is negative. In Quadrant III, both sine and cosine are negative.</p>
+<p><strong>Step 5: write down the values.</strong></p>
+\[ \sin {@theta@}^\circ = {@sin_theta@}, \qquad \cos {@theta@}^\circ = {@cos_theta@}. \]
 
-<p><strong>Step 3: Determine the sine</strong></p>
-
-<p>Sine corresponds to the vertical coordinate of the point on the unit circle. Using the reference angle and the sign of sine in the relevant quadrant, we obtain</p>
-
-<p>\(\sin\theta={@sin_theta@}.\)</p>
-
-<p><strong>Step 4: Determine the cosine</strong></p>
-
-<p>Cosine corresponds to the horizontal coordinate of the point on the unit circle. Using the reference angle and the sign of cosine in the relevant quadrant, we obtain</p>
-
-<p>\(\cos\theta={@cos_theta@}.\)</p>
-
-<p><strong>Final answers</strong></p>
-
-<p>\(\sin({@theta@}^\circ)={@sin_theta@}\)</p>
-
-<p>\(\cos({@theta@}^\circ)={@cos_theta@}\)</p>]]></text>
+<p>In the diagram, the reference angle \(\alpha\) is shown in green. The right-angled triangle has hypotenuse \(OP = 1\). Its horizontal side is the size of \(\cos\theta\) and its vertical side is the size of \(\sin\theta\); the quadrant decides their signs.</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with the angle theta = {#theta#} degrees, its reference angle, and the right-angled triangle formed by P, its foot on the x-axis, and O.">
+[[jsxgraph width="360px" height="360px"]]
+(function() {
+  var th = {#float(theta*%pi/180)#}, q = {#quadrant#};
+  var px = Math.cos(th), py = Math.sin(th);
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.3, -0.13, 'x'], {fixed:true});
+  b.create('text', [-0.15, 1.3, 'y'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222',
+      label:{offset:[q == 4 ? -14 : 6, q == 2 ? -12 : 10]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A  = b.create('point', [1, 0],  {visible:false, fixed:true});
+  var Am = b.create('point', [-1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828',
+      label:{offset:[px > 0 ? 10 : -22, py > 0 ? 14 : -16]}});
+  var Fp = b.create('point', [px, 0], {visible:false, fixed:true});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('segment', [O, Fp], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+  b.create('segment', [Fp, P], {strokeColor:'#2e7d32', strokeWidth:4, fixed:true});
+  b.create('angle', [A, O, P], {radius:0.2, name:'θ', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.3, fixed:true});
+  var refStyle = {radius:0.42, name:'α', fillColor:'#81c784', strokeColor:'#2e7d32', fillOpacity:0.35, fixed:true};
+  if (q == 2) { b.create('angle', [P, O, Am], refStyle); }
+  if (q == 3) { b.create('angle', [Am, O, P], refStyle); }
+  if (q == 4) { b.create('angle', [P, O, A], refStyle); }
+  b.create('text', [px/2, py > 0 ? -0.11 : 0.11, 'cos θ'], {fixed:true, anchorX:'middle', anchorY:'middle', color:'#1565c0'});
+  b.create('text', [px > 0 ? px + 0.05 : px - 0.05, py/2, 'sin θ'], {fixed:true, anchorX:(px > 0 ? 'left' : 'right'), color:'#2e7d32'});
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -61,28 +103,43 @@ Give your answers in exact form. Do not use decimal approximations.
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Select a reference angle */
+      <text><![CDATA[/* Select a reference angle */
 ref_index: rand(3);
 ref_list: [30,45,60];
 ref_angle: ref_list[ref_index+1];
 
-/* Randomly select the second or third quadrant */
-quadrant: 2 + rand(2);
+/* Select the second, third or fourth quadrant (Quadrant IV added) */
+quadrant: 2 + rand(3);
+quadnames: ["I", "II", "III", "IV"];
+quadname: quadnames[quadrant];
 
 /* Construct the angle */
 theta: if quadrant=2 then 180-ref_angle
-       else 180+ref_angle;
+       else if quadrant=3 then 180+ref_angle
+       else 360-ref_angle;
 
 /* Calculate exact trigonometric ratios */
 sin_theta: sin(theta*%pi/180);
-cos_theta: cos(theta*%pi/180);</text>
+cos_theta: cos(theta*%pi/180);
+/* Values for the reference angle (no signs), used in the worked solution and diagnostics */
+sin_ref: sin(ref_angle*%pi/180);
+cos_ref: cos(ref_angle*%pi/180);
+sin_sign: if quadrant=2 then 1 else -1;
+cos_sign: if quadrant=4 then 1 else -1;
+
+/* Possible student mistakes */
+sin_neg: -sin_theta;            /* right size, wrong sign */
+cos_neg: -cos_theta;
+sin_swap: cos_theta;            /* gave cos instead of sin */
+cos_swap: sin_theta;
+sin_mix: sin_sign*cos_ref;      /* right sign, sin and cos of the reference angle mixed up */
+cos_mix: cos_sign*sin_ref;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@sin_theta@}
-{@cos_theta@}</text>
+      <text>\(\theta = {@theta@}^\circ\) (Quadrant {@quadname@}): \(\sin\theta = {@sin_theta@}\), \(\cos\theta = {@cos_theta@}\)</text>
     </questionnote>
     <questiondescription format="html">
       <text/>
@@ -113,14 +170,14 @@ cos_theta: cos(theta*%pi/180);</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>sin_theta</tans>
-      <boxsize>7</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -131,14 +188,14 @@ cos_theta: cos(theta*%pi/180);</text>
       <name>ans2</name>
       <type>algebraic</type>
       <tans>cos_theta</tans>
-      <boxsize>7</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -155,7 +212,7 @@ cos_theta: cos(theta*%pi/180);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Checks for correct sin theta value</description>
+        <description>Correct value of sin</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>sin_theta</tans>
@@ -164,7 +221,7 @@ cos_theta: cos(theta*%pi/180);</text>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
-        <truenextnode>1</truenextnode>
+        <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
@@ -172,7 +229,7 @@ cos_theta: cos(theta*%pi/180);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
@@ -180,27 +237,186 @@ cos_theta: cos(theta*%pi/180);</text>
       </node>
       <node>
         <name>1</name>
-        <description>Checks for correct sin theta value</description>
+        <description>Right size, wrong sign</description>
         <answertest>AlgEquiv</answertest>
-        <sans>ans2</sans>
-        <tans>cos_theta</tans>
+        <sans>ans1</sans>
+        <tans>sin_neg</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. \(\sin\theta\) is the \(y\)-coordinate of \(P\). In Quadrant {@quadname@}, is \(P\) above or below the \(x\)-axis?</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>2</falsenextnode>
         <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave cos instead of sin</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>sin_swap</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \(\cos\theta\), not \(\sin\theta\). On the unit circle, \(\sin\theta\) is the \(y\)-coordinate of \(P\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Right sign, sin and cos of the reference angle mixed up</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>sin_mix</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your sign is right, but the size is wrong: you may have used the cosine of the reference angle instead of its sine. Find the reference angle, then check which of its sine and cosine is the larger.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the reference angle (the acute angle between the terminal side and the \(x\)-axis) and use its exact sine value from the special triangles. Then use the quadrant of \(\theta\) to decide the sign: \(\sin\theta\) is the \(y\)-coordinate of \(P\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct value of cos</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>cos_theta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Right size, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>cos_neg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. \(\cos\theta\) is the \(x\)-coordinate of \(P\). In Quadrant {@quadname@}, is \(P\) to the left or the right of the \(y\)-axis?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave sin instead of cos</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>cos_swap</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \(\sin\theta\), not \(\cos\theta\). On the unit circle, \(\cos\theta\) is the \(x\)-coordinate of \(P\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Right sign, sin and cos of the reference angle mixed up</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>cos_mix</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your sign is right, but the size is wrong: you may have used the sine of the reference angle instead of its cosine. Find the reference angle, then check which of its sine and cosine is the larger.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the reference angle (the acute angle between the terminal side and the \(x\)-axis) and use its exact cosine value from the special triangles. Then use the quadrant of \(\theta\) to decide the sign: \(\cos\theta\) is the \(x\)-coordinate of \(P\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -210,9 +426,12 @@ cos_theta: cos(theta*%pi/180);</text>
     <deployedseed>653943595</deployedseed>
     <deployedseed>146005108</deployedseed>
     <deployedseed>1693802471</deployedseed>
+    <deployedseed>27186530</deployedseed>
+    <deployedseed>1175629318</deployedseed>
+    <deployedseed>1068013732</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Both values correct</description>
       <testinput>
         <name>ans1</name>
         <value>sin_theta</value>
@@ -225,7 +444,109 @@ cos_theta: cos(theta*%pi/180);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Both values have the wrong sign</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sin_neg</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>cos_neg</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>[ prt2-1-F | prt2-2-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>sin correct, cos wrong (cos is now marked on its own)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sin_theta</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>cos_theta+2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>[ prt2-1-F | prt2-2-F | prt2-3-F | prt2-4-F ]</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>sin wrong, cos correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sin_theta+2</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>cos_theta</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-F | prt1-2-F | prt1-3-F | prt1-4-F ]</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: decimals are forbidden</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(sin_theta)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(cos_theta)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

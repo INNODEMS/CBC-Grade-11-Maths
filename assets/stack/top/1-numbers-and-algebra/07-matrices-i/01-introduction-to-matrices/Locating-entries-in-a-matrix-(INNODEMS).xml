@@ -2,76 +2,101 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Locating entries in a matrix (INNODEMS)</text>
+      <text>Locating specific entries a_{ij} in a matrix using row and column indices</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Consider the matrix \[ A = {@MM@}. \]</p>
-<p>The entry \(a_{ij}\) is the number in row \(i\), column \(j\). Find the following entries.</p>
+      <text><![CDATA[<p>Consider the \({@m@} \times {@n@}\) matrix</p>
+<p style="text-align: center; font-size: 1.15em;">\[ A = {@MM@}. \]</p>
+<p>The entry \(a_{ij}\) is the number in <b>row \(i\)</b> and <b>column \(j\)</b>. Find the following entries. <i>(Note: Enter each entry as a single integer, such as <code>-15</code> or <code>14</code>.)</i></p>
 <p>\( a_{ {@i1@}{@j1@} } = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
 <p>\( a_{ {@i2@}{@j2@} } = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
-<p>\( a_{ {@i3@}{@j3@} } = \) [[input:ans3]] [[validation:ans3]]  [[feedback:prt3]]</p>]]></text>
+<p>\( a_{ {@i3@}{@j3@} } = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</p>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>Read each entry by going to the named row first, then the named column.</p>
-<p>\( a_{ {@i1@}{@j1@} } \) is the entry in row \({@i1@}\), column \({@j1@}\), which is \({@ta1@}\).</p>
-<p>\( a_{ {@i2@}{@j2@} } \) is the entry in row \({@i2@}\), column \({@j2@}\), which is \({@ta2@}\).</p>
-<p>\( a_{ {@i3@}{@j3@} } \) is the entry in row \({@i3@}\), column \({@j3@}\), which is \({@ta3@}\).</p>
-<p>Remember: the row index comes first, then the column index.</p>]]></text>
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>In matrix notation \(a_{ij}\), the <b>first subscript \(i\)</b> gives the <b>row number</b> (counting from top to bottom) and the <b>second subscript \(j\)</b> gives the <b>column number</b> (counting from left to right).</p>
+
+<p><b>1. Finding \(a_{ {@i1@}{@j1@} }\):</b><br>
+Move down to <b>row \({@i1@}\)</b> and across to <b>column \({@j1@}\)</b>, which gives \({@ta1@}\).</p>
+
+<p><b>2. Finding \(a_{ {@i2@}{@j2@} }\):</b><br>
+Move down to <b>row \({@i2@}\)</b> and across to <b>column \({@j2@}\)</b>, which gives \({@ta2@}\).</p>
+
+<p><b>3. Finding \(a_{ {@i3@}{@j3@} }\):</b><br>
+Move down to <b>row \({@i3@}\)</b> and across to <b>column \({@j3@}\)</b>, which gives \({@ta3@}\).</p>
+
+<p style="margin-left: 20px; font-size: 1.15em;">\(\displaystyle \boxed{ a_{ {@i1@}{@j1@} } = {@ta1@}, \quad a_{ {@i2@}{@j2@} } = {@ta2@}, \quad a_{ {@i3@}{@j3@} } = {@ta3@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>3</defaultgrade>
-    <penalty>0.3333333</penalty>
+    <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2026010500</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[m : rand(3)+2;
-n : rand(3)+2;
-MM : genmatrix(lambda([ii,jj], rand(19)-9), m, n);
-lin : makelist(k, k, 1, m*n);
-s1 : lin[rand(length(lin))+1];
-lin : delete(s1, lin);
-s2 : lin[rand(length(lin))+1];
-lin : delete(s2, lin);
-s3 : lin[rand(length(lin))+1];
-i1 : floor((s1-1)/n)+1;
-j1 : mod(s1-1, n)+1;
-i2 : floor((s2-1)/n)+1;
-j2 : mod(s2-1, n)+1;
-i3 : floor((s3-1)/n)+1;
-j3 : mod(s3-1, n)+1;
-ta1 : MM[i1,j1];
-ta2 : MM[i2,j2];
-ta3 : MM[i3,j3];
-tr1 : if (j1<=m and i1<=n) then MM[j1,i1] else ta1-1000;
-tr2 : if (j2<=m and i2<=n) then MM[j2,i2] else ta2-1000;
-tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
+      <text><![CDATA[/* Loop-free selection across millions of unique matrices with distinct entries */
+dims : [[2,3], [2,4], [3,2], [3,3], [3,4], [4,2], [4,3], [4,4]];
+dim : rand(dims);
+m : dim[1];
+n : dim[2];
+
+/* Populate MM with distinct integers from -12 to 12 so entries never collide */
+pool : random_permutation(makelist(k, k, -12, 12));
+MM : genmatrix(lambda([ii, jj], pool[(ii - 1)*n + jj]), m, n);
+
+/* Select 3 distinct off-diagonal positions (i != j) so row/column order is always genuinely tested */
+offdiag : sublist(
+  create_list([ii, jj], ii, 1, m, jj, 1, n),
+  lambda([p], p[1] # p[2])
+);
+chosen : random_permutation(offdiag);
+p1 : chosen[1];
+p2 : chosen[2];
+p3 : chosen[3];
+
+i1 : p1[1];
+j1 : p1[2];
+i2 : p2[1];
+j2 : p2[2];
+i3 : p3[1];
+j3 : p3[2];
+
+ta1 : MM[i1, j1];
+ta2 : MM[i2, j2];
+ta3 : MM[i3, j3];
+
+/* Transpose distractors (strictly distinct from ta_k whenever (j_k, i_k) lies inside A) */
+tr1 : if (j1 <= m and i1 <= n) then MM[j1, i1] else ta1 - 1000;
+tr2 : if (j2 <= m and i2 <= n) then MM[j2, i2] else ta2 - 1000;
+tr3 : if (j3 <= m and i3 <= n) then MM[j3, i3] else ta3 - 1000;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>\({@m@}\times{@n@}\): \(a_{ {@i1@}{@j1@} }={@ta1@}\), \(a_{ {@i2@}{@j2@} }={@ta2@}\), \(a_{ {@i3@}{@j3@} }={@ta3@}\)</text>
+    <questionnote format="html">
+      <text>\({@m@} \times {@n@}\): \(a_{ {@i1@}{@j1@} } = {@ta1@}\), \(a_{ {@i2@}{@j2@} } = {@ta2@}\), \(a_{ {@i3@}{@j3@} } = {@ta3@}\)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Introduction to Matrices (Matrix Notation and Entry Indexing)</p>
+<p id="description">Grade 11 CBE: Identifying specific entries a_{ij} of a matrix using row i and column j indices.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text>Correct answer, well done.</text>
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text>Your answer is partially correct.</text>
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text>Incorrect answer.</text>
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -83,14 +108,14 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
       <name>ans1</name>
       <type>numerical</type>
       <tans>ta1</tans>
-      <boxsize>5</boxsize>
+      <boxsize>6</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>1</checkanswertype>
       <mustverify>0</mustverify>
@@ -101,14 +126,14 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
       <name>ans2</name>
       <type>numerical</type>
       <tans>ta2</tans>
-      <boxsize>5</boxsize>
+      <boxsize>6</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>1</checkanswertype>
       <mustverify>0</mustverify>
@@ -119,14 +144,14 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
       <name>ans3</name>
       <type>numerical</type>
       <tans>ta3</tans>
-      <boxsize>5</boxsize>
+      <boxsize>6</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>1</checkanswertype>
       <mustverify>0</mustverify>
@@ -143,12 +168,12 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact entry a_{i1,j1}</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -168,7 +193,7 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Swapped row and column indices (entered a_{j1,i1})</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>tr1</tans>
@@ -180,7 +205,7 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-transpose</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>That is \(a_{{@j1@}{@i1@}}\), the entry in row \({@j1@}\), column \({@i1@}\) &mdash; you have swapped the row and column. For \(a_{ij}\) the row index comes first, then the column.</p>]]></text>
+          <text><![CDATA[<p>That is \(a_{{@j1@}{@i1@}}\), the entry in row \({@j1@}\), column \({@i1@}\)—you swapped the row and column. For \(a_{ij}\), the <b>row index comes first</b>, then the column index.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -188,7 +213,7 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-wrong</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Not correct. Go to row \({@i1@}\) first, then count across to column \({@j1@}\).</p>]]></text>
+          <text><![CDATA[<p>Incorrect. Move down to <b>row \({@i1@}\)</b> first, then count across to <b>column \({@j1@}\)</b>.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -202,12 +227,12 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact entry a_{i2,j2}</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -227,7 +252,7 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Swapped row and column indices (entered a_{j2,i2})</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>tr2</tans>
@@ -239,7 +264,7 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt2-transpose</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>That is \(a_{{@j2@}{@i2@}}\), the entry in row \({@j2@}\), column \({@i2@}\) &mdash; you have swapped the row and column. For \(a_{ij}\) the row index comes first, then the column.</p>]]></text>
+          <text><![CDATA[<p>That is \(a_{{@j2@}{@i2@}}\), the entry in row \({@j2@}\), column \({@i2@}\)—you swapped the row and column. For \(a_{ij}\), the <b>row index comes first</b>, then the column index.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -247,7 +272,7 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt2-wrong</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Not correct. Go to row \({@i2@}\) first, then count across to column \({@j2@}\).</p>]]></text>
+          <text><![CDATA[<p>Incorrect. Move down to <b>row \({@i2@}\)</b> first, then count across to <b>column \({@j2@}\)</b>.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -261,12 +286,12 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact entry a_{i3,j3}</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans3</sans>
         <tans>ta3</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -286,7 +311,7 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Swapped row and column indices (entered a_{j3,i3})</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans3</sans>
         <tans>tr3</tans>
@@ -298,7 +323,7 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt3-transpose</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>That is \(a_{{@j3@}{@i3@}}\) the entry in row \({@j3@}\), column \({@i3@}\) &mdash; you have swapped the row and column. For \(a_{ij}\) the row index comes first, then the column.</p>]]></text>
+          <text><![CDATA[<p>That is \(a_{{@j3@}{@i3@}}\), the entry in row \({@j3@}\), column \({@i3@}\)—you swapped the row and column. For \(a_{ij}\), the <b>row index comes first</b>, then the column index.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -306,17 +331,102 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt3-wrong</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Not correct. Go to row \({@i3@}\) first, then count across to column \({@j3@}\).</p>]]></text>
+          <text><![CDATA[<p>Incorrect. Move down to <b>row \({@i3@}\)</b> first, then count across to <b>column \({@j3@}\)</b>.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>1001</deployedseed>
-    <deployedseed>2002</deployedseed>
-    <deployedseed>3003</deployedseed>
-    <deployedseed>4004</deployedseed>
-    <deployedseed>5005</deployedseed>
     <deployedseed>414919798</deployedseed>
-    <deployedseed>606814237</deployedseed>
+    <deployedseed>112233445</deployedseed>
+    <deployedseed>223344556</deployedseed>
+    <deployedseed>334455667</deployedseed>
+    <deployedseed>445566778</deployedseed>
+    <deployedseed>556677889</deployedseed>
+    <deployedseed>667788991</deployedseed>
+    <deployedseed>778899112</deployedseed>
+    <deployedseed>889911223</deployedseed>
+    <deployedseed>991122334</deployedseed>
+    <deployedseed>123987456</deployedseed>
+    <deployedseed>234876519</deployedseed>
+    <deployedseed>345765428</deployedseed>
+    <deployedseed>456654317</deployedseed>
+    <deployedseed>1113718758</deployedseed>
+    <deployedseed>816655935</deployedseed>
+    <deployedseed>193326881</deployedseed>
+    <deployedseed>884363600</deployedseed>
+    <deployedseed>148079482</deployedseed>
+    <deployedseed>150541432</deployedseed>
+    <deployedseed>230553487</deployedseed>
+    <deployedseed>450249903</deployedseed>
+    <deployedseed>875590189</deployedseed>
+    <deployedseed>615069966</deployedseed>
+    <deployedseed>1625738083</deployedseed>
+    <deployedseed>532930119</deployedseed>
+    <deployedseed>1164694002</deployedseed>
+    <deployedseed>129625255</deployedseed>
+    <deployedseed>214793983</deployedseed>
+    <deployedseed>1680803955</deployedseed>
+    <deployedseed>312679853</deployedseed>
+    <deployedseed>1871139482</deployedseed>
+    <deployedseed>926011659</deployedseed>
+    <deployedseed>674567988</deployedseed>
+    <deployedseed>596226092</deployedseed>
+    <deployedseed>716906719</deployedseed>
+    <deployedseed>1759946128</deployedseed>
+    <deployedseed>2114940099</deployedseed>
+    <deployedseed>1500940592</deployedseed>
+    <deployedseed>1638365409</deployedseed>
+    <deployedseed>677187544</deployedseed>
+    <deployedseed>118133055</deployedseed>
+    <deployedseed>269087457</deployedseed>
+    <deployedseed>324178585</deployedseed>
+    <deployedseed>1695803064</deployedseed>
+    <deployedseed>2067098666</deployedseed>
+    <deployedseed>1436945977</deployedseed>
+    <deployedseed>38744605</deployedseed>
+    <deployedseed>145631292</deployedseed>
+    <deployedseed>1450739778</deployedseed>
+    <deployedseed>1543603655</deployedseed>
+    <deployedseed>1182282001</deployedseed>
+    <deployedseed>797278930</deployedseed>
+    <deployedseed>1022288480</deployedseed>
+    <deployedseed>132089023</deployedseed>
+    <deployedseed>1140031194</deployedseed>
+    <deployedseed>1326702688</deployedseed>
+    <deployedseed>1173253700</deployedseed>
+    <deployedseed>2069558652</deployedseed>
+    <deployedseed>659824076</deployedseed>
+    <deployedseed>1794844908</deployedseed>
+    <deployedseed>702429388</deployedseed>
+    <deployedseed>2117247103</deployedseed>
+    <deployedseed>437416517</deployedseed>
+    <deployedseed>667277265</deployedseed>
+    <deployedseed>940022515</deployedseed>
+    <deployedseed>696675181</deployedseed>
+    <deployedseed>779507507</deployedseed>
+    <deployedseed>638607897</deployedseed>
+    <deployedseed>85740978</deployedseed>
+    <deployedseed>2093177161</deployedseed>
+    <deployedseed>1741815552</deployedseed>
+    <deployedseed>670142588</deployedseed>
+    <deployedseed>1395867988</deployedseed>
+    <deployedseed>430405399</deployedseed>
+    <deployedseed>185899520</deployedseed>
+    <deployedseed>1256586877</deployedseed>
+    <deployedseed>661853138</deployedseed>
+    <deployedseed>172899018</deployedseed>
+    <deployedseed>307902109</deployedseed>
+    <deployedseed>1285954535</deployedseed>
+    <deployedseed>860436283</deployedseed>
+    <deployedseed>975281203</deployedseed>
+    <deployedseed>140336367</deployedseed>
+    <deployedseed>532174096</deployedseed>
+    <deployedseed>1850574241</deployedseed>
+    <deployedseed>936045074</deployedseed>
+    <deployedseed>2035818629</deployedseed>
+    <deployedseed>2072250025</deployedseed>
+    <deployedseed>225295855</deployedseed>
+    <deployedseed>450215517</deployedseed>
+    <deployedseed>433596393</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>All three entries correct</description>
@@ -353,24 +463,36 @@ tr3 : if (j3<=m and i3<=n) then MM[j3,i3] else ta3-1000;]]></text>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Entry 1 wrong (generic)</description>
+      <description>All three entries incorrect</description>
       <testinput>
         <name>ans1</name>
-        <value>ev(ta1+100,simp)</value>
+        <value>ev(ta1+50, simp)</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ev(ta2+50, simp)</value>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>ta3</value>
+        <value>ev(ta3+50, simp)</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.3333333</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt1-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-wrong</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-wrong</expectedanswernote>
       </expected>
     </qtest>
   </question>

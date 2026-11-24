@@ -2,35 +2,54 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Matrices_Scalar_Mult</text>
+      <text>Scalar multiplication of a 2x2 matrix</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Let \({\bf A}\) be the following matrix: \[{\bf A} = {@amatrix@}\] <br /> Find the scalar multiple \({@sc@} {\bf A}\) : [[input:ans1]] [[validation:ans1]]</p>]]></text>
+      <text><![CDATA[<p>Let \({\bf A}\) be the following matrix:</p>
+<p>\[{\bf A} = {@amatrix@}\]</p>
+<p>Find the scalar multiple \({@sc@}{\bf A}\). Enter exact integers in each cell.</p>
+<p>[[input:ans1]] [[validation:ans1]]</p>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>Each element of the matrix \({\bf A}\) is multiplied by the scale factor \({@sc@}\) <br /> Therefore \({@sc@} {\bf A} = {@correctanswer@}\)</p>]]></text>
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+<p>To find the scalar multiple \({@sc@}{\bf A}\), multiply each entry of the matrix \({\bf A}\) by the scalar \({@sc@}\):</p>
+<p>\[{@sc@}{\bf A} = {@sc@}{@amatrix@} = {@mul_tex@} = \boxed{{@correctanswer@}}\]</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
-    <penalty>0</penalty>
+    <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text/>
+      <text>2026010500</text>
     </stackversion>
     <questionvariables>
-      <text>amatrix:matrix([rand_with_step(-5,5,1),rand_with_step(-5,5,1)],[rand_with_step(-5,5,1),rand_with_step(-5,5,1)]);
- sc:-(rand(6) + 2);
- correctanswer:sc*amatrix;
- wronganswer:amatrix+1</text>
+      <text><![CDATA[neg_pos : rand(4) + 1;
+a11 : if is(neg_pos = 1) then rand_with_step(-6, -1, 1) else rand_with_prohib(-6, 6, [0]);
+a12 : if is(neg_pos = 2) then rand_with_step(-6, -1, 1) else rand_with_prohib(-6, 6, [0]);
+a21 : if is(neg_pos = 3) then rand_with_step(-6, -1, 1) else rand_with_prohib(-6, 6, [0]);
+a22 : if is(neg_pos = 4) then rand_with_step(-6, -1, 1) else rand_with_prohib(-6, 6, [0]);
+amatrix : matrix([a11, a12], [a21, a22]);
+
+sc : rand_with_prohib(-7, 7, [-1, 0, 1]);
+
+correctanswer : sc * amatrix;
+wrongsign : -sc * amatrix;
+wrongadd : amatrix + matrix([sc, sc], [sc, sc]);
+wrongother : amatrix + matrix([1, 1], [1, 1]);
+if is(wrongother = correctanswer) or is(wrongother = wrongsign) or is(wrongother = wrongadd) then wrongother : amatrix + matrix([2, 2], [2, 2]);
+
+fmt_mul(k, x) := if is(x < 0) then sconcat(k, " \\times (", x, ")") else sconcat(k, " \\times ", x);
+mul_tex : sconcat("\\begin{bmatrix} ", fmt_mul(sc, a11), " & ", fmt_mul(sc, a12), " \\\\ ", fmt_mul(sc, a21), " & ", fmt_mul(sc, a22), " \\end{bmatrix}");]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text><![CDATA[<p>[[feedback:Result]]</p>]]></text>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>\({\bf A} = {@amatrix@}, {@sc@} {\bf A}={@correctanswer@}\)</text>
+    <questionnote format="html">
+      <text>\({\bf A} = {@amatrix@}, \; {@sc@}{\bf A} = {@correctanswer@}\)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Multiplying Matrices I (Scalar Multiplication of a Matrix)</p>
+<p id="description">Grade 11 CBE: Multiplying a 2x2 integer matrix by a non-zero scalar entry by entry.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -58,7 +77,7 @@
       <name>ans1</name>
       <type>matrix</type>
       <tans>correctanswer</tans>
-      <boxsize>20</boxsize>
+      <boxsize>5</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -70,7 +89,7 @@
       <checkanswertype>1</checkanswertype>
       <mustverify>1</mustverify>
       <showvalidation>1</showvalidation>
-      <options/>
+      <options>hideanswer</options>
     </input>
     <prt>
       <name>Result</name>
@@ -82,7 +101,7 @@
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Correct scalar multiple</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>correctanswer</tans>
@@ -92,17 +111,67 @@
         <truescore>1.0000000</truescore>
         <truepenalty>0</truepenalty>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>Result-0-T </trueanswernote>
+        <trueanswernote>Result-0-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0.0000000</falsescore>
-        <falsepenalty>0</falsepenalty>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>Result-0-F </falseanswernote>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>Result-0-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Multiplied by opposite sign (-sc * A)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrongsign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.0000000</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>Result-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the signs of your entries: it looks like you multiplied by \({@-sc@}\) instead of \({@sc@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>Result-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Added scalar instead of multiplying</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wrongadd</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.0000000</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>Result-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added \({@sc@}\) to each entry instead of multiplying. Multiply every entry of \({\bf A}\) by \({@sc@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>Result-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not quite. Multiply every entry of \({\bf A}\) by the scalar \({@sc@}\): \(({@sc@}{\bf A})_{ij} = {@sc@} \times a_{ij}\). Double-check your arithmetic with negative signs.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -133,7 +202,7 @@
     <deployedseed>424102119</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct scalar multiple</description>
       <testinput>
         <name>ans1</name>
         <value>correctanswer</value>
@@ -147,16 +216,44 @@
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Sign error (-sc * A)</description>
       <testinput>
         <name>ans1</name>
-        <value>wronganswer</value>
+        <value>wrongsign</value>
       </testinput>
       <expected>
         <name>Result</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>Result-0-F</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>Result-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Added scalar instead of multiplying</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrongadd</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>Result-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Generic wrong matrix</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wrongother</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>Result-2-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

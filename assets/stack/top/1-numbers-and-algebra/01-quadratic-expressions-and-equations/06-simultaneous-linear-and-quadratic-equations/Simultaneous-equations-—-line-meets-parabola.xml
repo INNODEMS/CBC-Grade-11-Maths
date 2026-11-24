@@ -5,32 +5,47 @@
       <text>Simultaneous equations — line meets parabola</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Solve the following simultaneous equations: \[ y = {@line@}, \qquad y = {@para@}. \]</p>
-<p><strong>a)</strong> Equate the two right-hand sides of the equations and give a quadratic of the form \(x^2+bx+c=0\).</p>
-<div> quadratic:\( \) [[input:ans1]] \( = 0 \) [[validation:ans1]] [[feedback:prt1]]</div>
-<p><strong>b)</strong> Solve this quadratic. Give the values of \(x\) as \([a, b]\):</p>
-<div>\( x \in \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
-<p><strong>c)</strong> Hence give all solution pairs. Enter each as a coordinate \([x, y]\)  e.g. \([[a,\ c],[b,\ d]]\):</p>
+      <text><![CDATA[<p>Solve the simultaneous equations \[ y = {@line@}, \qquad y = {@para@}. \]</p>
+<p><strong>a)</strong> Equate the two expressions for \(y\) and rearrange into the form \(x^2 + bx + c = 0\).</p>
+<div>[[input:ans1]] \(= 0\) [[validation:ans1]] [[feedback:prt1]]</div>
+<p><strong>b)</strong> Solve this quadratic. Give the set of \(x\)-values, for example \(\{-1, 4\}\).</p>
+<div>\(x \in \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p><strong>c)</strong> Hence give both solutions as coordinate pairs \([x, y]\), listed as a set, for example \(\{[-1, 2], [4, 7]\}\).</p>
 <div>[[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>Since both right-hand sides equal \(y\), set them equal to each other:</p>
-\[
-\begin{align*}
-{@para@} &= {@line@}\\
-{@quadexpr@} &= 0\\
-(x-({@r1@}))(x-({@r2@})) &= 0
-\end{align*}
-\]
-<p>so \(x = {@r1@}\) or \(x = {@r2@}\). Substituting each back gives the \(y\)-values, and we check both equations hold at the same time:</p>
+      <text><![CDATA[<h3>Worked solution.</h3>
+<p>At a solution of the simultaneous equations, both equations give the <strong>same value of \(y\)</strong>. So we set the two right-hand sides equal, which gives a quadratic equation in \(x\):</p>
+\[ \begin{align*} {@para@} &= {@line@}\\ {@quadexpr@} &= 0\\ {@(x-r1)*(x-r2)@} &= 0. \end{align*} \]
+<p>So \(x = {@r1@}\) or \(x = {@r2@}\). Substitute each value into the linear equation to find the matching \(y\), and check it in the quadratic one:</p>
 <ul>
-<li>At \(x={@r1@}\): line gives \(y={@y1@}\) and parabola gives \(y={@y1@}\) &mdash; they agree, so \(({@r1@},\,{@y1@})\) is a solution.</li>
-<li>At \(x={@r2@}\): line gives \(y={@y2@}\) and parabola gives \(y={@y2@}\) &mdash; they agree, so \(({@r2@},\,{@y2@})\) is a solution.</li>
+<li>When \(x = {@r1@}\): \(y = {@y1@}\), and \(({@r1@})^2 + ({@cc@}) = {@y1@}\) as well.</li>
+<li>When \(x = {@r2@}\): \(y = {@y2@}\), and \(({@r2@})^2 + ({@cc@}) = {@y2@}\) as well.</li>
 </ul>
-<p>All solutions: \( {@cpairs@} \).</p>]]></text>
+<p>The solutions are \(({@r1@}, {@y1@})\) and \(({@r2@}, {@y2@})\). They are the two points where the line meets the parabola:</p>
+<div style="text-align:center;" role="img" aria-label="The line y = {#line#} and the parabola y = {#para#}, meeting at ({#r1#}, {#y1#}) and ({#r2#}, {#y2#}).">
+[[jsxgraph width="380px" height="320px"]]
+(function() {
+  var L = function(x){ return ({#mm#})*x + ({#kk#}); }, P = function(x){ return x*x + ({#cc#}); };
+  var pts = [[{#r1#},{#y1#}],[{#r2#},{#y2#}]];
+  var xs = pts.map(function(p){return p[0];}), ys = pts.map(function(p){return p[1];});
+  var xmin = Math.min.apply(null, xs) - 2.5, xmax = Math.max.apply(null, xs) + 2.5;
+  var ymin = Math.min(0, Math.min.apply(null, ys)), ymax = Math.max(0, Math.max.apply(null, ys));
+  for (var t = xmin; t <= xmax; t += (xmax - xmin)/100) { var v = P(t); if (v < ymax + 6) ymax = Math.max(ymax, v); ymin = Math.min(ymin, v); }
+  var pad = (ymax - ymin)*0.1 + 1;
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[xmin, ymax + pad, xmax, ymin - pad], axis:true, grid:false,
+      showNavigation:false, showCopyright:false});
+  b.create('functiongraph', [P], {strokeColor:'#1f5fa8', strokeWidth:2});
+  b.create('functiongraph', [L], {strokeColor:'#e67e22', strokeWidth:2});
+  for (var i = 0; i < pts.length; i++) {
+    b.create('point', pts[i], {name:'', size:4, fixed:true, color:'#c0392b'});
+  }
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>3</defaultgrade>
-    <penalty>0.3333333</penalty>
+    <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
@@ -38,44 +53,49 @@
     </stackversion>
     <questionvariables>
       <text>r1 : rand_with_prohib(-4,4,[]);
-r2 : rand_with_prohib(-4,4,[r1,-r1]);   /* distinct and not the negative of r1 */
-cc : rand_with_prohib(-5,5,[]);         /* parabola constant */
-mm : r1 + r2;                           /* line slope */
-kk : cc - r1*r2;                        /* line intercept */
-line : mm*x + kk;                       /* RHS of y = line */
-para : x^2 + cc;                        /* RHS of y = parabola */
-quadexpr : expand(para - line);         /* x^2 - mm*x + r1*r2, = (x-r1)(x-r2) */
-xset : [r1, r2];
-xset_neg : [-r1, -r2];                  /* sign-of-roots misconception */
+r2 : rand_with_prohib(-4,4,[r1,-r1]);   /* distinct, and r1 + r2 is not 0, so the line is not horizontal */
+cc : rand_with_prohib(-5,5,[]);
+mm : r1+r2;                             /* slope of the line */
+kk : cc-r1*r2;                          /* intercept of the line */
+line : mm*x+kk;
+para : x^2+cc;
+quadexpr : expand(para-line);           /* x^2 - mm*x + r1*r2 = (x-r1)(x-r2) */
+xset : {r1, r2};
 y1 : ev(line, x=r1);
 y2 : ev(line, x=r2);
-cpairs : [[r1, y1], [r2, y2]];
-cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</text>
+cpairs : {[r1, y1], [r2, y2]};
+/* Misconceptions */
+w1_add : expand(para+line);             /* added the line instead of subtracting */
+xset_neg : {-r1, -r2};                  /* wrong signs when reading roots from factors */
+xset_one : {r1};
+xset_wrong : {r1, r2+10};               /* +10 keeps two distinct elements on every seed */
+cpairs_swap : {[r1, y2], [r2, y1]};     /* right values, wrong pairing */
+cpairs_wrong : {[r1, y1], [r2, y2+1]};</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>\( y={@line@},\ y={@para@}\); roots \(x={@r1@},{@r2@}\); pairs \({@cpairs@}\)</text>
+    <questionnote format="html">
+      <text>\(y = {@line@}\), \(y = {@para@}\); solutions \({@cpairs@}\)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p>This question is based on Example 1 (y = x + 2 and y = x^2 - 4: equate, factorise, substitute back) in the section Simultaneous Linear and Quadratic Equations of the CBC Grade 11 Mathematics textbook (INNODEMS).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text>Correct, well done.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text>Your answer is partially correct.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text>Incorrect.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -87,9 +107,9 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
       <name>ans1</name>
       <type>algebraic</type>
       <tans>quadexpr</tans>
-      <boxsize>16</boxsize>
+      <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>2</insertstars>
+      <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
@@ -97,7 +117,7 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -107,7 +127,7 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
       <tans>xset</tans>
       <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>2</insertstars>
+      <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords>solve</forbidwords>
@@ -115,7 +135,7 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -123,9 +143,9 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
       <name>ans3</name>
       <type>algebraic</type>
       <tans>cpairs</tans>
-      <boxsize>22</boxsize>
+      <boxsize>25</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>2</insertstars>
+      <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords>solve</forbidwords>
@@ -133,7 +153,7 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -147,7 +167,7 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correct quadratic (positive leading term)?</description>
+        <description>Correct quadratic</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>quadexpr</tans>
@@ -157,7 +177,7 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -165,14 +185,14 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-0-F</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description>Same equation but sign-flipped (negative x^2)?</description>
+        <description>Negative of the quadratic</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>-quadexpr</tans>
@@ -182,17 +202,42 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-neg</trueanswernote>
+        <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Right equation, but multiply through by \(-1\) so the \(x^2\) term is positive.</p>]]></text>
+          <text><![CDATA[<p>That is the right equation, but the \(x^2\) term should be positive. Multiply through by \(-1\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Added instead of subtracting</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w1_add</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>When a term moves to the other side of the equation, its sign changes. Subtract \({@line@}\) from both sides.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-other</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Set the two right-hand sides equal, then bring every term to one side to get a quadratic \(=0\).</p>]]></text>
+          <text><![CDATA[<p>Set \({@para@} = {@line@}\), then move every term to the left-hand side.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -202,11 +247,11 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text/>
+        <text>two : if setp(ans2) then is(cardinality(ans2)=2) else false;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correct set of x-values?</description>
+        <description>Correct x-values</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>xset</tans>
@@ -216,31 +261,6 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-correct</trueanswernote>
-        <truefeedback format="html">
-          <text/>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt2-0-F</falseanswernote>
-        <falsefeedback format="html">
-          <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>1</name>
-        <description>Did they give a set at all (both roots)?</description>
-        <answertest>SameType</answertest>
-        <sans>ans2</sans>
-        <tans>xset</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>2</truenextnode>
         <trueanswernote>prt2-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
@@ -248,15 +268,40 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt2-single</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>There are two \(x\)-values. Give both as a set \(\{\,\ldots\,\}\).</p>]]></text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>A set of two values?</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>two</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>2</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The line meets the parabola twice, so there are two \(x\)-values. Give both as a set.</p>]]></text>
         </falsefeedback>
       </node>
       <node>
         <name>2</name>
-        <description>Sign-of-roots error: {-r1,-r2}?</description>
+        <description>Signs of the roots</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>xset_neg</tans>
@@ -266,17 +311,17 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-sign</trueanswernote>
+        <trueanswernote>prt2-3-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Check the signs when reading roots from the factors: if \((x-p)(x-q)=0\) then \(x=p\) or \(x=q\).</p>]]></text>
+          <text><![CDATA[<p>Check the signs: if \((x-p)(x-q) = 0\) then \(x = p\) or \(x = q\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt2-other</falseanswernote>
+        <falseanswernote>prt2-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Factorise the quadratic and set each factor equal to zero.</p>]]></text>
+          <text><![CDATA[<p>Factorise your quadratic and set each factor equal to zero.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -290,7 +335,7 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correct set of coordinate pairs?</description>
+        <description>Correct pairs</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans3</sans>
         <tans>cpairs</tans>
@@ -300,7 +345,7 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt3-correct</trueanswernote>
+        <trueanswernote>prt3-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -308,14 +353,14 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt3-0-F</falseanswernote>
+        <falseanswernote>prt3-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description>Right values but wrong pairing?</description>
+        <description>Values paired wrongly</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans3</sans>
         <tans>cpairs_swap</tans>
@@ -325,59 +370,36 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt3-swap</trueanswernote>
+        <trueanswernote>prt3-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>You have the right \(x\)- and \(y\)-values, but paired them the wrong way. Substitute each \(x\) into an equation to find the \(y\) that goes with it.</p>]]></text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>2</falsenextnode>
-        <falseanswernote>prt3-1-F</falseanswernote>
-        <falsefeedback format="html">
-          <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>2</name>
-        <description>Is it a set of coordinate pairs at all?</description>
-        <answertest>SameType</answertest>
-        <sans>ans3</sans>
-        <tans>cpairs</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt3-value</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[<p>Those are coordinate pairs, but at least one is wrong. Substitute each \(x\) back into \(y={@line@}\) to get its \(y\).</p>]]></text>
+          <text><![CDATA[<p>You have the right \(x\)- and \(y\)-values, but they are paired the wrong way round. Substitute each \(x\) into \(y = {@line@}\) to find the \(y\) that goes with it.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt3-form</falseanswernote>
+        <falseanswernote>prt3-2-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Give each solution as a coordinate pair \([x,\ y]\), and list all of them as a set.</p>]]></text>
+          <text><![CDATA[<p>Substitute each \(x\)-value into \(y = {@line@}\). Give each solution as \([x, y]\), and list both in a set.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>4001</deployedseed>
-    <deployedseed>4002</deployedseed>
-    <deployedseed>4003</deployedseed>
-    <deployedseed>4004</deployedseed>
-    <deployedseed>4005</deployedseed>
-    <deployedseed>4006</deployedseed>
-    <deployedseed>4007</deployedseed>
-    <deployedseed>4008</deployedseed>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>All three parts correct</description>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
-        <value>quadexpr</value>
+        <value>ev(expand((x-r1)*(x-r2)),simp)</value>
       </testinput>
       <testinput>
         <name>ans2</name>
@@ -391,71 +413,61 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-correct</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt3-correct</expectedanswernote>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Part (a) sign-flipped</description>
+      <description>Negative quadratic; one root; swapped pairs</description>
       <testinput>
         <name>ans1</name>
-        <value>ev(-quadexpr,simp)</value>
+        <value>-quadexpr</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>xset</value>
+        <value>xset_one</value>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>cpairs</value>
+        <value>cpairs_swap</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.3333333</expectedpenalty>
-        <expectedanswernote>prt1-neg</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F | prt3-2-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>3</testcase>
-      <description>Part (b) only one x-value</description>
+      <description>Added the line; signs of roots; wrong y</description>
       <testinput>
         <name>ans1</name>
-        <value>quadexpr</value>
-      </testinput>
-      <testinput>
-        <name>ans2</name>
-        <value>r1</value>
-      </testinput>
-      <testinput>
-        <name>ans3</name>
-        <value>cpairs</value>
-      </testinput>
-      <expected>
-        <name>prt2</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.3333333</expectedpenalty>
-        <expectedanswernote>prt2-single</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>4</testcase>
-      <description>Part (b) sign-of-roots error</description>
-      <testinput>
-        <name>ans1</name>
-        <value>quadexpr</value>
+        <value>w1_add</value>
       </testinput>
       <testinput>
         <name>ans2</name>
@@ -463,57 +475,59 @@ cpairs_swap : [[r1, y2], [r2, y1]];     /* correct values, wrong pairing */</tex
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>cpairs</value>
+        <value>cpairs_wrong</value>
       </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.3333333</expectedpenalty>
-        <expectedanswernote>prt2-sign</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T | prt2-3-T</expectedanswernote>
       </expected>
-    </qtest>
-    <qtest>
-      <testcase>5</testcase>
-      <description>Part (c) wrong pairing</description>
-      <testinput>
-        <name>ans1</name>
-        <value>quadexpr</value>
-      </testinput>
-      <testinput>
-        <name>ans2</name>
-        <value>xset</value>
-      </testinput>
-      <testinput>
-        <name>ans3</name>
-        <value>cpairs_swap</value>
-      </testinput>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.3333333</expectedpenalty>
-        <expectedanswernote>prt3-swap</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F | prt3-2-F</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
-      <testcase>6</testcase>
-      <description>Part (c) gave only x-values (wrong type)</description>
+      <testcase>4</testcase>
+      <description>Other wrong answers</description>
       <testinput>
         <name>ans1</name>
-        <value>quadexpr</value>
+        <value>quadexpr+1</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>xset</value>
+        <value>xset_wrong</value>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>xset</value>
+        <value>cpairs</value>
       </testinput>
       <expected>
-        <name>prt3</name>
+        <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.3333333</expectedpenalty>
-        <expectedanswernote>prt3-value</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T | prt2-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

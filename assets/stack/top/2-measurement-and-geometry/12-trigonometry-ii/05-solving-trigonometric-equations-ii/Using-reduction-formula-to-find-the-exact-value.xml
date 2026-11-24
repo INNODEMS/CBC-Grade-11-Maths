@@ -2,46 +2,52 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Using reduction formula to find the exact value</text>
+      <text>Using reduction formulae to find exact values</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>
-Consider the following trigonometric expression: \(\sin(180^\circ-{@theta@}^\circ)\)
-</p>
-
-<p><strong>(a)</strong> Use a reduction formula to simplify the expression.</p>
-
-<p>[[input:ans1]]</p>
-<p>[[validation:ans1]][[feedback:prt1]]</p>
-
-<p><strong>Instructions:</strong> Give your answer in exact form. Do not use decimal approximations.</p>]]></text>
+      <text><![CDATA[<p>Consider the expression</p>
+\[ [[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]]\left([[if test="is(fm=1)"]]180^\circ - {@theta@}^\circ[[/if]][[if test="is(fm=2)"]]180^\circ + {@theta@}^\circ[[/if]][[if test="is(fm=3)"]]360^\circ - {@theta@}^\circ[[/if]]\right). \]
+<p><strong>(a)</strong> Use a reduction formula to find the exact value of this expression.</p>
+<p><i>Give your answer in exact form, use <code>sqrt()</code> for a square root  </i></p>
+<div>\([[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]]\left([[if test="is(fm=1)"]]180^\circ - {@theta@}^\circ[[/if]][[if test="is(fm=2)"]]180^\circ + {@theta@}^\circ[[/if]][[if test="is(fm=3)"]]360^\circ - {@theta@}^\circ[[/if]]\right) = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
       <text><![CDATA[<h3>Worked solution</h3>
+<p>We need the exact value of \([[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]]\left([[if test="is(fm=1)"]]180^\circ - {@theta@}^\circ[[/if]][[if test="is(fm=2)"]]180^\circ + {@theta@}^\circ[[/if]][[if test="is(fm=3)"]]360^\circ - {@theta@}^\circ[[/if]]\right) = [[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]] {@ang@}^\circ\).</p>
 
-<p>We are required to evaluate:</p>
+<p><strong>Step 1: find the quadrant.</strong> The angle \({@ang@}^\circ\) lies in Quadrant [[if test="is(quad=2)"]]II[[/if]][[if test="is(quad=3)"]]III[[/if]][[if test="is(quad=4)"]]IV[[/if]]. Its reference angle (the acute angle it makes with the \(x\)-axis) is \(\alpha = {@theta@}^\circ\).</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle showing the angle {#ang#} degrees in Quadrant {#quad#}, with reference angle {#theta#} degrees to the x-axis.">
+[[jsxgraph width="320px" height="320px"]]
+(function() {
+  var A = {#ang#}, th = {#theta#}, q = {#quad#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.6, 1.6, 1.6, -1.6], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.45, 0], [1.5, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.45], [0, 1.5]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.45, -0.12, 'x'], {fixed:true}); b.create('text', [0.06, 1.45, 'y'], {fixed:true});
+  b.create('circle', [[0, 0], 1], {strokeColor:'#90a4ae', strokeWidth:1.5, fixed:true, highlight:false});
+  [['S', -0.8, 1.2], ['A', 0.75, 1.2], ['T', -0.8, -1.15], ['C', 0.75, -1.15]].forEach(function(c) {
+    b.create('text', [c[1], c[2], c[0]], {fixed:true, color:'#6a1b9a', fontSize:16, cssStyle:'font-weight:bold'});
+  });
+  var O = b.create('point', [0, 0], {visible:false, fixed:true});
+  var X = b.create('point', [1, 0], {visible:false, fixed:true});
+  var Xn = b.create('point', [-1, 0], {visible:false, fixed:true});
+  var r = A*Math.PI/180;
+  var P = b.create('point', [Math.cos(r), Math.sin(r)], {name:'P', size:4, color:'#c62828', fixed:true, label:{offset:[8, 8]}});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('segment', [P, [Math.cos(r), 0]], {strokeColor:'#c62828', strokeWidth:1, dash:2, fixed:true});
+  b.create('angle', [X, O, P], {radius:0.3, name:A + '\u00b0', fillColor:'#ffb74d', fillOpacity:0.35, strokeColor:'#ef6c00', fixed:true, label:{color:'#ef6c00'}});
+  var ref = (q === 2) ? [P, O, Xn] : (q === 3) ? [Xn, O, P] : [P, O, X];
+  b.create('angle', ref, {radius:0.55, name:'\u03b1 = ' + th + '\u00b0', fillColor:'#81c784', fillOpacity:0.4, strokeColor:'#2e7d32', fixed:true, label:{color:'#2e7d32'}});
+})();
+[[/jsxgraph]]
+</div>
+<p><strong>Step 2: find the sign.</strong> By the CAST rule, [[if test="is(sg>0)"]][[if test="is(fr=1)"]]sine[[/if]][[if test="is(fr=2)"]]cosine[[/if]][[if test="is(fr=3)"]]tangent[[/if]] is <em>positive</em> in Quadrant [[if test="is(quad=2)"]]II[[/if]][[if test="is(quad=3)"]]III[[/if]][[if test="is(quad=4)"]]IV[[/if]][[else]][[if test="is(fr=1)"]]sine[[/if]][[if test="is(fr=2)"]]cosine[[/if]][[if test="is(fr=3)"]]tangent[[/if]] is <em>negative</em> in Quadrant [[if test="is(quad=2)"]]II[[/if]][[if test="is(quad=3)"]]III[[/if]][[if test="is(quad=4)"]]IV[[/if]][[/if]]. So the reduction formula is</p>
+\[ [[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]]\left([[if test="is(fm=1)"]]180^\circ - \theta[[/if]][[if test="is(fm=2)"]]180^\circ + \theta[[/if]][[if test="is(fm=3)"]]360^\circ - \theta[[/if]]\right) = [[if test="is(sg<0)"]]-[[/if]][[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]]\,\theta, \qquad\text{so}\qquad [[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]]\left([[if test="is(fm=1)"]]180^\circ - {@theta@}^\circ[[/if]][[if test="is(fm=2)"]]180^\circ + {@theta@}^\circ[[/if]][[if test="is(fm=3)"]]360^\circ - {@theta@}^\circ[[/if]]\right) = [[if test="is(sg<0)"]]-[[/if]][[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]] {@theta@}^\circ. \]
 
-\(\sin(180^\circ-{@theta@}^\circ)\)
+<p><strong>Step 3: use the exact value of the acute angle.</strong> From the special triangles, \([[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]] {@theta@}^\circ = {@bval@}\).</p>
 
-<p><strong>Step 1: Apply the reduction formula.</strong></p>
-
-<p>Recall that:</p>
-
-\(\sin(180^\circ-\theta)=\sin\theta\)
-
-<p>Therefore:</p>
-
-\(\sin(180^\circ-{@theta@}^\circ)=\sin({@theta@}^\circ)\)
-
-<p><strong>Step 2: Determine the exact value.</strong></p>
-
-<p>Using the standard trigonometric values:</p>
-
-\(\sin({@theta@}^\circ)={@ta1@}\)
-
-<p><strong>Final Answer:</strong></p>
-
-\(\boxed{{@ta1@}}\)]]></text>
+<p><strong>Final answer:</strong> \([[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]]\left([[if test="is(fm=1)"]]180^\circ - {@theta@}^\circ[[/if]][[if test="is(fm=2)"]]180^\circ + {@theta@}^\circ[[/if]][[if test="is(fm=3)"]]360^\circ - {@theta@}^\circ[[/if]]\right) = {@ta1@}\).</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -51,26 +57,35 @@ Consider the following trigonometric expression: \(\sin(180^\circ-{@theta@}^\cir
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Randomly select the reference angle */
-q: 1+rand(3);
-
-theta: if q=1 then 30
-       elseif q=2 then 45
-       else 60;
-
-/* Calculate the exact value */
-ta1: if q=1 then 1/2
-     elseif q=2 then sqrt(2)/2
-     else sqrt(3)/2;</text>
+      <text>/* Reduction formulae: ratio (sin, cos, tan) x form (180-theta, 180+theta, 360-theta) x theta (30, 45, 60)
+   = 27 distinct variants. Every answer is non-zero, so a sign error is always detectable. */
+fr : rand([1, 2, 3]);          /* 1 = sin, 2 = cos, 3 = tan */
+fm : rand([1, 2, 3]);          /* 1 = 180 - theta (Q II), 2 = 180 + theta (Q III), 3 = 360 - theta (Q IV) */
+theta : rand([30, 45, 60]);
+ang : if fm = 1 then 180 - theta else if fm = 2 then 180 + theta else 360 - theta;
+quad : fm + 1;
+/* exact value of the ratio for the acute angle theta */
+sv : if theta = 30 then 1/2 else if theta = 45 then sqrt(2)/2 else sqrt(3)/2;
+cv : if theta = 30 then sqrt(3)/2 else if theta = 45 then sqrt(2)/2 else 1/2;
+tv : if theta = 30 then sqrt(3)/3 else if theta = 45 then 1 else sqrt(3);
+bval : if fr = 1 then sv else if fr = 2 then cv else tv;
+/* sign of the ratio in the quadrant of ang (CAST) */
+sg : if fr = 1 then (if fm = 1 then 1 else -1)
+     else if fr = 2 then (if fm = 3 then 1 else -1)
+     else (if fm = 2 then 1 else -1);
+ta1 : sg*bval;
+/* common slip: value of the other ratio (sin and cos swapped, or tan inverted) with the right sign */
+cofv : if fr = 1 then cv else if fr = 2 then sv else 1/tv;
+tcof : sg*cofv;</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}</text>
+      <text><![CDATA[\([[if test="is(fr=1)"]]\sin[[/if]][[if test="is(fr=2)"]]\cos[[/if]][[if test="is(fr=3)"]]\tan[[/if]]([[if test="is(fm=1)"]]180^\circ - {@theta@}^\circ[[/if]][[if test="is(fm=2)"]]180^\circ + {@theta@}^\circ[[/if]][[if test="is(fm=3)"]]360^\circ - {@theta@}^\circ[[/if]]) = {@ta1@}\)]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p>Objective: use the reduction formulae for 180° − θ, 180° + θ and 360° − θ, with the CAST rule, to find exact values of sin, cos and tan.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -98,14 +113,14 @@ ta1: if q=1 then 1/2
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>7</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -139,12 +154,193 @@ ta1: if q=1 then 1/2
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>-ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the sign. The angle \({@ang@}^\circ\) is in Quadrant [[if test="is(quad=2)"]]II[[/if]][[if test="is(quad=3)"]]III[[/if]][[if test="is(quad=4)"]]IV[[/if]]; use the CAST rule to decide whether [[if test="is(fr=1)"]]sine[[/if]][[if test="is(fr=2)"]]cosine[[/if]][[if test="is(fr=3)"]]tangent[[/if]] is positive or negative there.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>tcof</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of a different ratio. A reduction formula keeps the same ratio: [[if test="is(fr=1)"]]sine[[/if]][[if test="is(fr=2)"]]cosine[[/if]][[if test="is(fr=3)"]]tangent[[/if]] of the angle becomes [[if test="is(fr=1)"]]sine[[/if]][[if test="is(fr=2)"]]cosine[[/if]][[if test="is(fr=3)"]]tangent[[/if]] of the reference angle.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>First find the quadrant and the reference angle, then use the CAST rule for the sign, and finally the special triangles for the exact value.</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
+    <deployedseed>9001</deployedseed>
+    <deployedseed>9002</deployedseed>
+    <deployedseed>9003</deployedseed>
+    <deployedseed>9004</deployedseed>
+    <deployedseed>9005</deployedseed>
+    <deployedseed>9006</deployedseed>
+    <deployedseed>9007</deployedseed>
+    <deployedseed>9008</deployedseed>
+    <deployedseed>9009</deployedseed>
+    <deployedseed>9010</deployedseed>
+    <deployedseed>9011</deployedseed>
+    <deployedseed>9012</deployedseed>
+    <deployedseed>9013</deployedseed>
+    <deployedseed>9014</deployedseed>
+    <deployedseed>9015</deployedseed>
+    <deployedseed>9016</deployedseed>
+    <deployedseed>9017</deployedseed>
+    <deployedseed>9018</deployedseed>
+    <deployedseed>9019</deployedseed>
+    <deployedseed>9020</deployedseed>
+    <deployedseed>9021</deployedseed>
+    <deployedseed>9022</deployedseed>
+    <deployedseed>9023</deployedseed>
+    <deployedseed>9024</deployedseed>
+    <deployedseed>9025</deployedseed>
+    <deployedseed>9026</deployedseed>
+    <deployedseed>9027</deployedseed>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
+    <deployedseed>11</deployedseed>
+    <deployedseed>12</deployedseed>
+    <deployedseed>13</deployedseed>
+    <deployedseed>14</deployedseed>
+    <deployedseed>15</deployedseed>
+    <deployedseed>16</deployedseed>
+    <deployedseed>17</deployedseed>
+    <deployedseed>18</deployedseed>
+    <deployedseed>19</deployedseed>
+    <deployedseed>20</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct exact value</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Correct value in an unsimplified form</description>
+      <testinput>
+        <name>ans1</name>
+        <value>2*ta1/2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Wrong sign</description>
+      <testinput>
+        <name>ans1</name>
+        <value>-ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Other wrong answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: decimal answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(ta1)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: trigonometric function typed</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sin(theta)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+    </qtest>
   </question>
 </quiz>

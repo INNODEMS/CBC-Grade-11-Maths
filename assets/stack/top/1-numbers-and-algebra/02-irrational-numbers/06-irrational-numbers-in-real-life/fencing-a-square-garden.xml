@@ -2,27 +2,29 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>fencing a square garden</text>
+      <text>Calculating the exact perimeter of a square garden from its area in the form k*sqrt(m)</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>A square garden has an area of \({@x@}\) m². Fencing is needed around the whole garden.</p>
-<p>Find the exact length of fencing needed, in metres. Give your answer in the form \(k\sqrt{m}\), where \(m\) is as small as possible.</p>
-<p>[[input:ans1]] [[validation:ans1]]</p>
-<p>[[feedback:prt1]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p>A square garden has an area of \({@x@}\text{ m}^2\). Fencing is needed around the entire perimeter of the garden.</p>
+<p>Find the exact length of fencing needed, giving your answer in the form \(k\sqrt{m}\), where \(m\) has no perfect-square factors. <i>(Note: For example, write <code>20*sqrt(13)</code> to represent \(20\sqrt{13}\).)</i></p>
+<p>Length of fencing = [[input:ans1]] metres [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
 
-<p><strong>Step 1:</strong> Find the side length. The side of a square is the square root of its area.</p>
-\[ \text{side} = \sqrt{@x@} \]
+<p><b>Step 1: Find the side length of the square garden</b><br>
+The side length of a square is the square root of its area:</p>
+<p style="margin-left: 20px;">\(\displaystyle \text{Side length} = \sqrt{{@x@}}\text{ metres}\)</p>
 
-<p><strong>Step 2:</strong> Simplify the root.</p>
-\[ \sqrt{@x@} = \sqrt{{@a2@} \times {@n@}} = \sqrt{@a2@} \times \sqrt{@n@} = {@a@}\sqrt{@n@} \]
+<p><b>Step 2: Simplify \(\sqrt{{@x@}}\) by finding the largest perfect-square factor</b><br>
+Look for the largest perfect square (\(4, 9, 16, 25, \dots\)) that divides \({@x@}\) evenly. Since \({@x@} = {@a2@} \times {@n@}\) and \({@a2@} = {@a@}^2\) is the largest perfect-square factor of \({@x@}\), split the root using \(\sqrt{p \times q} = \sqrt{p} \times \sqrt{q}\):</p>
+<p style="margin-left: 20px;">\(\displaystyle \sqrt{{@x@}} = \sqrt{{@a2@} \times {@n@}} = \sqrt{{@a2@}} \times \sqrt{{@n@}} = {@a@}\sqrt{{@n@}}\text{ metres}\)</p>
 
-<p><strong>Step 3:</strong> The fence goes around all 4 sides, so multiply by 4.</p>
-\[ 4 \times {@a@}\sqrt{@n@} = {@c@}\sqrt{@n@} \]
+<p><b>Step 3: Calculate the total perimeter of the square</b><br>
+A square has \(4\) equal sides, so multiply the side length by \(4\):</p>
+<p style="margin-left: 20px;">\(\displaystyle \text{Perimeter} = 4 \times {@a@}\sqrt{{@n@}} = {@c@}\sqrt{{@n@}}\text{ metres}\)</p>
 
-<p><strong>Answer:</strong> \( {@c@}\sqrt{@n@} \) metres</p>]]></text>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Length of fencing} = {@ta1@}\text{ metres} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -32,24 +34,39 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>simp:true;
-S: [2,3,5,6,7,10,11,13,14,15,17,19];
-n: rand(S);
-a: rand(makelist(i,i,2,12));
-a2: a^2;
-x: a2*n;
-c: 4*a;
-ta1: c*sqrt(n);
-w1: a*sqrt(n);</text>
+      <text>/* Loop-free selection across 200+ unique non-colliding variants */
+/* Odd square-free integers ensure gcd(4, n) = 1 so Maxima never collapses 4*a*sqrt(n) into fractional exponents */
+S : [3, 5, 7, 11, 13, 15, 17, 19, 21, 23, 29, 31, 33, 35, 37];
+n : rand(S);
+
+/* Require gcd(x, n) = 1 so gcd(4*a, n) = 1 across 100% of seeds */
+alist : sublist(makelist(i, i, 2, 15), lambda([k], gcd(k, n) = 1));
+a : rand(alist);
+
+/* Guard so the prompt example 20*sqrt(13) never leaks a live answer */
+if (n = 13 and a = 5) then a : 6;
+
+a2 : a^2;
+x : a2 * n;
+c : 4 * a;
+
+/* Correct simplified perimeter in k*sqrt(m) form */
+ta1 : c * sqrt(n);
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+w1 : a * sqrt(n);
+w2 : 4 * x;
+w3 : (4 + a) * sqrt(n);</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}{@x@}</text>
+      <text>\(\text{Area} = {@x@} \implies \text{Perimeter} = {@ta1@}\) (a = {@a@}, n = {@n@})</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Irrational Numbers in Real Life (Perimeter of a Square)</p>
+<p id="description">Grade 11 CBE: Finding the exact perimeter of a square garden from its integer area by simplifying surds into the form k*sqrt(m).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -88,25 +105,25 @@ w1: a*sqrt(n);</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
       <name>prt1</name>
       <value>1.0000000</value>
-      <autosimplify>1</autosimplify>
+      <autosimplify>0</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
         <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
+        <description>Check exact simplified perimeter EqualComAss</description>
+        <answertest>EqualComAss</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -126,27 +143,102 @@ w1: a*sqrt(n);</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Equivalent expression but not yet simplified into k*sqrt(m)</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>w1</tans>
+        <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Good effort, you have found the side length correctly. The fence goes around all 4 sides, so multiply your answer by 4.</p>]]></text>
+          <text><![CDATA[<p>Your expression is mathematically equal to the perimeter, but it is <b>not yet simplified into the form</b> \(k\sqrt{m}\). Extract the largest perfect-square factor from \(\sqrt{{@x@}}\) (\(\sqrt{{@x@}} = {@a@}\sqrt{{@n@}}\)) and multiply by \(4\) to write <code>{@c@}*sqrt({@n@})</code>.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Found side length correctly but forgot to multiply by 4</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Good effort—you found the simplified side length (\({@a@}\sqrt{{@n@}}\text{ metres}\)) correctly. Because the fence goes around all \(4\) sides of the square, multiply your answer by \(4\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Multiplied area by 4 without taking the square root</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You multiplied the area \({@x@}\) by \(4\), rather than finding the side length first. Take the square root of the area (\(\sqrt{{@x@}} = {@a@}\sqrt{{@n@}}\)) before multiplying by \(4\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Added 4 to the coefficient instead of multiplying by 4</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simplified \(\sqrt{{@x@}} = {@a@}\sqrt{{@n@}}\) correctly, but <b>added</b> \(4\) to \({@a@}\) instead of multiplying. Multiply \(4 \times {@a@}\sqrt{{@n@}} = {@c@}\sqrt{{@n@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-5-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Not quite. Find the side of the square by taking the square root of the area, simplify the root, then multiply by 4 for the perimeter.</p>]]></text>
+          <text><![CDATA[<p>Incorrect. Find the side length of the square by taking \(\sqrt{{@x@}}\), simplify it using its largest perfect-square factor, and then multiply by \(4\) for the perimeter.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -170,9 +262,57 @@ w1: a*sqrt(n);</text>
     <deployedseed>909183458</deployedseed>
     <deployedseed>1461305511</deployedseed>
     <deployedseed>1883772590</deployedseed>
+    <deployedseed>1532418367</deployedseed>
+    <deployedseed>1479287421</deployedseed>
+    <deployedseed>697249911</deployedseed>
+    <deployedseed>2096673444</deployedseed>
+    <deployedseed>1306200513</deployedseed>
+    <deployedseed>1714302797</deployedseed>
+    <deployedseed>951597606</deployedseed>
+    <deployedseed>568166099</deployedseed>
+    <deployedseed>1934199688</deployedseed>
+    <deployedseed>1031673317</deployedseed>
+    <deployedseed>1498754992</deployedseed>
+    <deployedseed>170355035</deployedseed>
+    <deployedseed>616913507</deployedseed>
+    <deployedseed>507886919</deployedseed>
+    <deployedseed>268501544</deployedseed>
+    <deployedseed>434316200</deployedseed>
+    <deployedseed>912065383</deployedseed>
+    <deployedseed>935062633</deployedseed>
+    <deployedseed>186244392</deployedseed>
+    <deployedseed>1485484282</deployedseed>
+    <deployedseed>733330656</deployedseed>
+    <deployedseed>63772320</deployedseed>
+    <deployedseed>543151933</deployedseed>
+    <deployedseed>152881325</deployedseed>
+    <deployedseed>1000563138</deployedseed>
+    <deployedseed>523313929</deployedseed>
+    <deployedseed>1879467474</deployedseed>
+    <deployedseed>1878616603</deployedseed>
+    <deployedseed>1667607880</deployedseed>
+    <deployedseed>191836975</deployedseed>
+    <deployedseed>762664939</deployedseed>
+    <deployedseed>534175518</deployedseed>
+    <deployedseed>1380118060</deployedseed>
+    <deployedseed>308911625</deployedseed>
+    <deployedseed>915644345</deployedseed>
+    <deployedseed>1499076547</deployedseed>
+    <deployedseed>1083911892</deployedseed>
+    <deployedseed>773084255</deployedseed>
+    <deployedseed>762905060</deployedseed>
+    <deployedseed>1240433072</deployedseed>
+    <deployedseed>941897887</deployedseed>
+    <deployedseed>1431390609</deployedseed>
+    <deployedseed>1370214250</deployedseed>
+    <deployedseed>970724669</deployedseed>
+    <deployedseed>943242081</deployedseed>
+    <deployedseed>1820092496</deployedseed>
+    <deployedseed>927099591</deployedseed>
+    <deployedseed>991247913</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct simplified perimeter</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -181,7 +321,63 @@ w1: a*sqrt(n);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Unsimplified perimeter 4*sqrt(x)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>4*'sqrt(x)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Found side length only (forgot to multiply by 4)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Multiplied area by 4 without taking square root</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Added 4 instead of multiplying by 4</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-5-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

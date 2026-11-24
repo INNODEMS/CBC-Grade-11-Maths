@@ -2,71 +2,134 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Identifying parameters on a sinusoidal curve</text>
+      <text>Reading the amplitude, period, midline, maximum and minimum from a graph</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>
-The graph below represents the sinusoidal function \(f(x)\).
-</p>
-
-[[jsxgraph height='500px' width='700px']]
-  var board = JXG.JSXGraph.initBoard(divid, {
-      boundingbox: [-2*Math.PI, 6, 2*Math.PI, -6],
-      axis: true,
-      showCopyright: false
-  });
-
-  var f = board.jc.snippet('{#f#}', true, 'x', true);
-
-  board.create('functiongraph', [f, -2*Math.PI, 2*Math.PI]);
+      <text><![CDATA[<p>The graph below shows a wave-shaped curve. It repeats the same shape over and over, just like the graphs of \(y = \sin x\) and \(y = \cos x\).</p>
+<div style="text-align:center;" role="img" aria-label="Graph of a repeating wave-shaped curve for x from 0 to 2 pi.">
+[[jsxgraph width="600px" height="380px"]]
+(function() {
+  var A = {#A#}, B = {#B#}, D = {#D#};
+  var top = A + D + 1.2, bot = D - A - 1;
+  if (top < 1) { top = 1; } if (bot > -1) { bot = -1; }
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.8, top, 2*Math.PI + 1.6, bot], axis:false, grid:false,
+      keepaspectratio:false, showNavigation:false, showCopyright:false});
+  function gcd(m, n) { return n === 0 ? m : gcd(n, m % n); }
+  function lab(k, n) {              /* label for k*pi/n */
+    var g = gcd(k, n), p = k/g, q = n/g;
+    var t = (p === 1 ? '' : p) + 'π';
+    return q === 1 ? t : t + '/' + q;
+  }
+  var nt = 2*B, step = Math.PI/nt;  /* gridlines every quarter of a period */
+  for (var k = 1; k <= 2*nt; k++) {
+    var x0 = k*step;
+    b.create('segment', [[x0, bot + 0.3], [x0, top - 0.3]], {strokeColor:'#eceff1', strokeWidth:1, fixed:true, highlight:false});
+    b.create('segment', [[x0, -0.08], [x0, 0.08]], {strokeColor:'#444', fixed:true});
+    if (k % 2 === 0 || B === 1) {
+      b.create('text', [x0, -0.15, lab(k, nt)], {fixed:true, anchorX:'middle', anchorY:'top', fontSize:11});
+    }
+  }
+  for (var j = Math.ceil(bot + 0.3); j <= Math.floor(top - 0.3); j++) {
+    if (j !== 0) {
+      b.create('segment', [[0, j], [2*Math.PI, j]], {strokeColor:'#eceff1', strokeWidth:1, fixed:true, highlight:false});
+      b.create('segment', [[-0.06, j], [0.06, j]], {strokeColor:'#444', fixed:true});
+      b.create('text', [-0.12, j, '' + j], {fixed:true, anchorX:'right', anchorY:'middle', fontSize:11});
+    }
+  }
+  b.create('arrow', [[-0.4, 0], [2*Math.PI + 0.5, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, bot + 0.1], [0, top - 0.05]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [2*Math.PI + 0.45, -0.2, 'x'], {fixed:true}); b.create('text', [0.08, top - 0.25, 'y'], {fixed:true});
+  b.create('functiongraph', [function(t) { return A*Math.cos(B*t) + D; }, 0, 2*Math.PI], {strokeColor:'#1565c0', strokeWidth:3, fixed:true});
+})();
 [[/jsxgraph]]
+</div>
+<p><i>Use the graph to answer the questions below. Type \(\pi\) as <code>pi</code></i></p>
 
-<p>
-Determine the following features of the function:
-</p>
+<p><strong>(a)</strong> Write down the <strong>maximum</strong> value and the <strong>minimum</strong> value.</p>
+<div>Maximum value: [[input:ans4]] [[validation:ans4]] [[feedback:prt4]]</div>
+<div>Minimum value: [[input:ans5]] [[validation:ans5]] [[feedback:prt5]]</div>
 
-<ol>
-  <li>
-    Amplitude:
-    [[input:ans1]]
-    [[validation:ans1]] [[feedback:prt1]]
-  </li>
+<p><strong>(b)</strong> The <strong>midline</strong> is the horizontal line halfway between the highest and lowest points of the curve. Find its equation. </p>
+<div>Midline: \(y = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>
 
-  <li>
-    Period:
-    [[input:ans2]]
-    [[validation:ans2]] [[feedback:prt2]]
-  </li>
+<p><strong>(c)</strong> Find the <strong>amplitude</strong> of the curve. </p>
+<div>Amplitude: [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
 
-  <li>
-    Equation of the midline:
-    \(y=\) [[input:ans3]]
-    [[validation:ans3]] [[feedback:prt3]]
-  </li>
-
-  <li>
-    Maximum value:
-    [[input:ans4]]
-    [[validation:ans4]] [[feedback:prt4]]
-  </li>
-
-  <li>
-    Minimum value:
-    [[input:ans5]]
-    [[validation:ans5]] [[feedback:prt5]]
-  </li>
-</ol>]]></text>
+<p><strong>(d)</strong> Find the <strong>period</strong> of the curve, the horizontal length of one complete wave. </p>
+<div>Period: [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>The graph is \(f(x)={@f@}\).</p>
-<ul>
-<li>Maximum value: \({@ta_max@}\); minimum value: \({@ta_min@}\) (the highest and lowest points of the graph).</li>
-<li>Amplitude: half the distance between them, \(\dfrac{ {@ta_max@}-({@ta_min@}) }{2}={@ta_amp@}\).</li>
-<li>Midline: halfway between them, \(y=\dfrac{ {@ta_max@}+({@ta_min@}) }{2}={@ta_midline@}\).</li>
-<li>Period: the graph repeats every \(\dfrac{2\pi}{ {@B@} }={@ta_period@}\) units.</li>
-</ul>]]></text>
+      <text><![CDATA[<h3>Worked solution</h3>
+<h4>(a) Maximum and minimum</h4>
+<p><strong>Step 1: read the highest and lowest points.</strong> The highest points of the curve are at \(y = {@ta_max@}\) and the lowest points are at \(y = {@ta_min@}\).</p>
+<p>Maximum value \(= {@ta_max@}\), minimum value \(= {@ta_min@}\).</p>
+
+<h4>(b) Midline</h4>
+<p><strong>Step 2: find the value halfway between them.</strong> Add the maximum and minimum, then halve:</p>
+\[ y = \frac{\text{max} + \text{min}}{2} = \frac{ {@ta_max@} + ({@ta_min@}) }{2} = {@ta_midline@}. \]
+<p>The midline is \(y = {@ta_midline@}\).</p>
+
+<h4>(c) Amplitude</h4>
+<p><strong>Step 3: find the height from the midline to the top.</strong> This is half of the maximum minus the minimum:</p>
+\[ \text{amplitude} = \frac{\text{max} - \text{min}}{2} = \frac{ {@ta_max@} - ({@ta_min@}) }{2} = {@ta_amp@}. \]
+<p>You can check it: from the midline \(y = {@ta_midline@}\) up to the maximum \(y = {@ta_max@}\) is \({@ta_amp@}\) units.</p>
+
+<h4>(d) Period</h4>
+<p><strong>Step 4: measure one complete wave.</strong> The curve has a maximum at \(x = 0\), and the next maximum is at \(x = {@xmax2@}\). So one complete wave has length</p>
+\[ \text{period} = {@xmax2@} - 0 = {@ta_period@}. \]
+<p>[[if test="is(B>1)"]]Check: there are \({@B@}\) complete waves between \(0\) and \(2\pi\), so each one has length \(\dfrac{2\pi}{ {@B@} } = {@ta_period@}\).[[else]]Check: there is exactly one complete wave between \(0\) and \(2\pi\), so the period is \(2\pi\).[[/if]]</p>
+<div style="text-align:center;" role="img" aria-label="Graph of a repeating wave-shaped curve for x from 0 to 2 pi.">
+[[jsxgraph width="600px" height="380px"]]
+(function() {
+  var A = {#A#}, B = {#B#}, D = {#D#};
+  var top = A + D + 1.2, bot = D - A - 1;
+  if (top < 1) { top = 1; } if (bot > -1) { bot = -1; }
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.8, top, 2*Math.PI + 1.6, bot], axis:false, grid:false,
+      keepaspectratio:false, showNavigation:false, showCopyright:false});
+  function gcd(m, n) { return n === 0 ? m : gcd(n, m % n); }
+  function lab(k, n) {              /* label for k*pi/n */
+    var g = gcd(k, n), p = k/g, q = n/g;
+    var t = (p === 1 ? '' : p) + 'π';
+    return q === 1 ? t : t + '/' + q;
+  }
+  var nt = 2*B, step = Math.PI/nt;  /* gridlines every quarter of a period */
+  for (var k = 1; k <= 2*nt; k++) {
+    var x0 = k*step;
+    b.create('segment', [[x0, bot + 0.3], [x0, top - 0.3]], {strokeColor:'#eceff1', strokeWidth:1, fixed:true, highlight:false});
+    b.create('segment', [[x0, -0.08], [x0, 0.08]], {strokeColor:'#444', fixed:true});
+    if (k % 2 === 0 || B === 1) {
+      b.create('text', [x0, -0.15, lab(k, nt)], {fixed:true, anchorX:'middle', anchorY:'top', fontSize:11});
+    }
+  }
+  for (var j = Math.ceil(bot + 0.3); j <= Math.floor(top - 0.3); j++) {
+    if (j !== 0) {
+      b.create('segment', [[0, j], [2*Math.PI, j]], {strokeColor:'#eceff1', strokeWidth:1, fixed:true, highlight:false});
+      b.create('segment', [[-0.06, j], [0.06, j]], {strokeColor:'#444', fixed:true});
+      b.create('text', [-0.12, j, '' + j], {fixed:true, anchorX:'right', anchorY:'middle', fontSize:11});
+    }
+  }
+  b.create('arrow', [[-0.4, 0], [2*Math.PI + 0.5, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, bot + 0.1], [0, top - 0.05]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [2*Math.PI + 0.45, -0.2, 'x'], {fixed:true}); b.create('text', [0.08, top - 0.25, 'y'], {fixed:true});
+  b.create('functiongraph', [function(t) { return A*Math.cos(B*t) + D; }, 0, 2*Math.PI], {strokeColor:'#1565c0', strokeWidth:3, fixed:true});
+  b.create('segment', [[0, A + D], [2*Math.PI, A + D]], {strokeColor:'#2e7d32', dash:2, fixed:true});
+  b.create('segment', [[0, D - A], [2*Math.PI, D - A]], {strokeColor:'#2e7d32', dash:2, fixed:true});
+  b.create('segment', [[0, D], [2*Math.PI, D]], {strokeColor:'#6a1b9a', dash:3, strokeWidth:2, fixed:true});
+  b.create('text', [2*Math.PI + 0.1, A + D, 'max ' + (A + D)], {fixed:true, color:'#2e7d32', fontSize:11, anchorY:'middle'});
+  b.create('text', [2*Math.PI + 0.1, D - A, 'min ' + (D - A)], {fixed:true, color:'#2e7d32', fontSize:11, anchorY:'middle'});
+  b.create('text', [2*Math.PI + 0.1, D, 'midline y = ' + D], {fixed:true, color:'#6a1b9a', fontSize:11, anchorY:'middle'});
+  var p = 2*Math.PI/B, yb = A + D + 0.45;
+  b.create('point', [0, A + D], {name:'', size:4, color:'#c62828', fixed:true});
+  b.create('point', [p, A + D], {name:'', size:4, color:'#c62828', fixed:true});
+  b.create('arrow', [[p/2, yb], [0, yb]], {strokeColor:'#c62828', fixed:true});
+  b.create('arrow', [[p/2, yb], [p, yb]], {strokeColor:'#c62828', fixed:true});
+  b.create('text', [p/2, yb + 0.1, 'one period'], {fixed:true, color:'#c62828', anchorX:'middle', anchorY:'bottom', fontSize:11});
+})();
+[[/jsxgraph]]
+</div>
+<p><strong>Final answers:</strong> maximum \({@ta_max@}\), minimum \({@ta_min@}\), midline \(y = {@ta_midline@}\), amplitude \({@ta_amp@}\), period \({@ta_period@}\). (The curve is \(y = {@f@}\).)</p>]]></text>
     </generalfeedback>
-    <defaultgrade>1</defaultgrade>
+    <defaultgrade>5</defaultgrade>
     <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
@@ -74,26 +137,31 @@ Determine the following features of the function:
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>A: rand_with_prohib(1,4,[0]);
-B: rand_with_prohib(1,3,[0]);
-D: rand_with_step(-2,2,1);
-
-f: A*cos(B*x)+D;
-
-ta_amp: A;
-ta_period: 2*pi/B;
-ta_midline: D;
-ta_max: A+D;
-ta_min: D-A;</text>
+      <text><![CDATA[/* y = A*cos(B*x) + D, shown on 0 <= x <= 2*pi.
+   A = 1..4, B = 1..3, D = -2..2: 4 x 3 x 5 = 60 distinct curves. */
+A : rand_with_prohib(1, 4, [0]);
+B : rand_with_prohib(1, 3, [0]);
+D : rand_with_step(-2, 2, 1);
+f : A*cos(B*x) + D;
+ta_amp : A;
+ta_period : 2*%pi/B;           /* %pi, not pi */
+ta_midline : D;
+ta_max : A + D;
+ta_min : D - A;
+/* common slips */
+w_period_half : ta_period/2;    /* measured from a maximum to the next minimum */
+w_period_deg : 360/B;           /* period in degrees */
+w_amp_full : 2*A;               /* maximum minus minimum, not halved */
+xmax2 : 2*%pi/B;                /* position of the second maximum (for the worked solution) */]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta@}</text>
+      <text>\(y = {@f@}\): amplitude {@ta_amp@}, period \({@ta_period@}\), midline {@ta_midline@}, max {@ta_max@}, min {@ta_min@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p>Objective: read the maximum, minimum, midline, amplitude and period from the graph of y = A cos(Bx) + D.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -123,12 +191,12 @@ ta_min: D-A;</text>
       <tans>ta_amp</tans>
       <boxsize>7</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -141,12 +209,12 @@ ta_min: D-A;</text>
       <tans>ta_period</tans>
       <boxsize>7</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -159,12 +227,12 @@ ta_min: D-A;</text>
       <tans>ta_midline</tans>
       <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -177,12 +245,12 @@ ta_min: D-A;</text>
       <tans>ta_max</tans>
       <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -195,12 +263,12 @@ ta_min: D-A;</text>
       <tans>ta_min</tans>
       <boxsize>8</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -227,17 +295,67 @@ ta_min: D-A;</text>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-0-T</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-0-F</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>The amplitude is half the distance between the maximum and minimum values.</p>]]></text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w_amp_full</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the distance from the minimum to the maximum. The amplitude is <em>half</em> of that: the height from the midline up to the maximum.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta_max</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the maximum value. The amplitude is measured from the <em>midline</em> up to the maximum, not from \(y = 0\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The amplitude is half of the maximum minus the minimum.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -261,7 +379,7 @@ ta_min: D-A;</text>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-0-T</trueanswernote>
+        <trueanswernote>prt2-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -269,7 +387,7 @@ ta_min: D-A;</text>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt2-0-F</falseanswernote>
+        <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
@@ -279,22 +397,47 @@ ta_min: D-A;</text>
         <description/>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
-        <tans>ta_period/2</tans>
+        <tans>w_period_half</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-1-T</trueanswernote>
+        <trueanswernote>prt2-2-T</trueanswernote>
         <truefeedback format="html">
           <text><![CDATA[<p>That is half a period: measure from one maximum to the <em>next</em> maximum.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>w_period_deg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the period in degrees. The \(x\)-axis is in radians, so give the period in terms of \(\pi\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt2-1-F</falseanswernote>
+        <falseanswernote>prt2-3-F</falseanswernote>
         <falsefeedback format="html">
           <text><![CDATA[<p>The period is the horizontal distance over which the graph repeats, for example from one maximum to the next.</p>]]></text>
         </falsefeedback>
@@ -320,17 +463,42 @@ ta_min: D-A;</text>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt3-0-T</trueanswernote>
+        <trueanswernote>prt3-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt3-0-F</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>The midline is halfway between the maximum and the minimum.</p>]]></text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta_amp</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the amplitude. The midline is the line <em>halfway</em> between the maximum and the minimum: add them and divide by \(2\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The midline is halfway between the maximum and the minimum: add them and divide by \(2\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -354,17 +522,42 @@ ta_min: D-A;</text>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt4-0-T</trueanswernote>
+        <trueanswernote>prt4-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt4-0-F</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Read the highest value the graph reaches.</p>]]></text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ta_min</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the lowest value. The maximum is the <em>highest</em> point of the curve.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the highest point of the curve and read its \(y\)-value on the \(y\)-axis.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -388,20 +581,105 @@ ta_min: D-A;</text>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt5-0-T</trueanswernote>
+        <trueanswernote>prt5-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt5-0-F</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt5-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Read the lowest value the graph reaches.</p>]]></text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>ta_max</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the highest value. The minimum is the <em>lowest</em> point of the curve.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt5-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the lowest point of the curve and read its \(y\)-value on the \(y\)-axis.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
+    <deployedseed>7101</deployedseed>
+    <deployedseed>7102</deployedseed>
+    <deployedseed>7103</deployedseed>
+    <deployedseed>7104</deployedseed>
+    <deployedseed>7105</deployedseed>
+    <deployedseed>7106</deployedseed>
+    <deployedseed>7107</deployedseed>
+    <deployedseed>7108</deployedseed>
+    <deployedseed>7109</deployedseed>
+    <deployedseed>7110</deployedseed>
+    <deployedseed>7111</deployedseed>
+    <deployedseed>7112</deployedseed>
+    <deployedseed>7113</deployedseed>
+    <deployedseed>7114</deployedseed>
+    <deployedseed>7115</deployedseed>
+    <deployedseed>7116</deployedseed>
+    <deployedseed>7117</deployedseed>
+    <deployedseed>7118</deployedseed>
+    <deployedseed>7119</deployedseed>
+    <deployedseed>7120</deployedseed>
+    <deployedseed>7121</deployedseed>
+    <deployedseed>7122</deployedseed>
+    <deployedseed>7123</deployedseed>
+    <deployedseed>7124</deployedseed>
+    <deployedseed>7125</deployedseed>
+    <deployedseed>7126</deployedseed>
+    <deployedseed>7127</deployedseed>
+    <deployedseed>7128</deployedseed>
+    <deployedseed>7129</deployedseed>
+    <deployedseed>7130</deployedseed>
+    <deployedseed>7131</deployedseed>
+    <deployedseed>7132</deployedseed>
+    <deployedseed>7133</deployedseed>
+    <deployedseed>7134</deployedseed>
+    <deployedseed>7135</deployedseed>
+    <deployedseed>7136</deployedseed>
+    <deployedseed>7137</deployedseed>
+    <deployedseed>7138</deployedseed>
+    <deployedseed>7139</deployedseed>
+    <deployedseed>7140</deployedseed>
+    <deployedseed>7141</deployedseed>
+    <deployedseed>7142</deployedseed>
+    <deployedseed>7143</deployedseed>
+    <deployedseed>7144</deployedseed>
+    <deployedseed>7145</deployedseed>
+    <deployedseed>7146</deployedseed>
+    <deployedseed>7147</deployedseed>
+    <deployedseed>7148</deployedseed>
+    <deployedseed>7149</deployedseed>
+    <deployedseed>7150</deployedseed>
+    <deployedseed>7151</deployedseed>
+    <deployedseed>7152</deployedseed>
+    <deployedseed>7153</deployedseed>
+    <deployedseed>7154</deployedseed>
+    <deployedseed>7155</deployedseed>
+    <deployedseed>7156</deployedseed>
+    <deployedseed>7157</deployedseed>
+    <deployedseed>7158</deployedseed>
+    <deployedseed>7159</deployedseed>
+    <deployedseed>7160</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>All parts correct</description>
@@ -429,43 +707,151 @@ ta_min: D-A;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-0-T</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-0-T</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt3-0-T</expectedanswernote>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt4</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt4-0-T</expectedanswernote>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt5</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt5-0-T</expectedanswernote>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Half a period</description>
+      <description>Amplitude not halved; half a period; max and min swapped; other wrong midline</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w_amp_full</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>w_period_half</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta_midline+10</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_min</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_max</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt5-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Period in degrees; other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_amp+10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>w_period_deg</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta_midline+10</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_max+10</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_min-10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt5-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Other wrong period</description>
       <testinput>
         <name>ans1</name>
         <value>ta_amp</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta_period/2</value>
+        <value>ta_period+1</value>
       </testinput>
       <testinput>
         <name>ans3</name>
@@ -483,85 +869,85 @@ ta_min: D-A;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-0-T</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: decimal amplitude</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(ta_amp)+0.5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_period</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta_midline</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta_max</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta_min</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
         <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt3-0-T</expectedanswernote>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt4</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt4-0-T</expectedanswernote>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt5</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt5-0-T</expectedanswernote>
-      </expected>
-    </qtest>
-    <qtest>
-      <testcase>3</testcase>
-      <description>All parts wrong</description>
-      <testinput>
-        <name>ans1</name>
-        <value>ta_amp+1</value>
-      </testinput>
-      <testinput>
-        <name>ans2</name>
-        <value>ta_period+1</value>
-      </testinput>
-      <testinput>
-        <name>ans3</name>
-        <value>ta_midline+1</value>
-      </testinput>
-      <testinput>
-        <name>ans4</name>
-        <value>ta_max+1</value>
-      </testinput>
-      <testinput>
-        <name>ans5</name>
-        <value>ta_min+1</value>
-      </testinput>
-      <expected>
-        <name>prt1</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-0-F</expectedanswernote>
-      </expected>
-      <expected>
-        <name>prt2</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt2-1-F</expectedanswernote>
-      </expected>
-      <expected>
-        <name>prt3</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt3-0-F</expectedanswernote>
-      </expected>
-      <expected>
-        <name>prt4</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt4-0-F</expectedanswernote>
-      </expected>
-      <expected>
-        <name>prt5</name>
-        <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt5-0-F</expectedanswernote>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

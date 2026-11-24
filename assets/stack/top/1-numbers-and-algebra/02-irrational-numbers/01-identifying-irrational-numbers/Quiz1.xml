@@ -2,25 +2,29 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Quiz1</text>
+      <text>Identifying an irrational number from a given list of real numbers</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Consider the numbers:</p>
-<p>\[ {@a1@}, \quad {@a2@}, \quad  {@a3@}, \quad \sqrt{ {@a5@}^2 } \]</p>
-<p>Which one of these is irrational? <strong> You can write \(\sqrt 1\) as sqrt(1) and \(7\sqrt 20\) as 7*sqrt(20)</strong></p>
-<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p>Consider the following four numbers:</p>
+<p>\[ {@d1@}, \quad {@d2@}, \quad {@d3@}, \quad {@d4@} \]</p>
+<p>Which one of these numbers is <b>irrational</b>? <i>(Type a square root such as \(\sqrt{5}\) as <code>sqrt(5)</code>, or \(2\sqrt{3}\) as <code>2*sqrt(3)</code>.)</i></p>
+<p>Irrational number = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
-<p>A number is <strong>irrational</strong> if it cannot be written as a ratio of two integers (i.e. its decimal expansion is non-terminating and non-repeating).</p>
-<p>In this question:<p>
-<p>{@a1@} is rational - it is an integer (or a fraction of integers).</p>
-<p>{@a2@} is rational - it is a ratio of two integers, {@a2@}.</p>
-<p>\(\sqrt{ {@a5@}^2 }\) <strong>looks</strong> irrational because of the square root symbol, but it simplifies to a whole number, so it is rational. </p>
-<p>This is a common trap: not every square root is irrational only square roots of numbers that are NOT perfect squares are irrational.</p>
-<p>{@a3@} = {@(a3)@} is irrational, because {@a3@} is not a perfect square, so its square root cannot be simplified to an integer or fraction.</p>
-<p><strong> Always simplify a surd fully before deciding whether it
-is rational or irrational.</strong></p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>A number is <b>rational</b> if it can be written as a fraction \(\displaystyle \frac{p}{q}\) where \(p\) and \(q\) are integers and \(q \neq 0\) (its decimal expansion either terminates or repeats). A number is <b>irrational</b> if it cannot be written as a ratio of two integers.</p>
+
+<p>Check each of the four numbers:</p>
+<ul>
+  <li>\({@a1@}\) is an integer, which can be written as \(\displaystyle \frac{{@a1@}}{1}\), so it is <b>rational</b>.</li>
+  <li>\({@a2@}\) is already a ratio of two integers, so it is <b>rational</b>.</li>
+  <li>\(\sqrt{{@a5_sq@}}\) has a square root symbol, but \({@a5_sq@} = {@a5@}^2\) is a perfect square, so \(\sqrt{{@a5_sq@}} = {@a5@} = \displaystyle \frac{{@a5@}}{1}\) is <b>rational</b>.</li>
+  <li>\(\sqrt{{@n3@}}\) is <b>irrational</b> because \({@n3@}\) is not a perfect square, so \(\sqrt{{@n3@}}\) cannot be simplified to an integer or a fraction of integers.</li>
+</ul>
+
+<p><b>Key takeaway:</b> Always simplify any radical before deciding whether it is rational or irrational.</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Irrational number} = \sqrt{{@n3@}} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -30,26 +34,36 @@ is rational or irrational.</strong></p>]]></text>
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>a1: rand(rand(10)+1);        
+      <text><![CDATA[/* Independent parameter pools + shuffled display order yielding >100,000 non-colliding variants */
+a1 : rand([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+a5 : rand_with_prohib(2, 9, [a1]);
+a5_sq : a5^2;
+u5 : 'sqrt(a5_sq);
 
-a2: (rand(8)+1)/(rand(11)+10);
+a2_num : rand([1, 2, 3, 4, 5, 7, 8]);
+a2_den : rand([9, 11, 13, 15, 17, 19]);
+a2 : a2_num / a2_den;
 
+n3 : rand([13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30]);
+ta1 : sqrt(n3);
 
-a3:sqrt( rand_with_prohib(1, 20, [1,4,9,16]));         
-
-a5: sqrt((rand(5)+2)^2);                     
-
-perfect_squares: [1,4,9,16,25,36,49,64,81,100,121,144,169,196,225,256,289,324,361,400];
-ta1: a3;</text>
+/* Shuffle the 4 displayed Maxima expressions so the irrational number is not in a fixed slot */
+items_expr : [a1, a2, u5, ta1];
+perm : random_permutation([1, 2, 3, 4]);
+d1 : items_expr[perm[1]];
+d2 : items_expr[perm[2]];
+d3 : items_expr[perm[3]];
+d4 : items_expr[perm[4]];]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}{@a1@}{@a2@}{@a3@}{@a5@}</text>
+      <text>Irrational={@ta1@}; Rational=[{@a1@}, {@a2@}, {@u5@}]; Order={#perm#}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Identifying Irrational Numbers</p>
+<p id="description">Grade 11 CBE: Distinguishing between rational numbers (integers, fractions, square roots of perfect squares) and irrational numbers.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -77,7 +91,7 @@ ta1: a3;</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>8</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -88,7 +102,7 @@ ta1: a3;</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
@@ -101,7 +115,7 @@ ta1: a3;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact irrational number sqrt(n3)</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -118,10 +132,110 @@ ta1: a3;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student picked sqrt(a5_sq), which simplifies to an integer</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>a5</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You selected \(\sqrt{{@a5_sq@}}\), which simplifies to the whole number \({@a5@} = \frac{{@a5@}}{1}\). Because \({@a5_sq@}\) is a perfect square, \(\sqrt{{@a5_sq@}}\) is <b>rational</b>. Choose the square root whose radicand is <b>not</b> a perfect square.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student picked the rational fraction a2</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>a2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You selected \({@a2@}\), which is already a ratio of two integers. Any fraction \(\frac{p}{q}\) of integers (\(q \neq 0\)) is <b>rational</b>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student picked the integer a1</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>a1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You selected \({@a1@}\), which is an integer and can be written as \(\frac{{@a1@}}{1}\), so it is <b>rational</b>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Check if student entered n3 without the square root</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>n3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered \({@n3@}\) without the square root symbol. \({@n3@}\) itself is a rational integer, whereas \(\sqrt{{@n3@}}\) (typed as <code>sqrt({@n3@})</code>) is irrational.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Simplify each number first: integers, fractions of integers, and square roots of perfect squares are all rational. Enter the square root of the non-square number using <code>sqrt(...)</code>.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -145,10 +259,68 @@ ta1: a3;</text>
     <deployedseed>1243301736</deployedseed>
     <deployedseed>1618712035</deployedseed>
     <deployedseed>1697913910</deployedseed>
-    <deployedseed>1333126128</deployedseed>
+    <deployedseed>1528296299</deployedseed>
+    <deployedseed>2069339785</deployedseed>
+    <deployedseed>1117762678</deployedseed>
+    <deployedseed>1124123416</deployedseed>
+    <deployedseed>1529135170</deployedseed>
+    <deployedseed>1939548607</deployedseed>
+    <deployedseed>151640673</deployedseed>
+    <deployedseed>1750885099</deployedseed>
+    <deployedseed>1554693814</deployedseed>
+    <deployedseed>1862672579</deployedseed>
+    <deployedseed>207662971</deployedseed>
+    <deployedseed>1044202875</deployedseed>
+    <deployedseed>1270623417</deployedseed>
+    <deployedseed>1858980839</deployedseed>
+    <deployedseed>215911391</deployedseed>
+    <deployedseed>894564685</deployedseed>
+    <deployedseed>1422397607</deployedseed>
+    <deployedseed>1345612276</deployedseed>
+    <deployedseed>2892927</deployedseed>
+    <deployedseed>294610997</deployedseed>
+    <deployedseed>1350752053</deployedseed>
+    <deployedseed>1275269465</deployedseed>
+    <deployedseed>798183601</deployedseed>
+    <deployedseed>1955443887</deployedseed>
+    <deployedseed>1471374020</deployedseed>
+    <deployedseed>345221974</deployedseed>
+    <deployedseed>1407802185</deployedseed>
+    <deployedseed>353365318</deployedseed>
+    <deployedseed>1931600542</deployedseed>
+    <deployedseed>1964798078</deployedseed>
+    <deployedseed>1031924392</deployedseed>
+    <deployedseed>701740834</deployedseed>
+    <deployedseed>2039149089</deployedseed>
+    <deployedseed>626082555</deployedseed>
+    <deployedseed>1121756287</deployedseed>
+    <deployedseed>2085354915</deployedseed>
+    <deployedseed>1366403621</deployedseed>
+    <deployedseed>346917528</deployedseed>
+    <deployedseed>1770673493</deployedseed>
+    <deployedseed>1040248368</deployedseed>
+    <deployedseed>1072702467</deployedseed>
+    <deployedseed>24573054</deployedseed>
+    <deployedseed>884185221</deployedseed>
+    <deployedseed>1182541685</deployedseed>
+    <deployedseed>305291994</deployedseed>
+    <deployedseed>238606542</deployedseed>
+    <deployedseed>581231713</deployedseed>
+    <deployedseed>1013323377</deployedseed>
+    <deployedseed>968074783</deployedseed>
+    <deployedseed>247745202</deployedseed>
+    <deployedseed>147057353</deployedseed>
+    <deployedseed>1616050829</deployedseed>
+    <deployedseed>2024747110</deployedseed>
+    <deployedseed>1647871952</deployedseed>
+    <deployedseed>555207349</deployedseed>
+    <deployedseed>527082598</deployedseed>
+    <deployedseed>1959659935</deployedseed>
+    <deployedseed>1247505023</deployedseed>
+    <deployedseed>1041939218</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Correct irrational number sqrt(n3)</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -157,7 +329,63 @@ ta1: a3;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Selecting sqrt(a5_sq) which simplifies to a rational integer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>a5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Selecting the rational fraction a2</description>
+      <testinput>
+        <name>ans1</name>
+        <value>a2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Selecting the rational integer a1</description>
+      <testinput>
+        <name>ans1</name>
+        <value>a1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Entering n3 without the square root sign</description>
+      <testinput>
+        <name>ans1</name>
+        <value>n3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-5-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

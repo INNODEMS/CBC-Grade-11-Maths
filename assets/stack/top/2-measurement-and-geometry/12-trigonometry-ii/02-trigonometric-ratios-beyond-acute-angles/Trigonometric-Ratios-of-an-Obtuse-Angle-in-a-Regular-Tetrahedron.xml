@@ -5,202 +5,99 @@
       <text>Trigonometric Ratios of an Obtuse Angle in a Regular Tetrahedron</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>A regular tetrahedron \(ABCD\) has edge length \(a={@a@}\) units. Let \(O\) be the centre of the tetrahedron.</p>
-
-<p>
-The diagram shows a regular tetrahedron \(ABCD\), with centre \(O\).</p>
-
-[[jsxgraph width="500px" height="420px"]]
-
-var board = JXG.JSXGraph.initBoard(divid, {
-    boundingbox: [-2.5, 2.1, 2.5, -2.1],
-    axis: false,
-    grid: false,
-    keepaspectratio: true,
-    showCopyright: false,
-    showNavigation: false,
-    pan: {enabled: false},
-    zoom: {enabled: false}
-});
-
-/* Four vertices of the tetrahedron */
-var A = board.create('point', [0, 1.55], {
-    name: 'A',
-    fixed: true,
-    size: 2.5,
-    color: '#202020',
-    label: {offset: [0, 12], fontSize: 16}
-});
-
-var B = board.create('point', [1.65, -0.55], {
-    name: 'B',
-    fixed: true,
-    size: 2.5,
-    color: '#202020',
-    label: {offset: [10, -2], fontSize: 16}
-});
-
-var C = board.create('point', [-1.65, -0.55], {
-    name: 'C',
-    fixed: true,
-    size: 2.5,
-    color: '#202020',
-    label: {offset: [-15, -2], fontSize: 16}
-});
-
-var D = board.create('point', [0, -1.25], {
-    name: 'D',
-    fixed: true,
-    size: 2.5,
-    color: '#202020',
-    label: {offset: [0, -15], fontSize: 16}
-});
-
-/* Draw the tetrahedron edges */
-var edgeStyle = {
-    strokeColor: '#555555',
-    strokeWidth: 1.6,
-    fixed: true,
-    highlight: false
-};
-
-board.create('segment', [A, B], edgeStyle);
-board.create('segment', [A, C], edgeStyle);
-board.create('segment', [A, D], edgeStyle);
-board.create('segment', [B, C], edgeStyle);
-board.create('segment', [B, D], edgeStyle);
-board.create('segment', [C, D], edgeStyle);
-
-/* Centre O: centroid of the four vertices */
-var O = board.create('point', [
-    function() {
-        return (A.X()+B.X()+C.X()+D.X())/4;
-    },
-    function() {
-        return (A.Y()+B.Y()+C.Y()+D.Y())/4;
-    }
-], {
-    name: 'O',
-    fixed: true,
-    size: 3,
-    color: '#202020',
-    label: {offset: [-16, 10], fontSize: 16}
-});
-
-/* Highlight OA and OB */
-var radiusStyle = {
-    strokeColor: '#1565C0',
-    strokeWidth: 2.8,
-    fixed: true,
-    highlight: false
-};
-
-board.create('segment', [O, A], radiusStyle);
-board.create('segment', [O, B], radiusStyle);
-
-/* Mark angle AOB with a simple arc */
-board.create('angle', [A, O, B], {
-    radius: 0.38,
-    type: 'sector',
-    fillColor: '#90CAF9',
-    fillOpacity: 0.25,
-    strokeColor: '#1565C0',
-    strokeWidth: 1.5,
-    orthoType: 'none',
-    withLabel: false,
-    fixed: true,
-    highlight: false
-});
-
-/* Add a separate angle label */
-board.create('text', [
-    function() { return O.X() + 0.38; },
-    function() { return O.Y() + 0.13; },
-    '\\theta'
-], {
-    fixed: true,
-    fontSize: 17,
-    color: '#1565C0'
-});
-
-board.update();
-
+      <text><![CDATA[<p>A regular tetrahedron \(ABCD\) has all six edges of length \(a = {@a@}\) units. Its centre \(O\) is the same distance from all four vertices:</p>
+\[ OA = OB = OC = OD = \frac{a\sqrt{6}}{4}. \]
+<p>Let \(\theta = \angle AOB\), the angle at \(O\) between the segments \(OA\) and \(OB\). The diagram shows the tetrahedron; drag the slider to rotate it.</p>
+<div style="text-align:center;" role="img" aria-label="A regular tetrahedron ABCD with centre O. The segments OA and OB are highlighted and the angle AOB at O is marked theta. A slider rotates the tetrahedron.">
+[[jsxgraph width="460px" height="440px"]]
+(function() {
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-2.4, 2.3, 2.4, -2.5], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false, pan:{enabled:false}, zoom:{enabled:false}});
+  var rot = b.create('slider', [[-1.9, -2.2], [1.1, -2.2], [0, 80, 360]],
+      {name:'rotate', snapWidth:1, postLabel:'°', fillColor:'#1565c0', strokeColor:'#1565c0'});
+  /* Unit tetrahedron centred at the origin: A on top, B, C, D on a horizontal triangle at height -1/3.
+     Every vertex is at distance 1 from O, and the angle between any two is arccos(-1/3). */
+  var r = Math.sqrt(8/9), V = [[0, 1, 0]];
+  for (var k = 0; k < 3; k++) { var t = (90 + 120*k)*Math.PI/180; V.push([r*Math.cos(t), -1/3, r*Math.sin(t)]); }
+  var S = 1.55, el = 0.35;   /* display scale and a fixed downward viewing tilt (radians) */
+  function proj(v, i) {
+    var ph = rot.Value()*Math.PI/180;
+    var x = v[0]*Math.cos(ph) + v[2]*Math.sin(ph), z = -v[0]*Math.sin(ph) + v[2]*Math.cos(ph);
+    var y = v[1]*Math.cos(el) - z*Math.sin(el);
+    return S*(i == 0 ? x : y);
+  }
+  var names = ['A', 'B', 'C', 'D'], offs = [[0, 12], [10, -4], [-16, -4], [6, -14]], P = [];
+  for (var i = 0; i < 4; i++) {
+    (function(v, n, o) {
+      P.push(b.create('point', [function() { return proj(v, 0); }, function() { return proj(v, 1); }],
+        {name:n, fixed:true, size:3, color:'#222', label:{offset:o, fontSize:16}}));
+    })(V[i], names[i], offs[i]);
+  }
+  var edge = {strokeColor:'#666', strokeWidth:1.6, fixed:true, highlight:false};
+  var E = [[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
+  for (var j = 0; j < E.length; j++) { b.create('segment', [P[E[j][0]], P[E[j][1]]], edge); }
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:3, color:'#c62828', label:{offset:[-18, -6], fontSize:16}});
+  var rad = {strokeColor:'#1565c0', strokeWidth:2.8, fixed:true, highlight:false};
+  b.create('segment', [O, P[0]], rad);
+  b.create('segment', [O, P[1]], rad);
+  b.create('nonreflexangle', [P[0], O, P[1]], {radius:0.35, name:'θ', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.35, fixed:true, label:{fontSize:16, color:'#ef6c00'}});
+})();
 [[/jsxgraph]]
-
-
-
-<p>Consider the angle \(\theta=\angle AOB\), formed by the line segments \(OA\) and \(OB\).</p>
-
-<p><strong>(a)</strong> Determine the quadrant in which the angle \(\theta\) lies when represented in standard position.</p>
-
-<p>Enter your answer as a number: 1, 2, 3 or 4.</p>
-
-<p>[[input:ans0]] [[validation:ans0]]</p>
-
-<p><strong>(b)</strong> Determine the exact value of \(\cos\theta\).</p>
-
-<p>[[input:ans1]] [[validation:ans1]]</p>
-
-<p><strong>(c)</strong> Determine the exact value of \(\sin\theta\).</p>
-
-<p>[[input:ans2]] [[validation:ans2]]</p>
-
-<p><strong>(d)</strong> Determine the exact value of \(\tan\theta\).</p>
-
-<p>[[input:ans3]] [[validation:ans3]][[feedback:prt1]]</p>
-
-<p>Give your answers in exact form. Do not use decimal approximations.</p>]]></text>
+</div>
+<p>Give your answers to parts (a), (c) and (d) in exact form: for example, type <code>sqrt(2)</code> for \(\sqrt{2}\). Do not use decimals or any trigonometric functions in your answers.</p>
+<p>(a) Use the cosine rule in triangle \(AOB\) to find the exact value of \(\cos\theta\).</p>
+<div>\(\cos\theta = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<p>(b) If \(\theta\) is drawn in standard position (measured anticlockwise from the positive \(x\)-axis), in which quadrant does its terminal side lie?</p>
+<div>[[input:ans0]] [[validation:ans0]] [[feedback:prt0]]</div>
+<p>(c) Find the exact value of \(\sin\theta\).</p>
+<div>\(\sin\theta = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p>(d) Find the exact value of \(\tan\theta\).</p>
+<div>\(\tan\theta = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p><strong>Where \(OA = \dfrac{a\sqrt{6}}{4}\) comes from.</strong> Drop a perpendicular from \(A\) to the centre \(G\) of the face \(BCD\). \(G\) is \(\dfrac{a}{\sqrt{3}}\) from each of \(B\), \(C\) and \(D\), so by Pythagoras' theorem the height is \(AG = \sqrt{a^2 - \dfrac{a^2}{3}} = \dfrac{a\sqrt{6}}{3}\). The centre \(O\) lies on \(AG\), three-quarters of the way down from \(A\), so \(OA = \dfrac{3}{4} \times \dfrac{a\sqrt{6}}{3} = \dfrac{a\sqrt{6}}{4}\).</p>
 
-<p><strong>Step 1: Find the distance from the centre to a vertex.</strong></p>
+<p><strong>(a) Finding \(\cos\theta\) with the cosine rule</strong></p>
+<p>Triangle \(AOB\) is isosceles with \(OA = OB = \dfrac{a\sqrt{6}}{4}\) and \(AB = a\), and \(\theta\) is the angle at \(O\), opposite \(AB\). The cosine rule gives</p>
+\[ \cos\theta = \frac{OA^2 + OB^2 - AB^2}{2 \times OA \times OB}. \]
+<p>With \(a = {@a@}\): \(OA^2 = OB^2 = \dfrac{6a^2}{16} = {@OA^2@}\) and \(AB^2 = a^2 = {@a^2@}\). So</p>
+\[ \cos\theta = \frac{ {@OA^2@} + {@OA^2@} - {@a^2@} }{2 \times {@OA^2@}} = \frac{ {@2*OA^2-a^2@} }{ {@2*OA^2@} } = {@ta_cos@}. \]
+<p>In general, \(\cos\theta = \dfrac{\frac{12a^2}{16} - a^2}{\frac{12a^2}{16}} = \dfrac{-\frac{4a^2}{16}}{\frac{12a^2}{16}} = -\dfrac{1}{3}\): the \(a^2\) cancels, so the answer is the same for every regular tetrahedron.</p>
 
-<p>The height of a regular tetrahedron with edge length \(a\) is \(h=\frac{a\sqrt{6}}{3}\).</p>
+<p><strong>(b) The quadrant</strong></p>
+<p>\(\theta\) is an angle of a triangle, so \(0^\circ < \theta < 180^\circ\). Its cosine is negative, so \(\theta\) is <em>obtuse</em>: \(90^\circ < \theta < 180^\circ\). In standard position its terminal side lies in <strong>Quadrant II</strong>. (Using a calculator, \(\theta = \cos^{-1}\left(-\frac{1}{3}\right) \approx 109.5^\circ\).)</p>
 
-<p>The centre \(O\) divides the median in the ratio \(3:1\), measured from the vertex. Therefore,</p>
+<p><strong>(c) Finding \(\sin\theta\)</strong></p>
+<p>Use \(\sin^2\theta + \cos^2\theta = 1\):</p>
+\[ \sin^2\theta = 1 - \left(-\frac{1}{3}\right)^2 = 1 - \frac{1}{9} = \frac{8}{9}, \qquad \sin\theta = \pm\sqrt{\frac{8}{9}} = \pm\frac{\sqrt{8}}{3} = \pm\frac{2\sqrt{2}}{3}. \]
+<p>In Quadrant II the terminal side is above the \(x\)-axis, so \(\sin\theta\) is positive: \(\sin\theta = \dfrac{2\sqrt{2}}{3}\).</p>
 
-<p>\[
-OA=OB=\frac{3}{4}h=\frac{a\sqrt{6}}{4}.
-\]</p>
+<p><strong>(d) Finding \(\tan\theta\)</strong></p>
+\[ \tan\theta = \frac{\sin\theta}{\cos\theta} = \frac{2\sqrt{2}/3}{-1/3} = \frac{2\sqrt{2}}{3} \times \left(-\frac{3}{1}\right) = -2\sqrt{2}. \]
+<p>In Quadrant II the sine is positive and the cosine is negative, so \(\tan\theta\) is negative, as expected.</p>
 
-<p><strong>Step 2: Use the cosine rule in triangle \(AOB\).</strong></p>
-
-<p>Since \(AB=a\),</p>
-
-<p>\[
-\cos\theta=
-\frac{OA^2+OB^2-AB^2}{2(OA)(OB)}.
-\]</p>
-
-<p>Substituting the lengths gives</p>
-
-<p>\[
-\cos\theta=
-\frac{2\left(\frac{6a^2}{16}\right)-a^2}
-{2\left(\frac{6a^2}{16}\right)}
-=-\frac13.
-\]</p>
-
-<p><strong>Step 3: Identify the quadrant.</strong></p>
-
-<p>The cosine is negative. The angle is between \(0^\circ\) and \(180^\circ\), and is obtuse. Therefore, it lies in quadrant II.</p>
-
-<p><strong>Step 4: Find the sine.</strong></p>
-
-<p>Using the identity \(\sin^2\theta+\cos^2\theta=1\),</p>
-
-<p>\(\sin^2\theta=1-\left(-\frac13\right)^2=\frac89.\)</p>
-
-<p>Since the angle lies in quadrant II, sine is positive. Hence,</p>
-
-<p>\(\sin\theta=\frac{2\sqrt2}{3}.\)</p>
-
-<p><strong>Step 5: Find the tangent.</strong></p>
-
-<p>Using \(\tan\theta=\frac{\sin\theta}{\cos\theta}\),</p>
-
-<p>\(\tan\theta=\frac{\frac{2\sqrt2}{3}}{-\frac13}=-2\sqrt2.\)</p>]]></text>
+<p>The diagram shows triangle \(AOB\) drawn to its true shape, flat on the page:</p>
+<div style="text-align:center;" role="img" aria-label="The isosceles triangle AOB drawn to its true shape, with OA = OB = a times root 6 over 4, AB = a, and the obtuse angle theta at O.">
+[[jsxgraph width="380px" height="260px"]]
+(function() {
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.9, 1.35, 1.9, -0.35], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  var half = Math.acos(-1/3)/2, L = 1.6;
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:3, color:'#c62828', label:{offset:[-4, -16]}});
+  var A = b.create('point', [-L*Math.sin(half), L*Math.cos(half)], {name:'A', fixed:true, size:3, color:'#222', label:{offset:[-16, 6]}});
+  var B = b.create('point', [ L*Math.sin(half), L*Math.cos(half)], {name:'B', fixed:true, size:3, color:'#222', label:{offset:[8, 6]}});
+  b.create('segment', [O, A], {strokeColor:'#1565c0', strokeWidth:2.5, fixed:true});
+  b.create('segment', [O, B], {strokeColor:'#1565c0', strokeWidth:2.5, fixed:true});
+  b.create('segment', [A, B], {strokeColor:'#444', strokeWidth:2, fixed:true});
+  b.create('nonreflexangle', [B, O, A], {radius:0.3, name:'θ ≈ 109.5°', fillColor:'#ffb74d', strokeColor:'#ef6c00', fillOpacity:0.35, fixed:true});
+  b.create('text', [-L*Math.sin(half)/2 - 0.12, L*Math.cos(half)/2, 'a√6/4'], {fixed:true, anchorX:'right', color:'#1565c0'});
+  b.create('text', [ L*Math.sin(half)/2 + 0.12, L*Math.cos(half)/2, 'a√6/4'], {fixed:true, anchorX:'left', color:'#1565c0'});
+  b.create('text', [0, L*Math.cos(half) + 0.13, 'a'], {fixed:true, anchorX:'middle'});
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -210,7 +107,7 @@ OA=OB=\frac{3}{4}h=\frac{a\sqrt{6}}{4}.
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Random edge length of the regular tetrahedron */
+      <text><![CDATA[/* Random edge length of the regular tetrahedron (the ratios do not depend on it) */
 a: 2+rand(9);
 
 /* Distance from the centre O to each vertex */
@@ -226,14 +123,23 @@ ta_cos: (OA^2+OA^2-AB^2)/(2*OA^2);
 ta_sin: 2*sqrt(2)/3;
 ta_tan: -2*sqrt(2);
 
-/* Quadrant containing the angle */
-ta_quad: 2;</text>
+/* Quadrant containing the angle, and the dropdown options */
+ta_quad: 2;
+quad_opts: [[1, false, "Quadrant I"], [2, true, "Quadrant II"], [3, false, "Quadrant III"], [4, false, "Quadrant IV"]];
+
+/* Possible student mistakes */
+cos_wrongsign: -ta_cos;
+cos_height: 1/4;          /* used the height a*sqrt(6)/3 in place of OA */
+sin_wrongsign: -ta_sin;
+sin_nosqrt: 8/9;          /* forgot the square root */
+tan_wrongsign: -ta_tan;
+tan_recip: 1/ta_tan;      /* cos/sin instead of sin/cos */]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta_sin@}</text>
+      <text>\(a = {@a@}\): \(\cos\theta = {@ta_cos@}\), Quadrant II, \(\sin\theta = {@ta_sin@}\), \(\tan\theta = {@ta_tan@}\)</text>
     </questionnote>
     <questiondescription format="html">
       <text/>
@@ -262,34 +168,34 @@ ta_quad: 2;</text>
     <variantsselectionseed/>
     <input>
       <name>ans0</name>
-      <type>algebraic</type>
-      <tans>ta_quad</tans>
-      <boxsize>7</boxsize>
+      <type>dropdown</type>
+      <tans>quad_opts</tans>
+      <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>3</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta_cos</tans>
-      <boxsize>7</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -300,14 +206,14 @@ ta_quad: 2;</text>
       <name>ans2</name>
       <type>algebraic</type>
       <tans>ta_sin</tans>
-      <boxsize>7</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -318,20 +224,54 @@ ta_quad: 2;</text>
       <name>ans3</name>
       <type>algebraic</type>
       <tans>ta_tan</tans>
-      <boxsize>7</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
+    <prt>
+      <name>prt0</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct quadrant</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans0</sans>
+        <tans>ta_quad</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt0-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt0-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>\(\theta\) is an angle of a triangle, so it is between \(0^\circ\) and \(180^\circ\). Use the sign of \(\cos\theta\) from part (a): is \(\theta\) acute or obtuse? Which quadrant holds angles of that size?</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
     <prt>
       <name>prt1</name>
       <value>1.0000000</value>
@@ -342,10 +282,10 @@ ta_quad: 2;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Correct cos</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ta1</tans>
+        <tans>ta_cos</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
@@ -359,12 +299,460 @@ ta_quad: 2;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>1</name>
+        <description>Right size, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>cos_wrongsign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. Check the numerator of the cosine rule: compare \(OA^2 + OB^2\) with \(AB^2\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Used the height instead of OA</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>cos_height</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks as if you used the height of the tetrahedron, \(\dfrac{a\sqrt{6}}{3}\), for \(OA\) and \(OB\). Use the distance from the centre to a vertex given in the question.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use the cosine rule in triangle \(AOB\), with \(OA = OB = \dfrac{a\sqrt{6}}{4}\) and \(AB = a\): \(\cos\theta = \dfrac{OA^2 + OB^2 - AB^2}{2 \times OA \times OB}\). Work out \(OA^2\) first.</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct sin</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta_sin</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Right size, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>sin_wrongsign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. In which quadrant is \(\theta\)? Is the sine positive or negative there?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Forgot the square root</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>sin_nosqrt</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer is the value of \(\sin^2\theta\). You still need to take the square root to find \(\sin\theta\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use \(\sin^2\theta + \cos^2\theta = 1\) with your value of \(\cos\theta\). Then take the square root and use the quadrant to choose the sign.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct tan</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta_tan</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Right size, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>tan_wrongsign</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. In Quadrant II, what are the signs of \(\sin\theta\) and \(\cos\theta\)? What sign do you get when you divide one by the other?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Divided cos by sin</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>tan_recip</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks as if you have divided the wrong way round. \(\tan\theta = \dfrac{\sin\theta}{\cos\theta}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use \(\tan\theta = \dfrac{\sin\theta}{\cos\theta}\) with your values from parts (a) and (c).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1101</deployedseed>
+    <deployedseed>2202</deployedseed>
+    <deployedseed>3303</deployedseed>
+    <deployedseed>4404</deployedseed>
+    <deployedseed>5505</deployedseed>
+    <deployedseed>6606</deployedseed>
+    <deployedseed>7707</deployedseed>
+    <deployedseed>8808</deployedseed>
+    <deployedseed>9909</deployedseed>
+    <deployedseed>701106958</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All parts correct</description>
+      <testinput>
+        <name>ans0</name>
+        <value>2</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_cos</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_sin</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta_tan</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt0-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong quadrant and sign errors</description>
+      <testinput>
+        <name>ans0</name>
+        <value>1</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>cos_wrongsign</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>sin_wrongsign</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>tan_wrongsign</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt0-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Used the height for OA, forgot the square root, divided cos by sin</description>
+      <testinput>
+        <name>ans0</name>
+        <value>2</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>cos_height</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>sin_nosqrt</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>tan_recip</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt0-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans0</name>
+        <value>3</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_cos+10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_sin+10</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta_tan+10</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt0-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: a decimal in part (a); other parts correct</description>
+      <testinput>
+        <name>ans0</name>
+        <value>2</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>float(ta_cos)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta_sin</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta_tan</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt0-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+    </qtest>
   </question>
 </quiz>

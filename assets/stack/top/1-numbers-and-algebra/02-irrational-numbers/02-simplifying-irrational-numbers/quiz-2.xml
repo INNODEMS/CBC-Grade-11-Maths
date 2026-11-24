@@ -2,36 +2,28 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>quiz 2</text>
+      <text>Simplifying and doubling a surd side length of a square display area</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>A school is preparing a square-shaped display area for a mathematics exhibition. The side length of the display area is \(\sqrt{@n@}\) cm.If the side length is doubled, express the new length in its simplest form.
-
-<p>Your answer should be written in the form \(a\sqrt{b}\), where \(b\) has no perfect-square factors.</p><p>[[input:ans1]] [[validation:ans1]][[feedback:prt1]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p>A school is preparing a square-shaped display area for a mathematics exhibition. The side length of the display area is \(\sqrt{{@n@}}\text{ cm}\). If the side length is doubled, express the new length in its simplest form.</p>
+<p>Your answer should be written in the form \(a\sqrt{b}\), where \(b\) has no perfect-square factors. <i>(Note: Write <code>2*sqrt(3)</code> to represent \(2\sqrt{3}\).)</i></p>
+<p>New length = [[input:ans1]] \(\text{cm}\) [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[To find the new length, first double the original side length.
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
 
-If the original length is \(\sqrt{n}\) cm, then:
+<p><b>Step 1: Double the original side length</b><br>
+If the original side length is \(\sqrt{{@n@}}\text{ cm}\), then doubling it gives:</p>
+<p style="margin-left: 20px;">\(\displaystyle \text{New length} = 2\sqrt{{@n@}}\text{ cm}\)</p>
 
-\[
-\text{New length}=2\sqrt{n}.
-\]
+<p><b>Step 2: Simplify \(\sqrt{{@n@}}\) using its largest perfect-square factor</b><br>
+Since \({@n@} = {@a_sq@} \times {@b@}\), and \({@a_sq@} = {@a@}^2\) is a perfect square:</p>
+<p style="margin-left: 20px;">\(\displaystyle \sqrt{{@n@}} = \sqrt{{@a_sq@} \times {@b@}} = \sqrt{{@a_sq@}} \times \sqrt{{@b@}} = {@a@}\sqrt{{@b@}}\)</p>
 
-Next, look for a perfect-square factor inside \(n\). Take the square root of the perfect square outside the radical and leave the remaining factor inside the square root.
+<p><b>Step 3: Multiply by \(2\) to find the doubled length in simplest form</b></p>
+<p style="margin-left: 20px;">\(\displaystyle \text{New length} = 2 \times {@a@}\sqrt{{@b@}} = {@ta1@}\text{ cm}\)</p>
 
-For example, if the original side length is \( \sqrt{@n@} cm \):
-<p>For example, the original value is \( \sqrt{ {@n@} }\):</p>
-<p>
-\[
-\begin{array}{rl}
-\sqrt{ {@n@} } &= \sqrt{ {@(a^2)@} \times {@b@} } \\
-               &= \sqrt{ {@(a^2)@} } \times \sqrt{ {@b@} } \\
-               &= {@a@}\sqrt{ {@b@} } 
-\end{array}
-\]
-</p>
-Therefore, the final answer should have no perfect-square factors remaining inside the square root.]]></text>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{New length} = {@ta1@}\text{ cm} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -41,19 +33,30 @@ Therefore, the final answer should have no perfect-square factors remaining insi
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>a: rand([2,3,4,5,6,7]);
-b: rand([2,3,5,6,7]);
-n: (a^2)*b;
-ta1: a*sqrt(b);</text>
+      <text>/* 9 x 10 - 3 (where b = 2*a) = 87 unique non-colliding variants */
+a : rand([2, 3, 4, 5, 6, 7, 8, 9, 10]);
+c : 2 * a;
+b : rand_with_prohib(2, 15, [4, 8, 9, 12, c]);
+
+a_sq : a^2;
+n : a_sq * b;
+
+/* Correct doubled and simplified length */
+ta1 : c * sqrt(b);
+
+/* Distractors for targeted PRT feedback */
+ta_forgot_double : a * sqrt(b);
+ta_inside_double : sqrt(2 * n);</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@} {@a@} {@b@} {@n@}</text>
+      <text>Original: \sqrt{{@n@}} cm; Doubled: 2\sqrt{{@n@}} = {@ta1@} cm</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Simplifying Multiples of Surds in Geometry</p>
+<p id="description">Grade 11 CBE: Doubling a surd side length and expressing the result in simplest radical form a*sqrt(b).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -81,7 +84,7 @@ ta1: a*sqrt(b);</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>15</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -92,25 +95,25 @@ ta1: a*sqrt(b);</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
       <name>prt1</name>
       <value>1.0000000</value>
-      <autosimplify>1</autosimplify>
+      <autosimplify>0</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
         <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
+        <description>Check exact simplified surd form EqualComAss</description>
+        <answertest>EqualComAss</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -122,10 +125,85 @@ ta1: a*sqrt(b);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student entered an equivalent but unsimplified or non-surd form</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your expression is mathematically equal to \(2\sqrt{{@n@}}\), but it is <b>not yet written in simplest surd form</b> \(a\sqrt{b}\). Simplify \(\sqrt{{@n@}} = {@a@}\sqrt{{@b@}}\) and multiply the numbers outside the root: \(2 \times {@a@} = {@c@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student simplified sqrt(n) but forgot to double it</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta_forgot_double</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simplified \(\sqrt{{@n@}} = {@a@}\sqrt{{@b@}}\) correctly, but you forgot to <b>double</b> the side length. Multiply your result by \(2\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student multiplied inside the square root instead of outside</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta_inside_double</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Doubling \(\sqrt{{@n@}}\) gives \(2\sqrt{{@n@}}\), not \(\sqrt{2 \times {@n@}}\). Multiply <b>outside</b> the square root sign, then simplify \(\sqrt{{@n@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. First double the original length to get \(2\sqrt{{@n@}}\), then factor out the largest perfect square \({@a_sq@}\) from \({@n@}\) and simplify into the form \(a\sqrt{b}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -148,9 +226,52 @@ ta1: a*sqrt(b);</text>
     <deployedseed>1715103298</deployedseed>
     <deployedseed>599527755</deployedseed>
     <deployedseed>1036459740</deployedseed>
+    <deployedseed>46625748</deployedseed>
+    <deployedseed>355928441</deployedseed>
+    <deployedseed>71922282</deployedseed>
+    <deployedseed>1879066585</deployedseed>
+    <deployedseed>1201890134</deployedseed>
+    <deployedseed>76989703</deployedseed>
+    <deployedseed>184294661</deployedseed>
+    <deployedseed>1109475786</deployedseed>
+    <deployedseed>595626019</deployedseed>
+    <deployedseed>1162631597</deployedseed>
+    <deployedseed>176269506</deployedseed>
+    <deployedseed>1193937663</deployedseed>
+    <deployedseed>1706027308</deployedseed>
+    <deployedseed>1019636085</deployedseed>
+    <deployedseed>204489382</deployedseed>
+    <deployedseed>1778192259</deployedseed>
+    <deployedseed>1966804562</deployedseed>
+    <deployedseed>547891974</deployedseed>
+    <deployedseed>85335155</deployedseed>
+    <deployedseed>1150302677</deployedseed>
+    <deployedseed>362466421</deployedseed>
+    <deployedseed>1890527737</deployedseed>
+    <deployedseed>255512972</deployedseed>
+    <deployedseed>500295644</deployedseed>
+    <deployedseed>1114655761</deployedseed>
+    <deployedseed>739722282</deployedseed>
+    <deployedseed>610492048</deployedseed>
+    <deployedseed>134229938</deployedseed>
+    <deployedseed>264418241</deployedseed>
+    <deployedseed>1705814199</deployedseed>
+    <deployedseed>1715711969</deployedseed>
+    <deployedseed>701081567</deployedseed>
+    <deployedseed>1529730728</deployedseed>
+    <deployedseed>840809033</deployedseed>
+    <deployedseed>67818161</deployedseed>
+    <deployedseed>75482660</deployedseed>
+    <deployedseed>212596663</deployedseed>
+    <deployedseed>1234594294</deployedseed>
+    <deployedseed>868103717</deployedseed>
+    <deployedseed>1644217400</deployedseed>
+    <deployedseed>1540805085</deployedseed>
+    <deployedseed>2046889255</deployedseed>
+    <deployedseed>506979425</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct doubled and simplified length</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -159,7 +280,49 @@ ta1: a*sqrt(b);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Unsimplified doubled length 2*sqrt(n)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>2*'sqrt(n)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Simplified sqrt(n) but forgot to double</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_forgot_double</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Multiplied inside the square root instead of outside</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_inside_double</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

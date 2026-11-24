@@ -5,47 +5,82 @@
       <text>3.2.4.2 Using the Quadratic Formula</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p class="HELM_exercise">Exercise</p><p>Solve the equation \({@exp@}=0\) using the quadratic formula. Give your answer in the form of a set.<br></p><p>[[input:ans1]] [[validation:ans1]]</p><p><br></p>]]></text>
+      <text><![CDATA[<p>Use the quadratic formula to solve the equation \[ {@ex@} = 0. \]</p>
+<p>Give the solutions as a set, for example \(\{-3, 2/5\}\).</p>
+<div>\(x \in \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>We are given the equation&nbsp;the equation \({@exp@}=0.\)</p><p>First identify \(a\), \(b\) and \(c\):</p><p>\(a={@aa@}\), \(b={@bb@}\), \(c={@cc@}\).</p><p>Substitute these values into the formula and simplify:</p><p>\[x = \frac{-b\pm \sqrt{b^2-4ac}}{2a} = \dfrac{-({@bb@})\pm\sqrt{{@bb@}^2-(4)({@aa@})({@cc@})}}{(2)({@aa@})}.\]</p><p>Hence \({@ta@}\), though the answer is fine without the "\(x=\)".</p>]]></text>
+      <text><![CDATA[<p>For \(ax^2 + bx + c = 0\) the <strong>quadratic formula</strong> gives \[ x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}. \] First identify the coefficients, taking care with their signs, then substitute.</p>
+<p>Here \(a = {@aa@}\), \(b = {@bb@}\) and \(c = {@cc@}\).</p>
+<p>The <strong>discriminant</strong> is \(b^2 - 4ac = ({@bb@})^2 - 4 \times {@aa@} \times ({@cc@}) = {@dd@}\), and \(\sqrt{@dd@} = {@sd@}\).</p>
+\[ x = \dfrac{{@-bb@} \pm {@sd@}}{{@2*aa@}}, \]
+<p>so \(x = \dfrac{{@-bb+sd@}}{{@2*aa@}} = {@(-bb+sd)/(2*aa)@}\) or \(x = \dfrac{{@-bb-sd@}}{{@2*aa@}} = {@(-bb-sd)/(2*aa)@}\).</p>
+<p>The solutions are where the graph of \(y = {@ex@}\) crosses the \(x\)-axis:</p>
+<div style="text-align:center;" role="img" aria-label="Graph of y = {#ex#}, crossing the x-axis at x = {#pp/aa#} and x = {#r2#}.">
+[[jsxgraph width="360px" height="300px"]]
+(function() {
+  var f = function(x){ return {#aa#}*x*x + ({#bb#})*x + ({#cc#}); };
+  var xs = [{#float(pp/aa)#},{#r2#}];
+  var lo = Math.min.apply(null, xs), hi = Math.max.apply(null, xs);
+  var xmin = lo - 2, xmax = hi + 2, ymin = 0, ymax = 0;
+  for (var t = xmin; t <= xmax; t += (xmax - xmin)/100) { var v = f(t); ymin = Math.min(ymin, v); ymax = Math.max(ymax, v); }
+  var pad = (ymax - ymin)*0.12 + 1;
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[xmin, ymax + pad, xmax, ymin - pad], axis:true, grid:false,
+      showNavigation:false, showCopyright:false});
+  b.create('functiongraph', [f], {strokeColor:'#1f5fa8', strokeWidth:2});
+  for (var i = 0; i < xs.length; i++) {
+    b.create('point', [xs[i], 0], {name:'', size:4, fixed:true, color:'#c0392b'});
+  }
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
-      <text>2021072200</text>
+      <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>aa: rand(5)+2;
-r1:1/aa;
-r2: rand_with_prohib(0,8,[r1]);
-exp:expand(aa*(x-r1)*(x-r2));
-ta:setify(solve(exp,x));
-bb: -aa*(r1+r2);
-cc:aa*r1*r2;</text>
+      <text>/* Curated (a, p, r): a x^2 + b x + c = (a x - p)(x - r), roots p/a (a fraction) and r. */
+pr : rand([[2,-5,-6],[2,-5,-5],[2,-5,-4],[2,-5,-3],[2,-5,-2],[2,-5,-1],[2,-5,1],[2,-5,2],[2,-5,3],[2,-5,4],[2,-5,5],[2,-5,6],[2,-3,-6],[2,-3,-5],[2,-3,-4],[2,-3,-3],[2,-3,-2],[2,-3,-1],[2,-3,1],[2,-3,2],[2,-3,3],[2,-3,4],[2,-3,5],[2,-3,6],[2,-1,-6],[2,-1,-5],[2,-1,-4],[2,-1,-3],[2,-1,-2],[2,-1,-1],[2,-1,1],[2,-1,2],[2,-1,3],[2,-1,4],[2,-1,5],[2,-1,6],[2,1,-6],[2,1,-5],[2,1,-4],[2,1,-3],[2,1,-2],[2,1,-1],[2,1,1],[2,1,2],[2,1,3],[2,1,4],[2,1,5],[2,1,6],[2,3,-6],[2,3,-5],[2,3,-4],[2,3,-3],[2,3,-2],[2,3,-1],[2,3,1],[2,3,2],[2,3,3],[2,3,4],[2,3,5],[2,3,6],[2,5,-6],[2,5,-5],[2,5,-4],[2,5,-3],[2,5,-2],[2,5,-1],[2,5,1],[2,5,2],[2,5,3],[2,5,4],[2,5,5],[2,5,6],[3,-5,-6],[3,-5,-5],[3,-5,-4],[3,-5,-3],[3,-5,-2],[3,-5,-1],[3,-5,1],[3,-5,2],[3,-5,3],[3,-5,4],[3,-5,5],[3,-5,6],[3,-4,-6],[3,-4,-5],[3,-4,-4],[3,-4,-3],[3,-4,-2],[3,-4,-1],[3,-4,1],[3,-4,2],[3,-4,3],[3,-4,4],[3,-4,5],[3,-4,6],[3,-2,-6],[3,-2,-5],[3,-2,-4],[3,-2,-3],[3,-2,-2],[3,-2,-1],[3,-2,1],[3,-2,2],[3,-2,3],[3,-2,4],[3,-2,5],[3,-2,6],[3,-1,-6],[3,-1,-5],[3,-1,-4],[3,-1,-3],[3,-1,-2],[3,-1,-1],[3,-1,1],[3,-1,2],[3,-1,3],[3,-1,4],[3,-1,5],[3,-1,6],[3,1,-6],[3,1,-5],[3,1,-4],[3,1,-3],[3,1,-2],[3,1,-1],[3,1,1],[3,1,2],[3,1,3],[3,1,4],[3,1,5],[3,1,6],[3,2,-6],[3,2,-5],[3,2,-4],[3,2,-3],[3,2,-2],[3,2,-1],[3,2,1],[3,2,2],[3,2,3],[3,2,4],[3,2,5],[3,2,6],[3,4,-6],[3,4,-5],[3,4,-4],[3,4,-3],[3,4,-2],[3,4,-1],[3,4,1],[3,4,2],[3,4,3],[3,4,4],[3,4,5],[3,4,6],[3,5,-6],[3,5,-5],[3,5,-4],[3,5,-3],[3,5,-2],[3,5,-1],[3,5,1],[3,5,2],[3,5,3],[3,5,4],[3,5,5],[3,5,6],[4,-5,-6],[4,-5,-5],[4,-5,-4],[4,-5,-3],[4,-5,-2],[4,-5,-1],[4,-5,1],[4,-5,2],[4,-5,3],[4,-5,4],[4,-5,5],[4,-5,6],[4,-3,-6],[4,-3,-5],[4,-3,-4],[4,-3,-3],[4,-3,-2],[4,-3,-1],[4,-3,1],[4,-3,2],[4,-3,3],[4,-3,4],[4,-3,5],[4,-3,6],[4,-1,-6],[4,-1,-5],[4,-1,-4],[4,-1,-3],[4,-1,-2],[4,-1,-1],[4,-1,1],[4,-1,2],[4,-1,3],[4,-1,4],[4,-1,5],[4,-1,6],[4,1,-6],[4,1,-5],[4,1,-4],[4,1,-3],[4,1,-2],[4,1,-1],[4,1,1],[4,1,2],[4,1,3],[4,1,4],[4,1,5],[4,1,6],[4,3,-6],[4,3,-5],[4,3,-4],[4,3,-3],[4,3,-2],[4,3,-1],[4,3,1],[4,3,2],[4,3,3],[4,3,4],[4,3,5],[4,3,6],[4,5,-6],[4,5,-5],[4,5,-4],[4,5,-3],[4,5,-2],[4,5,-1],[4,5,1],[4,5,2],[4,5,3],[4,5,4],[4,5,5],[4,5,6],[5,-4,-6],[5,-4,-5],[5,-4,-4],[5,-4,-3],[5,-4,-2],[5,-4,-1],[5,-4,1],[5,-4,2],[5,-4,3],[5,-4,4],[5,-4,5],[5,-4,6],[5,-3,-6],[5,-3,-5],[5,-3,-4],[5,-3,-3],[5,-3,-2],[5,-3,-1],[5,-3,1],[5,-3,2],[5,-3,3],[5,-3,4],[5,-3,5],[5,-3,6],[5,-2,-6],[5,-2,-5],[5,-2,-4],[5,-2,-3],[5,-2,-2],[5,-2,-1],[5,-2,1],[5,-2,2],[5,-2,3],[5,-2,4],[5,-2,5],[5,-2,6],[5,-1,-6],[5,-1,-5],[5,-1,-4],[5,-1,-3],[5,-1,-2],[5,-1,-1],[5,-1,1],[5,-1,2],[5,-1,3],[5,-1,4],[5,-1,5],[5,-1,6],[5,1,-6],[5,1,-5],[5,1,-4],[5,1,-3],[5,1,-2],[5,1,-1],[5,1,1],[5,1,2],[5,1,3],[5,1,4],[5,1,5],[5,1,6],[5,2,-6],[5,2,-5],[5,2,-4],[5,2,-3],[5,2,-2],[5,2,-1],[5,2,1],[5,2,2],[5,2,3],[5,2,4],[5,2,5],[5,2,6],[5,3,-6],[5,3,-5],[5,3,-4],[5,3,-3],[5,3,-2],[5,3,-1],[5,3,1],[5,3,2],[5,3,3],[5,3,4],[5,3,5],[5,3,6],[5,4,-6],[5,4,-5],[5,4,-4],[5,4,-3],[5,4,-2],[5,4,-1],[5,4,1],[5,4,2],[5,4,3],[5,4,4],[5,4,5],[5,4,6],[6,-5,-6],[6,-5,-5],[6,-5,-4],[6,-5,-3],[6,-5,-2],[6,-5,-1],[6,-5,1],[6,-5,2],[6,-5,3],[6,-5,4],[6,-5,5],[6,-5,6],[6,-1,-6],[6,-1,-5],[6,-1,-4],[6,-1,-3],[6,-1,-2],[6,-1,-1],[6,-1,1],[6,-1,2],[6,-1,3],[6,-1,4],[6,-1,5],[6,-1,6],[6,1,-6],[6,1,-5],[6,1,-4],[6,1,-3],[6,1,-2],[6,1,-1],[6,1,1],[6,1,2],[6,1,3],[6,1,4],[6,1,5],[6,1,6],[6,5,-6],[6,5,-5],[6,5,-4],[6,5,-3],[6,5,-2],[6,5,-1],[6,5,1],[6,5,2],[6,5,3],[6,5,4],[6,5,5],[6,5,6]]);
+aa : pr[1];
+pp : pr[2];
+r2 : pr[3];
+ex : expand((aa*x-pp)*(x-r2));
+bb : coeff(ex,x,1);
+cc : coeff(ex,x,0);
+dd : bb^2-4*aa*cc;                 /* a perfect square: the roots are rational */
+sd : sqrt(dd);
+ts : {pp/aa, r2};
+/* Misconceptions */
+ts_neg  : {-pp/aa, -r2};           /* used +b instead of -b */
+ts_no2a : {2*pp, 2*aa*r2};         /* forgot to divide by 2a */
+ts_only2 : {pp, aa*r2};            /* divided by 2, not by 2a */
+ts_one  : {r2};
+ts_wrong : {pp/aa, r2+1};</text>
     </questionvariables>
     <specificfeedback format="html">
-      <text><![CDATA[<p>[[feedback:prt1]]<br></p>]]></text>
-    </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>\({@exp@}=0, x {@ta@} \)</text>
-    </questionnote>
-    <questiondescription format="moodle_auto_format">
       <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>\({@ex@} = 0\), \(x \in {@ts@}\)</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>This question is based on Examples 1 and 2 (identify a, b, c and substitute into the formula) in the section Applying the Quadratic Formula of the CBC Grade 11 Mathematics textbook (INNODEMS). Merged with the former "3.2.4.2 Possible modification" question, which asked the same task with two boxes. Roots may now be negative, and c = 0 can no longer occur.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
@@ -60,19 +95,19 @@ cc:aa*r1*r2;</text>
     <input>
       <name>ans1</name>
       <type>algebraic</type>
-      <tans>ta</tans>
+      <tans>ts</tans>
       <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>{x= ,x= }</syntaxhint>
+      <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords>solve</forbidwords>
+      <forbidwords>solve,factor</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>3</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>1</showvalidation>
       <options/>
     </input>
     <prt>
@@ -81,18 +116,18 @@ cc:aa*r1*r2;</text>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text>ans2=set(x=first(ans1),x=first(rest(ans1)));</text>
+        <text>two : if setp(ans1) then is(cardinality(ans1)=2) else false;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Correct solution set</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ta</tans>
+        <tans>ts</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
-        <truescore>1.0000000</truescore>
+        <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-1-T</trueanswernote>
@@ -100,7 +135,7 @@ cc:aa*r1*r2;</text>
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
-        <falsescore>0.0000000</falsescore>
+        <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
@@ -110,46 +145,131 @@ cc:aa*r1*r2;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>A set of two values?</description>
         <answertest>AlgEquiv</answertest>
-        <sans>set(x=first(ans1),x=first(rest(ans1)))</sans>
-        <tans>ta</tans>
+        <sans>two</sans>
+        <tans>true</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
-        <truescore>1.0000000</truescore>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
         <truepenalty/>
-        <truenextnode>-1</truenextnode>
+        <truenextnode>2</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
-        <falsescore>0.0000000</falsescore>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
+          <text><![CDATA[<p>The formula has \(\pm\), so it gives two solutions. Enter both as a set.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Used +b</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ts_neg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Both your values have the wrong sign. The formula starts with \(-b\): here \(-b = {@-bb@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>3</name>
+        <description>Forgot to divide by 2a</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ts_no2a</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have found \(-b \pm \sqrt{b^2-4ac}\) correctly, but the whole numerator must then be divided by \(2a = {@2*aa@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Divided by 2 instead of 2a</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ts_only2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The denominator is \(2a = {@2*aa@}\), not \(2\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Identify \(a\), \(b\) and \(c\) carefully (with their signs), work out \(b^2-4ac\) first, then substitute into \(x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}\).</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
-    <deployedseed>1305848118</deployedseed>
-    <deployedseed>1680424344</deployedseed>
-    <deployedseed>1953743350</deployedseed>
-    <deployedseed>549069090</deployedseed>
-    <deployedseed>1683003418</deployedseed>
-    <deployedseed>1325032070</deployedseed>
-    <deployedseed>780521311</deployedseed>
-    <deployedseed>447782591</deployedseed>
-    <deployedseed>1800344866</deployedseed>
-    <deployedseed>649353487</deployedseed>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
+    <deployedseed>1575291669</deployedseed>
+    <deployedseed>373548105</deployedseed>
+    <deployedseed>366729377</deployedseed>
+    <deployedseed>1096892807</deployedseed>
+    <deployedseed>432876366</deployedseed>
+    <deployedseed>1016143088</deployedseed>
+    <deployedseed>1358538481</deployedseed>
+    <deployedseed>1655475276</deployedseed>
+    <deployedseed>975901304</deployedseed>
+    <deployedseed>2056464525</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>ts</value>
       </testinput>
       <expected>
         <name>prt1</name>
@@ -160,16 +280,72 @@ cc:aa*r1*r2;</text>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Only one root</description>
       <testinput>
         <name>ans1</name>
-        <value>{x= 3,x= 5}</value>
+        <value>ts_one</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-F</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Used +b</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ts_neg</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T | prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Forgot to divide by 2a</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ts_no2a</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T | prt1-3-F | prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Divided by 2 only</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ts_only2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T | prt1-3-F | prt1-4-F | prt1-5-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Other wrong answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ts_wrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T | prt1-3-F | prt1-4-F | prt1-5-F</expectedanswernote>
       </expected>
     </qtest>
   </question>

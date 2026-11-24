@@ -5,81 +5,82 @@
       <text>Forming and solving simultaneous equations of a rectangular garden</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>The length and width of a rectangular garden are \(x\) metres and \(y\) metres respectively. The length is \({@dd@}\) metres more than the width, and the area of the garden is \({@AA@}\text{ m}^2\).</p>
-<p><strong>a)</strong> Form two equations from the information given:</p>
-<div>
-    Using the relationship between the length and width:
-    [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]
+      <text><![CDATA[<p>The length and width of a rectangular garden are \(x\) metres and \(y\) metres. The length is \({@dd@}\) metres more than the width, and the area of the garden is \({@AA@}\ \mathrm{m}^2\).</p>
+<div style="text-align:center;" role="img" aria-label="A rectangle labelled x metres along its length and y metres along its width, with area {#AA#} square metres.">
+[[jsxgraph width="320px" height="210px"]]
+(function() {
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1, 7, 12.8, -1.5], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('polygon', [[0,0],[10,0],[10,5.5],[0,5.5]], {fillColor:'#a1d99b', fillOpacity:0.5,
+      vertices:{visible:false}, borders:{strokeColor:'#2f6f2f', strokeWidth:2}, fixed:true});
+  b.create('text', [5, -0.6, 'x m'], {anchorX:'middle', fontSize:16, fixed:true});
+  b.create('text', [10.3, 2.75, 'y m'], {anchorX:'left', fontSize:16, fixed:true});
+  b.create('text', [5, 2.75, 'Area = {#AA#} m²'], {anchorX:'middle', anchorY:'middle', fontSize:16, fixed:true});
+})();
+[[/jsxgraph]]
 </div>
-<div>
-    Using the area of the rectangle:
-    [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]
-</div>
-<p><strong>b)</strong> Solve the equations to find the dimensions of the garden (in metres).</p>
-<div>Length \( x = \) [[input:ans3]] m [[validation:ans3]] [[feedback:prt3]]</div>
-<div>Width \( y = \) [[input:ans4]] m [[validation:ans4]] [[feedback:prt4]]</div>]]></text>
+<p><strong>a)</strong> Form two equations in \(x\) and \(y\) from this information.</p>
+<div>Using the length and the width: [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<div>Using the area: [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<p><strong>b)</strong> Solve the equations to find the dimensions of the garden.</p>
+<div>Length \(x = \) [[input:ans3]] \(\mathrm{m}\) [[validation:ans3]] [[feedback:prt3]]</div>
+<div>Width \(y = \) [[input:ans4]] \(\mathrm{m}\) [[validation:ans4]] [[feedback:prt4]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>Since the length is \({@dd@}\) m more than the width, it means that \[ x = y + {@dd@}, \] and "the area is \({@AA@}\text{ m}^2\)" gives \[ x\,y = {@AA@}. \]</p>
-<p>Substitute the first into the second:</p>
-\[
-\begin{align*}
-(y+{@dd@})\,y &= {@AA@}\\
-y^2 + {@dd@}y - {@AA@} &= 0\\
-(y-{@w@})(y+{@LL@}) &= 0
-\end{align*}
-\]
-<p>so \(y={@w@}\) or \(y={@-LL@}\). </p>
-<p>A width cannot be negative, so \(y={@w@}\) and \(x = y+{@dd@} = {@LL@}\).</p>
-<p>The garden is \({@LL@}\text{ m}\) long and \({@w@}\text{ m}\) wide. </p>
-<p>Check: \({@LL@}-{@w@}={@dd@}\) and \({@LL@}\times{@w@}={@AA@}\).</p>]]></text>
+      <text><![CDATA[<p>Each sentence of the problem gives one equation. "The length is \({@dd@}\) m more than the width" is a <strong>linear</strong> equation, and "the area is \({@AA@}\ \mathrm{m}^2\)" is a <strong>quadratic</strong> one:</p>
+\[ x = y + {@dd@}, \qquad xy = {@AA@}. \]
+<p>To solve a linear and a quadratic equation simultaneously, <strong>substitute</strong> the linear equation into the quadratic one. This gives a quadratic equation in one unknown:</p>
+\[ \begin{align*} (y+{@dd@})\,y &= {@AA@}\\ {@y^2+dd*y-AA@} &= 0\\ {@(y-ww)*(y+LL)@} &= 0. \end{align*} \]
+<p>So \(y = {@ww@}\) or \(y = {@-LL@}\). A width cannot be negative, so \(y = {@ww@}\), and then \(x = y + {@dd@} = {@LL@}\).</p>
+<p>The garden is \({@LL@}\ \mathrm{m}\) long and \({@ww@}\ \mathrm{m}\) wide. Check: \({@LL@} \times {@ww@} = {@AA@}\).</p>]]></text>
     </generalfeedback>
     <defaultgrade>4</defaultgrade>
-    <penalty>0</penalty>
+    <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>w  : rand_with_prohib(3,9,[]);     /* width */
-dd : rand_with_prohib(2,6,[]);     /* length is dd more than width */
-LL : w + dd;                        /* length */
-AA : w * LL;                        /* area */
-/* Canonical target expressions for part (a) flexible marking. */
-lin_target  : x - y - dd;           /* x = y + dd */
-area_target : x*y - AA;             /* x*y = AA */
-/* Model answers. */
-ta1 : x = y + dd;
+      <text>ww : rand(7)+3;                    /* width 3..9 */
+dd : rand(5)+2;                    /* length is dd more than width */
+LL : ww+dd;                        /* length */
+AA : ww*LL;                        /* area */
+/* Targets for flexible marking of the equations in part (a) */
+lin_target  : x-y-dd;              /* x = y + dd */
+swap_target : y-x-dd;              /* y = x + dd: length and width swapped */
+area_target : x*y-AA;
+per_target1 : x+y-AA;              /* confused area with perimeter */
+per_target2 : 2*x+2*y-AA;
+ta1 : x = y+dd;
 ta2 : x*y = AA;
-ta3 : LL;                           /* length */
-ta4 : w;                            /* width */
-w_neg : -LL;                        /* extraneous negative root for the width */</text>
+/* Misconception values for part (b) */
+negroot : -LL;                     /* negative root of y^2 + dd*y - AA = 0 */</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>\( x=y+{@dd@},\ xy={@AA@}\); length \({@LL@}\), width \({@w@}\)</text>
+    <questionnote format="html">
+      <text>\(x = y+{@dd@}\), \(xy = {@AA@}\); length \({@LL@}\), width \({@ww@}\)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p>This question is based on forming and solving a linear and a quadratic equation together (Example 1, by substitution) in the section Simultaneous Linear and Quadratic Equations of the CBC Grade 11 Mathematics textbook (INNODEMS). Revised: added a diagram, numerical inputs for the dimensions, and diagnostics for swapped or perimeter equations.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text>Correct, well done.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text>Your answer is partially correct.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text>Incorrect.</text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
-    <multiplicationsign>dot</multiplicationsign>
+    <multiplicationsign>none</multiplicationsign>
     <sqrtsign>1</sqrtsign>
     <complexno>i</complexno>
     <inversetrig>cos-1</inversetrig>
@@ -91,17 +92,17 @@ w_neg : -LL;                        /* extraneous negative root for the width */
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>8</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>2</insertstars>
+      <insertstars>0</insertstars>
       <syntaxhint/>
-      <syntaxattribute>1</syntaxattribute>
+      <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
-      <checkanswertype>1</checkanswertype>
-      <mustverify>1</mustverify>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -109,54 +110,54 @@ w_neg : -LL;                        /* extraneous negative root for the width */
       <name>ans2</name>
       <type>algebraic</type>
       <tans>ta2</tans>
-      <boxsize>8</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>2</insertstars>
+      <insertstars>0</insertstars>
       <syntaxhint/>
-      <syntaxattribute>1</syntaxattribute>
+      <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
-      <checkanswertype>1</checkanswertype>
-      <mustverify>1</mustverify>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans3</name>
-      <type>algebraic</type>
-      <tans>ta3</tans>
-      <boxsize>6</boxsize>
+      <type>numerical</type>
+      <tans>LL</tans>
+      <boxsize>5</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>2</insertstars>
+      <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords>solve</forbidwords>
+      <forbidwords/>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>3</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans4</name>
-      <type>algebraic</type>
-      <tans>ta4</tans>
-      <boxsize>6</boxsize>
+      <type>numerical</type>
+      <tans>ww</tans>
+      <boxsize>5</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>2</insertstars>
+      <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords>solve</forbidwords>
+      <forbidwords/>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>3</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -165,23 +166,26 @@ w_neg : -LL;                        /* extraneous negative root for the width */
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text>sd1  : lhs(ans1) - rhs(ans1);
-rel1 : ratsimp(sd1/lin_target);
-ok1  : is(freeof(x, y, rel1) and rel1 # 0);</text>
+        <text><![CDATA[eq1 : not atom(ans1) and is(op(ans1)="=");
+d1 : if eq1 then lhs(ans1)-rhs(ans1) else 0;
+r1 : ratsimp(d1/lin_target);
+ok1 : is(r1#0) and freeof(x,y,r1);
+rs1 : ratsimp(d1/swap_target);
+sw1 : is(rs1#0) and freeof(x,y,rs1);]]></text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Is the equation a correct rearrangement of x = y + d?</description>
+        <description>Is it an equation?</description>
         <answertest>AlgEquiv</answertest>
-        <sans>ok1</sans>
+        <sans>eq1</sans>
         <tans>true</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
-        <truescore>1</truescore>
+        <truescore>0</truescore>
         <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-correct</trueanswernote>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -189,9 +193,59 @@ ok1  : is(freeof(x, y, rel1) and rel1 # 0);</text>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-wrong</falseanswernote>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Translate "the length is \({@dd@}\) m more than the width" directly into an equation linking \(x\) and \(y\).</p>]]></text>
+          <text><![CDATA[<p>Write an <em>equation</em>, with an equals sign, linking \(x\) and \(y\).</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Equivalent to x = y + d</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ok1</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Length and width swapped</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sw1</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your equation says the <em>width</em> is \({@dd@}\) m more than the length. The length is \(x\), and it is the longer side.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Translate \"the length is \({@dd@}\) m more than the width\" directly: length \(=\) width \(+\ {@dd@}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -201,23 +255,27 @@ ok1  : is(freeof(x, y, rel1) and rel1 # 0);</text>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text>sd2  : lhs(ans2) - rhs(ans2);
-rel2 : ratsimp(sd2/area_target);
-ok2  : is(freeof(x, y, rel2) and rel2 # 0);</text>
+        <text><![CDATA[eq2 : not atom(ans2) and is(op(ans2)="=");
+d2 : if eq2 then lhs(ans2)-rhs(ans2) else 0;
+r2 : ratsimp(d2/area_target);
+ok2 : is(r2#0) and freeof(x,y,r2);
+pa : ratsimp(d2/per_target1);
+pb : ratsimp(d2/per_target2);
+per2 : (is(pa#0) and freeof(x,y,pa)) or (is(pb#0) and freeof(x,y,pb));]]></text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Is the equation a correct rearrangement of x*y = A?</description>
+        <description>Is it an equation?</description>
         <answertest>AlgEquiv</answertest>
-        <sans>ok2</sans>
+        <sans>eq2</sans>
         <tans>true</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
-        <truescore>1</truescore>
+        <truescore>0</truescore>
         <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt2-correct</trueanswernote>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -225,9 +283,59 @@ ok2  : is(freeof(x, y, rel2) and rel2 # 0);</text>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt2-wrong</falseanswernote>
+        <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>The area of a rectangle is length times width. Set \(x\cdot y\) equal to the given area.</p>]]></text>
+          <text><![CDATA[<p>Write an <em>equation</em>, with an equals sign, linking \(x\) and \(y\).</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Equivalent to xy = A</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ok2</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Used the perimeter instead of the area</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>per2</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Adding the sides gives the <em>perimeter</em>. The area of a rectangle is length \(\times\) width.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The area of a rectangle is length \(\times\) width. Set \(xy\) equal to the given area.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -241,17 +349,17 @@ ok2  : is(freeof(x, y, rel2) and rel2 # 0);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correct length?</description>
+        <description>Length</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans3</sans>
-        <tans>ta3</tans>
+        <tans>LL</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt3-correct</trueanswernote>
+        <trueanswernote>prt3-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -259,24 +367,24 @@ ok2  : is(freeof(x, y, rel2) and rel2 # 0);</text>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt3-0-F</falseanswernote>
+        <falseanswernote>prt3-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description>Gave the width instead of the length?</description>
+        <description>Gave the width</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans3</sans>
-        <tans>ta4</tans>
+        <tans>ww</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt3-width</trueanswernote>
+        <trueanswernote>prt3-2-T</trueanswernote>
         <truefeedback format="html">
           <text><![CDATA[<p>That is the width. The length is \({@dd@}\) m more than the width.</p>]]></text>
         </truefeedback>
@@ -284,34 +392,34 @@ ok2  : is(freeof(x, y, rel2) and rel2 # 0);</text>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>2</falsenextnode>
-        <falseanswernote>prt3-1-F</falseanswernote>
+        <falseanswernote>prt3-2-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>2</name>
-        <description>Gave a negative value?</description>
+        <description>Negative root</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans3</sans>
-        <tans>-w</tans>
+        <tans>-ww</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt3-neg</trueanswernote>
+        <trueanswernote>prt3-3-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>A length must be positive — reject the negative root of the quadratic.</p>]]></text>
+          <text><![CDATA[<p>A length cannot be negative. Use the positive solution of the quadratic.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt3-other</falseanswernote>
+        <falseanswernote>prt3-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Once you have the width, the length is width \(+\,{@dd@}\).</p>]]></text>
+          <text><![CDATA[<p>Substitute \(x = y + {@dd@}\) into \(xy = {@AA@}\), solve the quadratic for \(y\), then add \({@dd@}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -325,17 +433,17 @@ ok2  : is(freeof(x, y, rel2) and rel2 # 0);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Correct width?</description>
+        <description>Width</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans4</sans>
-        <tans>ta4</tans>
+        <tans>ww</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt4-correct</trueanswernote>
+        <trueanswernote>prt4-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -343,227 +451,295 @@ ok2  : is(freeof(x, y, rel2) and rel2 # 0);</text>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt4-0-F</falseanswernote>
-        <falsefeedback format="html">
-          <text/>
-        </falsefeedback>
-      </node>
-      <node>
-        <name>1</name>
-        <description>Gave the negative extraneous root?</description>
-        <answertest>AlgEquiv</answertest>
-        <sans>ans4</sans>
-        <tans>w_neg</tans>
-        <testoptions/>
-        <quiet>1</quiet>
-        <truescoremode>=</truescoremode>
-        <truescore>0</truescore>
-        <truepenalty/>
-        <truenextnode>-1</truenextnode>
-        <trueanswernote>prt4-neg</trueanswernote>
-        <truefeedback format="html">
-          <text><![CDATA[<p>This root is negative, so it cannot be a width. Take the positive root of the quadratic.</p>]]></text>
-        </truefeedback>
-        <falsescoremode>=</falsescoremode>
-        <falsescore>0</falsescore>
-        <falsepenalty/>
-        <falsenextnode>2</falsenextnode>
         <falseanswernote>prt4-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
-        <name>2</name>
-        <description>Gave the length instead of the width?</description>
+        <name>1</name>
+        <description>Negative root</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans4</sans>
-        <tans>ta3</tans>
+        <tans>negroot</tans>
         <testoptions/>
         <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt4-length</trueanswernote>
+        <trueanswernote>prt4-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>That is the length. The width is the smaller dimension.</p>]]></text>
+          <text><![CDATA[<p>This root of the quadratic is negative, so it cannot be a width. Take the positive root.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt4-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave the length</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>LL</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the length. The width is the shorter side.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt4-other</falseanswernote>
+        <falseanswernote>prt4-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Solve \(y^2 + {@dd@}y - {@AA@} = 0\) and take the positive root.</p>]]></text>
+          <text><![CDATA[<p>Solve \({@y^2+dd*y-AA@} = 0\) and take the positive root.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
-    <deployedseed>5001</deployedseed>
-    <deployedseed>5002</deployedseed>
-    <deployedseed>5003</deployedseed>
-    <deployedseed>5004</deployedseed>
-    <deployedseed>5005</deployedseed>
-    <deployedseed>5006</deployedseed>
-    <deployedseed>5007</deployedseed>
-    <deployedseed>5008</deployedseed>
+    <deployedseed>1</deployedseed>
+    <deployedseed>2</deployedseed>
+    <deployedseed>3</deployedseed>
+    <deployedseed>4</deployedseed>
+    <deployedseed>5</deployedseed>
+    <deployedseed>6</deployedseed>
+    <deployedseed>7</deployedseed>
+    <deployedseed>8</deployedseed>
+    <deployedseed>9</deployedseed>
+    <deployedseed>10</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>All correct (standard forms)</description>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
-        <value>ta1</value>
+        <value>x=y+dd</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>x*y=AA</value>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>ta3</value>
+        <value>ww+dd</value>
       </testinput>
       <testinput>
         <name>ans4</name>
-        <value>ta4</value>
+        <value>AA/LL</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T | prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-correct</expectedanswernote>
+        <expectedanswernote>prt2-1-T | prt2-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt3-correct</expectedanswernote>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt4</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt4-correct</expectedanswernote>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Part (a) equivalent rearrangements accepted</description>
+      <description>Correct, equations rearranged</description>
       <testinput>
         <name>ans1</name>
-        <value>x - y = dd</value>
+        <value>y=x-dd</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>AA = y*x</value>
+        <value>y*x-AA=0</value>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>ta3</value>
+        <value>LL</value>
       </testinput>
       <testinput>
         <name>ans4</name>
-        <value>ta4</value>
+        <value>ww</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-correct</expectedanswernote>
+        <expectedanswernote>prt1-1-T | prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-correct</expectedanswernote>
+        <expectedanswernote>prt2-1-T | prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>3</testcase>
-      <description>Part (a) area equation wrong (sum, not product)</description>
+      <description>Swapped; perimeter; width for length; negative width</description>
       <testinput>
         <name>ans1</name>
-        <value>ta1</value>
+        <value>y=x+dd</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>x + y = AA</value>
+        <value>2*x+2*y=AA</value>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>ta3</value>
+        <value>ww</value>
       </testinput>
       <testinput>
         <name>ans4</name>
-        <value>ta4</value>
+        <value>negroot</value>
       </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T | prt1-2-F | prt1-3-T</expectedanswernote>
+      </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt2-wrong</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T | prt2-2-F | prt2-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F | prt3-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-1-F | prt4-2-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>4</testcase>
-      <description>Length: gave the width</description>
+      <description>Not equations; negative length; length for width</description>
       <testinput>
         <name>ans1</name>
-        <value>ta1</value>
+        <value>x-y-dd</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>x*y</value>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>ta4</value>
+        <value>-ww</value>
       </testinput>
       <testinput>
         <name>ans4</name>
-        <value>ta4</value>
+        <value>LL</value>
       </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt3-width</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F | prt3-2-F | prt3-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-1-F | prt4-2-F | prt4-3-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>5</testcase>
-      <description>Width: gave the negative extraneous root</description>
+      <description>Other wrong answers</description>
       <testinput>
         <name>ans1</name>
-        <value>ta1</value>
+        <value>x=dd*y</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>x*y=AA+1</value>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>ta3</value>
+        <value>LL+1</value>
       </testinput>
       <testinput>
         <name>ans4</name>
-        <value>w_neg</value>
+        <value>ww+1</value>
       </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T | prt2-2-F | prt2-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F | prt3-2-F | prt3-3-F</expectedanswernote>
+      </expected>
       <expected>
         <name>prt4</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt4-neg</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-1-F | prt4-2-F | prt4-3-F</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>6</testcase>
-      <description>Width: gave the length</description>
+      <description>Invalid: a letter in a numerical box</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -574,17 +750,35 @@ ok2  : is(freeof(x, y, rel2) and rel2 # 0);</text>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>ta3</value>
+        <value>x</value>
       </testinput>
       <testinput>
         <name>ans4</name>
-        <value>ta3</value>
+        <value>ww</value>
       </testinput>
       <expected>
-        <name>prt4</name>
-        <expectedscore>0.0000000</expectedscore>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt4-length</expectedanswernote>
+        <expectedanswernote>prt1-1-T | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T | prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

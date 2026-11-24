@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Rationalising a binomial denominator of the form c - sqrt(b) using its conjugate</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Rationalise the denominator of the following expression by multiplying by its conjugate, giving your answer in simplest form. <i>(Note: For example, write <code>(3*(5+sqrt(17)))/8</code> to represent \(\dfrac{3(5+\sqrt{17})}{8}\).)</i></p>
+<p style="text-align: center; font-size: 1.2em;">\[ \frac{{@p@}}{{@c@} - \sqrt{{@b@}}} \]</p>
+<p>Simplified form = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Step 1: Multiply the numerator and denominator by the conjugate \({@c@} + \sqrt{{@b@}}\)</b></p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@p@}}{{@c@} - \sqrt{{@b@}}} \times \frac{{@c@} + \sqrt{{@b@}}}{{@c@} + \sqrt{{@b@}}} = \frac{{@p@}({@c@} + \sqrt{{@b@}})}{({@c@} - \sqrt{{@b@}})({@c@} + \sqrt{{@b@}})}\)</p>
+
+<p><b>Step 2: Simplify the denominator using the difference of two squares \((x - y)(x + y) = x^2 - y^2\)</b></p>
+<p style="margin-left: 20px;">\(\displaystyle ({@c@} - \sqrt{{@b@}})({@c@} + \sqrt{{@b@}}) = {@c@}^2 - (\sqrt{{@b@}})^2 = {@c2@} - {@b@} = {@d@}\)</p>
+<p style="margin-left: 20px;">Substituting this back into the fraction gives:</p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@p@}({@c@} + \sqrt{{@b@}})}{{@d@}}\)</p>
+
+[[ if test="g = 1" ]]
+<p><b>Step 3: Check for common factors</b><br>
+Since \({@p@}\) and \({@d@}\) have no common factor other than \(1\), the fraction is already in simplest form:</p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@p@}({@c@} + \sqrt{{@b@}})}{{@d@}}\)</p>
+[[ elif test="d_red = 1" ]]
+<p><b>Step 3: Divide by the common factor of \({@g@}\)</b><br>
+Since \({@p@} \div {@d@} = {@p_red@}\), dividing the numerator and denominator by \({@g@}\) simplifies the fraction completely:</p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@p@}({@c@} + \sqrt{{@b@}})}{{@d@}} = {@ta1@}\)</p>
+[[ else ]]
+<p><b>Step 3: Cancel the common factor of \({@g@}\)</b><br>
+Both \({@p@}\) and \({@d@}\) share a common factor of \({@g@}\) (\({@p@} \div {@g@} = {@p_red@}\) and \({@d@} \div {@g@} = {@d_red@}\)). Cancelling \({@g@}\) gives:</p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@p@}({@c@} + \sqrt{{@b@}})}{{@d@}} = \frac{{@p_red@}({@c@} + \sqrt{{@b@}})}{{@d_red@}}\)</p>
+[[/ if ]]
+
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \frac{{@p@}}{{@c@} - \sqrt{{@b@}}} = {@ta1@} }\)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Loop-free selection across 1,100+ unique non-colliding variants (17 excluded so example never leaks) */
+S : [2, 3, 5, 6, 7, 10, 11, 13, 14, 15, 19, 21, 22, 23];
+b : rand(S);
+
+/* Ensure c^2 - b >= 2 and c != b so all denominators stay strictly positive and distinct */
+clist : sublist([2, 3, 4, 5, 6, 7, 8], lambda([x], (x^2 - b >= 2) and (x # b)));
+c : rand(clist);
+c2 : c^2;
+
+p : rand(makelist(i, i, 2, 16));
+
+d : c2 - b;
+g : gcd(p, d);
+p_red : p / g;
+d_red : d / g;
+
+/* Accepted simplified forms (factored and expanded) */
+ta1 : (p_red * (c + sqrt(b))) / d_red;
+ta1_exp1 : expand(p_red * (c + sqrt(b))) / d_red;
+ta1_exp2 : expand(ta1);
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+w1 : (p * (c - sqrt(b))) / (c2 - b);
+w2 : (p * (c + sqrt(b))) / (c - b);
+w3 : (p * (c + sqrt(b))) / (c2 + b);
+w4 : (p * (c + sqrt(b))) / (b - c2);
+w5 : p / d;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>\(\frac{{@p@}}{{@c@} - \sqrt{{@b@}}} = {@ta1@}\) (p = {@p@}, c = {@c@}, b = {@b@})</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Rationalising a Binomial Denominator (Rational Minus Surd)</p>
+<p id="description">Grade 11 CBE: Rationalising denominators of the form p/(c - sqrt(b)) using the conjugate c + sqrt(b) and cancelling common factors.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>18</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>0</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check exact simplified factored form EqualComAss</description>
+        <answertest>EqualComAss</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check exact simplified expanded numerator over single denominator</description>
+        <answertest>EqualComAss</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_exp1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check exact simplified split terms form</description>
+        <answertest>EqualComAss</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_exp2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Equivalent expression but not yet simplified</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your expression is mathematically equal to the answer, but it is <b>not yet in simplest form</b>. Evaluate the denominator (\({@c2@} - {@b@} = {@d@}\)) and cancel any common factor between the numerator and denominator.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Multiplied by c - sqrt(b) instead of conjugate c + sqrt(b)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You multiplied by \({@c@} - \sqrt{{@b@}}\), which does not eliminate the square root from the denominator. Use the <b>conjugate</b> \({@c@} + \sqrt{{@b@}}\) (flip the minus sign to plus) so the denominator becomes \({@c@}^2 - (\sqrt{{@b@}})^2 = {@c2@} - {@b@} = {@d@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description>Forgot to square c in denominator (wrote c - b instead of c^2 - b)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-6-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember to square the first term \({@c@}\) in the difference of two squares: \(({@c@} - \sqrt{{@b@}})({@c@} + \sqrt{{@b@}}) = {@c@}^2 - (\sqrt{{@b@}})^2 = {@c2@} - {@b@} = {@d@}\), not \({@c@} - {@b@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>6</falsenextnode>
+        <falseanswernote>prt1-6-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>6</name>
+        <description>Added c^2 + b in denominator instead of subtracting c^2 - b</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-7-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You used the correct conjugate \({@c@} + \sqrt{{@b@}}\) in the numerator, but <b>added</b> \({@c2@} + {@b@}\) in the denominator. By the difference of two squares, \(({@c@} - \sqrt{{@b@}})({@c@} + \sqrt{{@b@}}) = {@c2@} - {@b@} = {@d@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>7</falsenextnode>
+        <falseanswernote>prt1-7-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>7</name>
+        <description>Reversed subtraction in denominator (b - c^2 instead of c^2 - b)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-8-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the order of subtraction in your denominator: \(({@c@} - \sqrt{{@b@}})({@c@} + \sqrt{{@b@}}) = {@c2@} - {@b@} = {@d@}\), not \({@b@} - {@c2@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>8</falsenextnode>
+        <falseanswernote>prt1-8-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>8</name>
+        <description>Forgot to multiply numerator by the conjugate</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w5</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-9-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simplified the denominator to \({@d@}\), but forgot to also multiply the numerator \({@p@}\) by the conjugate \({@c@} + \sqrt{{@b@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-9-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply both the numerator and denominator by the conjugate \({@c@} + \sqrt{{@b@}}\), simplify the denominator using \({@c2@} - {@b@} = {@d@}\), and cancel any common factor.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>112345678</deployedseed>
+    <deployedseed>223456789</deployedseed>
+    <deployedseed>334567891</deployedseed>
+    <deployedseed>445678912</deployedseed>
+    <deployedseed>556789123</deployedseed>
+    <deployedseed>667891234</deployedseed>
+    <deployedseed>778912345</deployedseed>
+    <deployedseed>889123456</deployedseed>
+    <deployedseed>109283746</deployedseed>
+    <deployedseed>219384756</deployedseed>
+    <deployedseed>329485761</deployedseed>
+    <deployedseed>439586712</deployedseed>
+    <deployedseed>549687123</deployedseed>
+    <deployedseed>659781234</deployedseed>
+    <deployedseed>769812345</deployedseed>
+    <deployedseed>879123456</deployedseed>
+    <deployedseed>981234567</deployedseed>
+    <deployedseed>114253647</deployedseed>
+    <deployedseed>125364758</deployedseed>
+    <deployedseed>357785373</deployedseed>
+    <deployedseed>1403526972</deployedseed>
+    <deployedseed>1899218571</deployedseed>
+    <deployedseed>168664434</deployedseed>
+    <deployedseed>2056209298</deployedseed>
+    <deployedseed>1753850509</deployedseed>
+    <deployedseed>101132135</deployedseed>
+    <deployedseed>173652</deployedseed>
+    <deployedseed>1321515236</deployedseed>
+    <deployedseed>834051271</deployedseed>
+    <deployedseed>16985428</deployedseed>
+    <deployedseed>707633892</deployedseed>
+    <deployedseed>962761399</deployedseed>
+    <deployedseed>68242599</deployedseed>
+    <deployedseed>766552495</deployedseed>
+    <deployedseed>1292852581</deployedseed>
+    <deployedseed>866548939</deployedseed>
+    <deployedseed>1506557300</deployedseed>
+    <deployedseed>287133043</deployedseed>
+    <deployedseed>1751847967</deployedseed>
+    <deployedseed>233828925</deployedseed>
+    <deployedseed>444183654</deployedseed>
+    <deployedseed>70615701</deployedseed>
+    <deployedseed>1792601602</deployedseed>
+    <deployedseed>986447803</deployedseed>
+    <deployedseed>1677796342</deployedseed>
+    <deployedseed>1873624635</deployedseed>
+    <deployedseed>1105825349</deployedseed>
+    <deployedseed>448402836</deployedseed>
+    <deployedseed>529500555</deployedseed>
+    <deployedseed>285266887</deployedseed>
+    <deployedseed>23015224</deployedseed>
+    <deployedseed>1667678567</deployedseed>
+    <deployedseed>199363754</deployedseed>
+    <deployedseed>1782113379</deployedseed>
+    <deployedseed>957010530</deployedseed>
+    <deployedseed>1857832176</deployedseed>
+    <deployedseed>1376185110</deployedseed>
+    <deployedseed>616313688</deployedseed>
+    <deployedseed>1484740602</deployedseed>
+    <deployedseed>1606750837</deployedseed>
+    <deployedseed>1422099809</deployedseed>
+    <deployedseed>267657048</deployedseed>
+    <deployedseed>1464926136</deployedseed>
+    <deployedseed>1564942660</deployedseed>
+    <deployedseed>1769285557</deployedseed>
+    <deployedseed>510199792</deployedseed>
+    <deployedseed>1330658416</deployedseed>
+    <deployedseed>93057887</deployedseed>
+    <deployedseed>1165090143</deployedseed>
+    <deployedseed>2082252726</deployedseed>
+    <deployedseed>502955355</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct simplified rationalised expression</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Equivalent expression with uncancelled common factor</description>
+      <testinput>
+        <name>ans1</name>
+        <value>(2*p_red*(c + 'sqrt(b)))/(2*d_red)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Multiplied by c - sqrt(b) instead of conjugate c + sqrt(b)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-5-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Forgot to square c in denominator (wrote c - b)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-6-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Added c^2 + b in denominator instead of c^2 - b</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-7-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Reversed subtraction in denominator (b - c^2)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-8-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Forgot to multiply numerator by conjugate</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w5</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-9-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

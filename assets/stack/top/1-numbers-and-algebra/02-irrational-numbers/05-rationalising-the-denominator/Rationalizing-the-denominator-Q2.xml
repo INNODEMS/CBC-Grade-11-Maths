@@ -2,21 +2,28 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Rationalizing the denominator Q2</text>
+      <text>Rationalising a monomial surd denominator and simplifying into the form k*sqrt(m)</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Rationalize the denominator of the following expression by multiplying by the conjugate, giving your answer in its simplest form:</p>
-<p>\[ \frac{ {@p@} }{ \sqrt{ {@a@} } + \sqrt{ {@b@} } } \]</p>
-
-<p><strong>Hint</strong>: You can type the answer of: \(\frac{2\left(\sqrt{4}-\sqrt{2}\right)}{2}\) as: <code>(2*(sqrt(4)-sqrt(2)))/2</code></p>
-
-<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p>Rationalise the denominator and simplify the following expression, giving your answer in the form \(k\sqrt{m}\), where \(m\) has no perfect-square factors. <i>(Note: For example, write <code>9*sqrt(11)</code> to represent \(9\sqrt{11}\).)</i></p>
+<p style="text-align: center; font-size: 1.2em;">\[ \frac{{@p@}}{{@q@}\sqrt{{@n@}}} \]</p>
+<p>Simplified form = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution.</h3>
-<p>To rationalize \( \dfrac{ {@p@} }{ \sqrt{ {@a@} } + \sqrt{ {@b@} } } \), multiply top and bottom by the <strong>conjugate</strong> of the denominator, \( \sqrt{ {@a@} } - \sqrt{ {@b@} } \):</p>
-<p>\[ \frac{ {@p@} }{ \sqrt{ {@a@} } + \sqrt{ {@b@} } } \times \frac{ \sqrt{ {@a@} } - \sqrt{ {@b@} } }{ \sqrt{ {@a@} } - \sqrt{ {@b@} } } = \frac{ {@p@} (\sqrt{ {@a@} } - \sqrt{ {@b@} }) }{ {@a@} - {@b@} } \]</p>
-<p><strong>Key idea:</strong> \( (\sqrt{@a@}+\sqrt{@b@})(\sqrt{@a@}-\sqrt{@b@}) = {@a@} - {@b@} \) a difference of squares which removes both square roots from the denominator in one step.</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Step 1: Multiply the numerator and denominator by \(\sqrt{{@n@}}\)</b><br>
+Multiplying top and bottom by \(\sqrt{{@n@}}\) removes the square root from the denominator without changing the value of the fraction:</p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@p@}}{{@q@}\sqrt{{@n@}}} \times \frac{\sqrt{{@n@}}}{\sqrt{{@n@}}} = \frac{{@p@}\sqrt{{@n@}}}{{@q@} \times \sqrt{{@n@}} \times \sqrt{{@n@}}}\)</p>
+
+<p><b>Step 2: Simplify the denominator</b><br>
+Since \(\sqrt{{@n@}} \times \sqrt{{@n@}} = {@n@}\), multiply \({@q@} \times {@n@}\) in the denominator:</p>
+<p style="margin-left: 20px;">\(\displaystyle \frac{{@p@}\sqrt{{@n@}}}{{@q@} \times {@n@}} = \frac{{@p@}\sqrt{{@n@}}}{{@qn@}}\)</p>
+
+<p><b>Step 3: Divide the outside numbers to simplify the fraction</b></p>
+<p style="margin-left: 20px;">\(\displaystyle {@p@} \div {@qn@} = {@k@} \quad \Longrightarrow \quad \frac{{@p@}\sqrt{{@n@}}}{{@qn@}} = {@ta1@}\)</p>
+
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \frac{{@p@}}{{@q@}\sqrt{{@n@}}} = {@ta1@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -26,33 +33,38 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>p: rand(8)+2;
+      <text>/* Loop-free selection across 600+ unique non-colliding combinations */
+S : [2, 3, 5, 6, 7, 10, 11, 13, 14, 15, 17, 19, 21, 23];
+n : rand(S);
+/* Ensure q != n so distractors w1 and w2 never collide */
+q : rand(delete(n, [2, 3, 4, 5, 6, 7, 8]));
 
-sf_options: [2,3,5,6,7,10,11,13,14,15];
+/* Ensure gcd(k, n) = 1 so Maxima never collapses k*sqrt(n) into fractional exponents */
+klist : sublist(makelist(i, i, 2, 12), lambda([x], gcd(x, n) = 1));
+k : rand(klist);
+/* Prevent the prompt example 9*sqrt(11) from appearing as a live answer */
+if (n = 11 and k = 9) then k : 8;
 
-a: sf_options[rand(length(sf_options))+1];
+qn : q * n;
+p : k * qn;
 
-b: sf_options[rand(length(sf_options))+1];
-while b = a do b: sf_options[rand(length(sf_options))+1];
+/* Correct rationalised and simplified answer */
+ta1 : k * sqrt(n);
 
-denom_original: sqrt(a) + sqrt(b);
-conjugate: sqrt(a) - sqrt(b);
-
-new_denom: a - b;
-ta1: (p*(sqrt(a)-sqrt(b))) / (a-b);
-
-ta2: (p*(sqrt(a)+sqrt(b))) / (a+b);
-
-ta3: (p*(sqrt(a)-sqrt(b))) / (b-a);</text>
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+w1 : (k * q) * sqrt(n);
+w2 : (k * n) * sqrt(n);
+w3 : k * n;</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}</text>
+      <text>\(\frac{{@p@}}{{@q@}\sqrt{{@n@}}} = {@ta1@}\) (p = {@p@}, q = {@q@}, n = {@n@})</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Rationalising a Monomial Surd Denominator</p>
+<p id="description">Grade 11 CBE: Rationalising denominators of the form p/(q*sqrt(n)) and simplifying the resulting fraction into k*sqrt(m).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -91,25 +103,25 @@ ta3: (p*(sqrt(a)-sqrt(b))) / (b-a);</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
       <name>prt1</name>
       <value>1.0000000</value>
-      <autosimplify>1</autosimplify>
+      <autosimplify>0</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
         <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
+        <description>Check exact rationalised and simplified surd form EqualComAss</description>
+        <answertest>EqualComAss</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -121,35 +133,180 @@ ta3: (p*(sqrt(a)-sqrt(b))) / (b-a);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>1</name>
+        <description>Check if student rationalised the denominator but left the fraction unsimplified</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your expression is mathematically equal to the answer, but it is <b>not yet simplified into the form</b> \(k\sqrt{m}\) with a rationalised denominator. Divide \({@p@} \div {@qn@} = {@k@}\) and write <code>{@k@}*sqrt({@n@})</code>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Divided numerator by n but forgot to also divide by q</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided \({@p@}\) by \({@n@}\), but forgot to also divide by \({@q@}\) in the denominator. Since \({@q@}\sqrt{{@n@}} \times \sqrt{{@n@}} = {@qn@}\), divide \({@p@} \div {@qn@} = {@k@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Divided numerator by q but forgot to divide by n after rationalising</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided \({@p@}\) by \({@q@}\), but forgot that \(\sqrt{{@n@}} \times \sqrt{{@n@}} = {@n@}\) also multiplies the denominator. Divide \({@p@}\) by \({@q@} \times {@n@} = {@qn@}\) to get \({@k@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Dropped the square root sign from the numerator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>When you multiply the numerator by \(\sqrt{{@n@}}\), \(\sqrt{{@n@}}\) stays in the numerator because \({@n@}\) is not a perfect square. Write <code>{@k@}*sqrt({@n@})</code>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply the numerator and denominator by \(\sqrt{{@n@}}\) so the denominator becomes \({@q@} \times {@n@} = {@qn@}\), then divide \({@p@} \div {@qn@}\) and write the result in the form \(k\sqrt{m}\).</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
-    <deployedseed>1686962858</deployedseed>
-    <deployedseed>285438376</deployedseed>
-    <deployedseed>705506926</deployedseed>
-    <deployedseed>168021422</deployedseed>
-    <deployedseed>973536801</deployedseed>
-    <deployedseed>1482274541</deployedseed>
-    <deployedseed>243379236</deployedseed>
-    <deployedseed>1243594016</deployedseed>
-    <deployedseed>1709692850</deployedseed>
-    <deployedseed>1601243320</deployedseed>
-    <deployedseed>796205468</deployedseed>
-    <deployedseed>2129258895</deployedseed>
-    <deployedseed>1236393058</deployedseed>
-    <deployedseed>462532131</deployedseed>
-    <deployedseed>1102599601</deployedseed>
-    <deployedseed>823846035</deployedseed>
-    <deployedseed>2064076209</deployedseed>
-    <deployedseed>1101065311</deployedseed>
-    <deployedseed>810025949</deployedseed>
+    <deployedseed>676925765</deployedseed>
+    <deployedseed>1374249863</deployedseed>
+    <deployedseed>725072021</deployedseed>
+    <deployedseed>1903225532</deployedseed>
+    <deployedseed>460261343</deployedseed>
+    <deployedseed>78010333</deployedseed>
+    <deployedseed>277208370</deployedseed>
+    <deployedseed>902834998</deployedseed>
+    <deployedseed>1082645859</deployedseed>
+    <deployedseed>2052690034</deployedseed>
+    <deployedseed>111210439</deployedseed>
+    <deployedseed>1695859632</deployedseed>
+    <deployedseed>2003577017</deployedseed>
+    <deployedseed>432908877</deployedseed>
+    <deployedseed>829379093</deployedseed>
+    <deployedseed>734853377</deployedseed>
+    <deployedseed>378352608</deployedseed>
+    <deployedseed>1263426154</deployedseed>
+    <deployedseed>1906438856</deployedseed>
+    <deployedseed>1335739337</deployedseed>
+    <deployedseed>1844662773</deployedseed>
+    <deployedseed>1429305550</deployedseed>
+    <deployedseed>1311463984</deployedseed>
+    <deployedseed>2023305192</deployedseed>
+    <deployedseed>1884870733</deployedseed>
+    <deployedseed>587353437</deployedseed>
+    <deployedseed>317879168</deployedseed>
+    <deployedseed>184231605</deployedseed>
+    <deployedseed>2034529758</deployedseed>
+    <deployedseed>828540402</deployedseed>
+    <deployedseed>292970847</deployedseed>
+    <deployedseed>49445012</deployedseed>
+    <deployedseed>2144946092</deployedseed>
+    <deployedseed>320247501</deployedseed>
+    <deployedseed>1441571172</deployedseed>
+    <deployedseed>1512694824</deployedseed>
+    <deployedseed>1528865840</deployedseed>
+    <deployedseed>596951642</deployedseed>
+    <deployedseed>9875968</deployedseed>
+    <deployedseed>1161402222</deployedseed>
+    <deployedseed>691354141</deployedseed>
+    <deployedseed>412032896</deployedseed>
+    <deployedseed>2084011059</deployedseed>
+    <deployedseed>1437445780</deployedseed>
+    <deployedseed>600020913</deployedseed>
+    <deployedseed>174539620</deployedseed>
+    <deployedseed>1214752305</deployedseed>
+    <deployedseed>1229567225</deployedseed>
+    <deployedseed>57237843</deployedseed>
+    <deployedseed>1805639172</deployedseed>
+    <deployedseed>179618231</deployedseed>
+    <deployedseed>1583766687</deployedseed>
+    <deployedseed>1459587040</deployedseed>
+    <deployedseed>252968547</deployedseed>
+    <deployedseed>168697186</deployedseed>
+    <deployedseed>376337906</deployedseed>
+    <deployedseed>568227153</deployedseed>
+    <deployedseed>573607609</deployedseed>
+    <deployedseed>1009892118</deployedseed>
+    <deployedseed>2050685623</deployedseed>
+    <deployedseed>1712950186</deployedseed>
+    <deployedseed>899949613</deployedseed>
+    <deployedseed>654132126</deployedseed>
+    <deployedseed>316944598</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct rationalised and simplified answer</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -158,7 +315,63 @@ ta3: (p*(sqrt(a)-sqrt(b))) / (b-a);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Rationalised denominator but left fraction unsimplified</description>
+      <testinput>
+        <name>ans1</name>
+        <value>(p*'sqrt(n))/qn</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Divided by n but forgot to divide by q</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Divided by q but forgot to divide by n</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Dropped the square root sign completely</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-5-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

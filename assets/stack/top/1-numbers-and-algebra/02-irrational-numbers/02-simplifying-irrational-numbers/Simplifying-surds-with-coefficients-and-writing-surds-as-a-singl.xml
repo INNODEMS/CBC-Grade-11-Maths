@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Simplifying surds with coefficients and writing surds as a single square root</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> Simplify \({@k@}\sqrt{{@n1@}}\) to the simplest form. <i>(Note: Write <code>6*sqrt(5)</code> to represent \(6\sqrt{5}\).)</i></p>
+<p>Simplified form = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p><b>(b)</b> Express \({@p@}\sqrt{{@q@}}\) as a single square root \(\sqrt{m}\). What is the value of \(m\)?</p>
+<p>\(m =\) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Part (a): Simplifying \({@k@}\sqrt{{@n1@}}\)</b><br>
+Find the largest perfect-square factor of \({@n1@}\). Since \({@n1@} = {@a_sq@} \times {@b@}\) and \({@a_sq@} = {@a@}^2\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {@k@}\sqrt{{@n1@}} = {@k@}\sqrt{{@a_sq@} \times {@b@}} = {@k@} \times \sqrt{{@a_sq@}} \times \sqrt{{@b@}} = {@k@} \times {@a@}\sqrt{{@b@}} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ {@k@}\sqrt{{@n1@}} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Expressing \({@p@}\sqrt{{@q@}}\) as a single square root \(\sqrt{m}\)</b><br>
+To move the outside number \({@p@}\) inside the square root, square it first using \(p = \sqrt{p^2}\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {@p@}\sqrt{{@q@}} = \sqrt{{@p@}^2} \times \sqrt{{@q@}} = \sqrt{{@p_sq@} \times {@q@}} = \sqrt{{@ta2@}}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ m = {@ta2@} }\)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>2</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Part (a): 4 x 5 x 7 = 140 combinations */
+k : rand([3, 4, 5, 6]);
+a : rand([2, 3, 4, 5, 6]);
+b : rand([2, 3, 5, 6, 7, 10, 11]);
+a_sq : a^2;
+n1 : a_sq * b;
+ka : k * a;
+ta1 : ka * sqrt(b);
+
+/* Part (a) distractors */
+ta1_add : (k + a) * sqrt(b);
+ta1_no_k : a * sqrt(b);
+ta1_no_root : ka * b;
+
+/* Part (b): 8 x 7 = 56 combinations (total > 7,800 non-colliding variants) */
+p : rand([2, 3, 4, 5, 6, 7, 8, 9]);
+q : rand_with_prohib(2, 13, [4, 8, 9, 12, p]);
+p_sq : p^2;
+ta2 : p_sq * q;
+
+/* Part (b) distractors (strictly distinct across 100% of seeds) */
+ta2_no_sq : p * q;
+ta2_sq_q : p * q^2;
+ta2_add : p_sq + q;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>Part (a): {@k@}\sqrt{{@n1@}} = {@ta1@}; Part (b): {@p@}\sqrt{{@q@}} = \sqrt{{@ta2@}}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Simplifying Surds with Coefficients and Writing Entire Surds</p>
+<p id="description">Grade 11 CBE: Simplifying surds of the form k*sqrt(n) into simplest form and converting p*sqrt(q) into a single square root sqrt(m).</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>10</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>ta2</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sqrt</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>0</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check exact simplified surd form EqualComAss</description>
+        <answertest>EqualComAss</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student entered an equivalent but unsimplified surd</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your expression is equal to \({@k@}\sqrt{{@n1@}}\), but it is <b>not yet fully simplified</b>. Simplify \(\sqrt{{@n1@}} = {@a@}\sqrt{{@b@}}\) and multiply \({@k@} \times {@a@} = {@ka@}\) outside the square root.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student added k + a instead of multiplying k * a</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_add</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simplified \(\sqrt{{@n1@}} = {@a@}\sqrt{{@b@}}\) correctly, but you <b>added</b> \({@k@} + {@a@}\) outside the root instead of multiplying. Since \({@k@}\sqrt{{@n1@}}\) means \({@k@} \times \sqrt{{@n1@}}\), multiply \({@k@} \times {@a@} = {@ka@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student forgot the outside coefficient k</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_no_k</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simplified \(\sqrt{{@n1@}} = {@a@}\sqrt{{@b@}}\), but forgot to multiply by the \({@k@}\) in front of the square root. Multiply \({@k@} \times {@a@} = {@ka@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Check if student dropped the square root around b</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_no_root</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember that \({@b@}\) is not a perfect square, so it remains inside the square root sign as <code>sqrt({@b@})</code>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Factor out the largest perfect square \({@a_sq@}\) from \({@n1@}\) so \(\sqrt{{@n1@}} = {@a@}\sqrt{{@b@}}\), then multiply by \({@k@}\) outside the root.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check exact radicand m = p^2 * q</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student multiplied p * q without squaring p</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_no_sq</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You multiplied \({@p@} \times {@q@} = {@ta2_no_sq@}\) without squaring \({@p@}\) first. Since \({@p@} = \sqrt{{@p@}^2} = \sqrt{{@p_sq@}}\), multiply \({@p_sq@} \times {@q@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student squared q instead of p</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_sq_q</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You squared \({@q@}\) instead of \({@p@}\). Only the number <b>outside</b> the square root (\({@p@}\)) gets squared when moving it inside: \(m = {@p@}^2 \times {@q@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student added p^2 + q instead of multiplying</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_add</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You squared \({@p@}\) to get \({@p_sq@}\), but then added \({@p_sq@} + {@q@}\) instead of multiplying. Use \(\sqrt{a} \times \sqrt{b} = \sqrt{a \times b}\), so \(m = {@p_sq@} \times {@q@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Write \({@p@}\) as \(\sqrt{{@p@}^2} = \sqrt{{@p_sq@}}\), then multiply \({@p_sq@} \times {@q@}\) to find \(m\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>104829173</deployedseed>
+    <deployedseed>219485730</deployedseed>
+    <deployedseed>338492017</deployedseed>
+    <deployedseed>459201834</deployedseed>
+    <deployedseed>572910483</deployedseed>
+    <deployedseed>683920145</deployedseed>
+    <deployedseed>794810293</deployedseed>
+    <deployedseed>819203847</deployedseed>
+    <deployedseed>928374651</deployedseed>
+    <deployedseed>112938475</deployedseed>
+    <deployedseed>223847561</deployedseed>
+    <deployedseed>334756192</deployedseed>
+    <deployedseed>445619283</deployedseed>
+    <deployedseed>556192837</deployedseed>
+    <deployedseed>667192834</deployedseed>
+    <deployedseed>778192835</deployedseed>
+    <deployedseed>889192836</deployedseed>
+    <deployedseed>990192837</deployedseed>
+    <deployedseed>123987456</deployedseed>
+    <deployedseed>456123789</deployedseed>
+    <deployedseed>534818948</deployedseed>
+    <deployedseed>672851560</deployedseed>
+    <deployedseed>500973243</deployedseed>
+    <deployedseed>1345716330</deployedseed>
+    <deployedseed>203012527</deployedseed>
+    <deployedseed>1391930876</deployedseed>
+    <deployedseed>602710978</deployedseed>
+    <deployedseed>1885960694</deployedseed>
+    <deployedseed>1664055185</deployedseed>
+    <deployedseed>302399337</deployedseed>
+    <deployedseed>878844223</deployedseed>
+    <deployedseed>1093372122</deployedseed>
+    <deployedseed>1707810939</deployedseed>
+    <deployedseed>1089261338</deployedseed>
+    <deployedseed>2078039961</deployedseed>
+    <deployedseed>956238053</deployedseed>
+    <deployedseed>1621981295</deployedseed>
+    <deployedseed>146799504</deployedseed>
+    <deployedseed>1869093018</deployedseed>
+    <deployedseed>1379988231</deployedseed>
+    <deployedseed>1824714069</deployedseed>
+    <deployedseed>899797974</deployedseed>
+    <deployedseed>2007651833</deployedseed>
+    <deployedseed>1591681959</deployedseed>
+    <deployedseed>938644269</deployedseed>
+    <deployedseed>441202500</deployedseed>
+    <deployedseed>361123775</deployedseed>
+    <deployedseed>1784770287</deployedseed>
+    <deployedseed>1483980388</deployedseed>
+    <deployedseed>1148764372</deployedseed>
+    <deployedseed>1031469332</deployedseed>
+    <deployedseed>1357825473</deployedseed>
+    <deployedseed>553838141</deployedseed>
+    <deployedseed>1664826087</deployedseed>
+    <deployedseed>1494947547</deployedseed>
+    <deployedseed>1818649557</deployedseed>
+    <deployedseed>1929665861</deployedseed>
+    <deployedseed>205494298</deployedseed>
+    <deployedseed>413893591</deployedseed>
+    <deployedseed>2106986002</deployedseed>
+    <deployedseed>859535878</deployedseed>
+    <deployedseed>1023355951</deployedseed>
+    <deployedseed>918068790</deployedseed>
+    <deployedseed>1167912327</deployedseed>
+    <deployedseed>877362226</deployedseed>
+    <deployedseed>1006669405</deployedseed>
+    <deployedseed>31877876</deployedseed>
+    <deployedseed>2130354038</deployedseed>
+    <deployedseed>1761765687</deployedseed>
+    <deployedseed>1763028979</deployedseed>
+    <deployedseed>238752052</deployedseed>
+    <deployedseed>1752559203</deployedseed>
+    <deployedseed>1567955882</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Both parts correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Part (a) unsimplified; Part (b) forgot to square p</description>
+      <testinput>
+        <name>ans1</name>
+        <value>k*'sqrt(n1)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_no_sq</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Part (a) added k + a; Part (b) squared q instead of p</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_add</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_sq_q</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Part (a) forgot outside coefficient k; Part (b) added p^2 + q</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_no_k</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_add</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

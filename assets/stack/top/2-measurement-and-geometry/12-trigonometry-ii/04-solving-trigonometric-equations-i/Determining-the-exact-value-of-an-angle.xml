@@ -2,51 +2,99 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Determining the exact value of an angle</text>
+      <text>Solving a trigonometric equation for 0° ≤ x ≤ 360° (sine)</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>
-Determine the exact value of  \(\sin({@angle@}^\circ)\).
-</p>
+      <text><![CDATA[<p>Solve the equation</p>
+\[ {@eqn@} \qquad \text{for } 0^\circ \le x \le 360^\circ. \]
 
-<p>Give your answer in simplest exact form.</p>
 
-<p>
-[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]
-</p>]]></text>
+<p><strong>(a)</strong> Rearrange the equation to find the exact value of \(\sin x\). </p>
+<div>\(\sin x = \) [[input:ans1]] [[validation:ans1]] [[feedback:prta]]</div>
+
+<p><strong>(b)</strong> Find the reference angle \(\alpha\), in degrees. </p>
+<div>\(\alpha = \) [[input:ans2]]\(^\circ\) [[validation:ans2]] [[feedback:prtb]]</div>
+
+<p><strong>(c)</strong> Hence find <strong>all</strong> the solutions of the equation for \(0^\circ \le x \le 360^\circ\). Type them as a list, for example <code>[40, 140]</code>. </p>
+<div>\(x = \) [[input:ans3]] [[validation:ans3]] [[feedback:prtc]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p><strong>(a) Rearranging the equation</strong></p>
+<p>Get \(\sin x\) on its own, exactly as you would solve \({@m@}y + \left({@d@}\right) = 0\) for \(y\).</p>
+<p><strong>Step 1: move the constant to the other side.</strong></p>
+\[ {@m@}\sin x = {@-d@}. \]
+<p><strong>Step 2: divide both sides by \({@m@}\).</strong></p>
+\[ \sin x = \frac{ {@-d@} }{ {@m@} } = {@k@}. \]
 
-<p><strong>Step 1: Identify the reference angle.</strong></p>
+<p><strong>(b) The reference angle</strong></p>
+<p>The reference angle \(\alpha\) is the acute angle whose sine is the <em>size</em> of \(\sin x\), ignoring the sign. From the special triangles, \(\sin {@alpha@}^\circ = {@abs(k)@}\), so</p>
+\[ \alpha = {@alpha@}^\circ. \]
 
-<p>The angle is negative, so it represents a clockwise rotation. We can find a positive coterminal angle by adding \(360^\circ\):</p>
-
-<p>
-\({@angle@}+360^\circ = {@angle+360@}^\circ.\)
-</p>
-
-<p>The corresponding reference angle is \(60^\circ\), \(45^\circ\), or \(30^\circ\), depending on the given angle.</p>
-
-<p><strong>Step 2: Determine the sign of sine.</strong></p>
-
-<p>The terminal arm lies in a quadrant where sine is negative. Therefore, the value of \(\sin({@angle@}^\circ)\) must be negative.</p>
-
-<p><strong>Step 3: Use the special-angle value.</strong></p>
-
-<p>Using the reference angle and the exact values of the trigonometric ratios, we obtain:</p>
-
-<p>
-\(\sin({@angle@}^\circ)={@ta@}.\)
-</p>
-
-<p><strong>Therefore, the exact value is:</strong></p>
-
-<p>
-\(\boxed{{@ta@}}\)
-</p>]]></text>
+<p><strong>(c) Finding all the solutions</strong></p>
+<p><strong>Step 1: decide which quadrants.</strong> \(\sin x = {@k@}\) is [[if test="is(sg=1)"]]<em>positive</em>. By the CAST rule, sine is positive in <strong>Quadrants I and II</strong>[[else]]<em>negative</em>. By the CAST rule, sine is positive only in Quadrants I and II, so it is negative in <strong>Quadrants III and IV</strong>[[/if]]. There is one solution in each of these quadrants.</p>
+<p><strong>Step 2: find the angle in each quadrant from \(\alpha = {@alpha@}^\circ\).</strong></p>
+<ul>
+[[if test="is(sg=1)"]]<li>Quadrant I: \(x = \alpha = {@alpha@}^\circ\).</li>
+<li>Quadrant II: \(x = 180^\circ - \alpha = 180^\circ - {@alpha@}^\circ = {@180-alpha@}^\circ\).</li>[[else]]<li>Quadrant III: \(x = 180^\circ + \alpha = 180^\circ + {@alpha@}^\circ = {@180+alpha@}^\circ\).</li>
+<li>Quadrant IV: \(x = 360^\circ - \alpha = 360^\circ - {@alpha@}^\circ = {@360-alpha@}^\circ\).</li>[[/if]]
+</ul>
+<p><strong>Step 3: check the range and write the answer.</strong> Both angles lie between \(0^\circ\) and \(360^\circ\), so</p>
+\[ x = {@x1@}^\circ \quad\text{or}\quad x = {@x2@}^\circ. \]
+<p>On the graph of \(y = \sin x\), the horizontal line \(y = {@k@}\) crosses the curve exactly twice between \(0^\circ\) and \(360^\circ\), at these two angles.</p>
+<div style="text-align:center;" role="img" aria-label="Graph of y = sin x for x from 0 to 360 degrees, with the horizontal line y = {#float(k)#} crossing it at the two solutions.">
+[[jsxgraph width="460px" height="300px"]]
+(function() {
+  var k = {#float(k)#}, x1 = {#x1#}, x2 = {#x2#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-30, 1.45, 390, -1.45], axis:false, grid:false,
+      keepaspectratio:false, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-15, 0], [385, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.4]], {strokeColor:'#444', fixed:true, highlight:false});
+  for (var t = 90; t <= 360; t += 90) {
+    b.create('segment', [[t, -0.04], [t, 0.04]], {strokeColor:'#444', fixed:true});
+    b.create('text', [t, -0.12, t + '°'], {fixed:true, anchorX:'middle', anchorY:'top', fontSize:12});
+  }
+  b.create('text', [-6, 1, '1'], {fixed:true, anchorX:'right', anchorY:'middle', fontSize:12});
+  b.create('text', [-6, -1, '−1'], {fixed:true, anchorX:'right', anchorY:'middle', fontSize:12});
+  b.create('text', [380, -0.12, 'x'], {fixed:true, anchorX:'right', anchorY:'top'});
+  b.create('functiongraph', [function(t) { return Math.sin(t*Math.PI/180); }, 0, 360], {strokeColor:'#1565c0', strokeWidth:2.5, fixed:true});
+  b.create('segment', [[0, k], [360, k]], {strokeColor:'#ef6c00', strokeWidth:2, dash:2, fixed:true});
+  b.create('text', [362, k, 'y = sin x = ' + (k > 0 ? '' : '−') + '{#sv#}/2'.replace('sqrt(2)', '√2').replace('sqrt(3)', '√3')],
+      {fixed:true, anchorX:'left', anchorY:'middle', color:'#ef6c00', fontSize:12});
+  [x1, x2].forEach(function(t) {
+    b.create('point', [t, k], {name:'', size:4, color:'#c62828', fixed:true});
+    b.create('segment', [[t, 0], [t, k]], {strokeColor:'#c62828', dash:1, fixed:true});
+    b.create('text', [t, k > 0 ? -0.3 : 0.3, 'x = ' + t + '°'], {fixed:true, anchorX:'middle', anchorY:'middle', color:'#c62828', fontSize:13});
+  });
+})();
+[[/jsxgraph]]
+</div>
+<p>On the unit circle, \(\sin x\) is the \(y\)-coordinate, so the solutions are the two points where the line \(y = {@k@}\) meets the circle.</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with the horizontal line y = {#float(k)#} meeting the circle at two points, one for each solution.">
+[[jsxgraph width="320px" height="320px"]]
+(function() {
+  var k = {#float(k)#}, x1 = {#x1#}, x2 = {#x2#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222', label:{offset:[-14, k > 0 ? -12 : 10]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A = b.create('point', [1, 0], {visible:false, fixed:true});
+  b.create('segment', [[-1.3, k], [1.3, k]], {strokeColor:'#ef6c00', strokeWidth:2, dash:2, fixed:true});
+  var cols = ['#c62828', '#6a1b9a'], rad = [0.22, 0.38];
+  [x1, x2].forEach(function(t, i) {
+    var px = Math.cos(t*Math.PI/180), py = Math.sin(t*Math.PI/180);
+    var P = b.create('point', [px, py], {name:'P' + (i + 1), fixed:true, size:4, color:cols[i],
+        label:{offset:[px > 0 ? 10 : -26, py > 0 ? 14 : -16]}});
+    b.create('segment', [O, P], {strokeColor:cols[i], strokeWidth:2, fixed:true});
+    b.create('angle', [A, O, P], {radius:rad[i], name:t + '°', fillColor:cols[i], strokeColor:cols[i], fillOpacity:0.12, fixed:true, label:{color:cols[i]}});
+  });
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
-    <defaultgrade>1</defaultgrade>
+    <defaultgrade>4</defaultgrade>
     <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
@@ -54,17 +102,40 @@ Determine the exact value of  \(\sin({@angle@}^\circ)\).
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>angle: rand([-30,-45,-60,-120,-135,-150]);
-ta: sin(angle*%pi/180);
+      <text><![CDATA[/* Design backwards: choose sin x = k first, then build the equation m*sin(x) + d = 0.
+   k = sg*s/2 with s in {1, sqrt(2), sqrt(3)}, so the reference angle is 30, 45 or 60 degrees.
+   sg (+1 or -1) x 3 values of s x 3 coefficients m = 18 distinct variants. */
+sg : rand([-1, 1]);
+idx : 1 + rand(3);
+slist : [1, sqrt(2), sqrt(3)];
+alist : [30, 45, 60];
+sv : slist[idx];
+alpha : alist[idx];
+m : rand([2, 4, 6]);
+k : sg*sv/2;                 /* sin x = k */
+d : -m*k;                    /* constant term of the equation */
+eqn : m*sin(x) + d = 0;
 
-/* Common mistake: ignore the negative sign */
-mistake1: sin(abs(angle)*%pi/180);</text>
+/* Solutions in 0 <= x <= 360: sine is positive in Quadrants I and II, negative in III and IV */
+x1 : if sg = 1 then alpha else 180 + alpha;
+x2 : if sg = 1 then 180 - alpha else 360 - alpha;
+sols : [x1, x2];
+solset : setify(sols);
+/* The two quadrants where sin x has the OPPOSITE sign (the common mistake) */
+wrongq : if sg = 1 then [180 + alpha, 360 - alpha] else [alpha, 180 - alpha];
+wrongset : setify(wrongq);
+solrad : setify([x1*%pi/180, x2*%pi/180]);
+
+/* Possible student mistakes in (a) and (b) */
+k_neg : -k;                  /* sign error when rearranging */
+k_nodiv : -d;                /* moved d across but did not divide by m */
+alpha_rad : alpha*%pi/180;   /* reference angle in radians */]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta@}</text>
+      <text>\({@eqn@}\): \(\sin x = {@k@}\), \(\alpha = {@alpha@}^\circ\), \(x = {@x1@}^\circ, {@x2@}^\circ\)</text>
     </questionnote>
     <questiondescription format="html">
       <text/>
@@ -94,15 +165,51 @@ mistake1: sin(abs(angle)*%pi/180);</text>
     <input>
       <name>ans1</name>
       <type>algebraic</type>
-      <tans>ta</tans>
-      <boxsize>8</boxsize>
+      <tans>k</tans>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>alpha</tans>
+      <boxsize>6</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>sols</tans>
+      <boxsize>16</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint>[x1, x2]</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -110,7 +217,7 @@ mistake1: sin(abs(angle)*%pi/180);</text>
       <options/>
     </input>
     <prt>
-      <name>prt1</name>
+      <name>prta</name>
       <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
@@ -119,17 +226,17 @@ mistake1: sin(abs(angle)*%pi/180);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Finding the exact value of a sine angle</description>
+        <description>Correct value of sin x</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ta</tans>
+        <tans>k</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-1-T</trueanswernote>
+        <trueanswernote>prta-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
@@ -137,83 +244,572 @@ mistake1: sin(abs(angle)*%pi/180);</text>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>1</falsenextnode>
-        <falseanswernote>prt1-1-F</falseanswernote>
+        <falseanswernote>prta-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
       <node>
         <name>1</name>
-        <description>Ignoring the negative sign before the equation</description>
+        <description>Sign error when rearranging</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>mistake1</tans>
+        <tans>k_neg</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt1-2-T</trueanswernote>
+        <trueanswernote>prta-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Your answer suggests that you may have treated the negative angle as a positive angle.</p>
-
-<p>Remember that a negative angle represents a clockwise rotation. We can find a positive coterminal angle by adding \(360^\circ\):</p>
-
-<p style="text-align: center;">
-\(
-{@angle@}^\circ+360^\circ={@coterminal@}^\circ.
-\)
-</p>
-
-<p>The terminal arm therefore lies in Quadrant {@quadrant@}. Since sine is negative in Quadrants III and IV, the value of sine must be negative.</p>
-
-<p>The reference angle is {@reference@}^\circ, so</p>
-
-<p style="text-align: center;">
-\(
-\sin({@angle@}^\circ)=-\sin({@reference@}^\circ)
-={@ta@}.
-\)
-</p>]]></text>
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. When you move the constant to the other side of the equation, its sign changes.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prta-2-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>2</name>
+        <description>Did not divide by the coefficient</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>k_nodiv</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prta-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have moved the constant correctly, but \(\sin x\) is still multiplied by \({@m@}\). Divide both sides by \({@m@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prta-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Rearrange to get \(\sin x\) on its own: move the constant to the other side, then divide by the coefficient of \(\sin x\).</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
-    <deployedseed>25</deployedseed>
+    <prt>
+      <name>prtb</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct reference angle</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>alpha</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtb-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtb-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Reference angle in radians</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>alpha_rad</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtb-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your angle is in radians. Give it in degrees.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prtb-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave a solution instead of the reference angle</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>x2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtb-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is one of the solutions of the equation, not the reference angle. The reference angle is the <em>acute</em> angle whose sine is the size of \(\sin x\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtb-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Ignore the sign of \(\sin x\) and find the acute angle with that sine, using the special triangles.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtc</name>
+      <value>2.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* Accept a list or a set, in any order; compare as sets */
+sa : if listp(ans3) then setify(ans3) else if setp(ans3) then ans3 else {ans3};
+one : is(cardinality(sa) = 1 and cardinality(intersection(sa, solset)) = 1);
+sl : listify(sa);
+outr : is(lmin(sl) < 0 or lmax(sl) > 360);]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Both solutions, nothing extra</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>solset</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtc-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Only one of the two solutions</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>one</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That solution is correct, but there is another one between \(0^\circ\) and \(360^\circ\). Use the CAST rule: in which <em>two</em> quadrants does \(\sin x\) have this sign?</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prtc-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Solutions in the wrong two quadrants</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>wrongset</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Those angles are in the quadrants where \(\sin x\) has the <em>opposite</em> sign. Check the sign of your answer to part (a), then use the CAST rule to choose the quadrants.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prtc-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Solutions given in radians</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sa</sans>
+        <tans>solrad</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your angles are in radians. The range \(0^\circ \le x \le 360^\circ\) is in degrees, so give the solutions in degrees.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prtc-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>An angle outside the range</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>outr</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtc-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>At least one of your angles is outside the range \(0^\circ \le x \le 360^\circ\). If an angle is negative, add \(360^\circ\) to it.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtc-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use the sign of \(\sin x\) and the CAST rule to find the two quadrants, then use the reference angle to find the solution in each quadrant.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>3001</deployedseed>
+    <deployedseed>3002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>3004</deployedseed>
+    <deployedseed>3005</deployedseed>
+    <deployedseed>3006</deployedseed>
+    <deployedseed>3007</deployedseed>
+    <deployedseed>3008</deployedseed>
+    <deployedseed>3009</deployedseed>
+    <deployedseed>3010</deployedseed>
+    <deployedseed>3011</deployedseed>
+    <deployedseed>3012</deployedseed>
+    <deployedseed>3013</deployedseed>
+    <deployedseed>3014</deployedseed>
+    <deployedseed>3015</deployedseed>
+    <deployedseed>3016</deployedseed>
+    <deployedseed>3017</deployedseed>
+    <deployedseed>3018</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>All parts correct</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>k</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>alpha</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>sols</value>
       </testinput>
       <expected>
-        <name>prt1</name>
+        <name>prta</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prta-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtc-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Solutions in the other order</description>
       <testinput>
         <name>ans1</name>
-        <value>ta</value>
+        <value>k</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>alpha</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[x2, x1]</value>
       </testinput>
       <expected>
-        <name>prt1</name>
+        <name>prta</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prta-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtc-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Sign error, reference angle in radians, wrong quadrants</description>
+      <testinput>
+        <name>ans1</name>
+        <value>k_neg</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>alpha_rad</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>wrongq</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prta-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtb-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtc-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Did not divide, gave a solution as the reference angle, only one solution</description>
+      <testinput>
+        <name>ans1</name>
+        <value>k_nodiv</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>x2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[x1]</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prta-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtb-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtc-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Solutions in radians</description>
+      <testinput>
+        <name>ans1</name>
+        <value>k</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>alpha</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[x1*%pi/180, x2*%pi/180]</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prta-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtc-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>A solution outside the range</description>
+      <testinput>
+        <name>ans1</name>
+        <value>k</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>alpha</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[x1, x2-360]</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prta-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtc-5-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(k+10,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(alpha+7,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>[x1+1, x2+1]</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prta-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtb-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtc-5-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>8</testcase>
+      <description>Invalid: a decimal in part (a)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(k)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>alpha</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>sols</value>
+      </testinput>
+      <expected>
+        <name>prta</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtb</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtb-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtc</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtc-1-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

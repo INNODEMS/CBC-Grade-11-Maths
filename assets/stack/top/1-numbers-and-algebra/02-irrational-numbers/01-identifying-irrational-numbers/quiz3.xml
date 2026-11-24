@@ -2,48 +2,31 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>quiz3</text>
+      <text>Classifying a square root expression as rational or irrational</text>
     </name>
-    <questiontext format="moodle_auto_format">
+    <questiontext format="html">
       <text><![CDATA[<p>Consider the following mathematical expression:</p>
-
-<p style="text-align: center; font-size: 1.2em;">
-   \[ {@expr@} \]
-</p>
-
-<p>Determine whether this number is <strong>rational</strong> or <strong>irrational</strong>.</p>
-
-<p>
-    Your answer: [[input:ans1]] [[validation:ans1]]
-</p>
-</p>[[feedback:prt1]]</p>]]></text>
+<p style="text-align: center; font-size: 1.2em;">\[ \sqrt{{@n@}} \]</p>
+<p>Determine whether this number is <b>rational</b> or <b>irrational</b>.</p>
+<p>Your answer: [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<p><strong>Worked Solution:</strong></p>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
 
 <p>We are asked to classify the expression:</p>
-<p style="text-align: center;">
-    \[ \sqrt{{@n@}} \]
-</p>
+<p style="text-align: center;">\[ \sqrt{{@n@}} \]</p>
 
-<p>
-  A number is <strong>rational</strong> if it can be written as a fraction of two integers \(\frac{a}{b}\). 
-  Square roots of positive integers are rational <em>only</em> if the integer under the root is a <strong>perfect square</strong>.
-</p>
+<p>A number is <b>rational</b> if it can be written as a fraction \(\displaystyle \frac{a}{b}\) where \(a\) and \(b\) are integers and \(b \neq 0\). A square root \(\sqrt{k}\) of a positive rational number \(k\) is rational <i>only</i> if \(k\) is a <b>perfect square</b> (both its numerator and denominator are perfect squares when written in lowest terms).</p>
 
-<p>
-  In this case, {@n@} is {@if type_choice = 0 then "a perfect square." else "not a perfect square."@}
-</p>
+[[if test="type_choice=0"]]
+<p>In this case, \({@n@} = \left({@root_n@}\right)^2\) is a perfect square, so its square root simplifies to a ratio of two integers:</p>
+<p style="text-align: center;">\[ \sqrt{{@n@}} = {@root_n@} \]</p>
+<p>Since \({@root_n@}\) can be written as a fraction of two integers, \(\sqrt{{@n@}}\) is <b>Rational</b>.</p>
+[[else]]
+<p>In this case, \({@n@}\) is <b>not</b> a perfect square, so \(\sqrt{{@n@}}\) cannot be simplified to an integer or a fraction of two integers (its decimal expansion is non-terminating and non-repeating). Therefore, \(\sqrt{{@n@}}\) is <b>Irrational</b>.</p>
+[[/if]]
 
-{@if type_choice = 0 then sconcat("<p style=\"text-align: center;\">\\[ \\sqrt{", n, "} = ", sqrt(n), " \\]</p>") else ""@}
-
-<p>
-  {@explanation@}
-</p>
-
-<p>
-  Therefore, the correct classification is <strong>{@correct_ans@}</strong>.
-</p>]]></text>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Classification: } \text{{#correct_label#}} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -53,34 +36,38 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[/* Define lists of non-square integers (irrational results) and square integers (rational results) */
-irr_list: [2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15];
-rat_list: [1, 4, 9, 16, 25, 36];
+      <text><![CDATA[/* 40 non-square integers + 35 perfect-square integers/fractions = 75 distinct variants */
+irr_list : [2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
+rat_list : [4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400, 1/4, 1/9, 1/16, 1/25, 1/36, 4/9, 4/25, 9/4, 9/16, 9/25, 16/9, 16/25, 25/4, 25/9, 25/16, 36/25];
 
 /* Randomly choose whether this instance is rational (0) or irrational (1) */
-type_choice: rand([0, 1]);
+type_choice : rand([0, 1]);
 
-if type_choice = 1 then (
-    n: rand(irr_list),
-    correct_ans: "Irrational",
-    explanation: sconcat("Since ", n, " is not a perfect square, its square root cannot be expressed as a ratio of two integers, making it irrational.")
+if type_choice = 0 then (
+    n : rand(rat_list),
+    root_n : sqrt(n),
+    ta1 : 1,
+    wa1 : 2,
+    correct_label : "Rational",
+    in_opts1 : [[1, true, "Rational"], [2, false, "Irrational"]]
 ) else (
-    n: rand(rat_list),
-    correct_ans: "Rational",
-    explanation: sconcat("Since ", n, " is a perfect square, its square root simplifies to an integer, making it rational.")
-);
-
-/* The expression displayed to the student */
-expr: sqrt(n);]]></text>
+    n : rand(irr_list),
+    root_n : sqrt(n),
+    ta1 : 2,
+    wa1 : 1,
+    correct_label : "Irrational",
+    in_opts1 : [[1, false, "Rational"], [2, true, "Irrational"]]
+);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}</text>
+      <text><![CDATA[Expr: \sqrt{{@n@}} -> {#correct_label#}]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Classifying Square Roots as Rational or Irrational</p>
+<p id="description">Grade 11 CBE: Determining whether the square root of a given rational number is rational or irrational.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -106,20 +93,20 @@ expr: sqrt(n);]]></text>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
-      <tans>correct_ans</tans>
-      <boxsize>8</boxsize>
+      <type>radio</type>
+      <tans>in_opts1</tans>
+      <boxsize>15</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>1</forbidfloat>
+      <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -132,10 +119,10 @@ expr: sqrt(n);]]></text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check whether student selected the correct classification</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>correct_ans</tans>
+        <tans>ta1</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
@@ -152,9 +139,105 @@ expr: sqrt(n);]]></text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[[[if test="type_choice=0"]]
+<p>Incorrect. Even though \(\sqrt{{@n@}}\) contains a square root symbol, \({@n@} = \left({@root_n@}\right)^2\), so \(\sqrt{{@n@}} = {@root_n@}\), which is a ratio of two integers and therefore <b>Rational</b>.</p>
+[[else]]
+<p>Incorrect. Because \({@n@}\) is not a perfect square, \(\sqrt{{@n@}}\) cannot be written as a fraction of two integers, so it is <b>Irrational</b>.</p>
+[[/if]]]]></text>
         </falsefeedback>
       </node>
     </prt>
+    <deployedseed>112233445</deployedseed>
+    <deployedseed>223344556</deployedseed>
+    <deployedseed>334455667</deployedseed>
+    <deployedseed>445566778</deployedseed>
+    <deployedseed>556677889</deployedseed>
+    <deployedseed>667788990</deployedseed>
+    <deployedseed>778899001</deployedseed>
+    <deployedseed>889900112</deployedseed>
+    <deployedseed>990011223</deployedseed>
+    <deployedseed>102938475</deployedseed>
+    <deployedseed>213243546</deployedseed>
+    <deployedseed>324354657</deployedseed>
+    <deployedseed>435465768</deployedseed>
+    <deployedseed>546576879</deployedseed>
+    <deployedseed>657687980</deployedseed>
+    <deployedseed>768798091</deployedseed>
+    <deployedseed>879809102</deployedseed>
+    <deployedseed>980910213</deployedseed>
+    <deployedseed>135792468</deployedseed>
+    <deployedseed>246813579</deployedseed>
+    <deployedseed>1809576967</deployedseed>
+    <deployedseed>507240935</deployedseed>
+    <deployedseed>316079001</deployedseed>
+    <deployedseed>220727663</deployedseed>
+    <deployedseed>624430191</deployedseed>
+    <deployedseed>672376072</deployedseed>
+    <deployedseed>1485209549</deployedseed>
+    <deployedseed>901153268</deployedseed>
+    <deployedseed>849596970</deployedseed>
+    <deployedseed>193894792</deployedseed>
+    <deployedseed>1090688900</deployedseed>
+    <deployedseed>148118888</deployedseed>
+    <deployedseed>953849791</deployedseed>
+    <deployedseed>1698258837</deployedseed>
+    <deployedseed>539164506</deployedseed>
+    <deployedseed>1335685063</deployedseed>
+    <deployedseed>676102549</deployedseed>
+    <deployedseed>2049836725</deployedseed>
+    <deployedseed>1419501873</deployedseed>
+    <deployedseed>218799778</deployedseed>
+    <deployedseed>1705386865</deployedseed>
+    <deployedseed>904408171</deployedseed>
+    <deployedseed>813446770</deployedseed>
+    <deployedseed>1027577800</deployedseed>
+    <deployedseed>805242927</deployedseed>
+    <deployedseed>1225666316</deployedseed>
+    <deployedseed>1365606621</deployedseed>
+    <deployedseed>2126933674</deployedseed>
+    <deployedseed>763510283</deployedseed>
+    <deployedseed>1393377673</deployedseed>
+    <deployedseed>1396134722</deployedseed>
+    <deployedseed>1219030759</deployedseed>
+    <deployedseed>1587125509</deployedseed>
+    <deployedseed>1790911117</deployedseed>
+    <deployedseed>1927638227</deployedseed>
+    <deployedseed>814606553</deployedseed>
+    <deployedseed>1321572844</deployedseed>
+    <deployedseed>1029483647</deployedseed>
+    <deployedseed>440539087</deployedseed>
+    <deployedseed>1552307955</deployedseed>
+    <deployedseed>1687491060</deployedseed>
+    <deployedseed>1687990277</deployedseed>
+    <deployedseed>774114205</deployedseed>
+    <deployedseed>1974998809</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct classification selected</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Incorrect classification selected</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wa1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+    </qtest>
   </question>
 </quiz>

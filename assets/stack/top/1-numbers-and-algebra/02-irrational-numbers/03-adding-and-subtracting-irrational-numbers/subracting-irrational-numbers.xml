@@ -2,27 +2,31 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>subracting irrational numbers</text>
+      <text>Simplifying and subtracting two unlike surds to form a single surd</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Simplify the following expression, giving your answer in the form \(k\sqrt{m}\), where \(m\) is as small as possible.</p>
-\[ \sqrt{@x@} - \sqrt{@y@} \]
-<p>[[input:ans1]] [[validation:ans1]]</p>
-<p>[[feedback:prt1]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p>Simplify the following expression, giving your answer in the form \(k\sqrt{m}\), where \(m\) has no perfect-square factors. <i>(Note: Write <code>2*sqrt(7)</code> to represent \(2\sqrt{7}\).)</i></p>
+<p style="text-align: center; font-size: 1.2em;">\[ \sqrt{{@x@}} - \sqrt{{@y@}} \]</p>
+<p>Simplified form = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
 
-<p><strong>Step 1:</strong> Simplify \(\sqrt{@x@}\).</p>
-\[ \sqrt{@x@} = \sqrt{{@a2@} \times {@n@}} = \sqrt{@a2@} \times \sqrt{@n@} = {@a@}\sqrt{@n@} \]
+<p>Because \(\sqrt{{@x@}}\) and \(\sqrt{{@y@}}\) do not have the same number inside the square root, they cannot be subtracted directly. First simplify each square root by factoring out its <b>largest perfect-square factor</b> and applying \(\sqrt{p^2 \times n} = \sqrt{p^2} \times \sqrt{n} = p\sqrt{n}\):</p>
 
-<p><strong>Step 2:</strong> Simplify \(\sqrt{@y@}\).</p>
-\[ \sqrt{@y@} = \sqrt{{@b2@} \times {@n@}} = \sqrt{@b2@} \times \sqrt{@n@} = {@b@}\sqrt{@n@} \]
+<p><b>Step 1: Simplify \(\sqrt{{@x@}}\)</b><br>
+The largest perfect-square factor of \({@x@}\) is \({@a2@}\) (since \({@x@} = {@a2@} \times {@n@}\) and \(\sqrt{{@a2@}} = {@a@}\)):</p>
+<p style="margin-left: 20px;">\(\displaystyle \sqrt{{@x@}} = \sqrt{{@a2@} \times {@n@}} = \sqrt{{@a2@}} \times \sqrt{{@n@}} = {@a@}\sqrt{{@n@}}\)</p>
 
-<p><strong>Step 3:</strong> Subtract the like terms. Both roots now have the same irrational part \(\sqrt{@n@}\), so we subtract the coefficients:</p>
-\[ {@a@}\sqrt{@n@} - {@b@}\sqrt{@n@} = ({@a@} - {@b@})\sqrt{@n@} = {@c@}\sqrt{@n@} \]
+<p><b>Step 2: Simplify \(\sqrt{{@y@}}\)</b><br>
+The largest perfect-square factor of \({@y@}\) is \({@b2@}\) (since \({@y@} = {@b2@} \times {@n@}\) and \(\sqrt{{@b2@}} = {@b@}\)):</p>
+<p style="margin-left: 20px;">\(\displaystyle \sqrt{{@y@}} = \sqrt{{@b2@} \times {@n@}} = \sqrt{{@b2@}} \times \sqrt{{@n@}} = {@b@}\sqrt{{@n@}}\)</p>
 
-<p><strong>Answer:</strong> \( {@c@}\sqrt{@n@} \)</p>]]></text>
+<p><b>Step 3: Subtract the like surds</b><br>
+Both terms now share the same irrational part \(\sqrt{{@n@}}\), so subtract the coefficients in front while keeping \(\sqrt{{@n@}}\) unchanged:</p>
+<p style="margin-left: 20px;">\(\displaystyle {@a@}\sqrt{{@n@}} - {@b@}\sqrt{{@n@}} = ({@a@} - {@b@})\sqrt{{@n@}} = {@c@}\sqrt{{@n@}}\)</p>
+
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \sqrt{{@x@}} - \sqrt{{@y@}} = {@ta1@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -32,26 +36,36 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>simp:true;
-n: rand([2,3,5,6,7,10]);
-a: rand([5,6,7]);
-d: rand([2,3]);
-b: a-d;
-a2: a^2;
-b2: b^2;
-x: a2*n;
-y: b2*n;
-c: a-b;
-ta1: c*sqrt(n);</text>
+      <text>/* 15 square-free radicands x 20 valid pairs (a, b) = 300 unique non-colliding variants */
+n : rand([2, 3, 5, 6, 7, 10, 11, 13, 14, 15, 17, 19, 21, 22, 23]);
+a : rand([5, 6, 7, 8, 9]);
+b : rand_with_prohib(2, a - 2, []);
+
+a2 : a^2;
+b2 : b^2;
+x : a2 * n;
+y : b2 * n;
+c : a - b;
+
+/* Correct fully simplified answer */
+ta1 : c * sqrt(n);
+
+/* Distractors for targeted PRT feedback */
+diffxy : x - y;
+w1 : sqrt(diffxy);
+w2 : (a + b) * sqrt(n);
+w3 : (b - a) * sqrt(n);
+w4 : c * n;</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}</text>
+      <text>\sqrt{{@x@}} - \sqrt{{@y@}} = {@ta1@} (a = {@a@}, b = {@b@}, n = {@n@})</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Subtracting Irrational Numbers (Like Surds)</p>
+<p id="description">Grade 11 CBE: Simplifying two square roots to like surds and subtracting their coefficients in the form k*sqrt(m).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -90,25 +104,25 @@ ta1: c*sqrt(n);</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
       <name>prt1</name>
       <value>1.0000000</value>
-      <autosimplify>1</autosimplify>
+      <autosimplify>0</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
         <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
+        <description>Check exact simplified surd form EqualComAss</description>
+        <answertest>EqualComAss</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -120,10 +134,135 @@ ta1: c*sqrt(n);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student entered an equivalent but uncombined/unsimplified expression</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your expression is mathematically equal to \(\sqrt{{@x@}} - \sqrt{{@y@}}\), but it is <b>not yet combined into a single simplified surd</b> \(k\sqrt{m}\). Simplify each root to \({@a@}\sqrt{{@n@}}\) and \({@b@}\sqrt{{@n@}}\), then subtract the coefficients \({@a@} - {@b@} = {@c@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student subtracted the numbers directly under the square roots</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You subtracted \({@x@} - {@y@} = {@diffxy@}\) inside a single square root. Remember that \(\sqrt{x} - \sqrt{y} \neq \sqrt{x - y}\). Simplify \(\sqrt{{@x@}}\) and \(\sqrt{{@y@}}\) separately first, then subtract their coefficients.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student added the coefficients instead of subtracting</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simplified both surds correctly to \({@a@}\sqrt{{@n@}}\) and \({@b@}\sqrt{{@n@}}\), but you <b>added</b> the coefficients instead of subtracting them. Evaluate \({@a@} - {@b@} = {@c@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Check if student reversed the order of subtraction</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Check the order of subtraction: \({@a@}\sqrt{{@n@}} - {@b@}\sqrt{{@n@}} = ({@a@} - {@b@})\sqrt{{@n@}}\), which is positive (\({@c@}\sqrt{{@n@}}\)), not negative.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description>Check if student dropped the square root sign completely</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-6-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember that \({@n@}\) is not a perfect square, so \(\sqrt{{@n@}}\) must remain in your answer as <code>{@c@}*sqrt({@n@})</code>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-6-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Simplify \(\sqrt{{@x@}}\) and \(\sqrt{{@y@}}\) first by factoring out their largest perfect squares, then subtract the coefficients of the resulting like surds.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -138,9 +277,87 @@ ta1: c*sqrt(n);</text>
     <deployedseed>387403371</deployedseed>
     <deployedseed>1601867354</deployedseed>
     <deployedseed>666796956</deployedseed>
+    <deployedseed>918273645</deployedseed>
+    <deployedseed>546372819</deployedseed>
+    <deployedseed>192837465</deployedseed>
+    <deployedseed>837465920</deployedseed>
+    <deployedseed>475869102</deployedseed>
+    <deployedseed>657483920</deployedseed>
+    <deployedseed>384756192</deployedseed>
+    <deployedseed>748392015</deployedseed>
+    <deployedseed>102938475</deployedseed>
+    <deployedseed>1084896128</deployedseed>
+    <deployedseed>604254138</deployedseed>
+    <deployedseed>335234544</deployedseed>
+    <deployedseed>148494787</deployedseed>
+    <deployedseed>1883829627</deployedseed>
+    <deployedseed>1614220226</deployedseed>
+    <deployedseed>1389197406</deployedseed>
+    <deployedseed>418264097</deployedseed>
+    <deployedseed>1370807333</deployedseed>
+    <deployedseed>21172795</deployedseed>
+    <deployedseed>1083001956</deployedseed>
+    <deployedseed>2093759088</deployedseed>
+    <deployedseed>2090234849</deployedseed>
+    <deployedseed>71075360</deployedseed>
+    <deployedseed>1282926064</deployedseed>
+    <deployedseed>275034046</deployedseed>
+    <deployedseed>472745582</deployedseed>
+    <deployedseed>1603318357</deployedseed>
+    <deployedseed>1495559677</deployedseed>
+    <deployedseed>1916334032</deployedseed>
+    <deployedseed>1426138560</deployedseed>
+    <deployedseed>1410939097</deployedseed>
+    <deployedseed>1053896202</deployedseed>
+    <deployedseed>440827829</deployedseed>
+    <deployedseed>1072130079</deployedseed>
+    <deployedseed>897188566</deployedseed>
+    <deployedseed>1776048635</deployedseed>
+    <deployedseed>1367644758</deployedseed>
+    <deployedseed>850427407</deployedseed>
+    <deployedseed>908294143</deployedseed>
+    <deployedseed>2101387666</deployedseed>
+    <deployedseed>1781083375</deployedseed>
+    <deployedseed>1742190462</deployedseed>
+    <deployedseed>1907083493</deployedseed>
+    <deployedseed>1578267700</deployedseed>
+    <deployedseed>1593210761</deployedseed>
+    <deployedseed>251270392</deployedseed>
+    <deployedseed>932335885</deployedseed>
+    <deployedseed>1585805958</deployedseed>
+    <deployedseed>1383106723</deployedseed>
+    <deployedseed>1871184104</deployedseed>
+    <deployedseed>113609309</deployedseed>
+    <deployedseed>1953542196</deployedseed>
+    <deployedseed>1851199957</deployedseed>
+    <deployedseed>202164167</deployedseed>
+    <deployedseed>293445690</deployedseed>
+    <deployedseed>893950813</deployedseed>
+    <deployedseed>1426783949</deployedseed>
+    <deployedseed>1762995826</deployedseed>
+    <deployedseed>1514241128</deployedseed>
+    <deployedseed>991992013</deployedseed>
+    <deployedseed>1470693056</deployedseed>
+    <deployedseed>1587009817</deployedseed>
+    <deployedseed>182632112</deployedseed>
+    <deployedseed>756791063</deployedseed>
+    <deployedseed>1896890001</deployedseed>
+    <deployedseed>245483440</deployedseed>
+    <deployedseed>659296537</deployedseed>
+    <deployedseed>543816326</deployedseed>
+    <deployedseed>164943349</deployedseed>
+    <deployedseed>27571773</deployedseed>
+    <deployedseed>992050552</deployedseed>
+    <deployedseed>1939836703</deployedseed>
+    <deployedseed>157329558</deployedseed>
+    <deployedseed>1215742401</deployedseed>
+    <deployedseed>224420907</deployedseed>
+    <deployedseed>477029123</deployedseed>
+    <deployedseed>66316227</deployedseed>
+    <deployedseed>1860879678</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct simplified difference</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -149,7 +366,77 @@ ta1: c*sqrt(n);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Equivalent but uncombined difference a*sqrt(n) - b*sqrt(n)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>a*'sqrt(n) - b*'sqrt(n)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Subtracted radicands directly under one root sqrt(x - y)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Added coefficients instead of subtracting</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Reversed subtraction order (b - a)*sqrt(n)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-5-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Dropped the square root sign completely</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-6-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

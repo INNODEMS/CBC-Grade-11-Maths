@@ -1,0 +1,1208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Solving Trigonometric Equations Using Cosine</text>
+    </name>
+    <questiontext format="moodle_auto_format">
+      <text><![CDATA[<p>Consider the trigonometric equation \( {@eqn@}, \qquad 0^\circ \le \theta < 360^\circ. \)</p>
+<p>You may use a calculator. Give angles in degrees, correct to \(1\) decimal place.</p>
+
+<p><strong>(a)</strong> Rearrange the equation to find the exact value of \(\cos\theta\), as a fraction. </p>
+<div>\(\cos\theta = \) [[input:ansk]] [[validation:ansk]] [[feedback:prtk]]</div>
+
+<p><strong>(b)</strong> Determine the reference angle \(\alpha\). </p>
+<div>\(\alpha = \) [[input:ans0]]\(^\circ\) [[validation:ans0]] [[feedback:prt0]]</div>
+
+<p><strong>(c)</strong> In which quadrants do the solutions lie?  </p>
+<div>[[input:ansq]] [[validation:ansq]] [[feedback:prtq]]</div>
+
+<p><strong>(d)</strong> Hence solve the equation for \(0^\circ \le \theta < 360^\circ\). You may give the two solutions in either order. </p>
+<div>First solution: \(\theta = \) [[input:ans1]]\(^\circ\) [[validation:ans1]] [[feedback:prt1]]</div>
+<div>Second solution: \(\theta = \) [[input:ans2]]\(^\circ\) [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
+    </questiontext>
+    <generalfeedback format="moodle_auto_format">
+      <text><![CDATA[<h3>Worked solution</h3>
+<p>We are solving \({@eqn@}\) for \(0^\circ \le \theta < 360^\circ\).</p>
+
+<p><strong>(a) Rearranging the equation</strong></p>
+<p>Get \(\cos\theta\) on its own, just as you would solve \({@A@}y + \left({@B@}\right) = 0\) for \(y\).</p>
+<p><strong>Step 1: move the constant to the other side.</strong> \({@A@}\cos\theta = {@-B@}\).</p>
+<p><strong>Step 2: divide both sides by \({@A@}\).</strong></p>
+\[ \cos\theta = \frac{ {@-B@} }{ {@A@} } = {@k@}. \]
+
+<p><strong>(b) The reference angle</strong></p>
+<p>The reference angle \(\alpha\) is the acute angle whose cosine is the <em>size</em> of \(\cos\theta\), ignoring the sign. With the calculator in degree mode,</p>
+\[ \alpha = \cos^{-1}\left({@p/q@}\right) = {@alpha_disp@}^\circ \quad (\text{to 1 decimal place}). \]
+
+<p><strong>(c) The quadrants</strong></p>
+<p>\(\cos\theta\) is the \(x\)-coordinate of the point on the unit circle. \(\cos\theta = {@k@}\) is [[if test="is(s=1)"]]<em>positive</em>. By the CAST rule, cosine is positive in <strong>Quadrant I</strong> (All) and <strong>Quadrant IV</strong> (Cosine)[[else]]<em>negative</em>. By the CAST rule, cosine is positive only in Quadrants I and IV, so it is negative in <strong>Quadrants II and III</strong>[[/if]]. There is one solution in each of these quadrants.</p>
+
+<p><strong>(d) The solutions</strong></p>
+<ul>
+[[if test="is(s=1)"]]<li>Quadrant I: \(\theta_1 = \alpha = {@x1_disp@}^\circ\).</li>
+<li>Quadrant IV: stop \(\alpha\) short of \(360^\circ\), \(\theta_2 = 360^\circ - \alpha = 360^\circ - {@alpha_disp@}^\circ = {@x2_disp@}^\circ\).</li>[[else]]<li>Quadrant II: stop \(\alpha\) short of \(180^\circ\), \(\theta_1 = 180^\circ - \alpha = 180^\circ - {@alpha_disp@}^\circ = {@x1_disp@}^\circ\).</li>
+<li>Quadrant III: go \(\alpha\) past \(180^\circ\), \(\theta_2 = 180^\circ + \alpha = 180^\circ + {@alpha_disp@}^\circ = {@x2_disp@}^\circ\).</li>[[/if]]
+</ul>
+<p>Both angles lie in \(0^\circ \le \theta < 360^\circ\). <strong>Check with the calculator:</strong> \(\cos^{-1}\left({@k@}\right) = {@acosk_disp@}^\circ\), which is \(\theta_1\). For cosine, the other solution is always \(360^\circ - \theta_1\) (not \(180^\circ - \theta_1\), which is the rule for sine): \(360^\circ - {@x1_disp@}^\circ = {@x2_disp@}^\circ\).</p>
+
+<p><strong>Final answer:</strong></p>
+\[ \theta = {@x1_disp@}^\circ \quad\text{or}\quad \theta = {@x2_disp@}^\circ. \]
+
+
+<p>On the unit circle, \(\cos\theta\) is the \(x\)-coordinate, so the solutions are where the <em>vertical</em> line \(x = {@k@}\) meets the circle. Both points make the reference angle \(\alpha\) with the \(x\)-axis:</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with the CAST letters and the vertical line x = {#float(k)#} meeting the circle at the two solutions, with the reference angle alpha marked at each.">
+[[jsxgraph width="320px" height="320px"]]
+(function() {
+  var k = {#float(k)#}, x1 = {#x1#}, x2 = {#x2#}, q1 = {#ta_quad1#}, q2 = {#ta_quad2#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  var cast = {fixed:true, fontSize:20, color:'#7b1fa2', anchorX:'middle', anchorY:'middle'};
+  b.create('text', [ 1.15,  1.15, 'A'], cast);
+  b.create('text', [-1.15,  1.15, 'S'], cast);
+  b.create('text', [-1.15, -1.15, 'T'], cast);
+  b.create('text', [ 1.15, -1.15, 'C'], cast);
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222', label:{offset:[k > 0 ? -16 : 6, 10]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A = b.create('point', [1, 0], {visible:false, fixed:true}), Am = b.create('point', [-1, 0], {visible:false, fixed:true});
+  /* cos theta is the x-coordinate, so the solutions are where the VERTICAL line x = k meets the circle */
+  b.create('segment', [[k, -1.3], [k, 1.3]], {strokeColor:'#ef6c00', strokeWidth:2, dash:2, fixed:true});
+  b.create('text', [k + (k > 0 ? 0.05 : -0.05), -1.3, 'x = ' + k.toFixed(2)], {fixed:true, anchorX:(k > 0 ? 'left' : 'right'), anchorY:'bottom', color:'#ef6c00', fontSize:12});
+  var cols = ['#c62828', '#6a1b9a'], ref = {radius:0.4, name:'α', fillColor:'#81c784', strokeColor:'#2e7d32', fillOpacity:0.35, fixed:true};
+  [[x1, q1], [x2, q2]].forEach(function(tq, i) {
+    var t = tq[0], q = tq[1], px = Math.cos(t*Math.PI/180), py = Math.sin(t*Math.PI/180);
+    var P = b.create('point', [px, py], {name:'P' + (i ? '₂' : '₁'), fixed:true, size:4, color:cols[i],
+        label:{offset:[px > 0 ? 10 : -26, py > 0 ? 14 : -16]}});
+    b.create('segment', [O, P], {strokeColor:cols[i], strokeWidth:2, fixed:true});
+    if (q == 1) { b.create('angle', [A, O, P], ref); }
+    if (q == 2) { b.create('angle', [P, O, Am], ref); }
+    if (q == 3) { b.create('angle', [Am, O, P], ref); }
+    if (q == 4) { b.create('angle', [P, O, A], ref); }
+  });
+})();
+[[/jsxgraph]]
+</div>
+<p><strong>Seeing the solutions.</strong> On the graph of \(y = \cos\theta\), the line \(y = {@k@}\) crosses the curve exactly twice between \(0^\circ\) and \(360^\circ\). The two crossings are mirror images in the line \(\theta = 180^\circ\), which is why they add up to \(360^\circ\):</p>
+<div style="text-align:center;" role="img" aria-label="Graph of y = cos theta for theta from 0 to 360 degrees, with the horizontal line y = {#float(k)#} crossing it at the two solutions.">
+[[jsxgraph width="460px" height="300px"]]
+(function() {
+  var k = {#float(k)#}, x1 = {#x1#}, x2 = {#x2#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-30, 1.45, 400, -1.45], axis:false, grid:false,
+      keepaspectratio:false, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-15, 0], [385, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.4]], {strokeColor:'#444', fixed:true, highlight:false});
+  for (var t = 90; t <= 360; t += 90) {
+    b.create('segment', [[t, -0.04], [t, 0.04]], {strokeColor:'#444', fixed:true});
+    b.create('text', [t, k < 0 ? 0.1 : -0.1, t + '°'], {fixed:true, anchorX:'middle', anchorY:(k < 0 ? 'bottom' : 'top'), fontSize:12});
+  }
+  b.create('text', [-6, 1, '1'], {fixed:true, anchorX:'right', anchorY:'middle', fontSize:12});
+  b.create('text', [-6, -1, '−1'], {fixed:true, anchorX:'right', anchorY:'middle', fontSize:12});
+  b.create('text', [380, k < 0 ? 0.1 : -0.1, 'θ'], {fixed:true, anchorX:'right', anchorY:(k < 0 ? 'bottom' : 'top')});
+  b.create('functiongraph', [function(t) { return Math.cos(t*Math.PI/180); }, 0, 360], {strokeColor:'#1565c0', strokeWidth:2.5, fixed:true});
+  b.create('segment', [[0, k], [360, k]], {strokeColor:'#ef6c00', strokeWidth:2, dash:2, fixed:true});
+  b.create('text', [364, k, 'y = {#p*s#}/{#q#}'.replace('-', '−')], {fixed:true, anchorX:'left', anchorY:'middle', color:'#ef6c00', fontSize:12});
+  [x1, x2].forEach(function(t) {
+    b.create('point', [t, k], {name:'', size:4, color:'#c62828', fixed:true});
+    b.create('segment', [[t, 0], [t, k]], {strokeColor:'#c62828', dash:1, fixed:true});
+    b.create('text', [t, k > 0 ? k + 0.18 : k - 0.18, t.toFixed(1) + '°'], {fixed:true, anchorX:'middle', anchorY:(k > 0 ? 'bottom' : 'top'), color:'#c62828', fontSize:13});
+  });
+})();
+[[/jsxgraph]]
+</div>]]></text>
+    </generalfeedback>
+    <defaultgrade>5</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Design backwards: choose cos(theta) = k = s*p/q first (a fraction, no surds), then show the equation
+   A*cos(theta) + B = 0 with A = c*q and B = -c*s*p.
+   8 fractions x 2 signs x 2 coefficients (c = 1 or 2) = 32 distinct variants. */
+fr : [[1,2], [1,4], [3,4], [1,3], [2,3], [2,5], [3,5], [4,5]];
+pq : rand(fr);
+p : pq[1];
+q : pq[2];
+s : rand([-1, 1]);
+c : rand([1, 2]);
+k : s*p/q;                    /* cos(theta) = k */
+A : c*q;
+B : -c*s*p;
+eqn : A*cos(theta) + B = 0;
+
+/* Reference angle and solutions (degrees) */
+alpha : float(acos(p/q)*180/%pi);
+x1 : if s = 1 then alpha else 180 - alpha;
+x2 : if s = 1 then 360 - alpha else 180 + alpha;
+/* the solutions of cos(theta) = -k: the common sign / "180 - theta" mistake */
+w1 : if s = 1 then 180 - alpha else alpha;
+w2 : if s = 1 then 180 + alpha else 360 - alpha;
+/* answers rounded to 1 decimal place */
+ta_a : round(alpha*10)/10;
+r1 : round(x1*10)/10;
+r2 : round(x2*10)/10;
+rw1 : round(w1*10)/10;
+/* decimal displays */
+alpha_disp : dispdp(alpha, 1);
+x1_disp : dispdp(x1, 1);
+x2_disp : dispdp(x2, 1);
+acosk_disp : dispdp(float(acos(k)*180/%pi), 1);
+
+/* Quadrants: cosine is positive in I and IV, negative in II and III */
+qlist : if s = 1 then [1, 4] else [2, 3];
+qset : setify(qlist);
+wrongqset : if s = 1 then {2, 3} else {1, 4};
+qopts : [[1, is(member(1, qlist)), "Quadrant I"], [2, is(member(2, qlist)), "Quadrant II"],
+         [3, is(member(3, qlist)), "Quadrant III"], [4, is(member(4, qlist)), "Quadrant IV"]];
+ta_quad1 : qlist[1];
+ta_quad2 : qlist[2];
+
+/* Possible student mistakes */
+k_neg : -k;                   /* sign error when rearranging */
+k_nodiv : -B;                 /* moved the constant but did not divide by A */
+alpha_rad : float(acos(p/q)); /* calculator in radian mode */]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>\({@eqn@}\): \(\cos\theta = {@k@}\), \(\alpha = {@alpha_disp@}^\circ\), quadrants {@qlist@}, \(\theta = {@x1_disp@}^\circ, {@x2_disp@}^\circ\)</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p>Objective: solve trigonometric equations involving cosine for 0° ≤ θ < 360°. The cosine value is always a fraction (no surds); only cos θ = ±1/2 gives a special angle, so angles are given to 1 decimal place.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans0</name>
+      <type>algebraic</type>
+      <tans>float(ta_a)</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>float(r1)</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>float(r2)</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansk</name>
+      <type>algebraic</type>
+      <tans>k</tans>
+      <boxsize>8</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ansq</name>
+      <type>checkbox</type>
+      <tans>qopts</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt0</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* allow 0.06 for rounding to 1 decimal place */
+gave_sol : is(abs(ans0 - x1) <= 0.06 or abs(ans0 - x2) <= 0.06);]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct reference angle (to 1 d.p.)</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans0</sans>
+        <tans>alpha</tans>
+        <testoptions>0.06</testoptions>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt0-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt0-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Calculator in radian mode</description>
+        <answertest>NumAbsolute</answertest>
+        <sans>ans0</sans>
+        <tans>alpha_rad</tans>
+        <testoptions>0.006</testoptions>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt0-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer looks like an angle in radians. Set your calculator to <strong>degrees</strong> and try again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt0-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Gave a solution instead of the reference angle</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>gave_sol</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt0-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is one of the solutions of the equation, not the reference angle. The reference angle is the <em>acute</em> angle \(\cos^{-1}\) of the <em>size</em> of \(\cos\theta\), so it is less than \(90^\circ\). (For a negative cosine, \(\cos^{-1}\) on the calculator gives an obtuse angle.)</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt0-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find \(\cos^{-1}\) of the size of your value from part (a) (ignore any minus sign), with the calculator in degree mode, and round to \(1\) decimal place.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* allow 0.06 for rounding to 1 decimal place */
+ok : is(abs(ans1 - x1) <= 0.06 or abs(ans1 - x2) <= 0.06);
+outr : is(abs(ans1 + 360 - x1) <= 0.06 or abs(ans1 + 360 - x2) <= 0.06 or abs(ans1 - 360 - x1) <= 0.06 or abs(ans1 - 360 - x2) <= 0.06);
+wsign : is(abs(ans1 - w1) <= 0.06 or abs(ans1 - w2) <= 0.06);
+inrad : is(abs(ans1 - x1*%pi/180) <= 0.006 or abs(ans1 - x2*%pi/180) <= 0.006);]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>A correct solution</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ok</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Outside the range by 360</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>outr</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your angle is outside the range \(0^\circ \le \theta < 360^\circ\). Add or subtract \(360^\circ\) to bring it into the range.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Solution for the opposite sign, or used 180 - theta</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>wsign</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That angle solves the equation with the <em>opposite</em> sign of \(\cos\theta\). A common slip is to use \(180^\circ - \theta\), which is the rule for <em>sine</em>. For cosine, the solutions are in the quadrants given by the CAST rule; if \(\theta_1\) is one solution, the other is \(360^\circ - \theta_1\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Gave the solution in radians</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>inrad</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer is in radians. Give the solution in degrees.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use your reference angle and the two quadrants from part (c): in Quadrant I, \(\theta = \alpha\); in Quadrant II, \(\theta = 180^\circ - \alpha\); in Quadrant III, \(\theta = 180^\circ + \alpha\); in Quadrant IV, \(\theta = 360^\circ - \alpha\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text><![CDATA[/* allow 0.06 for rounding to 1 decimal place */
+ok : is(abs(ans2 - x1) <= 0.06 or abs(ans2 - x2) <= 0.06);
+dup : is(abs(ans2 - ans1) <= 0.06);
+okdistinct : is(ok and not dup);
+outr : is(abs(ans2 + 360 - x1) <= 0.06 or abs(ans2 + 360 - x2) <= 0.06 or abs(ans2 - 360 - x1) <= 0.06 or abs(ans2 - 360 - x2) <= 0.06);
+wsign : is(abs(ans2 - w1) <= 0.06 or abs(ans2 - w2) <= 0.06);
+inrad : is(abs(ans2 - x1*%pi/180) <= 0.006 or abs(ans2 - x2*%pi/180) <= 0.006);]]></text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>A correct solution, different from the first</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>okdistinct</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Same solution as the first box</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>dup</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>This is the same as your first solution. The equation has <em>two</em> solutions in the range: find the one in the other quadrant.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Outside the range by 360</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>outr</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your angle is outside the range \(0^\circ \le \theta < 360^\circ\). Add or subtract \(360^\circ\) to bring it into the range.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Solution for the opposite sign, or used 180 - theta</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>wsign</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That angle solves the equation with the <em>opposite</em> sign of \(\cos\theta\). A common slip is to use \(180^\circ - \theta\), which is the rule for <em>sine</em>. For cosine, the solutions are in the quadrants given by the CAST rule; if \(\theta_1\) is one solution, the other is \(360^\circ - \theta_1\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt2-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Gave the solution in radians</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>inrad</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer is in radians. Give the solution in degrees.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use your reference angle and the two quadrants from part (c): in Quadrant I, \(\theta = \alpha\); in Quadrant II, \(\theta = 180^\circ - \alpha\); in Quadrant III, \(\theta = 180^\circ + \alpha\); in Quadrant IV, \(\theta = 360^\circ - \alpha\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtk</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct value of cos</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansk</sans>
+        <tans>k</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtk-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtk-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Sign error when rearranging</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansk</sans>
+        <tans>k_neg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtk-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. When you move the constant to the other side of the equation, its sign changes.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prtk-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Did not divide by the coefficient</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ansk</sans>
+        <tans>k_nodiv</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtk-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have moved the constant correctly, but \(\cos\theta\) is still multiplied by \({@A@}\). Divide both sides by \({@A@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtk-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Rearrange to get \(\cos\theta\) on its own: move the constant to the other side, then divide by the coefficient of \(\cos\theta\). Give the answer as a fraction.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prtq</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text>sq : setify(ansq);
+onegood : is(cardinality(sq) = 1 and cardinality(intersection(sq, qset)) = 1);</text>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct pair of quadrants</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sq</sans>
+        <tans>qset</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtq-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prtq-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>The two quadrants for the opposite sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>sq</sans>
+        <tans>wrongqset</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtq-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Those are the quadrants where \(\cos\theta\) has the <em>opposite</em> sign. Check the sign of your value in part (a), then use the CAST rule: cosine is positive in Quadrants I and IV.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prtq-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Only one of the two quadrants</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>onegood</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prtq-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That quadrant is correct, but there is a second one. Cosine has the same sign in <em>two</em> quadrants: use the CAST rule to find the other.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prtq-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use the CAST rule: cosine is positive in Quadrants I and IV and negative in Quadrants II and III. Tick the two quadrants that match the sign of \(\cos\theta\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>6001</deployedseed>
+    <deployedseed>6002</deployedseed>
+    <deployedseed>6003</deployedseed>
+    <deployedseed>6004</deployedseed>
+    <deployedseed>6005</deployedseed>
+    <deployedseed>6006</deployedseed>
+    <deployedseed>6007</deployedseed>
+    <deployedseed>6008</deployedseed>
+    <deployedseed>6009</deployedseed>
+    <deployedseed>6010</deployedseed>
+    <deployedseed>6011</deployedseed>
+    <deployedseed>6012</deployedseed>
+    <deployedseed>6013</deployedseed>
+    <deployedseed>6014</deployedseed>
+    <deployedseed>6015</deployedseed>
+    <deployedseed>6016</deployedseed>
+    <deployedseed>6017</deployedseed>
+    <deployedseed>6018</deployedseed>
+    <deployedseed>6019</deployedseed>
+    <deployedseed>6020</deployedseed>
+    <deployedseed>6021</deployedseed>
+    <deployedseed>6022</deployedseed>
+    <deployedseed>6023</deployedseed>
+    <deployedseed>6024</deployedseed>
+    <deployedseed>6025</deployedseed>
+    <deployedseed>6026</deployedseed>
+    <deployedseed>6027</deployedseed>
+    <deployedseed>6028</deployedseed>
+    <deployedseed>6029</deployedseed>
+    <deployedseed>6030</deployedseed>
+    <deployedseed>6031</deployedseed>
+    <deployedseed>6032</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All parts correct (angles typed to 1 d.p.)</description>
+      <testinput>
+        <name>ans0</name>
+        <value>float(ta_a)</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>float(r1)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(r2)</value>
+      </testinput>
+      <testinput>
+        <name>ansk</name>
+        <value>k</value>
+      </testinput>
+      <testinput>
+        <name>ansq</name>
+        <value>qlist</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt0-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtk</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtk-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtq</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtq-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Solutions in the other order</description>
+      <testinput>
+        <name>ans0</name>
+        <value>float(ta_a)</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>float(r2)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(r1)</value>
+      </testinput>
+      <testinput>
+        <name>ansk</name>
+        <value>k</value>
+      </testinput>
+      <testinput>
+        <name>ansq</name>
+        <value>qlist</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt0-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtk</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtk-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtq</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtq-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Sign error; radian mode; opposite-sign quadrants; angle out of range; used 180 - theta</description>
+      <testinput>
+        <name>ans0</name>
+        <value>alpha_rad</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>float(r1-360)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(rw1)</value>
+      </testinput>
+      <testinput>
+        <name>ansk</name>
+        <value>k_neg</value>
+      </testinput>
+      <testinput>
+        <name>ansq</name>
+        <value>listify(wrongqset)</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt0-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-4-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtk</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtk-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtq</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtq-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Did not divide; a solution as the reference angle; one quadrant; same solution twice</description>
+      <testinput>
+        <name>ans0</name>
+        <value>float(r2)</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>float(r1)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(r1)</value>
+      </testinput>
+      <testinput>
+        <name>ansk</name>
+        <value>k_nodiv</value>
+      </testinput>
+      <testinput>
+        <name>ansq</name>
+        <value>[ta_quad1]</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt0-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtk</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtk-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtq</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtq-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Solutions in radians</description>
+      <testinput>
+        <name>ans0</name>
+        <value>float(ta_a)</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>float(x1*%pi/180)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(x2*%pi/180)</value>
+      </testinput>
+      <testinput>
+        <name>ansk</name>
+        <value>k</value>
+      </testinput>
+      <testinput>
+        <name>ansq</name>
+        <value>qlist</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt0-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-5-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtk</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtk-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtq</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtq-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans0</name>
+        <value>float(ta_a+7)</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>float(r1+2)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(r2+2)</value>
+      </testinput>
+      <testinput>
+        <name>ansk</name>
+        <value>k+10</value>
+      </testinput>
+      <testinput>
+        <name>ansq</name>
+        <value>[1, 2, 3, 4]</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt0-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-5-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtk</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtk-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtq</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prtq-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Invalid: a decimal in part (a)</description>
+      <testinput>
+        <name>ans0</name>
+        <value>float(ta_a)</value>
+      </testinput>
+      <testinput>
+        <name>ans1</name>
+        <value>float(r1)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(r2)</value>
+      </testinput>
+      <testinput>
+        <name>ansk</name>
+        <value>float(k)</value>
+      </testinput>
+      <testinput>
+        <name>ansq</name>
+        <value>qlist</value>
+      </testinput>
+      <expected>
+        <name>prt0</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt0-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtk</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prtq</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prtq-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

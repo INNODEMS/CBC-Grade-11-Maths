@@ -2,34 +2,35 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Matrix Sizes HELM</text>
+      <text>Determining the size (order) of given matrices</text>
     </name>
-    <questiontext format="plain_text">
-      <text><![CDATA[<p class="HELM_exercise">Exercise</p>
-<p>Give the size of the following matrices:</p>
-<ol class="HELM_parts">
-
-<li><p>\({@mat1@}\) size = [[input:ans1]] [[validation:ans1]] \(\times\) [[input:ans2]] [[validation:ans2]]</p>
-<p>[[feedback:prt1]]</p></li>
-
-<li><p>\({@mat2@}\) size = [[input:ans3]] [[validation:ans3]] \(\times\) [[input:ans4]] [[validation:ans4]]</p>
-<p>[[feedback:prt2]] </p></li>
-
+    <questiontext format="html">
+      <text><![CDATA[<p>Give the size (order) of each of the following matrices as \((\text{number of rows}) \times (\text{number of columns})\). Enter whole numbers only.</p>
+<ol style="list-style-type: lower-alpha;">
+  <li>
+    <p>\({@mat1@} \quad \text{size} = \) [[input:ans1]] [[validation:ans1]] \(\times\) [[input:ans2]] [[validation:ans2]]</p>
+    <p>[[feedback:prt1]]</p>
+  </li>
+  <li>
+    <p>\({@mat2@} \quad \text{size} = \) [[input:ans3]] [[validation:ans3]] \(\times\) [[input:ans4]] [[validation:ans4]]</p>
+    <p>[[feedback:prt2]]</p>
+  </li>
 </ol>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>First, we find the size of the first two matrices.</p>
-<ol class="HELM_parts">
-<li>
-<p>The matrix</p>
-\[{@mat1@}\]
-<p>has {@m1@} rows and {@n1@} columns. Therefore, it is a \({@m1@} \times {@n1@}\) matrix.</p>
-</li>
-<li>
-<p>The matrix</p>
-\[{@mat2@}\]
-<p>has {@m2@} rows and {@n2@} columns. Therefore, it is a \({@m2@} \times {@n2@}\) matrix.</p>
-</li>
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+<p>The <strong>size (order)</strong> of a matrix is written as \((\text{number of rows}) \times (\text{number of columns})\).</p>
+<ol style="list-style-type: lower-alpha;">
+  <li>
+    <p>The matrix
+    \[{@mat1@}\]
+    has \({@m1@}\) rows and \({@n1@}\) columns. Therefore, its size is \(\boxed{{@m1@} \times {@n1@}}\).</p>
+  </li>
+  <li>
+    <p>The matrix
+    \[{@mat2@}\]
+    has \({@m2@}\) rows and \({@n2@}\) columns. Therefore, its size is \(\boxed{{@m2@} \times {@n2@}}\).</p>
+  </li>
 </ol>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
@@ -40,25 +41,29 @@
       <text>2026010500</text>
     </stackversion>
     <questionvariables>
-      <text>n1:2+ rand(4)
-m1:2+ rand(4)
-mat1 : rand(9+zeromatrix(m1,n1))
-n2:2+ rand(5)
-m2:2+ rand(5)
-mat2 : rand(9+zeromatrix(m2,n2))
-tamat11:m1
-tamat12:n1
-tamat21:m2
-tamat22:n2</text>
+      <text>dims1 : rand([[2,3],[2,4],[2,5],[3,2],[3,4],[3,5],[4,2],[4,3],[4,5],[5,2],[5,3],[5,4]]);
+m1 : dims1[1];
+n1 : dims1[2];
+all_dims2 : [[2,3],[2,4],[2,5],[2,6],[3,2],[3,4],[3,5],[3,6],[4,2],[4,3],[4,5],[4,6],[5,2],[5,3],[5,4],[5,6],[6,2],[6,3],[6,4],[6,5]];
+dims2 : rand(delete(dims1, all_dims2));
+m2 : dims2[1];
+n2 : dims2[2];
+mat1 : genmatrix(lambda([ii, jj], rand(10)), m1, n1);
+mat2 : genmatrix(lambda([ii, jj], rand(10)), m2, n2);
+tamat11 : m1;
+tamat12 : n1;
+tamat21 : m2;
+tamat22 : n2;</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>\[{@mat1@}, {@mat2@}\]</text>
+    <questionnote format="html">
+      <text>\({@m1@} \times {@n1@}\) and \({@m2@} \times {@n2@}\): \({@mat1@}, \; {@mat2@}\)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Introduction to Matrices (Size and Order of a Matrix)</p>
+<p id="description">Grade 11 CBE: Determining the size (order) of given matrices in the form rows x columns.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -84,9 +89,9 @@ tamat22:n2</text>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>tamat11</tans>
-      <boxsize>5</boxsize>
+      <boxsize>2</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -96,15 +101,15 @@ tamat22:n2</text>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>3</showvalidation>
-      <options/>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
     </input>
     <input>
       <name>ans2</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>tamat12</tans>
-      <boxsize>5</boxsize>
+      <boxsize>2</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -114,15 +119,15 @@ tamat22:n2</text>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>3</showvalidation>
-      <options/>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
     </input>
     <input>
       <name>ans3</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>tamat21</tans>
-      <boxsize>5</boxsize>
+      <boxsize>2</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -132,15 +137,15 @@ tamat22:n2</text>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>3</showvalidation>
-      <options/>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
     </input>
     <input>
       <name>ans4</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>tamat22</tans>
-      <boxsize>5</boxsize>
+      <boxsize>2</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -150,9 +155,9 @@ tamat22:n2</text>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>3</showvalidation>
-      <options/>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options>hideanswer</options>
     </input>
     <prt>
       <name>prt1</name>
@@ -169,7 +174,7 @@ tamat22:n2</text>
         <sans>ans1</sans>
         <tans>tamat11</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
@@ -194,22 +199,22 @@ tamat22:n2</text>
         <sans>ans2</sans>
         <tans>tamat12</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>+</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>1</text>
+          <text/>
         </truefeedback>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>2</falsenextnode>
+        <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>The number of rows is correct, but recount the number of columns (vertical entries).</p>]]></text>
         </falsefeedback>
       </node>
       <node>
@@ -219,7 +224,7 @@ tamat22:n2</text>
         <sans>ans1</sans>
         <tans>tamat12</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>+</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
@@ -234,7 +239,7 @@ tamat22:n2</text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Remember that the size (order) of a matrix is \((\text{number of rows}) \times (\text{number of columns})\). Count the horizontal rows first, then the vertical columns.</p>]]></text>
         </falsefeedback>
       </node>
       <node>
@@ -244,14 +249,14 @@ tamat22:n2</text>
         <sans>ans2</sans>
         <tans>tamat11</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>+</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-4-T</trueanswernote>
         <truefeedback format="html">
-          <text>Did you remember to write the number of rows first, then the number of columns? \(\text{size} = r\times c\)</text>
+          <text><![CDATA[<p>Did you remember to write the number of rows first, then the number of columns? \(\text{size} = r \times c\)</p>]]></text>
         </truefeedback>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
@@ -259,7 +264,7 @@ tamat22:n2</text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>You entered the number of columns in the first box. Remember to write \((\text{number of rows}) \times (\text{number of columns})\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -278,7 +283,7 @@ tamat22:n2</text>
         <sans>ans3</sans>
         <tans>tamat21</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
@@ -303,7 +308,7 @@ tamat22:n2</text>
         <sans>ans4</sans>
         <tans>tamat22</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>+</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -315,10 +320,10 @@ tamat22:n2</text>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>2</falsenextnode>
+        <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt2-2-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>The number of rows is correct, but recount the number of columns (vertical entries).</p>]]></text>
         </falsefeedback>
       </node>
       <node>
@@ -328,7 +333,7 @@ tamat22:n2</text>
         <sans>ans3</sans>
         <tans>tamat22</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>+</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
@@ -343,7 +348,7 @@ tamat22:n2</text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt2-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Remember that the size (order) of a matrix is \((\text{number of rows}) \times (\text{number of columns})\). Count the horizontal rows first, then the vertical columns.</p>]]></text>
         </falsefeedback>
       </node>
       <node>
@@ -353,14 +358,14 @@ tamat22:n2</text>
         <sans>ans4</sans>
         <tans>tamat21</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>+</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt2-4-T</trueanswernote>
         <truefeedback format="html">
-          <text>Did you remember to write the number of rows first, then the number of columns? \(\text{size} = r\times c\)</text>
+          <text><![CDATA[<p>Did you remember to write the number of rows first, then the number of columns? \(\text{size} = r \times c\)</p>]]></text>
         </truefeedback>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
@@ -368,7 +373,7 @@ tamat22:n2</text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt2-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>You entered the number of columns in the first box. Remember to write \((\text{number of rows}) \times (\text{number of columns})\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -377,9 +382,80 @@ tamat22:n2</text>
     <deployedseed>634938105</deployedseed>
     <deployedseed>1018074995</deployedseed>
     <deployedseed>514566470</deployedseed>
+    <deployedseed>112233445</deployedseed>
+    <deployedseed>223344556</deployedseed>
+    <deployedseed>334455667</deployedseed>
+    <deployedseed>445566778</deployedseed>
+    <deployedseed>556677889</deployedseed>
+    <deployedseed>667788990</deployedseed>
+    <deployedseed>778899001</deployedseed>
+    <deployedseed>889900112</deployedseed>
+    <deployedseed>990011223</deployedseed>
+    <deployedseed>135792468</deployedseed>
+    <deployedseed>246813579</deployedseed>
+    <deployedseed>314159265</deployedseed>
+    <deployedseed>271828182</deployedseed>
+    <deployedseed>161803398</deployedseed>
+    <deployedseed>987654321</deployedseed>
+    <deployedseed>2054284162</deployedseed>
+    <deployedseed>402392994</deployedseed>
+    <deployedseed>959910933</deployedseed>
+    <deployedseed>339373589</deployedseed>
+    <deployedseed>948106661</deployedseed>
+    <deployedseed>95690345</deployedseed>
+    <deployedseed>1763582873</deployedseed>
+    <deployedseed>1644448799</deployedseed>
+    <deployedseed>1022171471</deployedseed>
+    <deployedseed>2144388967</deployedseed>
+    <deployedseed>436250190</deployedseed>
+    <deployedseed>1247775875</deployedseed>
+    <deployedseed>974182713</deployedseed>
+    <deployedseed>1582842481</deployedseed>
+    <deployedseed>1181216313</deployedseed>
+    <deployedseed>1388298424</deployedseed>
+    <deployedseed>2107242193</deployedseed>
+    <deployedseed>746131486</deployedseed>
+    <deployedseed>739859244</deployedseed>
+    <deployedseed>1843861748</deployedseed>
+    <deployedseed>183065207</deployedseed>
+    <deployedseed>730906007</deployedseed>
+    <deployedseed>1584967836</deployedseed>
+    <deployedseed>1086827954</deployedseed>
+    <deployedseed>2002681374</deployedseed>
+    <deployedseed>731845911</deployedseed>
+    <deployedseed>936899038</deployedseed>
+    <deployedseed>2058553771</deployedseed>
+    <deployedseed>1405511234</deployedseed>
+    <deployedseed>1156490929</deployedseed>
+    <deployedseed>1202107769</deployedseed>
+    <deployedseed>1009328035</deployedseed>
+    <deployedseed>726513161</deployedseed>
+    <deployedseed>12372936</deployedseed>
+    <deployedseed>1576306964</deployedseed>
+    <deployedseed>831116992</deployedseed>
+    <deployedseed>1053108063</deployedseed>
+    <deployedseed>1974953319</deployedseed>
+    <deployedseed>428838306</deployedseed>
+    <deployedseed>98511855</deployedseed>
+    <deployedseed>62719353</deployedseed>
+    <deployedseed>1240663571</deployedseed>
+    <deployedseed>1766651307</deployedseed>
+    <deployedseed>1757409719</deployedseed>
+    <deployedseed>1722163605</deployedseed>
+    <deployedseed>1546656405</deployedseed>
+    <deployedseed>1316132571</deployedseed>
+    <deployedseed>1964494977</deployedseed>
+    <deployedseed>1906453273</deployedseed>
+    <deployedseed>637679865</deployedseed>
+    <deployedseed>1610976458</deployedseed>
+    <deployedseed>1574215967</deployedseed>
+    <deployedseed>1001992781</deployedseed>
+    <deployedseed>266592451</deployedseed>
+    <deployedseed>1461037545</deployedseed>
+    <deployedseed>936432070</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>All correct</description>
       <testinput>
         <name>ans1</name>
         <value>tamat11</value>
@@ -411,28 +487,92 @@ tamat22:n2</text>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Swapped rows and columns</description>
       <testinput>
         <name>ans1</name>
-        <value>tamat11 +1</value>
+        <value>tamat12</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>tamat12+2</value>
+        <value>tamat11</value>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>tamat21+1</value>
+        <value>tamat22</value>
       </testinput>
       <testinput>
         <name>ans4</name>
-        <value>tamat22+2</value>
+        <value>tamat21</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-4-F</expectedanswernote>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Right rows, wrong columns</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tamat11</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>tamat12 + 1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>tamat21</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>tamat22 + 1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Wrong rows and columns</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tamat11 + tamat12</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>tamat12 + 1</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>tamat21 + tamat22</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>tamat22 + 1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-F</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>

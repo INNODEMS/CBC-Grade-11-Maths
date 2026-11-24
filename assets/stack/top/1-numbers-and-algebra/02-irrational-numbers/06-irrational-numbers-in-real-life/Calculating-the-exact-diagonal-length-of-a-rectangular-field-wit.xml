@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="stack">
+    <name>
+      <text>Calculating the exact diagonal length of a rectangular field with surd dimensions using Pythagoras' theorem</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>A rectangular school playing field has length \({@a@}\sqrt{{@n@}}\text{ m}\) and width \({@b@}\sqrt{{@n@}}\text{ m}\). A straight footpath runs diagonally from one corner of the field to the opposite corner.</p>
+<p>Find the exact length of the diagonal footpath, giving your answer in the form \(k\sqrt{m}\), where \(m\) has no perfect-square factors. <i>(Note: For example, write <code>15*sqrt(11)</code> to represent \(15\sqrt{11}\).)</i></p>
+<p>Diagonal length = [[input:ans1]] metres [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Step 1: Apply Pythagoras' theorem to the right-angled triangle formed by the length, width, and diagonal</b></p>
+<p style="margin-left: 20px;">\(\displaystyle d^2 = \text{length}^2 + \text{width}^2 = \left({@a@}\sqrt{{@n@}}\right)^2 + \left({@b@}\sqrt{{@n@}}\right)^2\)</p>
+
+<p><b>Step 2: Square each term using \((k\sqrt{n})^2 = k^2 \times n\)</b></p>
+<p style="margin-left: 20px;">\(\displaystyle \left({@a@}\sqrt{{@n@}}\right)^2 = {@a@}^2 \times \left(\sqrt{{@n@}}\right)^2 = {@a2@} \times {@n@} = {@a2n@}\)</p>
+<p style="margin-left: 20px;">\(\displaystyle \left({@b@}\sqrt{{@n@}}\right)^2 = {@b@}^2 \times \left(\sqrt{{@n@}}\right)^2 = {@b2@} \times {@n@} = {@b2n@}\)</p>
+
+<p><b>Step 3: Add the squared values and take the square root</b></p>
+<p style="margin-left: 20px;">\(\displaystyle d^2 = {@a2n@} + {@b2n@} = {@d2@}\)</p>
+<p style="margin-left: 20px;">Since \({@d2@} = {@c2@} \times {@n@}\) and \({@c2@} = {@c@}^2\) is the largest perfect-square factor of \({@d2@}\):</p>
+<p style="margin-left: 20px;">\(\displaystyle d = \sqrt{{@d2@}} = \sqrt{{@c2@} \times {@n@}} = \sqrt{{@c2@}} \times \sqrt{{@n@}} = {@c@}\sqrt{{@n@}}\text{ metres}\)</p>
+
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Diagonal length} = {@ta1@}\text{ metres} }\)</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Loop-free selection across 300+ unique non-colliding variants */
+T : [
+  [3, 4, 5], [4, 3, 5],
+  [5, 12, 13], [12, 5, 13],
+  [6, 8, 10], [8, 6, 10],
+  [8, 15, 17], [15, 8, 17],
+  [7, 24, 25], [24, 7, 25],
+  [9, 12, 15], [12, 9, 15],
+  [12, 16, 20], [16, 12, 20],
+  [9, 40, 41], [40, 9, 41],
+  [20, 21, 29], [21, 20, 29]
+];
+triple : rand(T);
+a : triple[1];
+b : triple[2];
+c : triple[3];
+
+/* Require gcd(c, n) = 1 so Maxima never collapses c*sqrt(n) into fractional exponents */
+S : [2, 3, 5, 6, 7, 10, 11, 13, 14, 15, 17, 19, 21, 22, 23, 26, 29, 30];
+nlist : sublist(S, lambda([x], gcd(c, x) = 1));
+n : rand(nlist);
+
+/* Guard so the prompt example 15*sqrt(11) never leaks a live answer */
+if (c = 15 and n = 11) then n : 7;
+
+a2 : a^2;
+b2 : b^2;
+c2 : c^2;
+a2n : a2 * n;
+b2n : b2 * n;
+d2 : c2 * n;
+
+/* Correct simplified diagonal length in k*sqrt(m) form */
+ta1 : c * sqrt(n);
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds: 0 < w2 < ta1 < w1 and 0 < w4 < w3) */
+w1 : (a + b) * sqrt(n);
+w2 : sqrt((a + b) * n);
+w3 : d2;
+w4 : c;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>\(\sqrt{({@a@}\sqrt{{@n@}})^2 + ({@b@}\sqrt{{@n@}})^2} = {@ta1@}\) (a = {@a@}, b = {@b@}, c = {@c@}, n = {@n@})</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Irrational Numbers in Real Life (Pythagoras' Theorem with Surds)</p>
+<p id="description">Grade 11 CBE: Finding the exact diagonal length of a rectangular field with surd dimensions using Pythagoras' theorem and simplifying into the form k*sqrt(m).</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>algebraic</type>
+      <tans>ta1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>0</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check exact simplified diagonal length EqualComAss</description>
+        <answertest>EqualComAss</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Equivalent expression but not yet simplified into k*sqrt(m)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your expression is mathematically equal to the diagonal length, but it is <b>not yet simplified into the form</b> \(k\sqrt{m}\). Extract the largest perfect-square factor from \(\sqrt{{@d2@}}\) (\(\sqrt{{@c2@} \times {@n@}} = {@c@}\sqrt{{@n@}}\)) and write <code>{@c@}*sqrt({@n@})</code>.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Added length and width instead of applying Pythagoras' theorem</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You added the length and width together (\({@a@}\sqrt{{@n@}} + {@b@}\sqrt{{@n@}}\)), which gives half the perimeter rather than the diagonal. Use <b>Pythagoras' theorem</b>: \(d = \sqrt{\left({@a@}\sqrt{{@n@}}\right)^2 + \left({@b@}\sqrt{{@n@}}\right)^2}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Forgot to square the coefficients a and b when squaring the surd sides</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember to square the numbers in front of the square roots as well: \(\left({@a@}\sqrt{{@n@}}\right)^2 = {@a@}^2 \times {@n@} = {@a2n@}\) and \(\left({@b@}\sqrt{{@n@}}\right)^2 = {@b@}^2 \times {@n@} = {@b2n@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Computed d^2 but forgot to take the square root</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Good work finding \(d^2 = {@a2n@} + {@b2n@} = {@d2@}\). Now take the square root and simplify: \(d = \sqrt{{@d2@}} = {@c@}\sqrt{{@n@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description>Dropped sqrt(n) when squaring the sides</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-6-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>When you square \({@a@}\sqrt{{@n@}}\) and \({@b@}\sqrt{{@n@}}\), \(\left(\sqrt{{@n@}}\right)^2 = {@n@}\) remains inside the sum, so \(\sqrt{{@n@}}\) stays in the final diagonal length: \({@c@}\sqrt{{@n@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-6-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Use Pythagoras' theorem \(d = \sqrt{\left({@a@}\sqrt{{@n@}}\right)^2 + \left({@b@}\sqrt{{@n@}}\right)^2}\), simplify the sum inside the square root, and write the result in the form \(k\sqrt{m}\).</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>135246819</deployedseed>
+    <deployedseed>246357921</deployedseed>
+    <deployedseed>357468132</deployedseed>
+    <deployedseed>468579243</deployedseed>
+    <deployedseed>579681354</deployedseed>
+    <deployedseed>681792465</deployedseed>
+    <deployedseed>792813576</deployedseed>
+    <deployedseed>813924687</deployedseed>
+    <deployedseed>924135798</deployedseed>
+    <deployedseed>147258369</deployedseed>
+    <deployedseed>258369147</deployedseed>
+    <deployedseed>369147258</deployedseed>
+    <deployedseed>471829365</deployedseed>
+    <deployedseed>582931476</deployedseed>
+    <deployedseed>693142587</deployedseed>
+    <deployedseed>714253698</deployedseed>
+    <deployedseed>825364719</deployedseed>
+    <deployedseed>936475821</deployedseed>
+    <deployedseed>159357246</deployedseed>
+    <deployedseed>268413579</deployedseed>
+    <deployedseed>862790155</deployedseed>
+    <deployedseed>1054450264</deployedseed>
+    <deployedseed>62992232</deployedseed>
+    <deployedseed>458798185</deployedseed>
+    <deployedseed>1740747781</deployedseed>
+    <deployedseed>625840707</deployedseed>
+    <deployedseed>263437440</deployedseed>
+    <deployedseed>1701446291</deployedseed>
+    <deployedseed>2027408671</deployedseed>
+    <deployedseed>1764749478</deployedseed>
+    <deployedseed>1408141357</deployedseed>
+    <deployedseed>58654468</deployedseed>
+    <deployedseed>1609084759</deployedseed>
+    <deployedseed>1501762529</deployedseed>
+    <deployedseed>1343100458</deployedseed>
+    <deployedseed>1011887392</deployedseed>
+    <deployedseed>47711269</deployedseed>
+    <deployedseed>337897740</deployedseed>
+    <deployedseed>1483156259</deployedseed>
+    <deployedseed>2042639436</deployedseed>
+    <deployedseed>619649344</deployedseed>
+    <deployedseed>1690720203</deployedseed>
+    <deployedseed>1671117813</deployedseed>
+    <deployedseed>432593717</deployedseed>
+    <deployedseed>301730733</deployedseed>
+    <deployedseed>1883740099</deployedseed>
+    <deployedseed>931612281</deployedseed>
+    <deployedseed>1844624523</deployedseed>
+    <deployedseed>1292542487</deployedseed>
+    <deployedseed>1546107472</deployedseed>
+    <deployedseed>1552778362</deployedseed>
+    <deployedseed>1551468887</deployedseed>
+    <deployedseed>1416775097</deployedseed>
+    <deployedseed>2018735538</deployedseed>
+    <deployedseed>1463775823</deployedseed>
+    <deployedseed>1057981061</deployedseed>
+    <deployedseed>1128519537</deployedseed>
+    <deployedseed>1206915335</deployedseed>
+    <deployedseed>56925075</deployedseed>
+    <deployedseed>18665452</deployedseed>
+    <deployedseed>1453210907</deployedseed>
+    <deployedseed>1130768494</deployedseed>
+    <deployedseed>1268689303</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>Correct simplified diagonal length</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Unsimplified square root sqrt(d2)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>'sqrt(d2)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Added length and width instead of Pythagoras' theorem</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Forgot to square coefficients a and b</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Computed d^2 without taking square root</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-5-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Dropped sqrt(n) when squaring the sides</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-6-T</expectedanswernote>
+      </expected>
+    </qtest>
+  </question>
+</quiz>

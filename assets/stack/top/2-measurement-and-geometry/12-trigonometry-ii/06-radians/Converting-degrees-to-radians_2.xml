@@ -5,34 +5,42 @@
       <text>Converting degrees to radians</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Convert the angle \({@angle_deg@}^{\circ}\)to radians.</p>
-
-<p>Give your answer in terms of \(\pi\) in its simplest form.</p>
-
-<p>[[input:ans1]] [[validation:ans1]][[feedback:prt1]]</p>]]></text>
+      <text><![CDATA[<p>Convert the angle \({@angdeg@}^\circ\) to radians.</p>
+<div>radians \(=\)  [[input:ans1]]  [[validation:ans1]] [[feedback:prt1]]</div>
+<p><i> Type \(\pi\) as <code>pi</code>, and use <code>*</code> for multiplication and <code>/</code> for division. </i></p>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<p>To convert an angle from degrees to radians, use the conversion relationship</p>
+      <text><![CDATA[<h3>Worked solution</h3>
+<p><strong>Step 1: use the conversion fact.</strong> A half-turn is \(180^\circ\), which is \(\pi\) radians:</p>
+\[ 180^\circ = \pi \text{ radians}, \qquad\text{so}\qquad 1^\circ = \frac{\pi}{180} \text{ radians}. \]
 
-<p>\(\displaystyle 180^\circ=\pi\text{ radians}\).</p>
+<p><strong>Step 2: multiply by \(\dfrac{\pi}{180}\).</strong> To change degrees to radians, multiply the angle by \(\dfrac{\pi}{180}\):</p>
+\[ {@angdeg@}^\circ = {@angdeg@} \times \frac{\pi}{180} = \frac{{@angdeg@}\pi}{180}. \]
 
-<p>Therefore, multiply the angle in degrees by \(\displaystyle \frac{\pi}{180}\).</p>
-
-<p>For the given angle,</p>
-
-<p>\(\displaystyle \angle_deg^\circ\times\frac{\pi}{180}\)</p>
-
-<p>which simplifies to</p>
-
-<p>\(\displaystyle \angle_rad\).</p>
-
-<p>Make sure that your final answer is written in terms of \(\pi\) and is in its simplest form.</p>
-
-<p><strong>For example:</strong> if the angle is \(60^\circ\), then</p>
-
-<p>\(\displaystyle 60^\circ\times\frac{\pi}{180}=\frac{60\pi}{180}=\frac{\pi}{3}\).</p>
-
-<p>Thus, \(60^\circ=\frac{\pi}{3}\) radians.</p>]]></text>
+<p><strong>Step 3: simplify the fraction.</strong> The highest common factor of \({@angdeg@}\) and \(180\) is \({@hcf@}\). Divide the top and the bottom by \({@hcf@}\):</p>
+\[ \frac{{@angdeg@}\pi}{180} = \frac{{@angdeg@} \div {@hcf@}}{180 \div {@hcf@}}\,\pi = {@ta1@}. \]
+<div style="text-align:center;" role="img" aria-label="Circle showing the angle {#angdeg#} degrees measured anticlockwise from the positive x-axis.">
+[[jsxgraph width="300px" height="300px"]]
+(function() {
+  var A = {#angdeg#}, num = {#nn#}, den = {#dd#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.5, 1.5, 1.5, -1.5], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.4, 0], [1.45, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.4], [0, 1.45]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('circle', [[0, 0], 1], {strokeColor:'#90a4ae', strokeWidth:1.5, fixed:true, highlight:false});
+  var O = b.create('point', [0, 0], {visible:false, fixed:true});
+  var X = b.create('point', [1, 0], {visible:false, fixed:true});
+  var r = A*Math.PI/180;
+  var P = b.create('point', [Math.cos(r), Math.sin(r)], {name:'', size:3, color:'#c62828', fixed:true});
+  b.create('segment', [O, X], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  var lab = (num === 1 ? '' : num) + 'π' + '/' + den;
+  b.create('angle', [X, O, P], {radius:0.35, name:A + '° = ' + lab, fillColor:'#ffb74d', fillOpacity:0.35,
+      strokeColor:'#ef6c00', fixed:true, label:{color:'#ef6c00', fontSize:13}});
+})();
+[[/jsxgraph]]
+</div>
+<p><strong>Final answer:</strong> \({@angdeg@}^\circ = {@ta1@}\) radians.</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -42,23 +50,26 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Generate a random multiple of 3° from 3° to 150° */
-angle_num : 1 + rand(50);
-
-/* Angle in degrees */
-angle_deg : 3*angle_num;
-
-/* Simplified radians */
-angle_rad : ratsimp(angle_deg/180)*%pi;</text>
+      <text>/* 30 angles between 0 and 360 (180 left out) that give tidy multiples of pi:
+   multiples of 15 degrees (denominators 12, 6, 4, 3, 2) and multiples of 36 degrees (denominator 5). */
+angpool : [15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 195, 210, 225, 240, 255, 270, 285, 300, 315, 330, 345,
+           36, 72, 108, 144, 216, 252, 288, 324];
+angdeg : rand(angpool);
+tc : angdeg/180;               /* coefficient of pi, in lowest terms (simplified) */
+ta1 : tc*%pi;                  /* the angle in radians */
+hcf : gcd(angdeg, 180);        /* common factor cancelled in the worked solution */
+nn : num(tc);
+dd : denom(tc);
+twrong : angdeg*180/%pi;       /* common slip: multiplied by 180/pi instead of pi/180 */</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}</text>
+      <text>\({@angdeg@}^\circ = {@ta1@}\)</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p>Objective: convert an angle from degrees to radians, giving the answer as a simplified multiple of π.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -85,15 +96,15 @@ angle_rad : ratsimp(angle_deg/180)*%pi;</text>
     <input>
       <name>ans1</name>
       <type>algebraic</type>
-      <tans>angle_rad</tans>
-      <boxsize>15</boxsize>
+      <tans>ta1</tans>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -103,23 +114,28 @@ angle_rad : ratsimp(angle_deg/180)*%pi;</text>
     <prt>
       <name>prt1</name>
       <value>1.0000000</value>
-      <autosimplify>1</autosimplify>
+      <autosimplify>0</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text/>
+        <text><![CDATA[/* This tree runs with simplification OFF, so these checks see the answer exactly as typed.
+   Node 1: the simplest form, typed 7*pi/5, pi*7/5, 7/5*pi or pi/12, via EqualComAss.
+   Node 2: any other answer whose last step is a division, e.g. 60*pi/180, is not simplified.
+   Node 3: a fraction written before pi, e.g. 7/5*pi or 60/180*pi, is checked by LowestTerms. */
+topdiv : if atom(ans1) then false else is(op(ans1) = "/");
+fA : if nn = 1 then %pi/dd else (nn*%pi)/dd;]]></text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Checks for correct conversion of degrees to radians</description>
+        <description/>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>angle_rad</tans>
+        <tans>ta1</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
-        <truescore>1</truescore>
+        <truescore>0</truescore>
         <truepenalty/>
-        <truenextnode>-1</truenextnode>
+        <truenextnode>1</truenextnode>
         <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
@@ -127,39 +143,264 @@ angle_rad : ratsimp(angle_deg/180)*%pi;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>4</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>EqualComAss</answertest>
+        <sans>ans1</sans>
+        <tans>fA</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>topdiv</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.5</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your value is correct, but it is not in its simplest form. Divide the top and the bottom of the fraction by their highest common factor.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description/>
+        <answertest>LowestTerms</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.5</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your value is correct, but it is not in its simplest form. Divide the top and the bottom of the fraction by their highest common factor.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>tc</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your number is right, but the angle in radians must be written in terms of \(\pi\). Remember that \(180^\circ = \pi\) radians.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>twrong</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-6-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have multiplied by \(\dfrac{180}{\pi}\), which changes radians to degrees. To change degrees to radians, multiply by \(\dfrac{\pi}{180}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-6-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use \(180^\circ = \pi\) radians: multiply the angle by \(\dfrac{\pi}{180}\), then simplify the fraction.</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
+    <deployedseed>2071856373</deployedseed>
+    <deployedseed>1121096763</deployedseed>
+    <deployedseed>1673112000</deployedseed>
+    <deployedseed>30190066</deployedseed>
+    <deployedseed>487322785</deployedseed>
+    <deployedseed>1465707918</deployedseed>
+    <deployedseed>326850991</deployedseed>
+    <deployedseed>1994080949</deployedseed>
+    <deployedseed>812185604</deployedseed>
+    <deployedseed>663631087</deployedseed>
+    <deployedseed>850169404</deployedseed>
+    <deployedseed>791725812</deployedseed>
+    <deployedseed>1416497281</deployedseed>
+    <deployedseed>709071783</deployedseed>
+    <deployedseed>887404497</deployedseed>
+    <deployedseed>1836825354</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Correct</description>
+      <description>Correct, simplest form typed like 7*pi/5</description>
       <testinput>
         <name>ans1</name>
-        <value>angle_rad</value>
+        <value>ta1</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>prt1-1-T</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Wrong answer</description>
+      <description>Correct, simplest form typed like 7/5*pi</description>
       <testinput>
         <name>ans1</name>
-        <value>angle_rad+1</value>
+        <value>(nn/dd)*%pi</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Correct value, not simplified (60*pi/180 style)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>angdeg*%pi/180</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Correct value, not simplified (60/180*pi style)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>(angdeg/180)*%pi</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.5000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Left out pi</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tc</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-1-F</expectedanswernote>
+        <expectedanswernote>prt1-5-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Multiplied by 180/pi</description>
+      <testinput>
+        <name>ans1</name>
+        <value>twrong</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-6-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>7</testcase>
+      <description>Other wrong answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-6-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>8</testcase>
+      <description>Invalid: decimal answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(ta1)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>
