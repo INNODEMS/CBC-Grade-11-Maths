@@ -17,7 +17,8 @@
 <div>[[feedback:prt3]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p><strong>Step 1: the gradient.</strong> \( f'(x) = {@dfx@} \), so</p>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p><strong>Step 1: the gradient.</strong> \( f'(x) = {@dfx@} \), so</p>
 \[ m = f'({@aa@}) = {@mt@}. \]
 <p><strong>Step 2: the point.</strong> \( f({@aa@}) = {@fa@} \), so the tangent touches the curve at \( ({@aa@},\ {@fa@}) \).</p>
 <p><strong>Step 3: the line.</strong> Use \( y = f'(a)(x-a) + f(a) \):</p>
@@ -39,14 +40,22 @@ y &= {@mt@}\left(x - ({@aa@})\right) + ({@fa@}) \\
     <questionvariables>
       <text><![CDATA[/* f(x) = c3 x^3 + c2 x^2 + c1 x + c0 (a quadratic when c3 = 0), point x = aa.
    Filters keep the numbers small and make every common error give a different line. */
-cands : sublist(
-  create_list([u3, u2, u1, u0, u], u3, [0, 1, -1], u2, -3, 3, u1, -4, 4, u0, -5, 5, u, [-2, -1, 1, 2, 3]),
-  lambda([z], block([m, fv],
-    m  : 3*z[1]*z[5]^2 + 2*z[2]*z[5] + z[3],
-    fv : z[1]*z[5]^3 + z[2]*z[5]^2 + z[3]*z[5] + z[4],
-    is((z[1] # 0 or z[2] # 0) and m # 0 and fv # 0 and m # fv and abs(m) <= 20 and abs(fv) <= 20
-       and fv # -2*m*z[5] and fv # -m*z[5]))));
-pick : rand(cands);
+/* Chosen in two small stages (filtering all 10395 tuples at once timed out).
+   Stage 1: the x^3, x^2, x coefficients and the point, with gradient m at the point. */
+cands1 : sublist(
+  create_list([u3, u2, u1, u], u3, [0, 1, -1], u2, -3, 3, u1, -4, 4, u, [-2, -1, 1, 2, 3]),
+  lambda([z], block([m, b0],
+    m  : 3*z[1]*z[4]^2 + 2*z[2]*z[4] + z[3],
+    b0 : z[1]*z[4]^3 + z[2]*z[4]^2 + z[3]*z[4],
+    is((z[1] # 0 or z[2] # 0) and m # 0 and abs(m) <= 20 and abs(b0) <= 15))));
+p1 : rand(cands1);
+m1 : 3*p1[1]*p1[4]^2 + 2*p1[2]*p1[4] + p1[3];
+b1 : p1[1]*p1[4]^3 + p1[2]*p1[4]^2 + p1[3]*p1[4];
+/* Stage 2: the constant term, so that f(a) is small, non-zero and every error gives a different line. */
+cands0 : sublist(makelist(j, j, -5, 5),
+  lambda([u0], block([fv], fv : b1 + u0,
+    is(fv # 0 and fv # m1 and abs(fv) <= 20 and fv # -2*m1*p1[4] and fv # -m1*p1[4]))));
+pick : [p1[1], p1[2], p1[3], rand(cands0), p1[4]];
 fx  : pick[1]*x^3 + pick[2]*x^2 + pick[3]*x + pick[4];
 aa  : pick[5];
 dfx : diff(fx, x);
@@ -63,8 +72,12 @@ w_noa     : mt*x + fa;                /* used y = m x + f(a) */]]></text>
     <questionnote format="moodle_auto_format">
       <text>\( f(x)={@fx@},\ a={@aa@},\ m={@mt@},\ f(a)={@fa@},\ y={@tl@} \)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="author">Daniel Murunga</p>
+<p id="concept"></p>
+<p id="reviewer"></p>
+<p id="reviewer"></p>
+<p id="description">Given a random cubic or quadratic and an x-value, the student finds the gradient of the tangent, the y-coordinate of the point, and the equation of the tangent there.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -86,7 +99,7 @@ w_noa     : mt*x + fa;                /* used y = m x + f(a) */]]></text>
     <inversetrig>cos-1</inversetrig>
     <logicsymbol>lang</logicsymbol>
     <matrixparens>[</matrixparens>
-    <isbroken>1</isbroken>
+    <isbroken>0</isbroken>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
@@ -453,6 +466,8 @@ lin3 : is(hipow(expand(ans3), x) <= 1);]]></text>
     <deployedseed>1006</deployedseed>
     <deployedseed>1007</deployedseed>
     <deployedseed>1008</deployedseed>
+    <deployedseed>11011</deployedseed>
+    <deployedseed>12122</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>All correct</description>
@@ -527,13 +542,13 @@ lin3 : is(hipow(expand(ans3), x) <= 1);]]></text>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt1-height</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt2-gradient</expectedanswernote>
       </expected>
       <expected>
@@ -561,7 +576,7 @@ lin3 : is(hipow(expand(ans3), x) <= 1);]]></text>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt1-notsubst</expectedanswernote>
       </expected>
     </qtest>
@@ -583,7 +598,7 @@ lin3 : is(hipow(expand(ans3), x) <= 1);]]></text>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt3-noshift</expectedanswernote>
       </expected>
     </qtest>
@@ -605,7 +620,7 @@ lin3 : is(hipow(expand(ans3), x) <= 1);]]></text>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt3-sign</expectedanswernote>
       </expected>
     </qtest>
@@ -627,7 +642,7 @@ lin3 : is(hipow(expand(ans3), x) <= 1);]]></text>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt3-noa</expectedanswernote>
       </expected>
     </qtest>
@@ -649,7 +664,7 @@ lin3 : is(hipow(expand(ans3), x) <= 1);]]></text>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt1-incorrect</expectedanswernote>
       </expected>
       <expected>
@@ -677,7 +692,7 @@ lin3 : is(hipow(expand(ans3), x) <= 1);]]></text>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt3-notline</expectedanswernote>
       </expected>
     </qtest>
@@ -699,19 +714,19 @@ lin3 : is(hipow(expand(ans3), x) <= 1);]]></text>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt1-incorrect</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt2-incorrect</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedpenalty>0.1000000</expectedpenalty>
         <expectedanswernote>prt3-incorrect</expectedanswernote>
       </expected>
     </qtest>

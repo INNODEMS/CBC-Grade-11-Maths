@@ -81,13 +81,14 @@ stack_jxg.bind_point(ref_ans2, P2);
 <div style="display:none">[[input:ans1]] [[validation:ans1]] [[input:ans2]] [[validation:ans2]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>The graph of \(f'\) plots the <em>slope of the tangent</em> to \(f\) at each \(x\). Because \(f\) is a quadratic, those slopes change at a steady rate, so the graph of \(f'\) is a <strong>straight line</strong> &mdash; and a line needs only <strong>two points</strong>, both of which you can read straight off the picture.</p>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>The graph of \(f'\) plots the <em>slope of the tangent</em> to \(f\) at each \(x\). Because \(f\) is a quadratic, those slopes change at a steady rate, so the graph of \(f'\) is a <strong>straight line</strong> &mdash; and a line needs only <strong>two points</strong>, both of which you can read straight off the picture.</p>
 <p><strong>1. Find where the gradient is zero.</strong> The tangent is horizontal at the <em>vertex</em> of the parabola, here at \(x = {@vertex_x@}\). A horizontal tangent has slope \(0\), so the graph of \(f'\) passes through
 \[ \left({@vertex_x@},\ 0\right). \]</p>
 <p><strong>2. Read one more tangent.</strong> Slide \(A\) to \(x = {@wsx2@}\) and read the height of the green point &mdash; the slope of the tangent there is \({@wsslope2@}\). So \(f'\) also passes through
 \[ \left({@wsx2@},\ {@wsslope2@}\right). \]</p>
 <p>Plot those two points and draw the straight line through them: that is the graph of \(f'\). Every other tangent slope falls on the same line, so
-\[ f'(x) = {@m@}x + {@k@}. \]</p>
+\[ f'(x) = {@m*x + k@}. \]</p>
 <p>Here is the finished picture. The parabola's tangent is horizontal at the vertex (red), which drops straight down to the green point \(\left({@vertex_x@},\,0\right)\) on the \(x\)-axis; the purple line through the two green points is \(f'\):</p>
 [[jsxgraph width='420px' height='420px']]
 var mm = {#m#}, kk = {#k#}, aa = {#float(a)#}, cc = {#c#};
@@ -126,12 +127,15 @@ m : rand([-2,-1,1,2]);              /* slope of f' = 2a; |m|<=2 keeps a true 1:1
 a : m/2;                            /* leading coefficient of f (whole or half integer) */
 /* intercept k = b. Vertex x = -k/m must be an INTEGER, so m must divide k: any k when
    |m|=1, but only even k when |m|=2. */
-kpool : if abs(m) = 1 then [-3,-2,-1,0,1,2,3] else [-2,0,2];
+/* k = 0 and k = 2m are left out: there the "used c" line also passes through the
+   vertex, so two diagnoses would give the same line. */
+kpool : delete(2*m, delete(0, if abs(m) = 1 then [-3,-2,-1,0,1,2,3] else [-2,0,2]));
 k : rand(kpool);
 /* vertical shift c in -2..2, excluding two values: c = k (so the "used c" distractor stays
    distinct from the correct intercept) and c = k^2/(2*m) (which would put the vertex ON the
    x-axis, y_vertex = 0, collapsing the "line through the vertex" diagnostic). */
-c : rand(delete(k^2/(2*m), delete(k, [-2,-1,0,1,2])));
+/* Also leave out c = k/2 + k^2/(2m), where the half-slope line passes through the vertex. */
+c : rand(delete(k/2 + k^2/(2*m), delete(k^2/(2*m), delete(k, [-2,-1,0,1,2]))));
 
 fexpr : a*x^2 + k*x + c;            /* f(x), for display */
 
@@ -167,8 +171,12 @@ wsslope2 : m*wsx2 + k;              /* tangent slope read off the graph at x = w
     <questionnote format="moodle_auto_format">
       <text>\( f(x)={@fexpr@};\ f'(x)={@m@}x+{@k@};\ a={@a@},\ c={@c@} \)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="author">Daniel Murunga</p>
+<p id="concept"></p>
+<p id="reviewer"></p>
+<p id="reviewer"></p>
+<p id="description">Given a random quadratic and an interactive graph that shows the tangent slope at each x, the student drags two points to draw the straight line that is the graph of the derivative f'(x).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -368,7 +376,7 @@ lineAtVertex : sslope*vertex_x + sint;]]></text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-slopewrong</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Your line's slope doesn't match the tangent slopes. Drag the red point \(A\) to a few different \(x\)-values and watch the green point &mdash; those green heights are what your line must pass through. Remember you are plotting the <em>slopes</em> of \(f\), not the curve \(f\) itself.</p>]]></text>
+          <text><![CDATA[<p>Your line's slope doesn't match the tangent slopes. Move the \(x\)-slider to a few different values and watch the green point &mdash; those green heights are what your line must pass through. Remember you are plotting the <em>slopes</em> of \(f\), not the curve \(f\) itself.</p>]]></text>
         </falsefeedback>
       </node>
       <node>
@@ -385,7 +393,7 @@ lineAtVertex : sslope*vertex_x + sint;]]></text>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-usedc</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Your slope is right, but the line is shifted vertically &mdash; it looks like you read the intercept off the parabola (its height \(c\) at \(x=0\)) instead of off the tangent. Sliding \(f\) up or down doesn't tilt any tangent, so \(c\) has no effect on \(f'\). Move \(A\) to \(x=0\) and read the green point: that height is where \(f'\) crosses the axis.</p>]]></text>
+          <text><![CDATA[<p>Your slope is right, but the line is shifted vertically &mdash; it looks like you read the intercept off the parabola (its height \(c\) at \(x=0\)) instead of off the tangent. Sliding \(f\) up or down doesn't tilt any tangent, so \(c\) has no effect on \(f'\). Set the \(x\)-slider to \(0\) and read the green point: that height is where \(f'\) crosses the axis.</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
@@ -393,7 +401,7 @@ lineAtVertex : sslope*vertex_x + sint;]]></text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt1-intwrong</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>Your slope is right, but the line crosses the \(y\)-axis in the wrong place. Move the red point \(A\) to \(x = 0\): the height of the green point there is \(f'(0)\), which is exactly where your line should cross the axis.</p>]]></text>
+          <text><![CDATA[<p>Your slope is right, but the line crosses the \(y\)-axis in the wrong place. Set the \(x\)-slider to \(0\): the height of the green point there is \(f'(0)\), which is exactly where your line should cross the axis.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -405,6 +413,8 @@ lineAtVertex : sslope*vertex_x + sint;]]></text>
     <deployedseed>6066</deployedseed>
     <deployedseed>7077</deployedseed>
     <deployedseed>8088</deployedseed>
+    <deployedseed>11011</deployedseed>
+    <deployedseed>12122</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Correct: two lattice points on f'(x)=mx+k.</description>
@@ -461,7 +471,7 @@ lineAtVertex : sslope*vertex_x + sint;]]></text>
     </qtest>
     <qtest>
       <testcase>4</testcase>
-      <description>Half-slope: line of slope a (=m/2) instead of 2a. (On rare variants where this slope-a line also happens to pass through the vertex, it is reported as prt1-vertex - run on another variant.)</description>
+      <description>Half-slope: line of slope a (=m/2) instead of 2a.</description>
       <testinput>
         <name>ans1</name>
         <value>ev([0, k],simp)</value>
@@ -479,7 +489,7 @@ lineAtVertex : sslope*vertex_x + sint;]]></text>
     </qtest>
     <qtest>
       <testcase>5</testcase>
-      <description>Used c: correct slope but intercept = c. (On variants where the vertex sits on the y-axis, k=0, or k=2m, this same line also passes through the vertex and is reported as prt1-vertex - run on another variant.)</description>
+      <description>Used c: correct slope but intercept = c.</description>
       <testinput>
         <name>ans1</name>
         <value>ev([0, c],simp)</value>

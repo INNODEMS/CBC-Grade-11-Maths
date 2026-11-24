@@ -4,7 +4,7 @@
     <name>
       <text>Formulating proportional and capacity constraints for an organic mixture</text>
     </name>
-    <questiontext format="moodle_auto_format">
+    <questiontext format="html">
       <text><![CDATA[<p>A group of women farmers in Makueni managing a climate-resilient greenhouse project needs to prepare a liquid organic foliar feed mixture. They combine concentrated neem extract liquid (\(x\) liters) with an aloe vera solution base (\(y\) liters).</p>
 <ul>
 <li>The mixing tank has a maximum storage capacity of <b>{@C@} liters</b>.</li>
@@ -13,25 +13,22 @@
 
 <p><b>a) </b> Write the linear inequalities that model the physical capacity and the chemical proportion limitations. <i>(Use \( \le \) or \( \ge \) as appropriate. Do not include the non-negativity constraints \(x \ge 0, y \ge 0\)).</i></p>
 
-<p>Tank capacity constraint: [[input:ans1]]</p>
-<p>Mixture proportion constraint: [[input:ans2]]</p>
+<p>Tank capacity constraint: [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+<p>Mixture proportion constraint: [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
 
-<div><b>Capacity check:</b> [[validation:ans1]] [[feedback:prt1]]</div>
-<div><b>Proportion check:</b> [[validation:ans2]] [[feedback:prt2]]</div>
 
 <p><b>b) </b> The farmers decide to pour exactly <b>{@y_val@} liters</b> of aloe vera solution (\(y\)) into the mixing tank.</p>
 <p>Based on your established inequalities, determine the allowable range for the neem extract (\(x\)):</p>
 
 <p>1. What is the absolute <b>minimum</b> volume of neem extract required to satisfy the pest control efficacy proportion?</p>
-<p>Minimum neem: [[input:ans3]] liters</p>
-<div><b>Minimum check:</b> [[validation:ans3]] [[feedback:prt3]]</div>
+<p>Minimum neem: [[input:ans3]] liters [[validation:ans3]] [[feedback:prt3]]</p>
+
 
 <p>2. What is the absolute <b>maximum</b> volume of neem extract they can add without overflowing the mixing tank?</p>
-<p>Maximum neem: [[input:ans4]] liters</p>
-<div><b>Maximum check:</b> [[validation:ans4]] [[feedback:prt4]]</div>]]></text>
+<p>Maximum neem: [[input:ans4]] liters [[validation:ans4]] [[feedback:prt4]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<p><b>Worked Solution:</b></p>
+    <generalfeedback format="html">
+      <text><![CDATA[<h3>Worked Solution:</h3>
 
 <p><b>Part a: Formulating the Constraints</b></p>
 <p>1. <b>Tank Capacity Constraint:</b> The sum of both liquids cannot exceed the maximum volumetric size of the container. "Maximum capacity" implies less than or equal to (\(\le\)):</p>
@@ -39,16 +36,15 @@
 
 <p>2. <b>Mixture Proportion Constraint:</b> The volume of neem (\(x\)) must be greater than or equal to \({@R@}\) times the aloe vera volume (\(y\)):</p>
 <p style="margin-left: 20px;">\( \displaystyle \boxed{{@ta2@}} \)</p>
-<p><i>(Note: This can also be correctly rearranged and written as \( x - {@R@}y \ge 0 \)).</i></p>
+<p><i>(Note: This can also be correctly rearranged and written as \( x - {@R*y@} \ge 0 \)).</i></p>
 
 <p><b>Part b: Evaluating Operational Limits</b></p>
 <p>We are given that \( y = {@y_val@} \). We must substitute this value into both inequalities to find the lower and upper bounds for \(x\).</p>
 
 <p><b>1. Finding the Minimum (Efficacy Constraint):</b><br>
-Substitute \( y = {@y_val@} \) into \( x \ge {@R@}y \):</p>
+Substitute \( y = {@y_val@} \) into \( x \ge {@R*y@} \):</p>
 <p style="margin-left: 20px;">
 \( \displaystyle \begin{aligned}
-x &amp;\ge {@R@}({@y_val@}) \\
 x &amp;\ge {@ta3@}
 \end{aligned} \)
 </p>
@@ -65,7 +61,41 @@ x &amp;\le {@ta4@}
 </p>
 <p>The absolute maximum amount of neem extract that will safely fit is <b>{@ta4@} liters</b>.</p>
 
-<p>Therefore, when using {@y_val@} liters of aloe vera, the farmers must add between {@ta3@} and {@ta4@} liters of neem extract to run a successful operation.</p>]]></text>
+<p>Therefore, when using {@y_val@} liters of aloe vera, the farmers must add between {@ta3@} and {@ta4@} liters of neem extract to run a successful operation.</p>
+<p>The graph shows both conditions; the shaded region holds every mixture that fits in the tank with enough neem.</p>
+<div style="text-align:center;" role="img" aria-label="Graph of x + y at most {#C#} and x at least {#R#} times y, with the region that satisfies both shaded.">
+[[jsxgraph width="380px" height="340px"]]
+(function() {
+  var X = {#C*1.05#}, Y = {#C*1.05#}, C = [[1,1,{#C#},true,false],[1,{#-R#},0,false,false]];
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-X*0.12, Y*1.1, X*1.1, -Y*0.2], axis:true, grid:false,
+      showNavigation:false, showCopyright:false, pan:{enabled:false}, zoom:{enabled:false}});
+  // clip the first-quadrant box by each half-plane (Sutherland-Hodgman)
+  var poly = [[0,0],[X,0],[X,Y],[0,Y]];
+  function inside(p, c) { var v = c[0]*p[0] + c[1]*p[1] - c[2]; return c[3] ? v <= 1e-9 : v >= -1e-9; }
+  function cut(p, q, c) { var fp = c[0]*p[0] + c[1]*p[1] - c[2], fq = c[0]*q[0] + c[1]*q[1] - c[2], t = fp/(fp - fq);
+    return [p[0] + t*(q[0]-p[0]), p[1] + t*(q[1]-p[1])]; }
+  for (var k = 0; k < C.length; k++) {
+    var out = [];
+    for (var i = 0; i < poly.length; i++) {
+      var p = poly[i], q = poly[(i+1) % poly.length], ip = inside(p, C[k]), iq = inside(q, C[k]);
+      if (ip) out.push(p);
+      if (ip !== iq) out.push(cut(p, q, C[k]));
+    }
+    poly = out;
+  }
+  if (poly.length > 2) b.create('polygon', poly, {fillColor:'#a5d6a7', fillOpacity:0.55, vertices:{visible:false},
+      borders:{visible:false}, fixed:true});
+  var cols = ['#1565c0', '#c62828', '#6a1b9a'];
+  for (var k = 0; k < C.length; k++) {
+    var c = C[k];
+    b.create('line', [[c[1] === 0 ? c[2]/c[0] : 0, c[1] === 0 ? 0 : c[2]/c[1]], [c[1] === 0 ? c[2]/c[0] : 1, c[1] === 0 ? 1 : (c[2]-c[0])/c[1]]],
+      {strokeColor:cols[k % 3], strokeWidth:2, dash: c[4] ? 2 : 0, fixed:true});
+  }
+  b.create('text', [X*1.08, -Y*0.15, 'neem x'], {fontSize:13, fixed:true, anchorX:'right'});
+  b.create('text', [X*0.02, Y*1.06, 'aloe vera y'], {fontSize:13, fixed:true});
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>4</defaultgrade>
     <penalty>0.1</penalty>
@@ -111,20 +141,20 @@ ta2_flipped : x <= R * y;]]></text>
       <text><![CDATA[<p>Cap: {@ta1@}. Prop: {@ta2@}. y = {@y_val@} implies Min: {@ta3@}, Max: {@ta4@}</p>]]></text>
     </questionnote>
     <questiondescription format="html">
-      <text><![CDATA[<p id="concept">Inequalities in Real Life (Proportions and Limits)</p>
-<p id="description">Grade 11 CBE: Translating agricultural capacity and mixture proportion constraints into linear inequalities, and solving for absolute bounds given a specific variable value.</p>]]></text>
+      <text><![CDATA[<p>This question is based on the example of Ben's maize and beans (forming constraints from a situation) in the section Inequalities in Real Life of the CBC Grade 11 Mathematics textbook (INNODEMS).</p>
+<p id="concept">Inequalities in Real Life (Proportions and Limits)</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
@@ -150,7 +180,7 @@ ta2_flipped : x <= R * y;]]></text>
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -168,7 +198,7 @@ ta2_flipped : x <= R * y;]]></text>
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -186,7 +216,7 @@ ta2_flipped : x <= R * y;]]></text>
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -204,7 +234,7 @@ ta2_flipped : x <= R * y;]]></text>
       <forbidfloat>0</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
+      <mustverify>0</mustverify>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
@@ -249,7 +279,7 @@ ta2_flipped : x <= R * y;]]></text>
         <tans>ta1_strict</tans>
         <testoptions/>
         <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
@@ -257,7 +287,7 @@ ta2_flipped : x <= R * y;]]></text>
         <truefeedback format="html">
           <text><![CDATA[<p>The tank capacity is a maximum limit, which means the volume can perfectly equal the capacity without failing. You must use the inclusive \(\le\) symbol.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>2</falsenextnode>
@@ -274,7 +304,7 @@ ta2_flipped : x <= R * y;]]></text>
         <tans>ta1_flipped</tans>
         <testoptions/>
         <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
@@ -282,7 +312,7 @@ ta2_flipped : x <= R * y;]]></text>
         <truefeedback format="html">
           <text><![CDATA[<p>Check your inequality symbol. A capacity constraint requires the total volume to be smaller than the limit, not larger.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
@@ -333,7 +363,7 @@ ta2_flipped : x <= R * y;]]></text>
         <tans>ta2_strict</tans>
         <testoptions/>
         <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
@@ -341,7 +371,7 @@ ta2_flipped : x <= R * y;]]></text>
         <truefeedback format="html">
           <text><![CDATA[<p>The requirement is "at least", meaning the ratio can perfectly equal \({@R@}\). Use the inclusive \(\ge\) symbol.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>2</falsenextnode>
@@ -358,7 +388,7 @@ ta2_flipped : x <= R * y;]]></text>
         <tans>ta2_flipped</tans>
         <testoptions/>
         <quiet>1</quiet>
-        <truescoremode>+</truescoremode>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
@@ -366,7 +396,7 @@ ta2_flipped : x <= R * y;]]></text>
         <truefeedback format="html">
           <text><![CDATA[<p>Check your inequality symbol. Neem (\(x\)) must be the larger quantity relative to the scaled amount of aloe vera, so the symbol should point towards \(x\).</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
@@ -454,71 +484,19 @@ ta2_flipped : x <= R * y;]]></text>
     <deployedseed>657376221</deployedseed>
     <deployedseed>1660294578</deployedseed>
     <deployedseed>1072977726</deployedseed>
-    <deployedseed>972265132</deployedseed>
-    <deployedseed>1400009378</deployedseed>
-    <deployedseed>1489852054</deployedseed>
-    <deployedseed>182197365</deployedseed>
-    <deployedseed>1956252251</deployedseed>
-    <deployedseed>383875591</deployedseed>
-    <deployedseed>1597466664</deployedseed>
-    <deployedseed>2012839238</deployedseed>
-    <deployedseed>758501068</deployedseed>
-    <deployedseed>89991167</deployedseed>
-    <deployedseed>1221486392</deployedseed>
-    <deployedseed>1760568900</deployedseed>
-    <deployedseed>468063904</deployedseed>
-    <deployedseed>432736609</deployedseed>
-    <deployedseed>191933650</deployedseed>
-    <deployedseed>142422994</deployedseed>
-    <deployedseed>1178596691</deployedseed>
-    <deployedseed>1426437022</deployedseed>
-    <deployedseed>1876022971</deployedseed>
-    <deployedseed>1439193203</deployedseed>
-    <deployedseed>515022522</deployedseed>
-    <deployedseed>825665062</deployedseed>
-    <deployedseed>741424031</deployedseed>
-    <deployedseed>1663655845</deployedseed>
-    <deployedseed>35813968</deployedseed>
-    <deployedseed>1766368171</deployedseed>
-    <deployedseed>2027542332</deployedseed>
-    <deployedseed>820233122</deployedseed>
-    <deployedseed>27913825</deployedseed>
-    <deployedseed>836029923</deployedseed>
-    <deployedseed>864839768</deployedseed>
-    <deployedseed>996237758</deployedseed>
-    <deployedseed>1869262700</deployedseed>
-    <deployedseed>692061195</deployedseed>
-    <deployedseed>1343901962</deployedseed>
-    <deployedseed>1229014280</deployedseed>
-    <deployedseed>2131079946</deployedseed>
-    <deployedseed>1329083827</deployedseed>
-    <deployedseed>1571246632</deployedseed>
-    <deployedseed>982149621</deployedseed>
-    <deployedseed>1310726079</deployedseed>
-    <deployedseed>1603548655</deployedseed>
-    <deployedseed>818875994</deployedseed>
-    <deployedseed>860562218</deployedseed>
-    <deployedseed>651389697</deployedseed>
-    <deployedseed>1566566158</deployedseed>
-    <deployedseed>1805560968</deployedseed>
-    <deployedseed>1930065175</deployedseed>
-    <deployedseed>1774072148</deployedseed>
-    <deployedseed>1172663764</deployedseed>
-    <deployedseed>873391060</deployedseed>
-    <deployedseed>708532016</deployedseed>
-    <deployedseed>408592137</deployedseed>
-    <deployedseed>1672445483</deployedseed>
-    <deployedseed>1861895883</deployedseed>
-    <deployedseed>713378024</deployedseed>
-    <deployedseed>1095623139</deployedseed>
-    <deployedseed>1043440493</deployedseed>
-    <deployedseed>2019732682</deployedseed>
-    <deployedseed>1534735594</deployedseed>
-    <deployedseed>1815385095</deployedseed>
-    <deployedseed>1739079843</deployedseed>
+    <deployedseed>1310062679</deployedseed>
+    <deployedseed>775976157</deployedseed>
+    <deployedseed>90036999</deployedseed>
+    <deployedseed>248026695</deployedseed>
+    <deployedseed>234668416</deployedseed>
+    <deployedseed>708703168</deployedseed>
+    <deployedseed>375852180</deployedseed>
+    <deployedseed>483007428</deployedseed>
+    <deployedseed>429401130</deployedseed>
+    <deployedseed>596504275</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Everything correct</description>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -562,7 +540,7 @@ ta2_flipped : x <= R * y;]]></text>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description>Used strict inequality symbols</description>
+      <description>Diagnostic 1 in each part that has one</description>
       <testinput>
         <name>ans1</name>
         <value>ta1_strict</value>
@@ -583,13 +561,13 @@ ta2_flipped : x <= R * y;]]></text>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-2-T</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt2-2-T</expectedanswernote>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>
@@ -606,7 +584,7 @@ ta2_flipped : x <= R * y;]]></text>
     </qtest>
     <qtest>
       <testcase>3</testcase>
-      <description>Flipped directions and wrong bounds</description>
+      <description>Diagnostic 2 in each part that has one</description>
       <testinput>
         <name>ans1</name>
         <value>ta1_flipped</value>
@@ -617,23 +595,67 @@ ta2_flipped : x <= R * y;]]></text>
       </testinput>
       <testinput>
         <name>ans3</name>
-        <value>ta3+5</value>
+        <value>ta3</value>
       </testinput>
       <testinput>
         <name>ans4</name>
-        <value>ta4-5</value>
+        <value>ta4</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-3-T</expectedanswernote>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt2-3-T</expectedanswernote>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>(if atom(ta1) then ta1+3 else apply(op(ta1), [lhs(ta1), rhs(ta1)+1/7]))</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>(if atom(ta2) then ta2+3 else apply(op(ta2), [lhs(ta2), rhs(ta2)+1/7]))</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>(if atom(ta3) then ta3+3 else apply(op(ta3), [lhs(ta3), rhs(ta3)+1/7]))</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>(if atom(ta4) then ta4+3 else apply(op(ta4), [lhs(ta4), rhs(ta4)+1/7]))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F | prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-F</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>

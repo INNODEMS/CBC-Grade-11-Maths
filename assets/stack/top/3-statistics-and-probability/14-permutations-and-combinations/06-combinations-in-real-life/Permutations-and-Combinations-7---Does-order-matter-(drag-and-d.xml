@@ -1,52 +1,820 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
-  <question type="ddwtos">
+  <question type="stack">
     <name>
-      <text>Permutations and Combinations 7 - Does order matter? (drag and drop)</text>
+      <text>Distinguishing permutations and combinations in real-life contexts</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>For each situation below, decide whether <strong>order matters</strong> (a permutation) or <strong>order does not matter</strong> (a combination). Drag the correct label into each box.</p>
+    <questiontext format="html">
+      <text><![CDATA[<p>For each situation below, decide whether <b>order matters</b> (a permutation) or <b>order does not matter</b> (a combination). Select the correct classification from each dropdown list.</p>
 <ol>
-<li>A school elects a Prefect and an Assistant Prefect from 10 candidates. [[1]]</li>
-<li>A farmer chooses 3 goats out of 8 to take to the market. [[2]]</li>
-<li>A 4-digit M-Pesa PIN is made from different digits. [[1]]</li>
-<li>A committee of 5 students is chosen from a class of 30. [[2]]</li>
-<li>The Gold, Silver and Bronze medals are awarded to 3 of 12 runners. [[1]]</li>
-<li>12 people at a meeting shake hands once with everyone else. [[2]]</li>
-<li>6 different novels are arranged on a library shelf. [[1]]</li>
-<li>Two players are picked to carry the ball bag. [[2]]</li>
+  <li style="margin-bottom: 10px;">{#q1#} &nbsp; [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</li>
+  <li style="margin-bottom: 10px;">{#q2#} &nbsp; [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</li>
+  <li style="margin-bottom: 10px;">{#q3#} &nbsp; [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</li>
+  <li style="margin-bottom: 10px;">{#q4#} &nbsp; [[input:ans4]] [[validation:ans4]] [[feedback:prt4]]</li>
+  <li style="margin-bottom: 10px;">{#q5#} &nbsp; [[input:ans5]] [[validation:ans5]] [[feedback:prt5]]</li>
+  <li style="margin-bottom: 10px;">{#q6#} &nbsp; [[input:ans6]] [[validation:ans6]] [[feedback:prt6]]</li>
+  <li style="margin-bottom: 10px;">{#q7#} &nbsp; [[input:ans7]] [[validation:ans7]] [[feedback:prt7]]</li>
+  <li style="margin-bottom: 10px;">{#q8#} &nbsp; [[input:ans8]] [[validation:ans8]] [[feedback:prt8]]</li>
 </ol>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>Ask yourself: <em>if I swap two of the chosen items, do I get a different outcome?</em></p>
-<p><strong>Order matters (permutation):</strong> the Prefect and Assistant Prefect roles, the PIN digits, the medal positions and the books on a shelf. Swapping two items gives a different result.</p>
-<p><strong>Order does not matter (combination):</strong> choosing goats, committee members, handshakes and the two ball-bag carriers. Swapping two items gives the same group.</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>Use the <b>swap test</b>: ask yourself, <i>"If I swap two of the chosen items, do I get a different outcome?"</i></p>
+<ul>
+  <li>If <b>yes</b>, different arrangements or roles create distinct outcomes, so <b>order matters (permutation)</b>.</li>
+  <li>If <b>no</b>, swapping gives the exact same group or pair, so <b>order does not matter (combination)</b>.</li>
+</ul>
+
+<p><b>Item-by-item breakdown:</b></p>
+<ol>
+  <li style="margin-bottom: 6px;">{#exp1#}</li>
+  <li style="margin-bottom: 6px;">{#exp2#}</li>
+  <li style="margin-bottom: 6px;">{#exp3#}</li>
+  <li style="margin-bottom: 6px;">{#exp4#}</li>
+  <li style="margin-bottom: 6px;">{#exp5#}</li>
+  <li style="margin-bottom: 6px;">{#exp6#}</li>
+  <li style="margin-bottom: 6px;">{#exp7#}</li>
+  <li style="margin-bottom: 6px;">{#exp8#}</li>
+</ol>]]></text>
     </generalfeedback>
-    <defaultgrade>4</defaultgrade>
-    <penalty>0.3333333</penalty>
+    <defaultgrade>8</defaultgrade>
+    <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
-    <shuffleanswers>1</shuffleanswers>
-    <correctfeedback format="html">
-      <text>Your answer is correct.</text>
-    </correctfeedback>
-    <partiallycorrectfeedback format="html">
-      <text>Your answer is partially correct.</text>
-    </partiallycorrectfeedback>
-    <incorrectfeedback format="html">
-      <text>Your answer is incorrect.</text>
-    </incorrectfeedback>
-    <shownumcorrect/>
-    <dragbox>
-      <text>Order matters (permutation)</text>
-      <group>1</group>
-      <infinite/>
-    </dragbox>
-    <dragbox>
-      <text>Order does not matter (combination)</text>
-      <group>1</group>
-      <infinite/>
-    </dragbox>
+    <stackversion>
+      <text>2026063000</text>
+    </stackversion>
+    <questionvariables>
+      <text><![CDATA[/* Randomize scenario quantities and shuffle all 8 items (8! = 40,320 orderings x parameter pools) */
+n1 : rand([8, 10, 12, 15]);
+n2 : rand([7, 8, 9, 10]);
+r2 : rand([3, 4]);
+r3 : rand([4, 5, 6]);
+r4 : rand([4, 5, 6]);
+n4 : rand([25, 30, 32, 36]);
+n5 : rand([8, 10, 12, 14]);
+n6 : rand([9, 10, 12, 15]);
+n7 : rand([5, 6, 7, 8]);
+n8 : rand([11, 14, 15, 18]);
+
+/* 1 = Order matters (permutation), 2 = Order does not matter (combination) */
+base_cats : [1, 2, 1, 2, 1, 2, 1, 2];
+
+base_txt : [
+  sconcat("A school elects a Prefect and an Assistant Prefect from ", string(n1), " candidates."),
+  sconcat("A farmer chooses ", string(r2), " goats out of ", string(n2), " to take to the market."),
+  sconcat("A ", string(r3), "-digit M-Pesa PIN is made from different digits."),
+  sconcat("A committee of ", string(r4), " students is chosen from a class of ", string(n4), "."),
+  sconcat("The Gold, Silver and Bronze medals are awarded to 3 of ", string(n5), " runners."),
+  sconcat(string(n6), " people at a meeting shake hands once with everyone else."),
+  sconcat(string(n7), " different novels are arranged on a library shelf."),
+  sconcat("Two players are picked from a squad of ", string(n8), " to carry the ball bag.")
+];
+
+base_exp : [
+  "<b>Order matters (permutation):</b> Prefect and Assistant Prefect are distinct ranks; swapping the two elected students swaps their roles.",
+  "<b>Order does not matter (combination):</b> The chosen goats form one unranked group going to the market; swapping two goats gives the same group.",
+  "<b>Order matters (permutation):</b> A PIN is an ordered sequence of digits; swapping two digits produces a different PIN.",
+  "<b>Order does not matter (combination):</b> Committee members hold identical unranked roles; swapping two selected students gives the same committee.",
+  "<b>Order matters (permutation):</b> Gold, Silver and Bronze represent distinct finishing positions; swapping two runners changes who wins which medal.",
+  "<b>Order does not matter (combination):</b> A handshake is a pair of two people; person A shaking B's hand is the same handshake as B shaking A's.",
+  "<b>Order matters (permutation):</b> Books placed in different left-to-right positions on a shelf create a different arrangement.",
+  "<b>Order does not matter (combination):</b> Both players share the same unranked duty; swapping the two players gives the exact same pair."
+];
+
+perm : random_permutation([1, 2, 3, 4, 5, 6, 7, 8]);
+
+q1 : base_txt[perm[1]];
+q2 : base_txt[perm[2]];
+q3 : base_txt[perm[3]];
+q4 : base_txt[perm[4]];
+q5 : base_txt[perm[5]];
+q6 : base_txt[perm[6]];
+q7 : base_txt[perm[7]];
+q8 : base_txt[perm[8]];
+
+exp1 : base_exp[perm[1]];
+exp2 : base_exp[perm[2]];
+exp3 : base_exp[perm[3]];
+exp4 : base_exp[perm[4]];
+exp5 : base_exp[perm[5]];
+exp6 : base_exp[perm[6]];
+exp7 : base_exp[perm[7]];
+exp8 : base_exp[perm[8]];
+
+ta1 : base_cats[perm[1]];
+ta2 : base_cats[perm[2]];
+ta3 : base_cats[perm[3]];
+ta4 : base_cats[perm[4]];
+ta5 : base_cats[perm[5]];
+ta6 : base_cats[perm[6]];
+ta7 : base_cats[perm[7]];
+ta8 : base_cats[perm[8]];
+
+/* Pre-evaluated wrong answers for qtest (dropdown inputs require evaluated option keys 1 or 2) */
+wa1 : 3 - ta1;
+wa2 : 3 - ta2;
+wa3 : 3 - ta3;
+wa4 : 3 - ta4;
+wa5 : 3 - ta5;
+wa6 : 3 - ta6;
+wa7 : 3 - ta7;
+wa8 : 3 - ta8;
+
+/* Dropdown option lists with per-slot teacher answer flag */
+opts_perm : [[1, true, "Order matters (permutation)"], [2, false, "Order does not matter (combination)"]];
+opts_comb : [[1, false, "Order matters (permutation)"], [2, true, "Order does not matter (combination)"]];
+
+in_opts1 : if ta1 = 1 then opts_perm else opts_comb;
+in_opts2 : if ta2 = 1 then opts_perm else opts_comb;
+in_opts3 : if ta3 = 1 then opts_perm else opts_comb;
+in_opts4 : if ta4 = 1 then opts_perm else opts_comb;
+in_opts5 : if ta5 = 1 then opts_perm else opts_comb;
+in_opts6 : if ta6 = 1 then opts_perm else opts_comb;
+in_opts7 : if ta7 = 1 then opts_perm else opts_comb;
+in_opts8 : if ta8 = 1 then opts_perm else opts_comb;]]></text>
+    </questionvariables>
+    <specificfeedback format="html">
+      <text/>
+    </specificfeedback>
+    <questionnote format="html">
+      <text>Order={#perm#}; n1={@n1@}, n2={@n2@}, r3={@r3@}, n4={@n4@}, n5={@n5@}, n6={@n6@}, n7={@n7@}, n8={@n8@}</text>
+    </questionnote>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Distinguishing Permutations and Combinations in Real-Life Situations</p>
+<p id="description">Grade 11 CBE: Classifying everyday counting contexts based on whether order affects the outcome.</p>]]></text>
+    </questiondescription>
+    <questionsimplify>1</questionsimplify>
+    <assumepositive>0</assumepositive>
+    <assumereal>0</assumereal>
+    <prtcorrect format="html">
+      <text><![CDATA[<span style="color:green;"><i class="fa fa-check"></i></span> Correct.]]></text>
+    </prtcorrect>
+    <prtpartiallycorrect format="html">
+      <text><![CDATA[<span style="color:orange;"><i class="fa fa-adjust"></i></span> Partially correct.]]></text>
+    </prtpartiallycorrect>
+    <prtincorrect format="html">
+      <text><![CDATA[<span style="color:red;"><i class="fa fa-times"></i></span> Incorrect.]]></text>
+    </prtincorrect>
+    <decimals>.</decimals>
+    <scientificnotation>*10</scientificnotation>
+    <multiplicationsign>none</multiplicationsign>
+    <sqrtsign>1</sqrtsign>
+    <complexno>i</complexno>
+    <inversetrig>cos-1</inversetrig>
+    <logicsymbol>lang</logicsymbol>
+    <matrixparens>[</matrixparens>
+    <isbroken>0</isbroken>
+    <variantsselectionseed/>
+    <input>
+      <name>ans1</name>
+      <type>dropdown</type>
+      <tans>in_opts1</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>dropdown</type>
+      <tans>in_opts2</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>dropdown</type>
+      <tans>in_opts3</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans4</name>
+      <type>dropdown</type>
+      <tans>in_opts4</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans5</name>
+      <type>dropdown</type>
+      <tans>in_opts5</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans6</name>
+      <type>dropdown</type>
+      <tans>in_opts6</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans7</name>
+      <type>dropdown</type>
+      <tans>in_opts7</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans8</name>
+      <type>dropdown</type>
+      <tans>in_opts8</tans>
+      <boxsize>15</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords/>
+      <allowwords/>
+      <forbidfloat>0</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check classification for item 1</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>{#exp1#}</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check classification for item 2</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>{#exp2#}</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check classification for item 3</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>{#exp3#}</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check classification for item 4</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>ta4</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>{#exp4#}</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt5</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check classification for item 5</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>ta5</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt5-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>{#exp5#}</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt6</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check classification for item 6</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans6</sans>
+        <tans>ta6</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt6-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt6-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>{#exp6#}</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt7</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check classification for item 7</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans7</sans>
+        <tans>ta7</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt7-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt7-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>{#exp7#}</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt8</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Check classification for item 8</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans8</sans>
+        <tans>ta8</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt8-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt8-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>{#exp8#}</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>192837465</deployedseed>
+    <deployedseed>847362519</deployedseed>
+    <deployedseed>314159265</deployedseed>
+    <deployedseed>271828182</deployedseed>
+    <deployedseed>592653589</deployedseed>
+    <deployedseed>793238462</deployedseed>
+    <deployedseed>643383279</deployedseed>
+    <deployedseed>502884197</deployedseed>
+    <deployedseed>169399375</deployedseed>
+    <deployedseed>105820974</deployedseed>
+    <deployedseed>944592307</deployedseed>
+    <deployedseed>816406286</deployedseed>
+    <deployedseed>208998628</deployedseed>
+    <deployedseed>348253421</deployedseed>
+    <deployedseed>170679821</deployedseed>
+    <deployedseed>480865132</deployedseed>
+    <deployedseed>823066470</deployedseed>
+    <deployedseed>938446095</deployedseed>
+    <deployedseed>505822317</deployedseed>
+    <deployedseed>253594081</deployedseed>
+    <deployedseed>865282798</deployedseed>
+    <deployedseed>858194063</deployedseed>
+    <deployedseed>1570418293</deployedseed>
+    <deployedseed>863919278</deployedseed>
+    <deployedseed>1927292158</deployedseed>
+    <deployedseed>28504646</deployedseed>
+    <deployedseed>1773233983</deployedseed>
+    <deployedseed>599608400</deployedseed>
+    <deployedseed>779691683</deployedseed>
+    <deployedseed>783511618</deployedseed>
+    <deployedseed>1034697921</deployedseed>
+    <deployedseed>1961761480</deployedseed>
+    <deployedseed>912905746</deployedseed>
+    <deployedseed>835444057</deployedseed>
+    <deployedseed>1869554700</deployedseed>
+    <deployedseed>1478979309</deployedseed>
+    <deployedseed>1851298562</deployedseed>
+    <deployedseed>2066335906</deployedseed>
+    <deployedseed>2075138972</deployedseed>
+    <deployedseed>363666752</deployedseed>
+    <deployedseed>843150909</deployedseed>
+    <deployedseed>1156236993</deployedseed>
+    <deployedseed>1853591889</deployedseed>
+    <deployedseed>350035957</deployedseed>
+    <deployedseed>11662874</deployedseed>
+    <deployedseed>2020713130</deployedseed>
+    <deployedseed>1530311498</deployedseed>
+    <deployedseed>76657705</deployedseed>
+    <deployedseed>1396188242</deployedseed>
+    <deployedseed>833619852</deployedseed>
+    <deployedseed>1389685417</deployedseed>
+    <deployedseed>634400933</deployedseed>
+    <deployedseed>21046343</deployedseed>
+    <deployedseed>584619552</deployedseed>
+    <deployedseed>980293104</deployedseed>
+    <deployedseed>2090242538</deployedseed>
+    <deployedseed>12862</deployedseed>
+    <deployedseed>527726140</deployedseed>
+    <deployedseed>587880808</deployedseed>
+    <deployedseed>2051859575</deployedseed>
+    <deployedseed>1182090364</deployedseed>
+    <deployedseed>434016083</deployedseed>
+    <deployedseed>1799894593</deployedseed>
+    <deployedseed>335516141</deployedseed>
+    <deployedseed>854588676</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All 8 real-life situations classified correctly</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>ta4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>ta5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ta6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ta7</value>
+      </testinput>
+      <testinput>
+        <name>ans8</name>
+        <value>ta8</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt6</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt6-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt7</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt7-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt8</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt8-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Opposite classification selected for every item</description>
+      <testinput>
+        <name>ans1</name>
+        <value>wa1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>wa2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>wa3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>wa4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>wa5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>wa6</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>wa7</value>
+      </testinput>
+      <testinput>
+        <name>ans8</name>
+        <value>wa8</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt5-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt6</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt6-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt7</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt7-1-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt8</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt8-1-F</expectedanswernote>
+      </expected>
+    </qtest>
   </question>
 </quiz>

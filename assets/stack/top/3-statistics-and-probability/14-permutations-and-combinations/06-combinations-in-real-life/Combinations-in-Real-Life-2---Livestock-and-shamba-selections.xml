@@ -2,20 +2,30 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Combinations in Real Life 2 - Livestock and shamba selections</text>
+      <text>Selecting livestock for market and choosing crops for a shamba</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) A farmer in Kakamega has \({@pn1@}\) goats and wants to take \({@pr1@}\) of them to the market to sell. In how many ways can the farmer choose which goats to take?</p>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> A farmer in Kakamega has \({@pn1@}\) goats and wants to take \({@pr1@}\) of them to the market to sell. In how many ways can the farmer choose which goats to take?</p>
 <p>Number of ways = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) A family has \({@pn2@}\) different crops they could plant (such as maize, beans, sukuma wiki, tomatoes and onions) but have room in their shamba for only \({@pr2@}\) different crops. How many different groups of crops can they choose?</p>
+
+<p><b>(b)</b> A family has \({@pn2@}\) different crops they could plant (such as maize, beans, sukuma wiki, tomatoes and onions) but have room in their shamba for only \({@pr2@}\) different crops. How many different groups of crops can they choose?</p>
 <p>Number of groups = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>The order in which the goats are chosen does not matter, so this is \(_{ {@pn1@} }C_{ {@pr1@} }\). Choosing which \({@pr1@}\) goats to sell is the same as choosing which \({@pn1-pr1@}\) goats to keep, so \(_{ {@pn1@} }C_{ {@pr1@} } = {}_{ {@pn1@} }C_{ {@pn1-pr1@} }\):</p>
-<p>\(_{ {@pn1@} }C_{ {@pr1@} } = \dfrac{ {@pn1@}!}{ {@pr1@}!\,{@pn1-pr1@}!} = {@ta1@}\)</p>
-<p>For part (b), planting maize and beans is the same as planting beans and maize, so this is \(_{ {@pn2@} }C_{ {@pr2@} }\):</p>
-<p>\(_{ {@pn2@} }C_{ {@pr2@} } = \dfrac{ {@pn2@}!}{ {@pr2@}!\,{@pn2-pr2@}!} = {@ta2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>Because the order in which items are chosen does not create a different selection, use the combination formula:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nC_r = \frac{n!}{r!(n - r)!}\)</p>
+
+<p><b>Part (a): Choosing \({@pr1@}\) goats out of \({@pn1@}\) to take to the market</b><br>
+Choosing which \({@pr1@}\) goats to sell is the same as choosing which \({@pn1@} - {@pr1@} = {@rem1@}\) goats to leave behind, so \({}_{{@pn1@}}C_{{@pr1@}} = {}_{{@pn1@}}C_{{@rem1@}}\). Substitute \(n = {@pn1@}\) and \(r = {@pr1@}\), expand \({@pn1@}!\) down to \({@pr1@}!\), and cancel \({@pr1@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,({@pn1@} - {@pr1@})!} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!} = \frac{{@num1_factors@} \times {@pr1@}!}{{@pr1@}! \times ({@den1_factors@})} = \frac{{@num1_factors@}}{{@den1_factors@}} = \frac{{@num1_prod@}}{{@den1_prod@}} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of ways} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Choosing \({@pr2@}\) crops out of \({@pn2@}\) for the shamba</b><br>
+Planting maize and beans is the same group as planting beans and maize, so order does not matter. Substitute \(n = {@pn2@}\) and \(r = {@pr2@}\), simplify \(({@pn2@} - {@pr2@})! = {@rem2@}!\), and cancel \({@rem2@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,({@pn2@} - {@pr2@})!} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!} = \frac{{@num2_factors@} \times {@rem2@}!}{({@den2_factors@}) \times {@rem2@}!} = \frac{{@num2_factors@}}{{@den2_factors@}} = \frac{{@num2_prod@}}{{@den2_prod@}} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of groups} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,21 +35,49 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pn1:8+rand(5);
-pr1:pn1-2-rand(2);
-ta1:pn1!/(pr1!*(pn1-pr1)!);
-pn2:8+rand(8);
-pr2:2+rand(3);
-ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
+      <text><![CDATA[/* Independent arrays yielding 6 x 3 x 8 x 3 = 432 unique variants with strictly non-colliding distractors */
+pn1 : rand([8, 9, 10, 11, 12, 13]);
+rem1 : rand([2, 3, 4]);
+pr1 : pn1 - rem1;
+ta1 : binomial(pn1, pr1);
+
+pn2 : rand([8, 9, 10, 11, 12, 13, 14, 15]);
+pr2 : rand([2, 3, 4]);
+rem2 : pn2 - pr2;
+ta2 : binomial(pn2, pr2);
+
+/* Step-by-step factorial expansion and intermediate quotient helpers */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+
+/* Part A cancels pr1! (larger) and expands rem1! (smaller) */
+num1_factors : apply("mycross", makelist(pn1 - i, i, 0, rem1 - 1));
+den1_factors : apply("mycross", makelist(rem1 - i, i, 0, rem1 - 1));
+num1_prod : factorial(pn1) / factorial(pr1);
+den1_prod : factorial(rem1);
+
+/* Part B cancels rem2! (larger) and expands pr2! (smaller) */
+num2_factors : apply("mycross", makelist(pn2 - i, i, 0, pr2 - 1));
+den2_factors : apply("mycross", makelist(pr2 - i, i, 0, pr2 - 1));
+num2_prod : factorial(pn2) / factorial(rem2);
+den2_prod : factorial(pr2);
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+ta1_perm : factorial(pn1) / factorial(rem1);
+ta1_no_rem : factorial(pn1) / factorial(pr1);
+
+ta2_perm : factorial(pn2) / factorial(rem2);
+ta2_no_rem : factorial(pn2) / factorial(pr2);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>n1={@pn1@}, r1={@pr1@}, n2={@pn2@}, r2={@pr2@}</text>
+      <text>Part A: {@pn1@}C{@pr1@} = {@ta1@}; Part B: {@pn2@}C{@pr2@} = {@ta2@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Applying Combinations in Real-Life Agricultural Selections</p>
+<p id="description">Grade 11 CBE: Solving real-life selection problems involving livestock and shamba crop groups using combinations.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -72,7 +110,7 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -90,7 +128,7 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -109,7 +147,7 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of ways to select goats</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -134,27 +172,52 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student used permutations nPr instead of combinations nCr</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pn1!/(pn1-pr1)!</tans>
+        <tans>ta1_perm</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>That counts different orders of the same goats as different choices. The order doesn't matter, so also divide by r!.</text>
+          <text><![CDATA[<p>You calculated the permutation \(\displaystyle {}_{{@pn1@}}P_{{@pr1@}} = \frac{{@pn1@}!}{{@rem1@}!} = {@ta1_perm@}\), which counts different orders of the same goats as different choices. Because order does not matter, also divide by \({@pr1@}!\): evaluate \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student omitted (n - r)! in the denominator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_no_rem</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided \({@pn1@}!\) by \({@pr1@}!\) alone, forgetting \(({@pn1@} - {@pr1@})! = {@rem1@}!\) in the denominator. Evaluate \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Order does not matter when selecting goats for the market, so evaluate \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,({@pn1@} - {@pr1@})!} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -168,7 +231,7 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of crop groups</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -185,10 +248,60 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>The order in which the crops are chosen doesn't matter, so use nCr = n! ÷ (r! × (n−r)!).</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student used permutations nPr instead of combinations nCr</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_perm</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the permutation \(\displaystyle {}_{{@pn2@}}P_{{@pr2@}} = \frac{{@pn2@}!}{{@rem2@}!} = {@ta2_perm@}\). Because choosing maize and beans is the same group as choosing beans and maize, divide by \({@pr2@}! = {@den2_prod@}\) using \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student omitted (n - r)! in the denominator</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_no_rem</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided \({@pn2@}!\) by \({@pr2@}!\) alone, forgetting \(({@pn2@} - {@pr2@})! = {@rem2@}!\) in the denominator. Evaluate \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Order does not matter when selecting crops for the shamba, so evaluate \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,({@pn2@} - {@pr2@})!} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -212,9 +325,14 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
     <deployedseed>1484940497</deployedseed>
     <deployedseed>595302511</deployedseed>
     <deployedseed>387487286</deployedseed>
+    <deployedseed>640192551</deployedseed>
+    <deployedseed>1672850531</deployedseed>
+    <deployedseed>1159457744</deployedseed>
+    <deployedseed>1988605435</deployedseed>
+    <deployedseed>635963969</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -227,37 +345,61 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Using permutations nPr instead of combinations nCr in both parts</description>
       <testinput>
         <name>ans1</name>
-        <value>pn1!/(pn1-pr1)!</value>
+        <value>ta1_perm</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_perm</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Omitting (n - r)! in the denominator in both parts</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_no_rem</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_no_rem</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

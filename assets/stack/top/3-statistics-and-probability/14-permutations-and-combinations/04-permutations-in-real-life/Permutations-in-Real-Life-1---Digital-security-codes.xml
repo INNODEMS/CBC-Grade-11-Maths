@@ -2,20 +2,30 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Permutations in Real Life 1 - Digital security codes</text>
+      <text>Counting digital security codes without repetition</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) A security code uses \({@plen1@}\) different digits chosen from 0–9, with no digit repeated. How many different codes are possible?</p>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> A security code uses \({@plen1@}\) different digits chosen from \(0\)–\(9\), with no digit repeated. How many different codes are possible?</p>
 <p>Number of codes = [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) A different code uses \({@plen2@}\) different letters chosen from the 26 letters of the alphabet, with no letter repeated. How many different codes are possible?</p>
+
+<p><b>(b)</b> A different code uses \({@plen2@}\) different letters chosen from the \(26\) letters of the alphabet, with no letter repeated. How many different codes are possible?</p>
 <p>Number of codes = [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>There are 10 possible digits, and we're selecting and arranging \({@plen1@}\) of them, so this is \(_{10}P_{ {@plen1@} }\):</p>
-<p>\(_{10}P_{ {@plen1@} } = \dfrac{10!}{(10-{@plen1@})!} = {@ta1@}\)</p>
-<p>For part (b), there are 26 possible letters, and we're selecting and arranging \({@plen2@}\) of them, so this is \(_{26}P_{ {@plen2@} }\):</p>
-<p>\(_{26}P_{ {@plen2@} } = \dfrac{26!}{(26-{@plen2@})!} = {@ta2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>Because the order of characters in a security code matters and no character may be repeated, use the permutation formula:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nP_r = \frac{n!}{(n - r)!}\)</p>
+
+<p><b>Part (a): \({@plen1@}\)-digit code from \(10\) digits (\(0\)–\(9\))</b><br>
+Substitute \(n = 10\) and \(r = {@plen1@}\), expand \(10!\) down to \({@rem1@}!\), and cancel \({@rem1@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{10}P_{{@plen1@}} = \frac{10!}{(10 - {@plen1@})!} = \frac{10!}{{@rem1@}!} = \frac{{@num1_factors@} \times {@rem1@}!}{{@rem1@}!} = {@num1_factors@} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of digit codes} = {@ta1@} }\)</p>
+
+<p><b>Part (b): \({@plen2@}\)-letter code from \(26\) letters</b><br>
+Substitute \(n = 26\) and \(r = {@plen2@}\), expand \(26!\) down to \({@rem2@}!\), and cancel \({@rem2@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{26}P_{{@plen2@}} = \frac{26!}{(26 - {@plen2@})!} = \frac{26!}{{@rem2@}!} = \frac{{@num2_factors@} \times {@rem2@}!}{{@rem2@}!} = {@num2_factors@} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Number of letter codes} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -25,21 +35,40 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pdigits:10;
-plen1:3+rand(7);
-ta1:pdigits!/(pdigits-plen1)!;
-pletters:26;
-plen2:2+rand(6);
-ta2:pletters!/(pletters-plen2)!;</text>
+      <text><![CDATA[/* Independent arrays yielding 7 x 6 = 42 distinct variants with non-colliding distractors */
+pdigits : 10;
+plen1 : rand([3, 4, 5, 6, 7, 8, 9]);
+rem1 : pdigits - plen1;
+ta1 : factorial(pdigits) / factorial(rem1);
+
+pletters : 26;
+plen2 : rand([2, 3, 4, 5, 6, 7]);
+rem2 : pletters - plen2;
+ta2 : factorial(pletters) / factorial(rem2);
+
+/* Step-by-step expansion helpers */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+
+num1_factors : apply("mycross", makelist(pdigits - i, i, 0, plen1 - 1));
+num2_factors : apply("mycross", makelist(pletters - i, i, 0, plen2 - 1));
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+ta1_rep : pdigits^plen1;
+ta1_comb : factorial(pdigits) / (factorial(plen1) * factorial(rem1));
+
+ta2_rep : pletters^plen2;
+ta2_comb : factorial(pletters) / (factorial(plen2) * factorial(rem2));]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>len1={@plen1@}, len2={@plen2@}</text>
+      <text>Part A: 10P{@plen1@} = {@ta1@}; Part B: 26P{@plen2@} = {@ta2@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Permutations in Real-Life Contexts: Security Codes</p>
+<p id="description">Grade 11 CBE: Calculating the number of ordered security codes without repetition using nPr = n!/(n - r)!.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -67,12 +96,12 @@ ta2:pletters!/(pletters-plen2)!;</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta1</tans>
-      <boxsize>10</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -85,12 +114,12 @@ ta2:pletters!/(pletters-plen2)!;</text>
       <name>ans2</name>
       <type>algebraic</type>
       <tans>ta2</tans>
-      <boxsize>10</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -109,7 +138,7 @@ ta2:pletters!/(pletters-plen2)!;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of digit codes</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -134,27 +163,52 @@ ta2:pletters!/(pletters-plen2)!;</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student allowed repeated digits (10^plen1)</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pdigits^plen1</tans>
+        <tans>ta1_rep</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Digits cannot repeat, so this isn't 10 × 10 × ... — each choice uses up one digit, reducing the options available for the next position.</text>
+          <text><![CDATA[<p>You calculated \(10^{{@plen1@}} = {@ta1_rep@}\), which allows digits to repeat. Because no digit may be repeated, each choice reduces the remaining options by \(1\): evaluate \({}_{10}P_{{@plen1@}} = {@num1_factors@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student used combinations instead of permutations</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_comb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated combinations \({}_{10}C_{{@plen1@}}\), which ignores the order of the digits. In a security code, order matters, so use permutations \(\displaystyle {}_{10}P_{{@plen1@}} = \frac{10!}{(10 - {@plen1@})!}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Selecting and arranging \({@plen1@}\) distinct digits from \(10\) gives \(\displaystyle {}_{10}P_{{@plen1@}} = \frac{10!}{(10 - {@plen1@})!} = {@num1_factors@}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -168,7 +222,7 @@ ta2:pletters!/(pletters-plen2)!;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact number of letter codes</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -185,10 +239,60 @@ ta2:pletters!/(pletters-plen2)!;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Use the same method: 26 possible letters, with no repeats, choosing and arranging the given number of them.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student allowed repeated letters (26^plen2)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_rep</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated \(26^{{@plen2@}} = {@ta2_rep@}\), which allows letters to repeat. Because no letter may be repeated, evaluate \({}_{26}P_{{@plen2@}} = {@num2_factors@}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student used combinations instead of permutations</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_comb</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated combinations \({}_{26}C_{{@plen2@}}\), which ignores the order of the letters. Because order matters in a security code, use permutations \(\displaystyle {}_{26}P_{{@plen2@}} = \frac{26!}{(26 - {@plen2@})!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Selecting and arranging \({@plen2@}\) distinct letters from \(26\) gives \(\displaystyle {}_{26}P_{{@plen2@}} = \frac{26!}{(26 - {@plen2@})!} = {@num2_factors@}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -212,9 +316,26 @@ ta2:pletters!/(pletters-plen2)!;</text>
     <deployedseed>816006329</deployedseed>
     <deployedseed>252828937</deployedseed>
     <deployedseed>940235012</deployedseed>
+    <deployedseed>1514565492</deployedseed>
+    <deployedseed>1197655259</deployedseed>
+    <deployedseed>2055017368</deployedseed>
+    <deployedseed>2048549839</deployedseed>
+    <deployedseed>597734193</deployedseed>
+    <deployedseed>2079304577</deployedseed>
+    <deployedseed>2047352328</deployedseed>
+    <deployedseed>483285242</deployedseed>
+    <deployedseed>1809031890</deployedseed>
+    <deployedseed>999050243</deployedseed>
+    <deployedseed>964228182</deployedseed>
+    <deployedseed>206563445</deployedseed>
+    <deployedseed>850481883</deployedseed>
+    <deployedseed>1213331904</deployedseed>
+    <deployedseed>1430757514</deployedseed>
+    <deployedseed>205705326</deployedseed>
+    <deployedseed>1076211974</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -227,37 +348,61 @@ ta2:pletters!/(pletters-plen2)!;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Allowing repeated characters (10^r and 26^r)</description>
       <testinput>
         <name>ans1</name>
-        <value>pdigits^plen1</value>
+        <value>ta1_rep</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_rep</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Using combinations instead of permutations (10Cr and 26Cr)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_comb</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_comb</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

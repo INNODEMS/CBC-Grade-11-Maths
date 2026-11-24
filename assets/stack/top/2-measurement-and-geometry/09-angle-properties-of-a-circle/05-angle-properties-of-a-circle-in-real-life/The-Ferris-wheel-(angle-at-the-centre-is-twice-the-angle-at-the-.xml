@@ -4,11 +4,11 @@
     <name>
       <text>The Ferris wheel (angle at the centre is twice the angle at the circumference)</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>A Ferris wheel has its centre at \(O\). Two cabins, \(A\) and \(B\), are on the rim of the wheel.
-A rider at point \(C\) on the rim sees the two cabins, and angle \(ACB = {@c@}^\circ\).
-The arms \(OA\) and \(OB\) are equal in length.</p>
+    <questiontext format="html">
+      <text><![CDATA[<p>A Ferris wheel has its centre at \(O\). Cabins \(A\), \(B\) and \(C\) hang from the rim, and the spokes \(OA\) and \(OB\) join the centre to cabins \(A\) and \(B\).
+A rider in cabin \(C\) looks at cabins \(A\) and \(B\): the angle between the two lines of sight is \(ACB = {@c@}^\circ\).</p>
 
+<div style="text-align:center;" role="img" aria-label="A Ferris wheel with centre O on a stand. Cabins A and B are near the top and cabin C near the bottom. Spokes OA and OB form angle AOB; lines of sight CA and CB form an angle of {#c#} degrees at C.">
 [[jsxgraph width="380px" height="400px"]]
 var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.6,1.6,1.6,-1.8], axis:false, showCopyright:false, showNavigation:false, keepAspectRatio:true});
 var r = Math.PI/180;
@@ -35,15 +35,18 @@ board.create('segment',[C,B],{fixed:true,strokeColor:'#ea580c',strokeWidth:3});
 board.create('segment',[A,B],{fixed:true,strokeColor:'#7c3aed',strokeWidth:2,dash:2});
 board.create('angle',[B,C,A],{radius:0.3,fillColor:'#facc15',fillOpacity:0.8,strokeColor:'#ca8a04',withLabel:false});
 board.create('angle',[B,O,A],{radius:0.3,fillColor:'#fca5a5',fillOpacity:0.8,strokeColor:'#dc2626',withLabel:false});
+function angLabel(brd, A, V, C, t) { var ax = A.X() - V.X(), ay = A.Y() - V.Y(), cx = C.X() - V.X(), cy = C.Y() - V.Y(); var la = Math.sqrt(ax*ax + ay*ay), lc = Math.sqrt(cx*cx + cy*cy); var ux = ax/la + cx/lc, uy = ay/la + cy/lc, lu = Math.sqrt(ux*ux + uy*uy); var h = Math.acos(Math.max(-1, Math.min(1, (ax*cx + ay*cy)/(la*lc))))/2; var d = Math.min(0.72, Math.max(0.44, 0.15/Math.tan(h))); brd.create('text', [V.X() + d*ux/lu, V.Y() + d*uy/lu, t], {anchorX:'middle', anchorY:'middle', fontSize:13, fixed:true, highlight:false, cssStyle:'background:rgba(255,255,255,0.85);padding:0 2px;border-radius:3px'}); }
+angLabel(board, B, C, A, '{#c#}°');
 [[/jsxgraph]]
+</div>
 
-<p>(a) Find angle \(AOB\). [[input:ans1]] [[validation:ans1]]</p>
+<p>(a) Find angle \(AOB\). [[input:ans1]]\(^\circ\) [[validation:ans1]]</p>
 <div>[[feedback:prt1]]</div>
 
-<p>(b) Find angle \(OAB\). [[input:ans2]] [[validation:ans2]]</p>
+<p>(b) Find angle \(OAB\). [[input:ans2]]\(^\circ\) [[validation:ans2]]</p>
 <div>[[feedback:prt2]]</div>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
+    <generalfeedback format="html">
       <text><![CDATA[<h4>Worked solution</h4>
 <p><strong>(a)</strong> The angle at the centre is twice the angle at the circumference when both stand on the same arc:
 \(AOB = 2 \times {@c@} = {@ta1@}^\circ\).</p>
@@ -70,19 +73,20 @@ ta2: 90-c;</text>
       <text>{@ta1@},{@ta2@},c = {@c@}, cc = {@cc@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p>This question is based on the theorem that the angle at the centre is twice the angle at the circumference in the section Angle Properties of a Circle in Real Life of the CBC Grade 11 Mathematics textbook (INNODEMS). Context: the rider is now in cabin C (a rider stands nowhere else on the rim).</p>
+<p id="concept">Angle at the centre in a real-life setting</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
     <assumereal>0</assumereal>
     <prtcorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:green;"><i class="fa fa-check"></i></span> Correct answer, well done.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtcorrectfeedback"/]] [[commonstring key="defaultprtcorrectfeedback"/]]]]></text>
     </prtcorrect>
     <prtpartiallycorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:orange;"><i class="fa fa-adjust"></i></span> Your answer is partially correct.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtpartiallycorrectfeedback"/]] [[commonstring key="defaultprtpartiallycorrectfeedback"/]]]]></text>
     </prtpartiallycorrect>
     <prtincorrect format="html">
-      <text><![CDATA[<span style="font-size: 1.5em; color:red;"><i class="fa fa-times"></i></span> Incorrect answer.]]></text>
+      <text><![CDATA[[[commonstring key="symbolicprtincorrectfeedback"/]] [[commonstring key="defaultprtincorrectfeedback"/]]]]></text>
     </prtincorrect>
     <decimals>.</decimals>
     <scientificnotation>*10</scientificnotation>
@@ -96,9 +100,9 @@ ta2: 90-c;</text>
     <variantsselectionseed/>
     <input>
       <name>ans1</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta1</tans>
-      <boxsize>15</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -108,15 +112,15 @@ ta2: 90-c;</text>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <input>
       <name>ans2</name>
-      <type>algebraic</type>
+      <type>numerical</type>
       <tans>ta2</tans>
-      <boxsize>15</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -126,8 +130,8 @@ ta2: 90-c;</text>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
-      <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <mustverify>0</mustverify>
+      <showvalidation>0</showvalidation>
       <options/>
     </input>
     <prt>
@@ -157,10 +161,35 @@ ta2: 90-c;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>c/2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text>You have halved the angle. The angle at the centre is twice the angle at the circumference.</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>Angles \(AOB\) and \(ACB\) stand on the same arc \(AB\). The angle at the centre is twice the angle at the circumference.</text>
         </falsefeedback>
       </node>
     </prt>
@@ -191,10 +220,60 @@ ta2: 90-c;</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>(180-ans1)/2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text>This is consistent with your answer to part (a), so your method is right. Check part (a).</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>180-ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text>That is the sum of the two equal base angles. Halve it.</text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text>The spokes \(OA\) and \(OB\) are equal, so triangle \(OAB\) is isosceles. Its angles add up to \(180^\circ\).</text>
         </falsefeedback>
       </node>
     </prt>
@@ -208,19 +287,9 @@ ta2: 90-c;</text>
     <deployedseed>1338217075</deployedseed>
     <deployedseed>2084052915</deployedseed>
     <deployedseed>487401740</deployedseed>
-    <deployedseed>1353076892</deployedseed>
-    <deployedseed>83143676</deployedseed>
-    <deployedseed>789552058</deployedseed>
-    <deployedseed>901319377</deployedseed>
-    <deployedseed>147289704</deployedseed>
-    <deployedseed>1772650085</deployedseed>
-    <deployedseed>913054455</deployedseed>
-    <deployedseed>1466959640</deployedseed>
-    <deployedseed>1820282408</deployedseed>
-    <deployedseed>1903828976</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -233,13 +302,133 @@ ta2: 90-c;</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Diagnostic 1 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>c/2</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Diagnostic 2 in each part that has one</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>180-ta1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Follow-through: earlier parts wrong, this part consistent with them</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>(180-(ta1+3))/2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1+3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2+3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-1-F | prt1-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-1-F | prt2-2-F | prt2-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: a letter in a numerical box</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

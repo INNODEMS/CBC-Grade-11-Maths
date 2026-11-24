@@ -8,23 +8,55 @@
       <text><![CDATA[<p>A water bill in Nakuru has a fixed standing charge plus a charge for every unit used: \(C = ku + b\), where \(C\) is the bill in hundreds of Ksh and \(u\) is the number of units. The graph shows this relationship, and \(P\) is a point on the line.</p>
 [[jsxgraph input-ref-ans3="ans3Ref" width="500px" height="450px"]]
 var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1,38,9,-3], axis:true, grid:true, showCopyright:false, showNavigation:false});
+board.create('text', [7.4, 1.5, 'u (units)'], {fixed:true});
+board.create('text', [0.2, 36.5, 'C (Ksh 100s)'], {fixed:true});
 var line = board.create('segment', [[0,{#pb#}],[9,{#pb+9*pk#}]], {strokeColor:'blue', fixed:true});
 var P = board.create('point', [{#pr#},{#pCP#}], {name:'P', fixed:true, color:'red', size:4});
 var A = board.create('point', [1,1], {name:'A', snapToGrid:true, snapSizeX:1, snapSizeY:1, size:5});
 stack_jxg.bind_point(ans3Ref, A);
 [[/jsxgraph]]
-<p>(a) Read from the graph where the line crosses the vertical axis. This is the standing charge, \(b\).</p>
+<p>(a) Read from the graph where the line crosses the vertical axis. This is the standing charge, \(b\), in hundreds of Ksh.</p>
 <p>\(b = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) Use the point \(P\) and your value of \(b\) to find the rate \(k\) (the cost of each unit).</p>
+<p>(b) Use the point \(P\) and your value of \(b\) to find the rate \(k\), the cost of each unit in hundreds of Ksh.</p>
 <p>\(k = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
 <p>(c) Drag the point \(A\) to the point on the line where \(u = {@px3@}\) units. The coordinates of \(A\) appear in the box below.</p>
 <p>\(A = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</p>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
       <text><![CDATA[<h3>Worked Solution</h3>
-<p>The line crosses the vertical axis at \({@pb@}\), so \(b = {@pb@}\).</p>
-<p>The point \(P\) is \(({@pr@}, {@pCP@})\). Substitute into \(C = ku + b\): \({@pCP@} = k({@pr@}) + {@pb@}\), so \(k = \frac{ {@pCP@} - {@pb@} }{ {@pr@} } = {@pk@}\).</p>
-<p>The line is \(C = {@pk@}u + {@pb@}\). When \(u = {@px3@}\): \(C = {@pk@}({@px3@}) + {@pb@} = {@pk*px3+pb@}\), so \(A = ({@px3@}, {@pk*px3+pb@})\).</p>]]></text>
+
+<p><strong>(a) Find the standing charge \(b\)</strong></p>
+<p><strong>Step 1: read where the line crosses the vertical axis.</strong> On the vertical axis \(u = 0\), and substituting \(u = 0\) into \(C = ku + b\) gives \(C = b\). So the value where the line crosses the vertical axis is \(b\). The graph crosses at \(C = {@pb@}\), so</p>
+\[ b = {@pb@}. \]
+<p>The bill is in hundreds of Ksh, so the standing charge is Ksh \({@100*pb@}\). It is what you pay even if no water is used.</p>
+
+<p><strong>(b) Find the rate \(k\)</strong></p>
+<p><strong>Step 1: read the coordinates of \(P\) from the graph.</strong> \(P\) is at \(u = {@pr@}\) units and \(C = {@pCP@}\), so \(P = ({@pr@}, {@pCP@})\).</p>
+<p><strong>Step 2: substitute \(P\) and \(b = {@pb@}\) into \(C = ku + b\).</strong></p>
+\[ {@pCP@} = {@pr@}k + {@pb@}. \]
+<p><strong>Step 3: subtract \({@pb@}\) from both sides.</strong></p>
+\[ {@pCP@} - {@pb@} = {@pr@}k \quad\Longrightarrow\quad {@pCP-pb@} = {@pr@}k. \]
+<p><strong>Step 4: divide both sides by \({@pr@}\).</strong></p>
+\[ k = \frac{ {@pCP-pb@} }{ {@pr@} } = {@pk@}. \]
+<p>So each unit costs \({@pk@}\) hundred Ksh, that is Ksh \({@100*pk@}\).</p>
+
+<p><strong>(c) Find the point \(A\) on the line where \(u = {@px3@}\)</strong></p>
+<p><strong>Step 1: write the equation of the line using \(k\) and \(b\).</strong></p>
+\[ C = {@pk@}u + {@pb@}. \]
+<p><strong>Step 2: substitute \(u = {@px3@}\).</strong></p>
+\[ C = {@pk@} \times {@px3@} + {@pb@} = {@pk*px3@} + {@pb@} = {@pk*px3+pb@}. \]
+<p><strong>Step 3: write down the coordinates of \(A\).</strong> On the graph, go along the horizontal axis to \(u = {@px3@}\), then straight up to the line. The line is at \(C = {@pk*px3+pb@}\), so</p>
+\[ A = ({@px3@}, {@pk*px3+pb@}). \]
+
+[[jsxgraph width="500px" height="450px"]]
+var board = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1,38,9,-3], axis:true, grid:true, showCopyright:false, showNavigation:false});
+board.create('segment', [[0,{#pb#}],[9,{#pb+9*pk#}]], {strokeColor:'blue', fixed:true});
+board.create('point', [0,{#pb#}], {name:'b', fixed:true, color:'#444', size:3, label:{offset:[10,-10], anchorX:'left'}});
+board.create('point', [{#pr#},{#pCP#}], {name:'P', fixed:true, color:'red', size:4, label:{offset:[-10,10], anchorX:'right'}});
+board.create('point', [{#px3#},{#pk*px3+pb#}], {name:'A', fixed:true, color:'green', size:4, label:{offset:[10,-10], anchorX:'left'}});
+board.create('segment', [[{#px3#},0],[{#px3#},{#pk*px3+pb#}]], {dash:2, strokeColor:'#888', fixed:true});
+board.create('segment', [[0,{#pk*px3+pb#}],[{#px3#},{#pk*px3+pb#}]], {dash:2, strokeColor:'#888', fixed:true});
+[[/jsxgraph]]]]></text>
     </generalfeedback>
     <defaultgrade>3</defaultgrade>
     <penalty>0.1</penalty>

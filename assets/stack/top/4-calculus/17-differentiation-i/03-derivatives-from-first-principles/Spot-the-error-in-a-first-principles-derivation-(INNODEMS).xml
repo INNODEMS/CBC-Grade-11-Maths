@@ -16,7 +16,8 @@
 <div>\( \phantom{x} = \) [[input:fix]] [[validation:fix]] [[feedback:prtfix]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>The first mistake is on <b>Line {@first_wrong@}</b>: {@err_name@}</p>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>The first mistake is on <b>Line {@first_wrong@}</b>: {@err_name@}</p>
 <p>The correct working from first principles is:</p>
 \[
 \begin{align*}
@@ -66,7 +67,7 @@ if is(errtype = 1) then (
   D4 : b,
   first_wrong : 1,
   correct_fix : C1,
-  err_name : "Line 1 expands (x+h)^2 as x^2 + h^2 and drops the cross term 2xh. The correct expansion is (x+h)^2 = x^2 + 2xh + h^2."
+  err_name : "Line 1 expands \\((x+h)^2\\) as \\(x^2 + h^2\\) and drops the cross term \\(2xh\\). The correct expansion is \\((x+h)^2 = x^2 + 2xh + h^2\\)."
 ) elseif is(errtype = 2) then (
   D1 : C1,
   D2 : 2*x*h + h^2 - b*h,
@@ -74,7 +75,7 @@ if is(errtype = 1) then (
   D4 : 2*x - b,
   first_wrong : 2,
   correct_fix : C2,
-  err_name : "Line 2 has a sign slip when subtracting f(x): the term in b should be added, not subtracted."
+  err_name : "Line 2 has a sign slip when subtracting \\(f(x)\\): the \\(h\\)-term that comes from the linear part of \\(f\\) has the wrong sign."
 ) elseif is(errtype = 3) then (
   D1 : C1,
   D2 : C2,
@@ -82,7 +83,7 @@ if is(errtype = 1) then (
   D4 : 2*x + b,
   first_wrong : 3,
   correct_fix : C3,
-  err_name : "Line 3 cancels h incorrectly: dividing h^2 by h gives h, not h^2. (Notice the final answer still came out right, but the working is invalid.)"
+  err_name : "Line 3 cancels \\(h\\) incorrectly: dividing \\(h^2\\) by \\(h\\) gives \\(h\\), not \\(h^2\\). (Notice the final answer still came out right, but the working is invalid.)"
 ) else (
   D1 : C1,
   D2 : C2,
@@ -90,7 +91,7 @@ if is(errtype = 1) then (
   D4 : 2*x + h + b,
   first_wrong : 4,
   correct_fix : C4,
-  err_name : "Line 4 forgets to take the limit: as h approaches 0 the term containing h must vanish, so it cannot remain in f'(x)."
+  err_name : "Line 4 forgets to take the limit: as \\(h \\to 0\\) the term containing \\(h\\) must vanish, so it cannot remain in \\(f'(x)\\)."
 );
 
 /* The right-hand side actually shown on the first wrong line. */
@@ -108,8 +109,12 @@ wl_ta : [[1, is(first_wrong=1), "Line 1"],
     <questionnote format="moodle_auto_format">
       <text>\( f(x)={@fexpr@} \); errtype {@errtype@}; first wrong = Line {@first_wrong@}; fix \( = {@correct_fix@} \)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="author">Daniel Murunga</p>
+<p id="concept"></p>
+<p id="reviewer"></p>
+<p id="reviewer"></p>
+<p id="description">Given a first-principles derivation of f(x) = x^2 + bx that contains one planted mistake, the student identifies the line with the first mistake and writes the corrected right-hand side.</p>]]></text>
     </questiondescription>
     <questionsimplify>0</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -224,7 +229,7 @@ wl_ta : [[1, is(first_wrong=1), "Line 1"],
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prtfix-wrong</falseanswernote>
         <falsefeedback format="html">
-          <text><![CDATA[<p>That is not the correct right-hand side for this line. Re-derive it carefully from the previous (correct) line.</p>]]></text>
+          <text><![CDATA[<p>That is not the correct right-hand side for this line. Re-derive it carefully from \( f(x) \) and the correct lines above it.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -295,6 +300,9 @@ too_early : is(wl < first_wrong);]]></text>
     <deployedseed>5005</deployedseed>
     <deployedseed>6006</deployedseed>
     <deployedseed>8008</deployedseed>
+    <deployedseed>11011</deployedseed>
+    <deployedseed>12122</deployedseed>
+    <deployedseed>14344</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Both correct: right line identified and correctly fixed</description>

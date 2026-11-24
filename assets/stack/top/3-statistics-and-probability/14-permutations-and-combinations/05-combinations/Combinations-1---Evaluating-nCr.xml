@@ -2,18 +2,30 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Combinations 1 - Evaluating nCr</text>
+      <text>Evaluating combination expressions using factorials</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>(a) Evaluate \(_{ {@pn@} }C_{ {@pr@} }\).</p>
-<p>\(_{ {@pn@} }C_{ {@pr@} } = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
-<p>(b) Evaluate \(_{ {@pn2@} }C_{ {@pr2@} }\).</p>
-<p>\(_{ {@pn2@} }C_{ {@pr2@} } = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p><b>(a)</b> Evaluate \({}_{{@pn1@}}C_{{@pr1@}}\).</p>
+<p>\({}_{{@pn1@}}C_{{@pr1@}} =\) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+
+<p><b>(b)</b> Evaluate \({}_{{@pn2@}}C_{{@pr2@}}\).</p>
+<p>\({}_{{@pn2@}}C_{{@pr2@}} =\) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked Solution</h3>
-<p>\(_{ {@pn@} }C_{ {@pr@} } = \dfrac{ {@pn@}!}{ {@pr@}!\,({@pn@}-{@pr@})!} = \dfrac{ {@pn@}!}{ {@pr@}!\,{@pn-pr@}!} = {@ta1@}\)</p>
-<p>\(_{ {@pn2@} }C_{ {@pr2@} } = \dfrac{ {@pn2@}!}{ {@pr2@}!\,({@pn2@}-{@pr2@})!} = \dfrac{ {@pn2@}!}{ {@pr2@}!\,{@pn2-pr2@}!} = {@ta2@}\)</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p>Use the combination formula:</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_nC_r = \frac{n!}{r!(n - r)!}\)</p>
+
+<p><b>Part (a): Evaluating \({}_{{@pn1@}}C_{{@pr1@}}\)</b><br>
+Substitute \(n = {@pn1@}\) and \(r = {@pr1@}\), simplify \(({@pn1@} - {@pr1@})! = {@rem1@}!\), expand \({@pn1@}!\) down to \({@rem1@}!\), and cancel \({@rem1@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,({@pn1@} - {@pr1@})!} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!} = \frac{{@num1_factors@} \times {@rem1@}!}{({@den1_factors@}) \times {@rem1@}!} = \frac{{@num1_factors@}}{{@den1_factors@}} = \frac{{@num1_prod@}}{{@den1_prod@}} = {@ta1@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ {}_{{@pn1@}}C_{{@pr1@}} = {@ta1@} }\)</p>
+
+<p><b>Part (b): Evaluating \({}_{{@pn2@}}C_{{@pr2@}}\)</b><br>
+Substitute \(n = {@pn2@}\) and \(r = {@pr2@}\), simplify \(({@pn2@} - {@pr2@})! = {@rem2@}!\), expand \({@pn2@}!\) down to \({@rem2@}!\), and cancel \({@rem2@}!\):</p>
+<p style="margin-left: 20px;">\(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,({@pn2@} - {@pr2@})!} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!} = \frac{{@num2_factors@} \times {@rem2@}!}{({@den2_factors@}) \times {@rem2@}!} = \frac{{@num2_factors@}}{{@den2_factors@}} = \frac{{@num2_prod@}}{{@den2_prod@}} = {@ta2@}\)</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ {}_{{@pn2@}}C_{{@pr2@}} = {@ta2@} }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
@@ -23,21 +35,47 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>pn:6+rand(6);
-pr:2+rand(3);
-ta1:pn!/(pr!*(pn-pr)!);
-pn2:8+rand(5);
-pr2:2+rand(3);
-ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
+      <text><![CDATA[/* Independent arrays yielding 4 x 3 x 5 x 3 = 180 distinct variants with strictly non-colliding distractors */
+pn1 : rand([7, 9, 10, 11]);
+pr1 : rand([2, 3, 4]);
+rem1 : pn1 - pr1;
+ta1 : binomial(pn1, pr1);
+
+pn2 : rand([9, 10, 11, 12, 13]);
+pr2 : rand([2, 3, 4]);
+rem2 : pn2 - pr2;
+ta2 : binomial(pn2, pr2);
+
+/* Step-by-step expansion and intermediate quotient helpers */
+nary("mycross");
+texput("mycross", " \\times ", nary);
+
+num1_factors : apply("mycross", makelist(pn1 - i, i, 0, pr1 - 1));
+den1_factors : apply("mycross", makelist(pr1 - i, i, 0, pr1 - 1));
+num1_prod : factorial(pn1) / factorial(rem1);
+den1_prod : factorial(pr1);
+
+num2_factors : apply("mycross", makelist(pn2 - i, i, 0, pr2 - 1));
+den2_factors : apply("mycross", makelist(pr2 - i, i, 0, pr2 - 1));
+num2_prod : factorial(pn2) / factorial(rem2);
+den2_prod : factorial(pr2);
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+ta1_perm : factorial(pn1) / factorial(rem1);
+ta1_no_rem : factorial(pn1) / factorial(pr1);
+
+ta2_perm : factorial(pn2) / factorial(rem2);
+ta2_no_rem : factorial(pn2) / factorial(pr2);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>n={@pn@}, r={@pr@}, n2={@pn2@}, r2={@pr2@}</text>
+      <text>Part A: {@pn1@}C{@pr1@} = {@ta1@}; Part B: {@pn2@}C{@pr2@} = {@ta2@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Evaluating Combinations Using Factorial Notation</p>
+<p id="description">Grade 11 CBE: Evaluating nCr = n!/[r!(n - r)!] by expanding factorials and cancelling common factors.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -70,7 +108,7 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -88,7 +126,7 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>/,!</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -107,7 +145,7 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact value of pn1Cpr1</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
@@ -132,27 +170,52 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student omitted r! and computed permutation nPr</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>pn!/(pn-pr)!</tans>
+        <tans>ta1_perm</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>That is nPr. For a combination, order doesn't matter, so also divide by r!.</text>
+          <text><![CDATA[<p>You calculated the permutation \(\displaystyle {}_{{@pn1@}}P_{{@pr1@}} = \frac{{@pn1@}!}{{@rem1@}!} = {@ta1_perm@}\). For a combination, order does not matter, so also divide by \({@pr1@}! = {@den1_prod@}\): evaluate \(\displaystyle \frac{{@ta1_perm@}}{{@den1_prod@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student omitted (n - r)! and computed n!/r!</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_no_rem</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided \({@pn1@}!\) by \({@pr1@}!\) alone, forgetting \(({@pn1@} - {@pr1@})! = {@rem1@}!\) in the denominator. Use \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!}\).</p>]]></text>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Incorrect. Use \(\displaystyle {}_{{@pn1@}}C_{{@pr1@}} = \frac{{@pn1@}!}{{@pr1@}!\,({@pn1@} - {@pr1@})!} = \frac{{@pn1@}!}{{@pr1@}!\,{@rem1@}!}\) and cancel \({@rem1@}!\) before multiplying.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -166,7 +229,7 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact value of pn2Cpr2</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>ta2</tans>
@@ -183,10 +246,60 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Use nCr = n! ÷ (r! × (n−r)!). Cancel the larger factorial before multiplying.</text>
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student omitted r! and computed permutation nPr</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_perm</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You calculated the permutation \(\displaystyle {}_{{@pn2@}}P_{{@pr2@}} = \frac{{@pn2@}!}{{@rem2@}!} = {@ta2_perm@}\). For a combination, order does not matter, so also divide by \({@pr2@}! = {@den2_prod@}\): evaluate \(\displaystyle \frac{{@ta2_perm@}}{{@den2_prod@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student omitted (n - r)! and computed n!/r!</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_no_rem</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You divided \({@pn2@}!\) by \({@pr2@}!\) alone, forgetting \(({@pn2@} - {@pr2@})! = {@rem2@}!\) in the denominator. Use \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Use \(\displaystyle {}_{{@pn2@}}C_{{@pr2@}} = \frac{{@pn2@}!}{{@pr2@}!\,({@pn2@} - {@pr2@})!} = \frac{{@pn2@}!}{{@pr2@}!\,{@rem2@}!}\) and cancel \({@rem2@}!\) before multiplying.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -210,9 +323,12 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
     <deployedseed>1110780465</deployedseed>
     <deployedseed>1983231235</deployedseed>
     <deployedseed>361000499</deployedseed>
+    <deployedseed>718069649</deployedseed>
+    <deployedseed>732952340</deployedseed>
+    <deployedseed>3955693</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both parts correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -225,37 +341,61 @@ ta2:pn2!/(pr2!*(pn2-pr2)!);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
       </expected>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Omitting r! (computing permutations nPr) in both parts</description>
       <testinput>
         <name>ans1</name>
-        <value>pn!/(pn-pr)!</value>
+        <value>ta1_perm</value>
       </testinput>
       <testinput>
         <name>ans2</name>
-        <value>ta2</value>
+        <value>ta2_perm</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
-        <expectedscore>1.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Omitting (n - r)! in the denominator in both parts</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_no_rem</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_no_rem</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
       </expected>
     </qtest>
   </question>
