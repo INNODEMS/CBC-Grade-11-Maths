@@ -315,4 +315,4 @@ These were left for the authors to decide:
 
 ## Build status
 
-All changed `.ptx` files parse as well-formed XML (checked with lxml), and every new or changed JSXGraph script was loaded in a browser test harness with no console errors. A full `pretext build web` was started but had not finished when the review session stopped. Run it again to confirm the build, then check the interactives in `output/web`.
+`pretext build web` completes with "Success! Built requested target(s) without errors." All changed `.ptx` files parse as well-formed XML. Every new or changed JSXGraph script was loaded in a browser test page with no console errors; the interactives have not yet been clicked through in the built `output/web` pages.
