@@ -11,15 +11,16 @@ const board = JXG.JSXGraph.initBoard('jsx-inverse-variation', {
 // -----------------------------------------------------------------------------
 // Slider for k
 // -----------------------------------------------------------------------------
-const k = board.create('slider', [[1.0, 14.0], [4.8, 14.0], [6, 24, 60]], {
+const k = board.create('slider', [[8.5, 7.6], [12.3, 7.6], [6, 24, 60]], {
     name: '',
+    withLabel: false,
     snapWidth: 1,
     precision: 0
 });
 
 board.create('text', [
-    6.2,
-    14.0,
+    12.8,
+    7.6,
     () => "k = " + k.Value().toFixed(0)
 ]);
 
@@ -68,35 +69,41 @@ board.create('segment', [
 // Dynamic values
 // -----------------------------------------------------------------------------
 
+// In the Moving Company activity x is the number of workers w and
+// y is the time t in hours, so the readouts use both names.
 board.create('text', [
-    9,
+    8.5,
     12.6,
-    () => "\\[y=\\frac{" + k.Value().toFixed(0) + "}{x}\\]"
-], {
-    fontSize: 20
-});
-
-board.create('text', [
-    9,
-    11.1,
-    () => "(x = " + P.X().toFixed(2) + ")"
-], {
-    fontSize: 16
-});
-
-board.create('text', [
-    9,
-    10.0,
-    () => "\\[y=" + P.Y().toFixed(2) + "\\]"
+    () => "\\(t = \\dfrac{" + k.Value().toFixed(0) + "}{w}\\)"
 ], {
     fontSize: 18
 });
 
 board.create('text', [
-    9,
-    8.9,
-    () => "\\[xy=" + (P.X() * P.Y()).toFixed(2) + "\\]"
+    8.5,
+    11.2,
+    () => "workers \\(w = " + P.X().toFixed(2) + "\\)"
 ], {
-    fontSize: 20,
+    fontSize: 16
+});
+
+board.create('text', [
+    8.5,
+    10.2,
+    () => "time \\(t = " + P.Y().toFixed(2) + "\\) hours"
+], {
+    fontSize: 16
+});
+
+board.create('text', [
+    8.5,
+    9.0,
+    () => "\\(w \\times t = " + (P.X() * P.Y()).toFixed(2) + "\\)"
+], {
+    fontSize: 18,
     color: "#2e7d32"
 });
+
+// Axis labels
+board.create('text', [13.2, 0.7, 'workers, w'], { fontSize: 13, color: '#555', fixed: true });
+board.create('text', [0.3, 14.6, 'time, t (hours)'], { fontSize: 13, color: '#555', fixed: true });

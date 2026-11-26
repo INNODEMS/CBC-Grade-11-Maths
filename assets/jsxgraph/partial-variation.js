@@ -18,10 +18,10 @@ var board = JXG.JSXGraph.initBoard('jsx-partial-variation', {
    SLIDER
    ============================================================ */
 
-board.create('text',[18.5,1250,"<b>Distance (km)</b>"]);
+board.create('text',[18.5,800,"<b>Distance (km)</b>"]);
 
 var distance = board.create('slider',
-    [[18.5,1170],[23.5,1170],[0,2,20]],{
+    [[18.5,720],[23.5,720],[0,2,20]],{
         name:'',
         snapWidth:0.5
 });
@@ -35,7 +35,7 @@ var graph = board.create('functiongraph',[
         return m*x + c;
     },
     0,
-    22
+    20
 ],{
     strokeWidth:3,
     strokeColor:'#1565c0'
@@ -125,29 +125,29 @@ board.create('text',[
    INFORMATION PANEL
    ============================================================ */
 
-board.create('text',[18.5,1050,function(){
+board.create('text',[18.5,600,function(){
     return "<b>Distance (x)</b> = "
         +P.X().toFixed(1)
         +" km";
 }]);
 
-board.create('text',[18.5,950,function(){
+board.create('text',[18.5,500,function(){
     return "<b>Total Cost (y)</b> = "
         +P.Y().toFixed(0)
         +" Ksh";
 }]);
 
-board.create('text',[18.5,850,function(){
+board.create('text',[18.5,400,function(){
     return "<i>y</i> = 50("
         +P.X().toFixed(1)
         +") + 100";
 }]);
 
-board.create('text',[18.5,750,function(){
+board.create('text',[18.5,300,function(){
     return "<b>= " + P.Y().toFixed(0) + " Ksh</b>";
 }]);
 
-board.create('text',[18.5,650,"<i>y</i> = 50<i>x</i> + 100"]);
+board.create('text',[18.5,200,"<i>y</i> = 50<i>x</i> + 100"]);
 
 /* ============================================================
    AXIS LABELS

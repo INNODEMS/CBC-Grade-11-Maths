@@ -6,7 +6,7 @@
 var k = 20;
 
 var board = JXG.JSXGraph.initBoard('jsx-direct-variation', {
-    boundingbox: [-1, 190, 15, -10],
+    boundingbox: [-1, 230, 15, -14],
     keepaspectratio: false,
     axis: true,
     showNavigation: false,
@@ -34,7 +34,7 @@ var graph = board.create('functiongraph',[
         return k*x;
     },
     0,
-    9
+    10
 ],{
     strokeWidth:3,
     strokeColor:'#1565c0'
@@ -149,5 +149,5 @@ board.create('text',[11.3,108,"<i>d</i> = 20<i>f</i>"]);
    AXIS LABELS
    ============================================================ */
 
-board.create('text',[0.4,183,"Distance (km)"]);
-board.create('text',[9.7,-8,"Fuel (L)"]);
+board.create('text',[0.4,222,"Distance (km)"]);
+board.create('text',[9.7,-10,"Fuel (L)"]);
