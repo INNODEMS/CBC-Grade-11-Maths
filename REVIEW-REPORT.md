@@ -315,4 +315,6 @@ These were left for the authors to decide:
 
 ## Build status
 
-`pretext build web` completes with "Success! Built requested target(s) without errors." All changed `.ptx` files parse as well-formed XML. Every new or changed JSXGraph script was loaded in a browser test page with no console errors; the interactives have not yet been clicked through in the built `output/web` pages.
+- `pretext build web` completes with "Success! Built requested target(s) without errors."
+- All 80 interactive pages in the built `output/web` were loaded in a browser. Each one creates its JSXGraph board, with between 18 and 153 objects, and none shows a MathJax error.
+- The seven new interactives and the fixed ones were also tried by hand: sliders, buttons and dragging all work.
