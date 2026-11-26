@@ -84,18 +84,15 @@ board.create('text', [-0.2, function () { return Pb.Y(); }, '\\(f(a+h)\\)'],
     {fontSize: 14, color: '#444', anchorX: 'right', fixed: true});
 
 // --- Dynamic readout --------------------------------------------------------
-// board.create('text', [
-//     function () { return board.getBoundingBox()[2] - 0.15; },
-//     function () { return board.getBoundingBox()[3] + 0.25; },
-//     function () {
-//         var dx = Pb.X() - Pa.X();
-//         var slope = Math.abs(dx) > 1e-6 ? (f(Pb.X()) - f(Pa.X())) / dx : null;
-//         var val = slope === null ? '—' : slope.toFixed(2);
-//         return '<div style="background:rgba(255,255,255,0.85);padding:7px 11px;'
-//             + 'border-radius:5px;font-size:13px;color:#333">'
-//             + 'secant slope = '
-//             + '<span style="color:#2e7d32">' + val + '</span>'
-//             + '<br><span style="color:#777;font-size:12px">= average rate of change over [a, a+h]</span>'
-//             + '</div>';
-//     }
-// ], {useHTML: true, anchorX: 'right', anchorY: 'bottom', fixed: true});
+// Placed in the empty upper-middle region (the curve stays low there), so it
+// never covers the points or their axis labels.
+board.create('text', [2.3, 8.7, function () {
+    var dx = Pb.X() - Pa.X();
+    var slope = Math.abs(dx) > 1e-6 ? (f(Pb.X()) - f(Pa.X())) / dx : null;
+    var val = slope === null ? '—' : slope.toFixed(2);
+    return '<div style="background:rgba(255,255,255,0.9);padding:6px 10px;'
+        + 'border-radius:5px;font-size:13px;color:#333;text-align:center">'
+        + 'secant slope = <span style="color:#2e7d32;font-weight:bold">' + val + '</span>'
+        + '<br><span style="color:#777;font-size:12px">= average rate of change over [a, a+h]</span>'
+        + '</div>';
+}], {useHTML: true, useMathJax: false, anchorX: 'middle', anchorY: 'top', fixed: true});
