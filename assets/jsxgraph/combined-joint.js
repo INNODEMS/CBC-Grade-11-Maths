@@ -110,13 +110,13 @@ board.create('text',[
 board.create('text',[11.2,50,function(){
     return "<b>Temperature</b> = "
         +temp.Value().toFixed(0)
-        +" K";
+        +" units";
 }]);
 
 board.create('text',[11.2,46,function(){
     return "<b>Volume</b> = "
         +P.X().toFixed(1)
-        +" L";
+        +" units";
 }]);
 
 board.create('text',[11.2,42,function(){

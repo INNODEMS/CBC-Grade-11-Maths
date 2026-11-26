@@ -181,35 +181,38 @@
 </activity>
   <exploration xml:id="exploration-cyclic-quadrilateral">
     <title>Opposite Angles of a Cyclic Quadrilateral</title>
-    <interactive xml:id="interactive-cyclic-quadrilateral" platform="jsxgraph" width="90%" aspect="1:1" source="jsxgraph/angle-properties-of-a-circle/cyclic-quadrilateral.js">
-        <slate xml:id="jsxgraph-cyclic-quadrilateral" surface="jsxboard" aspect="1:1"/>
-        <instructions>
-            <p>
-                <ul>
-                    <li>
-                        <p>
-                            Drag vertices <m>A</m>, <m>B</m>, <m>C</m>, and <m>D</m> around the circumference of the circle. What do you notice about the sum of opposite angles (<m>\angle A + \angle C</m> and <m>\angle B + \angle D</m>)?
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Adjust the radius slider at the top left. Does the sum of opposite angles change when the circle's size changes?
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Try dragging one vertex across another to reshape the quadrilateral. What happens to the angle sums?
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Based on your observations, what geometric relationship always holds true for the opposite angles of a cyclic quadrilateral?
-                        </p>
-                    </li>
-                </ul>
-            </p> 
-        </instructions>
-    </interactive>
+    <figure xml:id="fig-jsx-cyclic-quadrilateral">
+        <caption>Opposite Angles of a Cyclic Quadrilateral.</caption>
+        <interactive xml:id="interactive-cyclic-quadrilateral" platform="jsxgraph" width="90%" aspect="1:1" source="jsxgraph/angle-properties-of-a-circle/cyclic-quadrilateral.js">
+            <slate xml:id="jsxgraph-cyclic-quadrilateral" surface="jsxboard" aspect="1:1"/>
+            <instructions>
+                <p>
+                    <ul>
+                        <li>
+                            <p>
+                                Drag vertices <m>A</m>, <m>B</m>, <m>C</m>, and <m>D</m> around the circumference of the circle. What do you notice about the sum of opposite angles (<m>\angle A + \angle C</m> and <m>\angle B + \angle D</m>)?
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Adjust the radius slider at the top left. Does the sum of opposite angles change when the circle's size changes?
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Try dragging one vertex across another to reshape the quadrilateral. What happens to the angle sums?
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Based on your observations, what geometric relationship always holds true for the opposite angles of a cyclic quadrilateral?
+                            </p>
+                        </li>
+                    </ul>
+                </p> 
+            </instructions>
+        </interactive>
+    </figure>
 </exploration>
    <insight xml:id="insight-cyclic-quadrilateral-properties">
         <!-- <title>Key Insight: Cyclic Quadrilateral Properties</title> -->
@@ -835,9 +838,9 @@
 
         <exercise>
             <statement>
-                <p>A circular wooden shield has four decorative metal studs along its perimeter labeled <m>K</m>, <m>L</m>, <m>M</m>, and <m>N</m>. An artisan extends the straight line pattern <m>NM</m> past stud <m>M</m> to the edge of the shield frame point <m>F</m>. If the interior angle at the opposite stud is <m>\angle KNL = 71^\circ</m>, evaluate the size of the exterior angle <m>\angle LMF</m>.</p>
+                <p>A circular wooden shield has four decorative metal studs along its perimeter labeled <m>K</m>, <m>L</m>, <m>M</m>, and <m>N</m>. An artisan extends the straight line pattern <m>KL</m> past stud <m>L</m> to the point <m>F</m>. If the interior angle at the opposite stud is <m>\angle KNM = 71^\circ</m>, evaluate the size of the exterior angle <m>\angle MLF</m>.</p>
                 <figure xml:id="cyclic-quad-wooden-shield">
-    <caption>A geometric representation of the circular wooden shield forming a cyclic quadrilateral $KLMN$ with an extended line past stud $M$ to point $F$.</caption>
+    <caption>A geometric representation of the circular wooden shield forming a cyclic quadrilateral $KLMN$ with an extended line past stud $L$ to point $F$.</caption>
     <image width="65%">
         <latex-image>
             <![CDATA[
@@ -851,8 +854,8 @@
                 \coordinate (N) at (190:2.5);
                 
                 % Step 2: Safe Extension calculation (No calc library needed)
-                % Uses a relative polar shift to extend NM past M natively
-                \coordinate (F) at ($(M) + (348:1.2)$);
+                % Uses a relative polar shift to extend KL past L (direction of L - K is about 342.5 degrees)
+                \coordinate (F) at ($(L) + (342.5:1.2)$);
 
                 % --- Step 3: Draw Circle ---
                 \draw[thick] (O) circle (2.5);
@@ -866,17 +869,17 @@
                 \end{scope}
                 \node[blue, right] at ($(N)+(5:0.6)$) {$71^{\circ}$};
 
-                % Exterior Angle at M (Angle LMF)
+                % Exterior Angle at L (Angle MLF)
                 \begin{scope}
-                    \clip (M) -- (L) -- (F) -- cycle;
-                    \draw[draw=none, fill=red!20, opacity=0.6] (M) circle (0.5);
-                    \draw[red, thick] (M) circle (0.5);
+                    \clip (L) -- (M) -- (F) -- cycle;
+                    \draw[draw=none, fill=red!20, opacity=0.6] (L) circle (0.5);
+                    \draw[red, thick] (L) circle (0.5);
                 \end{scope}
-                \node[red, above right] at ($(M)+(30:0.5)$) {$\angle LMF$};
+                \node[red, right] at ($(L)+(315:0.6)$) {$\angle MLF$};
 
                 % --- Step 5: Draw Lines ---
                 \draw[thick] (K) -- (L) -- (M) -- (N) -- cycle;
-                \draw[thick, dashed] (M) -- (F); 
+                \draw[thick, dashed] (L) -- (F); 
 
                 % --- Step 6: Points and Labels ---
                 \foreach \pt/\pos in {K/above, L/right, M/below right, N/left, F/below right} {
@@ -890,8 +893,8 @@
 </figure>
             </statement>
             <solution>
-                <p>Since the studs form an inscribed cyclic quadrilateral, the exterior angle at vertex <m>M</m> equals the opposite interior angle at vertex <m>N</m>:
-                    <md>\angle LMF = \angle KNL = 71^\circ</md>
+                <p>Since the studs form an inscribed cyclic quadrilateral, the exterior angle at vertex <m>L</m> equals the opposite interior angle at vertex <m>N</m>:
+                    <md>\angle MLF = \angle KNM = 71^\circ</md>
                 </p>
             </solution>
         </exercise>

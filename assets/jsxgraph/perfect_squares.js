@@ -1,13 +1,18 @@
 /*=========================================================
     PERFECT SQUARE EXPLORER
+    Drag the slider to choose N unit squares. The tiles fill
+    the smallest square frame that can hold them; the message
+    under the grid says whether N is a perfect square.
 =========================================================*/
 
 const board = JXG.JSXGraph.initBoard('jsxgraph-perfect-squares', {
-    boundingbox: [-1, 10, 10, -2],
+    boundingbox: [-1, 10, 10, -2.2],
     axis: false,
     showNavigation: false,
     showCopyright: false,
-    keepAspectRatio: true
+    keepAspectRatio: true,
+    pan: { enabled: false },
+    zoom: { enabled: false }
 });
 
 /*=========================================================
@@ -16,10 +21,12 @@ const board = JXG.JSXGraph.initBoard('jsxgraph-perfect-squares', {
 
 const slider = board.create(
     'slider',
-    [[0.5, 9], [8.5, 9], [1, 1, 50]],
+    [[0.5, 9.2], [7.5, 9.2], [1, 1, 50]],
     {
-        name: 'Number of unit squares',
-        snapWidth: 1
+        name: 'N',
+        snapWidth: 1,
+        precision: 0,
+        label: { fontSize: 14 }
     }
 );
 
@@ -30,151 +37,92 @@ const slider = board.create(
 let objects = [];
 
 function clearScene() {
-
     while (objects.length) {
         board.removeObject(objects.pop());
     }
-
-}
-
-function add(obj) {
-
-    objects.push(obj);
-    return obj;
-
 }
 
 /*=========================================================
-    DRAW ONE CELL
+    DRAW ONE CELL (a polygon from coordinate pairs, so no
+    helper points are left on the board)
 =========================================================*/
 
 function drawCell(x, y, colour) {
-
-    const p1 = board.create('point', [x, y], {visible:false});
-    const p2 = board.create('point', [x+1, y], {visible:false});
-    const p3 = board.create('point', [x+1, y-1], {visible:false});
-    const p4 = board.create('point', [x, y-1], {visible:false});
-
-    objects.push(p1,p2,p3,p4);
-
-    return add(
-        board.create(
-            'polygon',
-            [p1,p2,p3,p4],
-            {
-                fillColor: colour,
-                fillOpacity: 0.85,
-                borders:{
-                    strokeColor:"#607D8B",
-                    strokeWidth:1
-                },
-                highlight:false
-            }
-        )
-    );
-
+    const cell = board.create('polygon',
+        [[x, y], [x + 1, y], [x + 1, y - 1], [x, y - 1]],
+        {
+            fillColor: colour,
+            fillOpacity: 0.85,
+            vertices: { visible: false, fixed: true },
+            borders: { strokeColor: '#607D8B', strokeWidth: 1, fixed: true },
+            highlight: false,
+            fixed: true
+        });
+    objects.push(cell);
+    return cell;
 }
+
+/*=========================================================
+    MESSAGE (shown on the board itself; the original script
+    wrote to an HTML element "message" that the page lacks)
+=========================================================*/
+
+function messageText() {
+    const N = Math.round(slider.Value());
+    const side = Math.ceil(Math.sqrt(N));
+    if (side * side === N) {
+        return '<span style="color:#2E7D32"><b>' + N + (N === 1 ? ' tile makes' : ' tiles make') + ' a complete ' +
+            side + ' × ' + side + ' square, so ' + N + ' is a perfect square.</b></span>';
+    }
+    const missing = side * side - N;
+    return '<span style="color:#C62828"><b>' + N + ' is not a perfect square:</b></span> ' +
+        missing + ' more tile' + (missing === 1 ? '' : 's') + ' needed to complete a ' +
+        side + ' × ' + side + ' square.';
+}
+
+board.create('text', [-0.5, -1.1, messageText], {
+    fontSize: 14,
+    fixed: true,
+    highlight: false,
+    anchorY: 'middle'
+});
 
 /*=========================================================
     UPDATE
 =========================================================*/
 
-function updateScene(){
-
+function updateScene() {
+    board.suspendUpdate();
     clearScene();
 
     const N = Math.round(slider.Value());
-
-    // Smallest square that can contain N tiles
-
-    const side = Math.ceil(Math.sqrt(N));
-
-    // Centre the frame
-
-    const startX = (8 - side)/2;
+    const side = Math.ceil(Math.sqrt(N));   // smallest square holding N tiles
+    const startX = (8 - side) / 2;           // centre the frame
     const startY = 8;
 
-    // Draw frame
-
-    for(let r=0;r<side;r++){
-
-        for(let c=0;c<side;c++){
-
-            drawCell(
-                startX+c,
-                startY-r,
-                "#F5F5F5"
-            );
-
-        }
-
-    }
-
-    // Fill tiles sequentially
-
-    let count=0;
-
-    outer:
-
-    for(let r=0;r<side;r++){
-
-        for(let c=0;c<side;c++){
-
-            if(count>=N)
-                break outer;
-
-            drawCell(
-                startX+c,
-                startY-r,
-                "#1E88E5"
-            );
-
+    let count = 0;
+    for (let r = 0; r < side; r++) {
+        for (let c = 0; c < side; c++) {
+            drawCell(startX + c, startY - r, count < N ? '#1E88E5' : '#F5F5F5');
             count++;
-
         }
-
     }
-
-    /*---------------------------------------
-        Message
-    ---------------------------------------*/
-
-    const info=document.getElementById("message");
-
-    if(info){
-
-        if(Number.isInteger(Math.sqrt(N))){
-
-            info.innerHTML=
-
-            "<b>"+N+"</b> unit squares form a complete <b>"+side+" × "+side+"</b> square.<br><br>"+
-
-            "<span style='color:green'><b>"+N+" is a perfect square.</b></span>";
-
-        }
-        else{
-
-            const missing=side*side-N;
-
-            info.innerHTML=
-
-            "<b>"+N+"</b> unit squares cannot yet form a complete square.<br><br>"+
-
-            missing+" more unit square"+(missing===1?"":"s")+" needed to complete the <b>"+side+" × "+side+"</b> square.<br><br>"+
-
-            "<span style='color:#C62828'><b>"+N+" is not a perfect square.</b></span>";
-
-        }
-
-    }
-
+    board.unsuspendUpdate();
 }
 
 /*=========================================================
-    EVENTS
+    EVENTS: redraw only when the whole-number value changes
 =========================================================*/
 
-slider.on("drag",updateScene);
-slider.on("up",updateScene);
+let lastN = null;
+function onSlide() {
+    const N = Math.round(slider.Value());
+    if (N !== lastN) {
+        lastN = N;
+        updateScene();
+    }
+}
+slider.on('drag', onSlide);
+slider.on('up', onSlide);
 
-updateScene();
+onSlide();

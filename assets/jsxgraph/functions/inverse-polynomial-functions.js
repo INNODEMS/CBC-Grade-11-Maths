@@ -83,13 +83,13 @@
         invCurve.setAttribute({ visible: isOneToOne() });
         board.update();
     }
-    board.create('text', [-8.4, 8, () => '\\(\\color{#1565c0}{' + TYPES[current].name + '}\\)'], { anchorX: 'left', fixed: true });
+    board.create('text', [-8.4, 8, () => '<span style="color:#1565c0">\\(' + TYPES[current].name + '\\)</span>'], { anchorX: 'left', fixed: true });
     board.create('text', [-8.4, -7.4, () => isOneToOne() ? 'One-to-one' : 'Many-to-one'],
         { anchorX: 'left', fixed: true, cssStyle: 'font-weight:bold' });
     board.create('text', [-3.0, -7.4, () => 'Line cuts graph: ' + cutCount() + '  →  HLT ' + (isOneToOne() ? 'passed' : 'failed')],
         { anchorX: 'left', fixed: true });
     board.create('text', [-8.4, -8.4, () => isOneToOne()
-        ? '\\(\\color{#c62828}{' + TYPES[current].invEq + '}\\)'
+        ? '<span style="color:#c62828">\\(' + TYPES[current].invEq + '\\)</span>'
         : '\\(\\text{Restrict the domain to form an inverse.}\\)'],
         { anchorX: 'left', fixed: true });
 
