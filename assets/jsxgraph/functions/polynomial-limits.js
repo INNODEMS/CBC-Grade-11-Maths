@@ -28,14 +28,14 @@ board.create('functiongraph', [f, -5, 5], { strokeColor: '#1565c0', strokeWidth:
 const a = board.create('slider', [[-5, 7], [-1.5, 7], [-3, 1, 3]], { name: 'a', snapWidth: 0.5, size: 5 });
 
 // dashed vertical line x = a and the target point on the curve
-const top = board.create('point', [() => a.Value(), 8], { visible: false });
-const bot = board.create('point', [() => a.Value(), -8], { visible: false });
-board.create('line', [top, bot], { strokeColor: '#9e9e9e', dash: 2, straightFirst: false, straightLast: false, strokeWidth: 1 });
+const topPt = board.create('point', [() => a.Value(), 8], { visible: false });
+const botPt = board.create('point', [() => a.Value(), -8], { visible: false });
+board.create('line', [topPt, botPt], { strokeColor: '#9e9e9e', dash: 2, straightFirst: false, straightLast: false, strokeWidth: 1 });
 board.create('point', [() => a.Value(), () => f(a.Value())],
     { name: '', size: 2, strokeColor: '#9e9e9e', fillColor: '#fff', fixed: true });
 
 // --- Moving point -----------------------------------------------------------
-let px = -3, timer = null;
+let px = -1.8 + 1, timer = null;   // start to the left of the initial a = 1
 const P = board.create('point', [() => px, () => f(px)], {
     name: 'P', size: 4, strokeColor: '#c62828', fillColor: '#c62828', fixed: true, label: { offset: [10, 8] }
 });
@@ -54,6 +54,12 @@ function approach(side) {
         board.update();
     }, 55);
 }
+// When a new value of a is chosen, stop any animation and park P to the left
+// of a, so the readouts never describe an approach to an old value of a.
+a.on('drag', () => {
+    if (timer) { clearInterval(timer); timer = null; }
+    px = a.Value() - 1.8;
+});
 // Control API for native PreTeXt buttons.
 window.limitFromLeft = () => approach('left');
 window.limitFromRight = () => approach('right');

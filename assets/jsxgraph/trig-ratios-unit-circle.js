@@ -203,7 +203,12 @@ board.on('update', updateLabels);
 updateLabels();
 
 rotor.on('drag', function () {
-    // Allow the point to stay on the circle.
+    // Snap P to whole degrees so that special angles such as 90°, 180° and 270°
+    // can be reached exactly (tan θ then shows "undefined" at 90° and 270°).
+    const deg = Math.round(toDegrees(Math.atan2(rotor.Y(), rotor.X()))) % 360;
+    const t = deg * Math.PI / 180;
+    rotor.setPosition(JXG.COORDS_BY_USER, [CIRCLE.cx + CIRCLE.r * Math.cos(t), CIRCLE.cy + CIRCLE.r * Math.sin(t)]);
+    updateLabels();
 });
 
 rotor.on('down', function () {

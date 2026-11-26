@@ -58,9 +58,9 @@
         { strokeColor: '#8e24aa', strokeWidth: 2, dash: 2 });   // rotation about origin
 
     // Legend 
-    board.create('text', [-6.7, -6.4, '\\(\\color{#1565c0}{\\text{original } f(x)}\\)'], { anchorX: 'left', fixed: true });
-    board.create('text', [-6.7, -7.1, '\\(\\color{#2e7d32}{\\text{reflection } f(-x)}\\)'], { anchorX: 'left', fixed: true });
-    board.create('text', [-6.7, -7.8, '\\(\\color{#8e24aa}{\\text{rotation } -f(-x)}\\)'], { anchorX: 'left', fixed: true });
+    board.create('text', [-6.7, -6.4, '<span style="color:#1565c0">\\(\\text{original } f(x)\\)</span>'], { anchorX: 'left', fixed: true });
+    board.create('text', [-6.7, -7.1, '<span style="color:#2e7d32">\\(\\text{reflection } f(-x)\\)</span>'], { anchorX: 'left', fixed: true });
+    board.create('text', [-6.7, -7.8, '<span style="color:#8e24aa">\\(\\text{rotation } -f(-x)\\)</span>'], { anchorX: 'left', fixed: true });
 
     // Highlight the matching comparison graph 
     function applyHighlight() {

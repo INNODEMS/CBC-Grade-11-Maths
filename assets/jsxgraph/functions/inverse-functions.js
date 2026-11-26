@@ -35,12 +35,30 @@ board.create('functiongraph', [f, -9, 9], { strokeColor: '#1565c0', strokeWidth:
 board.create('curve', [(t) => f(t), (t) => t, -12, 12], { strokeColor: '#c62828', strokeWidth: 3 });
 
 // --- Readouts ---------------------------------------------------------------
-const num = (v) => v.toFixed(1);
+// Numbers are written without a trailing ".0", and a negative constant is
+// written "x - 2" rather than "x + -2.0".
+const num = (v) => (Math.abs(v - Math.round(v)) < 1e-9 ? Math.round(v).toString() : v.toFixed(1));
+
+const linear = (av, bv) => {
+    if (Math.abs(av) < 1e-9) return num(bv);
+    let ax;
+    if (Math.abs(av - 1) < 1e-9) ax = 'x';
+    else if (Math.abs(av + 1) < 1e-9) ax = '-x';
+    else ax = num(av) + 'x';
+    if (Math.abs(bv) < 1e-9) return ax;
+    return ax + (bv > 0 ? ' + ' + num(bv) : ' - ' + num(-bv));
+};
+
 board.create('text', [-8.6, -6.4, () =>
-    '\\(\\color{#1565c0}{f(x) = ' + num(a.Value()) + 'x + ' + num(b.Value()) + '}\\)'],
+    '<span style="color:#1565c0">\\(f(x) = ' + linear(a.Value(), b.Value()) + '\\)</span>'],
     { anchorX: 'left', fixed: true });
+
 board.create('text', [-8.6, -7.6, () => {
-    const av = a.Value();
-    if (Math.abs(av) < 1e-6) return '\\(\\color{#c62828}{\\text{no inverse (}a = 0\\text{)}}\\)';
-    return '\\(\\color{#c62828}{f^{-1}(x) = \\dfrac{x - ' + num(b.Value()) + '}{' + num(av) + '}}\\)';
+    const av = a.Value(), bv = b.Value();
+    if (Math.abs(av) < 1e-6) {
+        return '<span style="color:#c62828">\\(\\text{no inverse: } a = 0 \\text{, so } f \\text{ is constant}\\)</span>';
+    }
+    const top = Math.abs(bv) < 1e-9 ? 'x' : 'x' + (bv > 0 ? ' - ' + num(bv) : ' + ' + num(-bv));
+    const rhs = Math.abs(av - 1) < 1e-9 ? top : '\\dfrac{' + top + '}{' + num(av) + '}';
+    return '<span style="color:#c62828">\\(f^{-1}(x) = ' + rhs + '\\)</span>';
 }], { anchorX: 'left', fixed: true });

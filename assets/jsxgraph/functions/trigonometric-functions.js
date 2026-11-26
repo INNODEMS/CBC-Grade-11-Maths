@@ -67,5 +67,5 @@ board.create('text', [-9, -3.4, () => '\\(\\theta = ' + th.Value().toFixed(0) + 
 board.create('text', [-9, -4.1, () => {
     const d = th.Value(), t = Math.tan(rad(d));
     const tanStr = (Math.abs(Math.cos(rad(d))) < 1e-3) ? '\\text{undef}' : t.toFixed(2);
-    return '\\(\\color{#2e7d32}{\\sin=' + Math.sin(rad(d)).toFixed(2) + '}\\ \\ \\color{#c62828}{\\cos=' + Math.cos(rad(d)).toFixed(2) + '}\\ \\ \\color{#8e24aa}{\\tan=' + tanStr + '}\\)';
+    return '<span style="color:#2e7d32">\\(\\sin=' + Math.sin(rad(d)).toFixed(2) + '\\)</span>&nbsp;&nbsp; <span style="color:#c62828">\\(\\cos=' + Math.cos(rad(d)).toFixed(2) + '\\)</span>&nbsp;&nbsp; <span style="color:#8e24aa">\\(\\tan=' + tanStr + '\\)</span>';
 }], { anchorX: 'left', fixed: true, cssStyle: 'font-weight:bold' });
