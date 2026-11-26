@@ -5,57 +5,88 @@
       <text>Calculating exact value of sine theta</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>
-The angle \(\theta\) lies in Quadrant {@quadrant@} and satisfies \(\cos(\theta)={@cos_value@}\). Determine the exact value of \(\sin(\theta).\)
-</p>
-
-<p>
-Give your answer in exact form.
-</p>
-
-<p>
-[[input:ans1]]
-</p>
-
-[[validation:ans1]] [[feedback:prt1]]]]></text>
+      <text><![CDATA[<p>The angle \(\theta\) lies in <strong>Quadrant {@quadname@}</strong> and \(\cos\theta = {@cos_value@}\). The diagram shows the point \(P\) where the terminal side of \(\theta\) meets the unit circle.</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with the point P in Quadrant {#quadname#}. The horizontal side of the right-angled triangle is cos theta = {#cos_value#}; the hypotenuse is 1; the vertical side is sin theta (unknown).">
+[[jsxgraph width="340px" height="340px"]]
+(function() {
+  var px = {#float(cos_value)#}, py = {#float(sin_value)#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.3, -0.13, 'x'], {fixed:true});
+  b.create('text', [-0.15, 1.3, 'y'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222',
+      label:{offset:[px > 0 ? -14 : 6, py > 0 ? -12 : 10]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A = b.create('point', [1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828',
+      label:{offset:[px > 0 ? 10 : -22, py > 0 ? 14 : -16]}});
+  var Fp = b.create('point', [px, 0], {visible:false, fixed:true});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('segment', [O, Fp], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+  b.create('segment', [Fp, P], {strokeColor:'#2e7d32', strokeWidth:4, fixed:true});
+  b.create('angle', [A, O, P], {radius:0.2, name:'θ', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.3, fixed:true});
+  b.create('text', [px/2, py > 0 ? -0.12 : 0.12, 'cos θ = {#cos_value#}'], {fixed:true, anchorX:'middle', anchorY:'middle', color:'#1565c0'});
+  b.create('text', [px > 0 ? px + 0.05 : px - 0.05, py/2, 'sin \u03b8 = ?'], {fixed:true, anchorX:(px > 0 ? 'left' : 'right'), color:'#2e7d32'});
+  var nx = (px*py > 0) ? -py : py, ny = (px*py > 0) ? px : -px;
+  b.create('text', [px/2 + 0.1*nx, py/2 + 0.1*ny, '1'], {fixed:true, anchorX:'middle', anchorY:'middle'});
+})();
+[[/jsxgraph]]
+</div>
+<p>Find the exact value of \(\sin\theta\). </p>
+<div>\(\sin\theta = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<p>
-To find the value of \(\sin(\theta)\), use the Pythagorean identity
-\(\sin^2(\theta)+\cos^2(\theta)=1\).
-</p>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p> The point \(P = (\cos\theta,\, \sin\theta)\) lies on the unit circle, so it is at distance \(1\) from \(O\). By Pythagoras' theorem this gives the identity</p>
+\[ \sin^2\theta + \cos^2\theta = 1. \]
+<p>The identity gives the <em>size</em> of \(\sin\theta\); the quadrant gives its <em>sign</em>.</p>
 
-<p>
-You are given \(\cos(\theta)={@cos_value@}\).
-Therefore,
-\(\sin^2(\theta)=1-\cos^2(\theta)\).
-</p>
+<p><strong>Step 1: make \(\sin^2\theta\) the subject.</strong></p>
+\[ \sin^2\theta = 1 - \cos^2\theta. \]
 
-<p>
-Substituting the given value gives
-\(\sin^2(\theta)=1-({@cos_value@})^2\).
-</p>
+<p><strong>Step 2: substitute \(\cos\theta = {@cos_value@}\).</strong> Squaring a negative number gives a positive result, so the sign of \(\cos\theta\) does not matter here:</p>
+\[ \sin^2\theta = 1 - \left({@cos_value@}\right)^2 = 1 - {@cos_abs^2@} = {@sin_abs^2@}. \]
 
-<p>
-Taking the square root gives
-\(\sin(\theta)=\pm\sqrt{1-({@cos_value@})^2}\).
-</p>
+<p><strong>Step 3: take the square root.</strong> Every positive number has two square roots:</p>
+\[ \sin\theta = \pm\sqrt{ {@sin_abs^2@} } = \pm {@sin_abs@}. \]
 
-<p>
-The quadrant determines which sign is required.
-Sine is positive in Quadrants I and II and negative in Quadrants III and IV.
-</p>
+<p><strong>Step 4: use the quadrant to choose the sign.</strong> \(\sin\theta\) is the \(y\)-coordinate of \(P\). In Quadrant {@quadname@}, \(P\) is
+[[if test="is(quadrant=2)"]]<em>above</em> the \(x\)-axis, so \(\sin\theta\) is <em>positive</em>[[else]]<em>below</em> the \(x\)-axis, so \(\sin\theta\) is <em>negative</em>[[/if]]. Therefore</p>
+\[ \sin\theta = {@ta@}. \]
 
-<p>
-Since \(\theta\) is in Quadrant {@quadrant@}, the appropriate sign must be selected.
-Therefore,
-\(\sin(\theta)={@ta@}\).
-</p>
-
-<p>
-<strong>Remember:</strong> first find the magnitude using
-\(\sin^2(\theta)+\cos^2(\theta)=1\), and then use the quadrant to determine the sign.
-</p>]]></text>
+<p><strong>Check.</strong> \(\left({@ta@}\right)^2 + \left({@cos_value@}\right)^2 = {@sin_abs^2@} + {@cos_abs^2@} = 1\). The diagram shows the right-angled triangle with hypotenuse \(1\), horizontal side \({@cos_abs@}\) and vertical side \({@sin_abs@}\).</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with the point P in Quadrant {#quadname#}. The horizontal side of the right-angled triangle is cos theta = {#cos_value#}; the hypotenuse is 1; the vertical side is sin theta = {#ta#}.">
+[[jsxgraph width="340px" height="340px"]]
+(function() {
+  var px = {#float(cos_value)#}, py = {#float(sin_value)#};
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.3, -0.13, 'x'], {fixed:true});
+  b.create('text', [-0.15, 1.3, 'y'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222',
+      label:{offset:[px > 0 ? -14 : 6, py > 0 ? -12 : 10]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A = b.create('point', [1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828',
+      label:{offset:[px > 0 ? 10 : -22, py > 0 ? 14 : -16]}});
+  var Fp = b.create('point', [px, 0], {visible:false, fixed:true});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('segment', [O, Fp], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+  b.create('segment', [Fp, P], {strokeColor:'#2e7d32', strokeWidth:4, fixed:true});
+  b.create('angle', [A, O, P], {radius:0.2, name:'θ', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.3, fixed:true});
+  b.create('text', [px/2, py > 0 ? -0.12 : 0.12, 'cos θ = {#cos_value#}'], {fixed:true, anchorX:'middle', anchorY:'middle', color:'#1565c0'});
+  b.create('text', [px > 0 ? px + 0.05 : px - 0.05, py/2, 'sin \u03b8 = {#ta#}'], {fixed:true, anchorX:(px > 0 ? 'left' : 'right'), color:'#2e7d32'});
+  var nx = (px*py > 0) ? -py : py, ny = (px*py > 0) ? px : -px;
+  b.create('text', [px/2 + 0.1*nx, py/2 + 0.1*ny, '1'], {fixed:true, anchorX:'middle', anchorY:'middle'});
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -65,7 +96,7 @@ Therefore,
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Possible cosine values */
+      <text><![CDATA[/* Possible [|cos|, |sin|] pairs from Pythagorean triples */
 cos_values : [
     [3/5, 4/5],
     [4/5, 3/5],
@@ -73,40 +104,39 @@ cos_values : [
     [12/13, 5/13]
 ];
 
-/* Select a random cosine/reference pair */
+/* Select a random cosine/sine pair */
 variant : rand(cos_values);
 
 cos_abs : variant[1];
 sin_abs : variant[2];
 
-/* Randomly select a quadrant: II or III */
-quadrant : rand([2,3]);
+/* Randomly select a quadrant: II, III or IV (all angles greater than 90 degrees; IV added) */
+quadrant : rand([2,3,4]);
+quadnames : ["I", "II", "III", "IV"];
+quadname : quadnames[quadrant];
 
-/* Determine the signs */
-if quadrant = 2 then (
-    cos_value : -cos_abs,
-    sin_value : sin_abs
-) else (
-    cos_value : -cos_abs,
-    sin_value : -sin_abs
-);
+/* Determine the signs: cos is negative in II and III; sin is positive only in II.
+   (Rewritten without assignments inside an if-block.) */
+cos_value : if quadrant = 4 then cos_abs else -cos_abs;
+sin_value : if quadrant = 2 then sin_abs else -sin_abs;
 
 /* Correct answer */
 ta : sin_value;
 
-/* Student mistake 1:
-   correct magnitude but wrong sign */
+/* Student mistake 1: correct magnitude but wrong sign */
 ta_mistake1 : -sin_value;
 
-/* Student mistake 2:
-   uses the cosine magnitude as the sine value */
-ta_mistake2 : cos_abs;</text>
+/* Student mistake 2: uses the cosine magnitude as the sine value (either sign) */
+ta_mistake2 : cos_abs;
+
+/* Student mistake 3: forgot to take the square root, i.e. gave sin^2 (either sign) */
+ta_mistake3 : sin_abs^2;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta@}</text>
+      <text>Quadrant {@quadname@}, \(\cos\theta = {@cos_value@}\): \(\sin\theta = {@ta@}\)</text>
     </questionnote>
     <questiondescription format="html">
       <text/>
@@ -137,14 +167,14 @@ ta_mistake2 : cos_abs;</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta</tans>
-      <boxsize>7</boxsize>
+      <boxsize>10</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,sqrt</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -161,7 +191,7 @@ ta_mistake2 : cos_abs;</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Checks for correct answer</description>
+        <description>Correct answer</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta</tans>
@@ -186,34 +216,21 @@ ta_mistake2 : cos_abs;</text>
       </node>
       <node>
         <name>1</name>
-        <description>Using the wrong sign</description>
-        <answertest>EqualComAss</answertest>
+        <description>Right size, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta_mistake1</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>
-The magnitude of your answer is correct, but the sign is incorrect.
-</p>
-
-<p>
-Remember that sine is positive in Quadrants I and II, and negative in
-Quadrants III and IV.
-Since \(\theta\) is in Quadrant {@quadrant@}, the sign of
-\(\sin(\theta)\) must be chosen accordingly.
-</p>
-
-<p>
-The correct value is \(\sin(\theta)={@ta@}\).
-</p>]]></text>
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. \(\sin\theta\) is the \(y\)-coordinate of \(P\). In Quadrant {@quadname@}, is \(P\) above or below the \(x\)-axis?</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>2</falsenextnode>
@@ -224,44 +241,70 @@ The correct value is \(\sin(\theta)={@ta@}\).
       </node>
       <node>
         <name>2</name>
-        <description>Using cosine instead of sine</description>
-        <answertest>EqualComAss</answertest>
-        <sans>ans1</sans>
-        <tans> ta_mistake2</tans>
+        <description>Used the size of cos as the value of sin</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>abs(ans1)</sans>
+        <tans>ta_mistake2</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-3-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>
-You have used the magnitude of the given cosine value as the value of sine.
-However, \(\sin(\theta)\) and \(\cos(\theta)\) are generally different.
-</p>
-
-<p>
-Use the Pythagorean identity
-\(\sin^2(\theta)+\cos^2(\theta)=1\)
-to find the magnitude of \(\sin(\theta)\).
-Then use the quadrant to determine its sign.
-</p>
-
-<p>
-The correct value is \(\sin(\theta)={@ta@}\).
-</p>]]></text>
+          <text><![CDATA[<p>Your answer has the same size as \(\cos\theta\). \(\sin\theta\) and \(\cos\theta\) are different here. Use the identity \(\sin^2\theta + \cos^2\theta = 1\) to find the size of \(\sin\theta\).</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>3</falsenextnode>
         <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>3</name>
+        <description>Forgot to take the square root</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>abs(ans1)</sans>
+        <tans>ta_mistake3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer looks like the value of \(\sin^2\theta\). You still need to take the square root to find \(\sin\theta\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Use the identity \(\sin^2\theta + \cos^2\theta = 1\): make \(\sin^2\theta\) the subject, substitute the value of \(\cos\theta\) and take the square root. Then use the quadrant to choose the sign.</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
+    <deployedseed>1101</deployedseed>
+    <deployedseed>2202</deployedseed>
+    <deployedseed>3303</deployedseed>
+    <deployedseed>4404</deployedseed>
+    <deployedseed>5505</deployedseed>
+    <deployedseed>6606</deployedseed>
+    <deployedseed>7707</deployedseed>
+    <deployedseed>8808</deployedseed>
+    <deployedseed>9909</deployedseed>
+    <deployedseed>1212</deployedseed>
+    <deployedseed>2323</deployedseed>
+    <deployedseed>3434</deployedseed>
+    <deployedseed>608556187</deployedseed>
+    <deployedseed>1368129705</deployedseed>
+    <deployedseed>630278510</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Correct</description>
@@ -306,16 +349,44 @@ The correct value is \(\sin(\theta)={@ta@}\).
     </qtest>
     <qtest>
       <testcase>4</testcase>
-      <description>Wrong answer</description>
+      <description>Forgot the square root</description>
       <testinput>
         <name>ans1</name>
-        <value>ta+1</value>
+        <value>ta_mistake3</value>
       </testinput>
       <expected>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-3-F</expectedanswernote>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Wrong answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta+10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: decimals are forbidden</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(ta)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

@@ -5,31 +5,109 @@
       <text>Calculating exact Values of Trigonometric Ratios for Negative Angles</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Evaluate the following expression exactly:</p>
+      <text><![CDATA[<p>Without using a calculator, find the exact value of \( \sin({@ang1@}^\circ) + \cos({@ang2@}^\circ). \)</p>
 
-<p>
-\(\sin({@ang1@}^\circ)+\cos({@ang2@}^\circ)\)
-</p>
+<p>(a) Find  \(\sin({@ang1@}^\circ) = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+<p>(b) Find  \(\cos({@ang2@}^\circ) = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>
+<p>(c) Hence find  \(\sin({@ang1@}^\circ) + \cos({@ang2@}^\circ)\), as simply as possible.</p>
+<div>\(\sin({@ang1@}^\circ) + \cos({@ang2@}^\circ) = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>
 
-<p>Give your answer in its simplest exact form.</p>
-
-<p>[[input:ans1]] [[validation:ans1]][[feedback:prt]]</p>]]></text>
+<p>Give each answer in exact form: for example, type <code>sqrt(3)/2</code> for \(\dfrac{\sqrt{3}}{2}\). </p>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
-<p>To evaluate this expression, use the properties of trigonometric functions for negative angles and the exact values of trigonometric ratios.</p>
+      <text><![CDATA[<h3>Worked Solution</h3>
 
-<p>Recall that sine is an odd function and cosine is an even function:</p>
 
-<p>\(\sin(-\theta)=-\sin(\theta)\)</p>
+<p><strong>(a) Finding \(\sin({@ang1@}^\circ)\)</strong></p>
+<p><strong>Step 1: rewrite with a positive angle.</strong> Since \(\sin(-\theta) = -\sin\theta\),</p>
+\[ \sin({@ang1@}^\circ) = -\sin({@t1@}^\circ). \]
+<p><strong>Step 2: find the quadrant and the reference angle.</strong> \({@t1@}^\circ\) lies in <strong>Quadrant {@qn1@}</strong>, so its reference angle (the acute angle between the terminal side and the \(x\)-axis) is [[if test="is(q1=1)"]]\(\alpha = {@t1@}^\circ\) itself[[/if]][[if test="is(q1=2)"]]\(\alpha = 180^\circ - {@t1@}^\circ = {@ref1@}^\circ\)[[/if]][[if test="is(q1=3)"]]\(\alpha = {@t1@}^\circ - 180^\circ = {@ref1@}^\circ\)[[/if]][[if test="is(q1=4)"]]\(\alpha = 360^\circ - {@t1@}^\circ = {@ref1@}^\circ\)[[/if]].</p>
+<p><strong>Step 3: find \(\sin({@t1@}^\circ)\).</strong> From the special triangles, \(\sin {@ref1@}^\circ = {@sref1@}\). In Quadrant {@qn1@} the sine (the \(y\)-coordinate) is [[if test="is(q1<3)"]]positive[[else]]negative[[/if]], so</p>
+\[ \sin({@t1@}^\circ) = {@s1@}. \]
+<p><strong>Step 4: apply the minus sign from Step 1.</strong></p>
+\[ \sin({@ang1@}^\circ) = -\left({@s1@}\right) = {@sin_ans@}. \]
+<p>In the diagram, turning clockwise through \({@-ang1@}^\circ\) ends at \(P\) [[if test="is(sin_ans>0)"]]above[[else]]below[[/if]] the \(x\)-axis, so the \(y\)-coordinate of \(P\) (green) is [[if test="is(sin_ans>0)"]]positive[[else]]negative[[/if]], as found.</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle showing the angle {#ang1#} degrees, measured clockwise from the positive x-axis, and the point P on the circle.">
+[[jsxgraph width="320px" height="320px"]]
+(function() {
+  var deg = {#ang1#}, q = {#q1#};
+  var th = deg*Math.PI/180, px = Math.cos(th), py = Math.sin(th);
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.3, -0.13, 'x'], {fixed:true});
+  b.create('text', [-0.15, 1.3, 'y'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222',
+      label:{offset:[px > 0 ? -14 : 6, py > 0 ? -12 : 10]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A  = b.create('point', [1, 0],  {visible:false, fixed:true});
+  var Am = b.create('point', [-1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828',
+      label:{offset:[px > 0 ? 10 : -22, py > 0 ? 14 : -16]}});
+  var Fp = b.create('point', [px, 0], {visible:false, fixed:true});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('segment', [Fp, P], {strokeColor:'#2e7d32', strokeWidth:4, fixed:true});
+  b.create('segment', [O, Fp], {strokeColor:'#9e9e9e', strokeWidth:2, fixed:true});
+  b.create('text', [px > 0 ? px + 0.05 : px - 0.05, py/2, 'y'], {fixed:true, anchorX:(px > 0 ? 'left' : 'right'), color:'#2e7d32', fontSize:16});
+  /* the negative angle: measured clockwise from the positive x-axis round to OP */
+  b.create('angle', [P, O, A], {radius:0.22, name:deg + '°', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.3, fixed:true, label:{color:'#ef6c00'}});
+  var refStyle = {radius:0.45, name:'α', fillColor:'#81c784', strokeColor:'#2e7d32', fillOpacity:0.35, fixed:true};
+  if (q == 1) { b.create('angle', [A, O, P], refStyle); }
+  if (q == 2) { b.create('angle', [P, O, Am], refStyle); }
+  if (q == 3) { b.create('angle', [Am, O, P], refStyle); }
+  if (q == 4) { b.create('angle', [P, O, A], refStyle); }
+})();
+[[/jsxgraph]]
+</div>
 
-<p>\(\cos(-\theta)=\cos(\theta)\)</p>
+<p><strong>(b) Finding \(\cos({@ang2@}^\circ)\)</strong></p>
+<p><strong>Step 1: rewrite with a positive angle.</strong> Since \(\cos(-\theta) = \cos\theta\),</p>
+\[ \cos({@ang2@}^\circ) = \cos({@t2@}^\circ). \]
+<p><strong>Step 2: find the quadrant and the reference angle.</strong> \({@t2@}^\circ\) lies in <strong>Quadrant {@qn2@}</strong>, so its reference angle (the acute angle between the terminal side and the \(x\)-axis) is [[if test="is(q2=1)"]]\(\alpha = {@t2@}^\circ\) itself[[/if]][[if test="is(q2=2)"]]\(\alpha = 180^\circ - {@t2@}^\circ = {@ref2@}^\circ\)[[/if]][[if test="is(q2=3)"]]\(\alpha = {@t2@}^\circ - 180^\circ = {@ref2@}^\circ\)[[/if]][[if test="is(q2=4)"]]\(\alpha = 360^\circ - {@t2@}^\circ = {@ref2@}^\circ\)[[/if]].</p>
+<p><strong>Step 3: find \(\cos({@t2@}^\circ)\).</strong> From the special triangles, \(\cos {@ref2@}^\circ = {@cref2@}\). In Quadrant {@qn2@} the cosine (the \(x\)-coordinate) is [[if test="is(q2=1 or q2=4)"]]positive[[else]]negative[[/if]], so</p>
+\[ \cos({@ang2@}^\circ) = \cos({@t2@}^\circ) = {@cos_ans@}. \]
+<p>In the diagram, \(P\) is to the [[if test="is(cos_ans>0)"]]right[[else]]left[[/if]] of the \(y\)-axis, so its \(x\)-coordinate (blue) is [[if test="is(cos_ans>0)"]]positive[[else]]negative[[/if]].</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle showing the angle {#ang2#} degrees, measured clockwise from the positive x-axis, and the point P on the circle.">
+[[jsxgraph width="320px" height="320px"]]
+(function() {
+  var deg = {#ang2#}, q = {#q2#};
+  var th = deg*Math.PI/180, px = Math.cos(th), py = Math.sin(th);
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.3, -0.13, 'x'], {fixed:true});
+  b.create('text', [-0.15, 1.3, 'y'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222',
+      label:{offset:[px > 0 ? -14 : 6, py > 0 ? -12 : 10]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A  = b.create('point', [1, 0],  {visible:false, fixed:true});
+  var Am = b.create('point', [-1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828',
+      label:{offset:[px > 0 ? 10 : -22, py > 0 ? 14 : -16]}});
+  var Fp = b.create('point', [px, 0], {visible:false, fixed:true});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('segment', [O, Fp], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+  b.create('segment', [Fp, P], {strokeColor:'#9e9e9e', strokeWidth:2, dash:2, fixed:true});
+  b.create('text', [px/2, py > 0 ? -0.12 : 0.12, 'x'], {fixed:true, anchorX:'middle', anchorY:'middle', color:'#1565c0', fontSize:16});
+  /* the negative angle: measured clockwise from the positive x-axis round to OP */
+  b.create('angle', [P, O, A], {radius:0.22, name:deg + '°', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.3, fixed:true, label:{color:'#ef6c00'}});
+  var refStyle = {radius:0.45, name:'α', fillColor:'#81c784', strokeColor:'#2e7d32', fillOpacity:0.35, fixed:true};
+  if (q == 1) { b.create('angle', [A, O, P], refStyle); }
+  if (q == 2) { b.create('angle', [P, O, Am], refStyle); }
+  if (q == 3) { b.create('angle', [Am, O, P], refStyle); }
+  if (q == 4) { b.create('angle', [P, O, A], refStyle); }
+})();
+[[/jsxgraph]]
+</div>
 
-<p>Use these identities to rewrite the expression in terms of positive angles. Then use the reference angles and the signs of the trigonometric ratios to determine the exact values.</p>
-
-<p>Finally, combine the two terms and simplify your answer.</p>
-
-<p>The correct exact answer is \({@ta@}\).</p>]]></text>
+<p><strong>(c) Adding the two values</strong></p>
+\[ \sin({@ang1@}^\circ) + \cos({@ang2@}^\circ) = {@sin_ans@} + \left({@cos_ans@}\right). \]
+<p>The two values are like terms, so they can be added directly:</p>
+\[ \sin({@ang1@}^\circ) + \cos({@ang2@}^\circ) = {@ta@}. \]]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -39,16 +117,47 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>ang1: rand([-30,-45,-60,-120,-135,-150,-210,-225,-240,-300,-315,-330]);
-ang2: rand([-30,-45,-60,-120,-135,-150,-210,-225,-240,-300,-315,-330]);
+      <text><![CDATA[/* Curated angle pairs [ang1, ang2] for sin(ang1) + cos(ang2).
+   Every pair uses two different angles, and the two values are like terms, so the answer is
+   always one of 1, -1, sqrt(2), -sqrt(2), sqrt(3), -sqrt(3): never 0 and never a mixed surd. */
+pairs : [[-30,-120],[-30,-240],[-45,-135],[-45,-225],[-60,-150],[-60,-210],[-120,-150],[-120,-210],[-135,-225],[-150,-120],[-150,-240],[-210,-60],[-210,-300],[-225,-45],[-225,-315],[-240,-30],[-240,-330],[-300,-30],[-300,-330],[-315,-45],[-330,-60],[-330,-300]];
+pr : rand(pairs);
+ang1 : pr[1];
+ang2 : pr[2];
 
-ta: sin(ang1*%pi/180) + cos(ang2*%pi/180);</text>
+/* Positive angles after using sin(-t) = -sin(t) and cos(-t) = cos(t) */
+t1 : -ang1;
+t2 : -ang2;
+
+/* Quadrant and reference angle of each positive angle */
+q1 : if t1 < 90 then 1 else if t1 < 180 then 2 else if t1 < 270 then 3 else 4;
+q2 : if t2 < 90 then 1 else if t2 < 180 then 2 else if t2 < 270 then 3 else 4;
+ref1 : if q1 = 1 then t1 else if q1 = 2 then 180 - t1 else if q1 = 3 then t1 - 180 else 360 - t1;
+ref2 : if q2 = 1 then t2 else if q2 = 2 then 180 - t2 else if q2 = 3 then t2 - 180 else 360 - t2;
+quadnames : ["I", "II", "III", "IV"];
+qn1 : quadnames[q1];
+qn2 : quadnames[q2];
+
+/* Exact values */
+sref1 : sin(ref1*%pi/180);        /* sin of the reference angle (no sign) */
+cref2 : cos(ref2*%pi/180);        /* cos of the reference angle (no sign) */
+s1 : sin(t1*%pi/180);             /* sin of the positive angle */
+c2 : cos(t2*%pi/180);             /* cos of the positive angle */
+sin_ans : -s1;                    /* sin(ang1) = -sin(t1) */
+cos_ans : c2;                     /* cos(ang2) = cos(t2) */
+ta : sin_ans + cos_ans;
+
+/* Possible student mistakes */
+sin_neg : -sin_ans;               /* forgot sin(-t) = -sin(t), or wrong quadrant sign */
+cos_neg : -cos_ans;               /* wrong sign for cos */
+sin_mag_swap : cos(ref1*%pi/180); /* used the cos of the reference angle (either sign) */
+cos_mag_swap : sin(ref2*%pi/180); /* used the sin of the reference angle (either sign) */]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta@}</text>
+      <text>\(\sin({@ang1@}^\circ) = {@sin_ans@}\), \(\cos({@ang2@}^\circ) = {@cos_ans@}\), sum \(= {@ta@}\)</text>
     </questionnote>
     <questiondescription format="html">
       <text/>
@@ -78,15 +187,51 @@ ta: sin(ang1*%pi/180) + cos(ang2*%pi/180);</text>
     <input>
       <name>ans1</name>
       <type>algebraic</type>
-      <tans>ta</tans>
-      <boxsize>7</boxsize>
+      <tans>sin_ans</tans>
+      <boxsize>14</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans2</name>
+      <type>algebraic</type>
+      <tans>cos_ans</tans>
+      <boxsize>14</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sin,cos,tan</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans3</name>
+      <type>algebraic</type>
+      <tans>ta</tans>
+      <boxsize>14</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>0</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sin,cos,tan</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -94,7 +239,7 @@ ta: sin(ang1*%pi/180) + cos(ang2*%pi/180);</text>
       <options/>
     </input>
     <prt>
-      <name>prt</name>
+      <name>prt1</name>
       <value>1.0000000</value>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
@@ -103,29 +248,428 @@ ta: sin(ang1*%pi/180) + cos(ang2*%pi/180);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Correct sin</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ta</tans>
+        <tans>sin_ans</tans>
         <testoptions/>
         <quiet>0</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>prt-1-T</trueanswernote>
+        <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt-1-F</falseanswernote>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
         </falsefeedback>
       </node>
+      <node>
+        <name>1</name>
+        <description>Right size, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>sin_neg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. Remember that \(\sin(-\theta) = -\sin\theta\). Then check the sign of \(\sin({@t1@}^\circ)\) in its quadrant.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Used the cos of the reference angle</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>abs(ans1)</sans>
+        <tans>sin_mag_swap</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer has the size of the <em>cosine</em> of the reference angle. Check which of sine and cosine you need, and which of the two values is the larger for this reference angle.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Rewrite with a positive angle using \(\sin(-\theta) = -\sin\theta\). Then find the quadrant and the reference angle of the positive angle, use the exact value from the special triangles, and decide the sign.</p>]]></text>
+        </falsefeedback>
+      </node>
     </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct cos</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>cos_ans</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Right size, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>cos_neg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. Remember that \(\cos(-\theta) = \cos\theta\), so the minus sign on the angle does not change the cosine. Then check the sign of \(\cos({@t2@}^\circ)\) in its quadrant.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Used the sin of the reference angle</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>abs(ans2)</sans>
+        <tans>cos_mag_swap</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your answer has the size of the <em>sine</em> of the reference angle. Check which of sine and cosine you need, and which of the two values is the larger for this reference angle.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Rewrite with a positive angle using \(\cos(-\theta) = \cos\theta\). Then find the quadrant and the reference angle of the positive angle, use the exact value from the special triangles, and decide the sign.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct sum</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Fully simplified?</description>
+        <answertest>EqualComAss</answertest>
+        <sans>ans3</sans>
+        <tans>ta</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>1</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Your answer is correct. It can be written more simply: the two values are like terms, so add them to get a single term.</p>]]></text>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Correct for the student's own (a) and (b)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ans1+ans2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You have added your answers to (a) and (b) correctly, but at least one of those answers is wrong. Correct it first, then add again.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Add your values of \(\sin({@ang1@}^\circ)\) and \(\cos({@ang2@}^\circ)\) from parts (a) and (b). They are like terms, so they combine into a single term.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>1101</deployedseed>
+    <deployedseed>2202</deployedseed>
+    <deployedseed>3303</deployedseed>
+    <deployedseed>4404</deployedseed>
+    <deployedseed>5505</deployedseed>
+    <deployedseed>6606</deployedseed>
+    <deployedseed>8808</deployedseed>
+    <deployedseed>9909</deployedseed>
+    <deployedseed>1212</deployedseed>
+    <deployedseed>2323</deployedseed>
+    <deployedseed>3434</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All parts correct, sum simplified</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sin_ans</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>cos_ans</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Sign errors in (a) and (b), added correctly (follow-through in (c))</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sin_neg</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>cos_neg</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ev(sin_neg+cos_neg,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Correct sum, not simplified</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sin_ans</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>cos_ans</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>sin_ans+cos_ans</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-2-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Other wrong answers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ev(sin_ans+10,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ev(cos_ans+10,simp)</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ev(ta+30,simp)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: a decimal in part (a)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(sin_ans)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>cos_ans</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+    </qtest>
   </question>
 </quiz>

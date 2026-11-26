@@ -5,51 +5,119 @@
       <text>Identifying parameters on a graph</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Consider the function \(y=\cos x\) for \(0\le x\le 2\pi\).</p>
-
-<p>The graph of the function is shown below.</p>
-
-[[jsxgraph]]
-    var board = JXG.JSXGraph.initBoard(divid, {
-        boundingbox: [-0.5, 1.5, 2*Math.PI + 0.5, -1.5],
-        axis: true,
-        showCopyright: false,
-        showNavigation: false,
-        grid: true
-    });
-
-    var f = function(x) {
-        return Math.cos(x);
-    };
-
-    board.create('functiongraph', [f, 0, 2*Math.PI], {
-        strokeColor: '#1565C0',
-        strokeWidth: 3
-    });
+      <text><![CDATA[<p>Consider the function \(y = {@yexpr@}\) for \(0 \le x \le 2\pi\). Its graph is shown below.</p>
+<div style="text-align:center;" role="img" aria-label="Graph of y = {#yexpr#} for x from 0 to 2 pi.">
+[[jsxgraph width="520px" height="320px"]]
+(function() {
+  var a = {#a#}, fs = {#fs#}, amp = Math.abs(a), top = amp + 0.9;
+  var f = function(t) { return fs === 1 ? a*Math.sin(t) : a*Math.cos(t); };
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.7, top, 2*Math.PI + 1.1, -top], axis:false, grid:false,
+      keepaspectratio:false, showNavigation:false, showCopyright:false});
+  for (var k = 1; k <= 4; k++) {
+    b.create('segment', [[k*Math.PI/2, -amp - 0.3], [k*Math.PI/2, amp + 0.3]], {strokeColor:'#cfd8dc', strokeWidth:1, fixed:true, highlight:false});
+  }
+  for (var j = -amp; j <= amp; j++) {
+    if (j !== 0) { b.create('segment', [[0, j], [2*Math.PI, j]], {strokeColor:'#eceff1', strokeWidth:1, fixed:true, highlight:false}); }
+  }
+  b.create('arrow', [[-0.3, 0], [2*Math.PI + 0.6, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -top + 0.2], [0, top - 0.1]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [2*Math.PI + 0.55, -0.25, 'x'], {fixed:true}); b.create('text', [0.08, top - 0.25, 'y'], {fixed:true});
+  ['π/2', 'π', '3π/2', '2π'].forEach(function(l, i) {
+    var t = (i + 1)*Math.PI/2;
+    b.create('segment', [[t, -0.08], [t, 0.08]], {strokeColor:'#444', fixed:true});
+    b.create('text', [t, -0.3, l], {fixed:true, anchorX:'middle', anchorY:'top', fontSize:12});
+  });
+  for (var m = -amp; m <= amp; m++) {
+    if (m !== 0) {
+      b.create('segment', [[-0.06, m], [0.06, m]], {strokeColor:'#444', fixed:true});
+      b.create('text', [-0.12, m, '' + m], {fixed:true, anchorX:'right', anchorY:'middle', fontSize:11});
+    }
+  }
+  b.create('functiongraph', [f, 0, 2*Math.PI], {strokeColor:'#1565c0', strokeWidth:3, fixed:true});
+})();
 [[/jsxgraph]]
+</div>
+<p><i>Give exact answers. Type \(\pi\) as <code>pi</code></i>.</p>
 
-<p><strong>(a)</strong> Use the graph to determine the value of \(y\) at each given value of \(x\).</p>
+<p><strong>(a)</strong> Use the graph to find the value of \(y\) at each of these values of \(x\). <</p>
+<div>1. When \(x = 0\), \(y = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<div>2. When \(x = \dfrac{\pi}{2}\), \(y = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>
+<div>3. When \(x = \pi\), \(y = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div>
+<div>4. When \(x = \dfrac{3\pi}{2}\), \(y = \) [[input:ans4]] [[validation:ans4]] [[feedback:prt4]]</div>
+<div>5. When \(x = 2\pi\), \(y = \) [[input:ans5]] [[validation:ans5]] [[feedback:prt5]]</div>
 
-<p>1. When \(x=0\), \(y=\) [[input:ans1]] [[validation:ans1]]</p>
+<p><strong>(b)</strong> State the maximum and minimum values of the function for \(0 \le x \le 2\pi\). </p>
+<div>Maximum value: [[input:ans6]] [[validation:ans6]] [[feedback:prt6]]</div>
+<div>Minimum value: [[input:ans7]] [[validation:ans7]] [[feedback:prt7]]</div>
 
-<p>2. When \(x=\frac{\pi}{2}\), \(y=\) [[input:ans2]] [[validation:ans2]]</p>
-
-<p>3. When \(x=\pi\), \(y=\) [[input:ans3]] [[validation:ans3]]</p>
-
-<p>4. When \(x=\frac{3\pi}{2}\), \(y=\) [[input:ans4]] [[validation:ans4]]</p>
-
-<p>5. When \(x=2\pi\), \(y=\) [[input:ans5]] [[validation:ans5]]</p>
-
-<p><strong>(b)</strong> State the maximum and minimum values of the function on the given interval.</p>
-
-<p>Maximum value: [[input:ans6]] [[validation:ans6]]</p>
-
-<p>Minimum value: [[input:ans7]] [[validation:ans7]]</p>]]></text>
+<p><strong>(c)</strong> State the amplitude and the period of the function. </p>
+<div>Amplitude: [[input:ans8]] [[validation:ans8]] [[feedback:prt8]]</div>
+<div>Period: [[input:ans9]] [[validation:ans9]] [[feedback:prt9]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text/>
+      <text><![CDATA[<h3>Worked solution</h3>
+<h4>(a) Reading values from the graph</h4>
+<p><strong>Step 1: find each point on the curve.</strong> Go up (or down) from each value of \(x\) to the curve, then across to the \(y\)-axis. You can check each reading with the equation: \(y\) is \({@a@}\) times the value of \([[if test="is(fs=1)"]]\sin[[else]]\cos[[/if]] x\).</p>
+<table style="border-collapse:collapse; margin:0.5em auto; text-align:center;" border="1" cellpadding="6">
+<tr><th>\(x\)</th><td>\(0\)</td><td>\(\dfrac{\pi}{2}\)</td><td>\(\pi\)</td><td>\(\dfrac{3\pi}{2}\)</td><td>\(2\pi\)</td></tr>
+<tr><th>\([[if test="is(fs=1)"]]\sin[[else]]\cos[[/if]] x\)</th><td>\({@b1@}\)</td><td>\({@b2@}\)</td><td>\({@b3@}\)</td><td>\({@b4@}\)</td><td>\({@b5@}\)</td></tr>
+<tr><th>\(y = {@yexpr@}\)</th><td>\({@y1@}\)</td><td>\({@y2@}\)</td><td>\({@y3@}\)</td><td>\({@y4@}\)</td><td>\({@y5@}\)</td></tr>
+</table>
+<p>So \(y = {@y1@}\), \({@y2@}\), \({@y3@}\), \({@y4@}\) and \({@y5@}\) at \(x = 0, \dfrac{\pi}{2}, \pi, \dfrac{3\pi}{2}, 2\pi\).</p>
+<div style="text-align:center;" role="img" aria-label="Graph of y = {#yexpr#} for x from 0 to 2 pi.">
+[[jsxgraph width="520px" height="320px"]]
+(function() {
+  var a = {#a#}, fs = {#fs#}, amp = Math.abs(a), top = amp + 0.9;
+  var f = function(t) { return fs === 1 ? a*Math.sin(t) : a*Math.cos(t); };
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.7, top, 2*Math.PI + 1.1, -top], axis:false, grid:false,
+      keepaspectratio:false, showNavigation:false, showCopyright:false});
+  for (var k = 1; k <= 4; k++) {
+    b.create('segment', [[k*Math.PI/2, -amp - 0.3], [k*Math.PI/2, amp + 0.3]], {strokeColor:'#cfd8dc', strokeWidth:1, fixed:true, highlight:false});
+  }
+  for (var j = -amp; j <= amp; j++) {
+    if (j !== 0) { b.create('segment', [[0, j], [2*Math.PI, j]], {strokeColor:'#eceff1', strokeWidth:1, fixed:true, highlight:false}); }
+  }
+  b.create('arrow', [[-0.3, 0], [2*Math.PI + 0.6, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -top + 0.2], [0, top - 0.1]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [2*Math.PI + 0.55, -0.25, 'x'], {fixed:true}); b.create('text', [0.08, top - 0.25, 'y'], {fixed:true});
+  ['π/2', 'π', '3π/2', '2π'].forEach(function(l, i) {
+    var t = (i + 1)*Math.PI/2;
+    b.create('segment', [[t, -0.08], [t, 0.08]], {strokeColor:'#444', fixed:true});
+    b.create('text', [t, -0.3, l], {fixed:true, anchorX:'middle', anchorY:'top', fontSize:12});
+  });
+  for (var m = -amp; m <= amp; m++) {
+    if (m !== 0) {
+      b.create('segment', [[-0.06, m], [0.06, m]], {strokeColor:'#444', fixed:true});
+      b.create('text', [-0.12, m, '' + m], {fixed:true, anchorX:'right', anchorY:'middle', fontSize:11});
+    }
+  }
+  b.create('functiongraph', [f, 0, 2*Math.PI], {strokeColor:'#1565c0', strokeWidth:3, fixed:true});
+  var xs = [0, Math.PI/2, Math.PI, 3*Math.PI/2, 2*Math.PI], labs = ['0', 'π/2', 'π', '3π/2', '2π'];
+  xs.forEach(function(t, i) {
+    var yy = f(t);
+    b.create('point', [t, yy], {name:'(' + labs[i] + ', ' + Math.round(yy) + ')', size:4, color:'#c62828', fixed:true,
+        label:{offset:[6, yy >= 0 ? 12 : -14], fontSize:11, color:'#c62828'}});
+  });
+  b.create('segment', [[0, amp], [2*Math.PI, amp]], {strokeColor:'#2e7d32', dash:2, fixed:true});
+  b.create('segment', [[0, -amp], [2*Math.PI, -amp]], {strokeColor:'#2e7d32', dash:2, fixed:true});
+  b.create('text', [2*Math.PI + 0.12, amp, 'max ' + amp], {fixed:true, color:'#2e7d32', fontSize:11, anchorY:'middle'});
+  b.create('text', [2*Math.PI + 0.12, -amp, 'min −' + amp], {fixed:true, color:'#2e7d32', fontSize:11, anchorY:'middle'});
+})();
+[[/jsxgraph]]
+</div>
+
+<h4>(b) Maximum and minimum values</h4>
+<p><strong>Step 2: find the highest and lowest points.</strong> Since \(-1 \le [[if test="is(fs=1)"]]\sin[[else]]\cos[[/if]] x \le 1\), multiplying by \({@a@}\) gives values between \({@ymin@}\) and \({@ymax@}\). The highest point of the curve is at \(y = {@ymax@}\) and the lowest is at \(y = {@ymin@}\).[[if test="is(a<0)"]] Because \(a\) is negative, the graph is the graph of \(y = {@amp@}[[if test="is(fs=1)"]]\sin[[else]]\cos[[/if]] x\) reflected in the \(x\)-axis, so the maximum and minimum swap places, but their values are still \({@ymax@}\) and \({@ymin@}\).[[/if]]</p>
+<p>Maximum value \(= {@ymax@}\), minimum value \(= {@ymin@}\).</p>
+
+<h4>(c) Amplitude and period</h4>
+<p><strong>Step 3: the amplitude</strong> is the distance from the middle line \(y = 0\) to the maximum, which is half of the maximum minus the minimum:</p>
+\[ \text{amplitude} = \frac{{@ymax@} - ({@ymin@})}{2} = {@amp@}. \]
+<p>For \(y = a[[if test="is(fs=1)"]]\sin[[else]]\cos[[/if]] x\) the amplitude is \(|a| = {@amp@}\). It is always positive.</p>
+<p><strong>Step 4: the period</strong> is the length of one complete cycle before the graph repeats. The curve starts at \(({@0@}, {@y1@})\), goes through one full wave, and is back at the same height, moving the same way, at \(x = 2\pi\). So the period is \(2\pi\).</p>
+<p><strong>Final answers:</strong> (a) \({@y1@}, {@y2@}, {@y3@}, {@y4@}, {@y5@}\); (b) maximum \({@ymax@}\), minimum \({@ymin@}\); (c) amplitude \({@amp@}\), period \(2\pi\).</p>]]></text>
     </generalfeedback>
-    <defaultgrade>1</defaultgrade>
+    <defaultgrade>9</defaultgrade>
     <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
@@ -57,30 +125,35 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Key points for y = cos(x) on [0, 2*pi] */
-x1: 0;
-y1: 1;
-
-x2: %pi/2;
-y2: 0;
-
-x3: %pi;
-y3: -1;
-
-x4: 3*%pi/2;
-y4: 0;
-
-x5: 2*%pi;
-y5: 1;</text>
+      <text><![CDATA[/* y = a*sin(x) or y = a*cos(x) on 0 <= x <= 2*pi.
+   fs: 1 = sine, 2 = cosine; a = -5..5 without 0, giving 2 x 10 = 20 distinct graphs. */
+fs : rand([1, 2]);
+a : rand([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5]);
+trg : if fs = 1 then sin(x) else cos(x);
+yexpr : a*trg;
+/* base values at x = 0, pi/2, pi, 3*pi/2, 2*pi */
+bsin : [0, 1, 0, -1, 0];
+bcos : [1, 0, -1, 0, 1];
+bs : if fs = 1 then bsin else bcos;
+bo : if fs = 1 then bcos else bsin;     /* the other function: sin/cos mix-up */
+yv : a*bs;
+yo : a*bo;
+y1 : yv[1]; y2 : yv[2]; y3 : yv[3]; y4 : yv[4]; y5 : yv[5];
+o1 : yo[1]; o2 : yo[2]; o3 : yo[3]; o4 : yo[4]; o5 : yo[5];
+b1 : bs[1]; b2 : bs[2]; b3 : bs[3]; b4 : bs[4]; b5 : bs[5];  /* ignored the coefficient a */
+amp : abs(a);
+ymax : amp;
+ymin : -amp;
+per : 2*%pi;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@1@}</text>
+      <text>\(y = {@yexpr@}\): values {@yv@}, max {@ymax@}, min {@ymin@}, amplitude {@amp@}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p>Objective: read values, maximum, minimum, amplitude and period from the graph of y = a sin x or y = a cos x for 0 ≤ x ≤ 2π.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -107,13 +180,13 @@ y5: 1;</text>
     <input>
       <name>ans1</name>
       <type>algebraic</type>
-      <tans>1</tans>
+      <tans>y1</tans>
       <boxsize>7</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -125,13 +198,13 @@ y5: 1;</text>
     <input>
       <name>ans2</name>
       <type>algebraic</type>
-      <tans>0</tans>
+      <tans>y2</tans>
       <boxsize>7</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -143,13 +216,13 @@ y5: 1;</text>
     <input>
       <name>ans3</name>
       <type>algebraic</type>
-      <tans>-1</tans>
+      <tans>y3</tans>
       <boxsize>7</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -161,13 +234,13 @@ y5: 1;</text>
     <input>
       <name>ans4</name>
       <type>algebraic</type>
-      <tans>0</tans>
+      <tans>y4</tans>
       <boxsize>7</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -179,13 +252,13 @@ y5: 1;</text>
     <input>
       <name>ans5</name>
       <type>algebraic</type>
-      <tans>1</tans>
+      <tans>y5</tans>
       <boxsize>7</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -197,13 +270,13 @@ y5: 1;</text>
     <input>
       <name>ans6</name>
       <type>algebraic</type>
-      <tans>1</tans>
+      <tans>ymax</tans>
       <boxsize>7</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -215,13 +288,13 @@ y5: 1;</text>
     <input>
       <name>ans7</name>
       <type>algebraic</type>
-      <tans>-1</tans>
+      <tans>ymin</tans>
       <boxsize>7</boxsize>
       <strictsyntax>1</strictsyntax>
-      <insertstars>0</insertstars>
+      <insertstars>1</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
       <allowwords/>
       <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
@@ -230,5 +303,1237 @@ y5: 1;</text>
       <showvalidation>3</showvalidation>
       <options/>
     </input>
+    <input>
+      <name>ans8</name>
+      <type>algebraic</type>
+      <tans>amp</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <input>
+      <name>ans9</name>
+      <type>algebraic</type>
+      <tans>per</tans>
+      <boxsize>7</boxsize>
+      <strictsyntax>1</strictsyntax>
+      <insertstars>1</insertstars>
+      <syntaxhint/>
+      <syntaxattribute>0</syntaxattribute>
+      <forbidwords>sin,cos,tan,asin,acos,atan,arcsin,arccos,arctan</forbidwords>
+      <allowwords/>
+      <forbidfloat>1</forbidfloat>
+      <requirelowestterms>0</requirelowestterms>
+      <checkanswertype>0</checkanswertype>
+      <mustverify>1</mustverify>
+      <showvalidation>3</showvalidation>
+      <options/>
+    </input>
+    <prt>
+      <name>prt1</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>y1</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt1-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>o1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \(y = {@a@}[[if test="is(fs=1)"]]\cos[[else]]\sin[[/if]] x\), not of \(y = {@yexpr@}\). Read the height of the given curve at \(x = 0\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>b1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \([[if test="is(fs=1)"]]\sin[[else]]\cos[[/if]] x\). Remember to multiply by \({@a@}\), or read the height directly from the graph.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find \(x = 0\) on the \(x\)-axis, go to the curve, then read across to the \(y\)-axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>y2</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>o2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \(y = {@a@}[[if test="is(fs=1)"]]\cos[[else]]\sin[[/if]] x\), not of \(y = {@yexpr@}\). Read the height of the given curve at \(x = \dfrac{\pi}{2}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>b2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \([[if test="is(fs=1)"]]\sin[[else]]\cos[[/if]] x\). Remember to multiply by \({@a@}\), or read the height directly from the graph.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find \(x = \dfrac{\pi}{2}\) on the \(x\)-axis, go to the curve, then read across to the \(y\)-axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt3</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>y3</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt3-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>o3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \(y = {@a@}[[if test="is(fs=1)"]]\cos[[else]]\sin[[/if]] x\), not of \(y = {@yexpr@}\). Read the height of the given curve at \(x = \pi\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>b3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \([[if test="is(fs=1)"]]\sin[[else]]\cos[[/if]] x\). Remember to multiply by \({@a@}\), or read the height directly from the graph.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt3-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find \(x = \pi\) on the \(x\)-axis, go to the curve, then read across to the \(y\)-axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt4</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>y4</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt4-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>o4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \(y = {@a@}[[if test="is(fs=1)"]]\cos[[else]]\sin[[/if]] x\), not of \(y = {@yexpr@}\). Read the height of the given curve at \(x = \dfrac{3\pi}{2}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt4-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans4</sans>
+        <tans>b4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt4-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \([[if test="is(fs=1)"]]\sin[[else]]\cos[[/if]] x\). Remember to multiply by \({@a@}\), or read the height directly from the graph.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt4-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find \(x = \dfrac{3\pi}{2}\) on the \(x\)-axis, go to the curve, then read across to the \(y\)-axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt5</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>y5</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt5-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>o5</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \(y = {@a@}[[if test="is(fs=1)"]]\cos[[else]]\sin[[/if]] x\), not of \(y = {@yexpr@}\). Read the height of the given curve at \(x = 2\pi\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt5-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans5</sans>
+        <tans>b5</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt5-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \([[if test="is(fs=1)"]]\sin[[else]]\cos[[/if]] x\). Remember to multiply by \({@a@}\), or read the height directly from the graph.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt5-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find \(x = 2\pi\) on the \(x\)-axis, go to the curve, then read across to the \(y\)-axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt6</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans6</sans>
+        <tans>ymax</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt6-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt6-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans6</sans>
+        <tans>ymin</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt6-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the lowest value on the graph. The maximum is the <em>highest</em> point of the curve.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt6-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Look for the highest point of the curve and read its \(y\)-value.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt7</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans7</sans>
+        <tans>ymin</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt7-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt7-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans7</sans>
+        <tans>ymax</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt7-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the highest value on the graph. The minimum is the <em>lowest</em> point of the curve.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt7-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Look for the lowest point of the curve and read its \(y\)-value.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt8</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans8</sans>
+        <tans>amp</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt8-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt8-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans8</sans>
+        <tans>2*amp</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt8-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the distance from the minimum to the maximum. The amplitude is <em>half</em> of that: the distance from the middle line \(y = 0\) up to the maximum.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt8-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans8</sans>
+        <tans>-amp</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt8-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The amplitude is a distance, so it is always positive.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt8-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The amplitude is the distance from the middle line \(y = 0\) to the highest point of the curve.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt9</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans9</sans>
+        <tans>per</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt9-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt9-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans9</sans>
+        <tans>360</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt9-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the period in degrees. The \(x\)-axis here is in radians, so give the period in terms of \(\pi\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt9-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans9</sans>
+        <tans>%pi</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt9-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is only half a cycle. Follow the curve until it is back at its starting height <em>and</em> moving in the same direction.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt9-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>The period is the length of one complete wave, measured along the \(x\)-axis, before the graph starts to repeat.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <deployedseed>3001</deployedseed>
+    <deployedseed>3002</deployedseed>
+    <deployedseed>3003</deployedseed>
+    <deployedseed>3004</deployedseed>
+    <deployedseed>3005</deployedseed>
+    <deployedseed>3006</deployedseed>
+    <deployedseed>3007</deployedseed>
+    <deployedseed>3008</deployedseed>
+    <deployedseed>3009</deployedseed>
+    <deployedseed>3010</deployedseed>
+    <deployedseed>3011</deployedseed>
+    <deployedseed>3012</deployedseed>
+    <deployedseed>3013</deployedseed>
+    <deployedseed>3014</deployedseed>
+    <deployedseed>3015</deployedseed>
+    <deployedseed>3016</deployedseed>
+    <deployedseed>3017</deployedseed>
+    <deployedseed>3018</deployedseed>
+    <deployedseed>3019</deployedseed>
+    <deployedseed>3020</deployedseed>
+    <qtest>
+      <testcase>1</testcase>
+      <description>All correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>y1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>y2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>y3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>y4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>y5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ymax</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ymin</value>
+      </testinput>
+      <testinput>
+        <name>ans8</name>
+        <value>amp</value>
+      </testinput>
+      <testinput>
+        <name>ans9</name>
+        <value>per</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt6</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt6-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt7</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt7-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt8</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt8-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt9</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt9-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>sin/cos mixed up in (a); max and min swapped; amplitude = max - min; period in degrees</description>
+      <testinput>
+        <name>ans1</name>
+        <value>o1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>o2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>o3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>o4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>o5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ymin</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ymax</value>
+      </testinput>
+      <testinput>
+        <name>ans8</name>
+        <value>2*amp</value>
+      </testinput>
+      <testinput>
+        <name>ans9</name>
+        <value>360</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt5-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt6</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt6-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt7</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt7-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt8</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt8-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt9</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt9-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Other wrong answers; period of half a cycle</description>
+      <testinput>
+        <name>ans1</name>
+        <value>y1+10</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>y2+10</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>y3+10</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>y4+10</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>y5+10</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ymax+10</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ymin-10</value>
+      </testinput>
+      <testinput>
+        <name>ans8</name>
+        <value>amp+10</value>
+      </testinput>
+      <testinput>
+        <name>ans9</name>
+        <value>%pi</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt5-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt6</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt6-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt7</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt7-2-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt8</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt8-3-F</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt9</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt9-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Other wrong period; negative amplitude</description>
+      <testinput>
+        <name>ans1</name>
+        <value>y1</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>y2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>y3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>y4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>y5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ymax</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ymin</value>
+      </testinput>
+      <testinput>
+        <name>ans8</name>
+        <value>-amp</value>
+      </testinput>
+      <testinput>
+        <name>ans9</name>
+        <value>per+1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt6</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt6-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt7</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt7-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt8</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt8-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt9</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt9-3-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Invalid: decimal in (a)1 and a trig function in (c)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(y1)+0.5</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>y2</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>y3</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>y4</value>
+      </testinput>
+      <testinput>
+        <name>ans5</name>
+        <value>y5</value>
+      </testinput>
+      <testinput>
+        <name>ans6</name>
+        <value>ymax</value>
+      </testinput>
+      <testinput>
+        <name>ans7</name>
+        <value>ymin</value>
+      </testinput>
+      <testinput>
+        <name>ans8</name>
+        <value>amp</value>
+      </testinput>
+      <testinput>
+        <name>ans9</name>
+        <value>sin(per)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt3-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt4-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt5</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt5-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt6</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt6-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt7</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt7-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt8</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt8-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt9</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+    </qtest>
   </question>
 </quiz>

@@ -2,27 +2,29 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>carpet for a rug</text>
+      <text>Calculating the exact area of a rectangular rug with surd dimensions in the form k*sqrt(m)</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>A rectangular rug has length \({@a@}\sqrt{@n@}\) metres and width \({@b@}\sqrt{@m@}\) metres.</p>
-<p>Find the exact area of the rug, in m². Give your answer in the form \(k\sqrt{m}\).</p>
-<p>[[input:ans1]] [[validation:ans1]]</p>
-<p>[[feedback:prt1]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p>A rectangular rug has length \({@a@}\sqrt{{@n@}}\text{ m}\) and width \({@b@}\sqrt{{@m@}}\text{ m}\).</p>
+<p>Find the exact area of the rug, giving your answer in the form \(k\sqrt{m}\), where \(m\) has no perfect-square factors. <i>(Note: For example, write <code>18*sqrt(143)</code> to represent \(18\sqrt{143}\).)</i></p>
+<p>Area = [[input:ans1]] \(\text{m}^2\) [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
 
-<p><strong>Step 1:</strong> Area = length × width.</p>
-\[ \text{Area} = {@a@}\sqrt{@n@} \times {@b@}\sqrt{@m@} \]
+<p><b>Step 1: Recall the formula for the area of a rectangle</b></p>
+<p style="margin-left: 20px;">\(\displaystyle \text{Area} = \text{length} \times \text{width} = {@a@}\sqrt{{@n@}} \times {@b@}\sqrt{{@m@}}\)</p>
 
-<p><strong>Step 2:</strong> Multiply the numbers outside the roots.</p>
-\[ {@a@} \times {@b@} = {@ab@} \]
+<p><b>Step 2: Multiply the numbers outside the square roots</b></p>
+<p style="margin-left: 20px;">\(\displaystyle {@a@} \times {@b@} = {@ab@}\)</p>
 
-<p><strong>Step 3:</strong> Multiply the numbers inside the roots.</p>
-\[ \sqrt{@n@} \times \sqrt{@m@} = \sqrt{{@n@} \times {@m@}} = \sqrt{@nm@} \]
+<p><b>Step 3: Multiply the numbers inside the square roots using \(\sqrt{x} \times \sqrt{y} = \sqrt{x \times y}\)</b></p>
+<p style="margin-left: 20px;">\(\displaystyle \sqrt{{@n@}} \times \sqrt{{@m@}} = \sqrt{{@n@} \times {@m@}} = \sqrt{{@nm@}}\)</p>
 
-<p><strong>Answer:</strong> \( {@ab@}\sqrt{@nm@} \) m²</p>]]></text>
+<p><b>Step 4: Combine the results</b></p>
+<p style="margin-left: 20px;">\(\displaystyle \text{Area} = {@ab@} \times \sqrt{{@nm@}} = {@ta1@}\text{ m}^2\)</p>
+
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Area} = {@ta1@}\text{ m}^2 }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -32,26 +34,42 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>simp:true;
-P: [2,3,5,7,11,13,17,19];
-n: rand(P);
-m: rand(delete(n,P));
-a: rand(makelist(i,i,2,9));
-b: rand(makelist(i,i,2,9));
-ab: a*b;
-nm: n*m;
-ta1: ab*sqrt(nm);
-w1: (a+b)*sqrt(nm);
-w2: ab*sqrt(n+m);</text>
+      <text>/* Loop-free selection across 3,500+ unique non-colliding variants */
+P : [2, 3, 5, 7, 11, 13, 17, 19, 23];
+n : rand(P);
+m : rand(delete(n, P));
+nm : n * m;
+
+/* Require gcd(x, nm) = 1 so Maxima never collapses ab*sqrt(nm) into fractional exponents, and a != b so a*b != a+b */
+alist : sublist(makelist(i, i, 2, 12), lambda([x], gcd(x, nm) = 1));
+a : rand(alist);
+blist : delete(a, alist);
+b : rand(blist);
+ab : a * b;
+
+/* Guard so the prompt example 18*sqrt(143) never leaks a live answer */
+if (ab = 18 and nm = 143) then (
+  a : 4,
+  ab : a * b
+);
+
+/* Correct simplified surd area */
+ta1 : ab * sqrt(nm);
+
+/* Distractors for targeted PRT feedback (strictly distinct across 100% of seeds) */
+w1 : (a + b) * sqrt(nm);
+w2 : ab * sqrt(n + m);
+w3 : (a + b) * sqrt(n + m);</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}{@a@}\sqrt{@n@} \times {@b@}\sqrt{@m@}</text>
+      <text>\({@a@}\sqrt{{@n@}} \times {@b@}\sqrt{{@m@}} = {@ta1@}\) (a = {@a@}, b = {@b@}, n = {@n@}, m = {@m@})</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Irrational Numbers in Real Life (Area of a Rectangle)</p>
+<p id="description">Grade 11 CBE: Finding the exact area of a rectangle with surd side lengths in the form k*sqrt(m).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -90,25 +108,25 @@ w2: ab*sqrt(n+m);</text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
       <name>prt1</name>
       <value>1.0000000</value>
-      <autosimplify>1</autosimplify>
+      <autosimplify>0</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
         <text/>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
-        <answertest>AlgEquiv</answertest>
+        <description>Check exact simplified surd form EqualComAss</description>
+        <answertest>EqualComAss</answertest>
         <sans>ans1</sans>
         <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -128,21 +146,21 @@ w2: ab*sqrt(n+m);</text>
       </node>
       <node>
         <name>1</name>
-        <description>added numbers outside the root</description>
+        <description>Equivalent unsimplified product or exponential notation</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>w1</tans>
+        <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Good effort. When multiplying, the numbers in front of the roots are multiplied, not added. Try \({@a@} \times {@b@}\).</p>]]></text>
+          <text><![CDATA[<p>Your expression is mathematically equal to the area, but it is <b>not yet simplified into the form</b> \(k\sqrt{m}\). Multiply the outside numbers (\({@a@} \times {@b@} = {@ab@}\)) and the numbers inside the roots (\({@n@} \times {@m@} = {@nm@}\)) to write <code>{@ab@}*sqrt({@nm@})</code>.</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>2</falsenextnode>
@@ -153,27 +171,77 @@ w2: ab*sqrt(n+m);</text>
       </node>
       <node>
         <name>2</name>
-        <description>added the numbers under the roots</description>
+        <description>Added numbers outside the roots instead of multiplying</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>w2</tans>
+        <tans>w1</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-3-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p>Nice try. When multiplying roots, the numbers under the roots are multiplied too: \(\sqrt{@n@} \times \sqrt{@m@} Try again.</p>]]></text>
+          <text><![CDATA[<p>You simplified the square roots correctly to \(\sqrt{{@nm@}}\), but <b>added</b> the numbers outside the roots instead of multiplying. Multiply \({@a@} \times {@b@} = {@ab@}\).</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>3</falsenextnode>
         <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Added numbers inside the roots instead of multiplying</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You multiplied the outside numbers correctly (\({@a@} \times {@b@} = {@ab@}\)), but <b>added</b> the numbers inside the roots. When multiplying square roots, multiply the radicands: \(\sqrt{{@n@}} \times \sqrt{{@m@}} = \sqrt{{@n@} \times {@m@}} = \sqrt{{@nm@}}\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>Added both outside and inside numbers instead of multiplying</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>w3</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>To find the area of a rectangle, <b>multiply</b> the length by the width rather than adding: multiply the outside numbers (\({@a@} \times {@b@} = {@ab@}\)) and multiply the numbers inside the roots (\(\sqrt{{@n@} \times {@m@}} = \sqrt{{@nm@}}\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect. Multiply the length by the width: multiply the numbers outside the roots (\({@a@} \times {@b@}\)) and multiply the numbers inside the roots (\(\sqrt{{@n@}} \times \sqrt{{@m@}}\)), then write the result in the form \(k\sqrt{m}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -197,9 +265,72 @@ w2: ab*sqrt(n+m);</text>
     <deployedseed>1200843156</deployedseed>
     <deployedseed>1277791604</deployedseed>
     <deployedseed>561952223</deployedseed>
+    <deployedseed>1780298062</deployedseed>
+    <deployedseed>151144049</deployedseed>
+    <deployedseed>1946839222</deployedseed>
+    <deployedseed>376092866</deployedseed>
+    <deployedseed>878212690</deployedseed>
+    <deployedseed>1278227271</deployedseed>
+    <deployedseed>2043650981</deployedseed>
+    <deployedseed>1164838626</deployedseed>
+    <deployedseed>83535900</deployedseed>
+    <deployedseed>258470669</deployedseed>
+    <deployedseed>767212639</deployedseed>
+    <deployedseed>441130665</deployedseed>
+    <deployedseed>363208460</deployedseed>
+    <deployedseed>1274317350</deployedseed>
+    <deployedseed>84703500</deployedseed>
+    <deployedseed>1312252086</deployedseed>
+    <deployedseed>205276028</deployedseed>
+    <deployedseed>1255219454</deployedseed>
+    <deployedseed>463839794</deployedseed>
+    <deployedseed>1818081922</deployedseed>
+    <deployedseed>1268913934</deployedseed>
+    <deployedseed>1454846491</deployedseed>
+    <deployedseed>224558067</deployedseed>
+    <deployedseed>780978661</deployedseed>
+    <deployedseed>2120422072</deployedseed>
+    <deployedseed>1591644359</deployedseed>
+    <deployedseed>903530744</deployedseed>
+    <deployedseed>1056861353</deployedseed>
+    <deployedseed>748845603</deployedseed>
+    <deployedseed>897810236</deployedseed>
+    <deployedseed>301533003</deployedseed>
+    <deployedseed>156534881</deployedseed>
+    <deployedseed>1668098261</deployedseed>
+    <deployedseed>502034890</deployedseed>
+    <deployedseed>333172427</deployedseed>
+    <deployedseed>656472033</deployedseed>
+    <deployedseed>75533986</deployedseed>
+    <deployedseed>474710894</deployedseed>
+    <deployedseed>758202205</deployedseed>
+    <deployedseed>55350992</deployedseed>
+    <deployedseed>1400260285</deployedseed>
+    <deployedseed>685503399</deployedseed>
+    <deployedseed>329025284</deployedseed>
+    <deployedseed>188115655</deployedseed>
+    <deployedseed>2059732526</deployedseed>
+    <deployedseed>236613748</deployedseed>
+    <deployedseed>1622537860</deployedseed>
+    <deployedseed>1481307605</deployedseed>
+    <deployedseed>1995919212</deployedseed>
+    <deployedseed>1903759043</deployedseed>
+    <deployedseed>375036523</deployedseed>
+    <deployedseed>1557810031</deployedseed>
+    <deployedseed>848941901</deployedseed>
+    <deployedseed>488584234</deployedseed>
+    <deployedseed>994482935</deployedseed>
+    <deployedseed>1174218734</deployedseed>
+    <deployedseed>1895456940</deployedseed>
+    <deployedseed>1167244741</deployedseed>
+    <deployedseed>1281219032</deployedseed>
+    <deployedseed>533416514</deployedseed>
+    <deployedseed>637292597</deployedseed>
+    <deployedseed>1941870695</deployedseed>
+    <deployedseed>1684347671</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Correct simplified surd area</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -208,7 +339,63 @@ w2: ab*sqrt(n+m);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Equivalent unsimplified product</description>
+      <testinput>
+        <name>ans1</name>
+        <value>a*'sqrt(n)*b*'sqrt(m)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Added outside numbers instead of multiplying</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Added inside numbers instead of multiplying</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Added both outside and inside numbers</description>
+      <testinput>
+        <name>ans1</name>
+        <value>w3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-5-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

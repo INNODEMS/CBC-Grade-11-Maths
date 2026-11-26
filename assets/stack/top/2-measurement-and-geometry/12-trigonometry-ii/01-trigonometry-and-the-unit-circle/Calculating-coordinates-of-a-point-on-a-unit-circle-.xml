@@ -5,32 +5,91 @@
       <text>Calculating coordinates of a point on a unit circle.</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Let \(P\) be the point where the terminal side of the angle \(\theta={@theta@}\) intersects the unit circle.</p>
-
-<p>What are the coordinates \((x,y)\) of point \(P\)?</p>
-
-<p>Enter your answer as an ordered pair.</p>
-
-<p>[[input:ans1]] [[validation:ans1]][[feedback:prt1]]</p>]]></text>
+      <text><![CDATA[<p>Let \(P\) be the point where the terminal side of the angle \(\theta = {@theta@}\) meets the unit circle. The angle is measured anticlockwise from the positive \(x\)-axis, and the unit circle has centre \(O(0,\,0)\) and radius \(1\). The diagram shows the angle \(\theta\) and the point \(P\).</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with centre O, showing the angle theta = {#theta#} measured anticlockwise from the positive x-axis and the point P where its terminal side meets the circle.">
+[[jsxgraph width="320px" height="320px"]]
+(function() {
+  var th = {#float(theta)#};
+  var px = Math.cos(th), py = Math.sin(th);
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.3, -0.13, 'x'], {fixed:true});
+  b.create('text', [-0.15, 1.3, 'y'], {fixed:true});
+  b.create('text', [1.03, -0.12, '1'], {fixed:true});
+  b.create('text', [-1.22, -0.12, '\u22121'], {fixed:true});
+  b.create('text', [0.05, 1.09, '1'], {fixed:true});
+  b.create('text', [0.05, -1.1, '\u22121'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222', label:{offset:[-14,-12]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A = b.create('point', [1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828',
+      label:{offset:[px > 0 ? 10 : -22, py > 0 ? 14 : -16]}});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('angle', [A, O, P], {radius:0.25, name:'\u03b8', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.35, fixed:true});
+})();
+[[/jsxgraph]]
+</div>
+<p>Find the exact coordinates \((x,\,y)\) of the point \(P\).</p>
+<p>Type your answer as \([x, y]\) using exact values, for example <code>[-sqrt(3)/2, 1/2]</code>. Do not use decimals, and do not use <code>sin</code> or <code>cos</code> in your answer.</p>
+<div>\(P = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<p>For a point \(P=(x,y)\) on the unit circle, the coordinates are determined by the angle \(\theta\):</p>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p><strong>The idea.</strong> For any angle \(\theta\), the point where its terminal side meets the unit circle is \(P = (\cos\theta,\, \sin\theta)\). The radius is \(1\), so the \(x\)-coordinate of \(P\) is \(\cos\theta\) and the \(y\)-coordinate is \(\sin\theta\). To find them exactly, we use the <em>reference angle</em> for the size of each coordinate and the <em>quadrant</em> for its sign.</p>
 
-\(x=\cos(\theta), \qquad y=\sin(\theta).\)
+<p><strong>Step 1: find the quadrant.</strong> \(\theta = {@theta@}\) (that is, \({@thetadeg@}^\circ\)) lies in <strong>Quadrant {@quadname@}</strong>[[if test="is(quad=1)"]], between \(0\) and \(\frac{\pi}{2}\)[[/if]][[if test="is(quad=2)"]], between \(\frac{\pi}{2}\) and \(\pi\)[[/if]][[if test="is(quad=3)"]], between \(\pi\) and \(\frac{3\pi}{2}\)[[/if]][[if test="is(quad=4)"]], between \(\frac{3\pi}{2}\) and \(2\pi\)[[/if]].</p>
 
-<p>Therefore, the coordinates of \(P\) are</p>
+<p><strong>Step 2: find the reference angle \(\alpha\).</strong> The reference angle is the acute angle between the terminal side and the \(x\)-axis.
+[[if test="is(quad=1)"]]In Quadrant I the angle is already acute, so \(\alpha = \theta = {@refang@}\).[[/if]]
+[[if test="is(quad=2)"]]In Quadrant II, \(\alpha = \pi - \theta = \pi - {@theta@} = {@refang@}\).[[/if]]
+[[if test="is(quad=3)"]]In Quadrant III, \(\alpha = \theta - \pi = {@theta@} - \pi = {@refang@}\).[[/if]]
+[[if test="is(quad=4)"]]In Quadrant IV, \(\alpha = 2\pi - \theta = 2\pi - {@theta@} = {@refang@}\).[[/if]]</p>
 
-\(P=(\cos(\theta),\sin(\theta)).\)
+<p><strong>Step 3: use the exact values for the reference angle.</strong> From the special triangles,</p>
+\[ \cos {@refang@} = {@abs(x0)@}, \qquad \sin {@refang@} = {@abs(y0)@}. \]
+<p>These are the sizes of the coordinates of \(P\), without their signs.</p>
 
-<p>To find the exact values, identify the reference angle and the quadrant in which \(\theta\) lies. The reference angle determines the magnitudes of the coordinates, while the quadrant determines their signs.</p>
+<p><strong>Step 4: decide the signs from the quadrant.</strong> In Quadrant {@quadname@}, \(P\) is
+[[if test="is(x0>0)"]]to the <em>right</em> of the \(y\)-axis, so \(x\) is <em>positive</em>,[[else]]to the <em>left</em> of the \(y\)-axis, so \(x\) is <em>negative</em>,[[/if]]
+and
+[[if test="is(y0>0)"]]above the \(x\)-axis, so \(y\) is <em>positive</em>.[[else]]below the \(x\)-axis, so \(y\) is <em>negative</em>.[[/if]]
+Therefore</p>
+\[ x = \cos {@theta@} = {@x0@}, \qquad y = \sin {@theta@} = {@y0@}. \]
 
-<p>For example, if \(\theta=\frac{5\pi}{6}\), the reference angle is \(\frac{\pi}{6}\) and the angle lies in Quadrant II. Thus \(x\) is negative and \(y\) is positive:</p>
+<p><strong>Step 5: write down the coordinates.</strong></p>
+\[ P = \left( {@x0@},\, {@y0@} \right). \]
 
-\(x=-\frac{\sqrt{3}}{2}, \qquad y=\frac12.\)
+<p>The diagram shows \(\theta\) in orange[[if test="is(quad>1)"]] and the reference angle \(\alpha\) in green[[/if]]. The dashed line drops from \(P\) to the \(x\)-axis, showing \(y\) as the height of \(P\) and \(x\) as its distance across from \(O\).</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with the angle theta = {#theta#} and the point P on the circle in Quadrant {#quad#}.">
+[[jsxgraph width="360px" height="360px"]]
+(function() {
+  var th = {#float(theta)#}, q = {#quad#};
+  var px = Math.cos(th), py = Math.sin(th);
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.5, 1.5, 1.5, -1.5], axis:true, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222', label:{offset:[-14,-12]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A  = b.create('point', [1, 0],  {visible:false, fixed:true});
+  var Am = b.create('point', [-1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828',
+      label:{offset:[px > 0 ? 10 : -22, py > 0 ? 14 : -16]}});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  var Fp = b.create('point', [px, 0], {visible:false, fixed:true});
+  b.create('segment', [P, Fp], {dash:2, strokeColor:'#888', fixed:true});
+  b.create('angle', [A, O, P], {radius:0.22, name:'θ', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.35, fixed:true});
+  var refStyle = {radius:0.45, name:'α', fillColor:'#81c784', strokeColor:'#2e7d32', fillOpacity:0.35, fixed:true};
+  if (q == 2) { b.create('angle', [P, O, Am], refStyle); }
+  if (q == 3) { b.create('angle', [Am, O, P], refStyle); }
+  if (q == 4) { b.create('angle', [P, O, A], refStyle); }
+})();
+[[/jsxgraph]]
+</div>
 
-<p>Hence</p>
-
-\(P=\left(-\frac{\sqrt{3}}{2},\frac12\right).\)]]></text>
+<p><strong>Trigonometric ratios.</strong> Reading the coordinates of \(P\) gives the ratios of \(\theta\) directly: \(\cos {@theta@} = {@x0@}\), \(\sin {@theta@} = {@y0@}\), and \(\tan {@theta@} = \dfrac{y}{x} = {@tanv@}\).</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -40,19 +99,21 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>angles : [
-    [%pi/6,   -sqrt(3)/2,  1/2],
-    [%pi/4,   -sqrt(2)/2,  sqrt(2)/2],
-    [%pi/3,   -1/2,        sqrt(3)/2],
-    [2*%pi/3, -1/2,        sqrt(3)/2],
-    [3*%pi/4, -sqrt(2)/2,  sqrt(2)/2],
-    [5*%pi/6, -sqrt(3)/2,  1/2],
-    [7*%pi/6, -sqrt(3)/2, -1/2],
-    [5*%pi/4, -sqrt(2)/2, -sqrt(2)/2],
-    [4*%pi/3, -1/2,       -sqrt(3)/2],
-    [5*%pi/3,  1/2,       -sqrt(3)/2],
-    [7*%pi/4,  sqrt(2)/2, -sqrt(2)/2],
-    [11*%pi/6, sqrt(3)/2, -1/2]
+      <text><![CDATA[/* Each row: [theta, x = cos(theta), y = sin(theta), quadrant, reference angle, degrees].
+   Corrected: the Quadrant I rows (pi/6, pi/4, pi/3) previously had a negative x-coordinate. */
+angles : [
+    [%pi/6,     sqrt(3)/2,  1/2,        1, %pi/6,  30],
+    [%pi/4,     sqrt(2)/2,  sqrt(2)/2,  1, %pi/4,  45],
+    [%pi/3,     1/2,        sqrt(3)/2,  1, %pi/3,  60],
+    [2*%pi/3,  -1/2,        sqrt(3)/2,  2, %pi/3,  120],
+    [3*%pi/4,  -sqrt(2)/2,  sqrt(2)/2,  2, %pi/4,  135],
+    [5*%pi/6,  -sqrt(3)/2,  1/2,        2, %pi/6,  150],
+    [7*%pi/6,  -sqrt(3)/2, -1/2,        3, %pi/6,  210],
+    [5*%pi/4,  -sqrt(2)/2, -sqrt(2)/2,  3, %pi/4,  225],
+    [4*%pi/3,  -1/2,       -sqrt(3)/2,  3, %pi/3,  240],
+    [5*%pi/3,   1/2,       -sqrt(3)/2,  4, %pi/3,  300],
+    [7*%pi/4,   sqrt(2)/2, -sqrt(2)/2,  4, %pi/4,  315],
+    [11*%pi/6,  sqrt(3)/2, -1/2,        4, %pi/6,  330]
 ];
 
 variant : rand(angles);
@@ -60,18 +121,26 @@ variant : rand(angles);
 theta : variant[1];
 x0 : variant[2];
 y0 : variant[3];
+quad : variant[4];
+refang : variant[5];
+thetadeg : variant[6];
+qnames : ["I", "II", "III", "IV"];
+quadname : qnames[quad];
+tanv : y0/x0;
 
-ta: [x0,y0];
-/*possible student mistakes*/
-
-ta_mistake2 : [-x0,y0];
-ta_mistake3 : [x0,-y0];</text>
+ta : [x0, y0];
+/* Possible student mistakes */
+ta_mistake2 : [-x0, y0];                                   /* wrong sign of x */
+ta_mistake3 : [x0, -y0];                                   /* wrong sign of y */
+ta_mistake4 : [-x0, -y0];                                  /* both signs wrong: opposite quadrant */
+ta_mistake5 : [y0, x0];                                    /* x and y swapped (sin and cos mixed up) */
+ta_mistake6 : [signum(x0)*abs(y0), signum(y0)*abs(x0)];    /* right signs, cos/sin of the reference angle swapped */]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta@}</text>
+      <text>\(\theta = {@theta@}\) (Quadrant {@quadname@}): \(P = {@ta@}\)</text>
     </questionnote>
     <questiondescription format="html">
       <text/>
@@ -102,14 +171,14 @@ ta_mistake3 : [x0,-y0];</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>ta</tans>
-      <boxsize>8</boxsize>
+      <boxsize>25</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint/>
-      <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <syntaxhint>[x, y]</syntaxhint>
+      <syntaxattribute>1</syntaxattribute>
+      <forbidwords>sin,cos,tan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>1</checkanswertype>
       <mustverify>1</mustverify>
@@ -126,7 +195,7 @@ ta_mistake3 : [x0,-y0];</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Checks for correct coordinates of the angle</description>
+        <description>Correct coordinates</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta</tans>
@@ -151,74 +220,21 @@ ta_mistake3 : [x0,-y0];</text>
       </node>
       <node>
         <name>1</name>
-        <description>Using a an incorrect sign on the x coordinate</description>
-        <answertest>EqualComAss</answertest>
+        <description>Wrong sign of x only</description>
+        <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>ta_mistake2 </tans>
+        <tans>ta_mistake2</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p><strong>There is a sign error in your \(x\)-coordinate.</strong></p>
-
-<p>
-Your answer was
-\(
-{@ans1@}.
-\)
-</p>
-
-<p>
-The angle selected for this question is
-\(
-\theta={@theta@}.
-\)
-For this angle, the corresponding point on the unit circle is
-\(
-(x_0,y_0)=({@x0@},{@y0@}).
-\)
-</p>
-
-<p>
-Therefore, the correct coordinate pair is
-\(
-\boxed{[{@x0@},{@y0@}]}.
-\)
-</p>
-
-<p>
-Your answer has the opposite sign for the \(x\)-coordinate:
-\(
-[{@-x0@},{@y0@}].
-\)
-This means that you have selected the point on the opposite side of the
-\(y\)-axis.
-</p>
-
-<p>
-Remember:
-the \(x\)-coordinate is negative on the left-hand side of the
-coordinate plane and positive on the right-hand side.
-</p>
-
-<p>
-For the angle
-\(
-\theta={@theta@},
-\)
-the point lies in the quadrant where \(x={@x0@}\) and \(y={@y0@}\).
-Hence,
-\(
-\boxed{[{@x0@},{@y0@}]}
-\)
-is the required answer.
-</p>]]></text>
+          <text><![CDATA[<p>Your \(y\)-coordinate is right, but your \(x\)-coordinate has the wrong sign. In which quadrant does \(\theta = {@theta@}\) lie? Is \(P\) to the left or to the right of the \(y\)-axis there?</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>2</falsenextnode>
@@ -229,80 +245,102 @@ is the required answer.
       </node>
       <node>
         <name>2</name>
-        <description>Checks for incorrect sign in the y coordinate</description>
-        <answertest>EqualComAss</answertest>
+        <description>Wrong sign of y only</description>
+        <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>ta_mistake3</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-3-T</trueanswernote>
         <truefeedback format="html">
-          <text><![CDATA[<p><strong>There is a sign error in your \(y\)-coordinate.</strong></p>
-
-<p>
-Your answer was
-\(
-{@ans1@}.
-\)
-</p>
-
-<p>
-The angle selected for this question is
-\(
-\theta={@theta@}.
-\)
-For this angle, the corresponding point on the unit circle is
-\(
-(x_0,y_0)=({@x0@},{@y0@}).
-\)
-</p>
-
-<p>
-Therefore, the correct coordinate pair is
-\(
-\boxed{[{@x0@},{@y0@}]}.
-\)
-</p>
-
-<p>
-Your answer has the opposite sign for the \(y\)-coordinate:
-\(
-[{@x0@},{@-y0@}].
-\)
-This means that you have selected the point on the opposite side of
-the \(x\)-axis.
-</p>
-
-<p>
-Remember:
-the \(y\)-coordinate is positive above the \(x\)-axis and negative
-below the \(x\)-axis.
-</p>
-
-<p>
-For the angle
-\(
-\theta={@theta@},
-\)
-the point lies in the quadrant where
-\(x={@x0@}\) and \(y={@y0@}\).
-Hence the correct answer is
-\(
-\boxed{[{@x0@},{@y0@}]}.
-\)
-</p>]]></text>
+          <text><![CDATA[<p>Your \(x\)-coordinate is right, but your \(y\)-coordinate has the wrong sign. In which quadrant does \(\theta = {@theta@}\) lie? Is \(P\) above or below the \(x\)-axis there?</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>3</falsenextnode>
         <falseanswernote>prt1-3-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Both signs wrong (opposite quadrant)</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta_mistake4</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Both of your signs are wrong, so your point is in the quadrant opposite to \(P\). Find the quadrant of \(\theta = {@theta@}\) first, then use it to decide the sign of each coordinate.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>4</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>4</name>
+        <description>x and y swapped</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta_mistake5</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-5-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks as if you have swapped the coordinates. On the unit circle the \(x\)-coordinate is \(\cos\theta\) and the \(y\)-coordinate is \(\sin\theta\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>5</falsenextnode>
+        <falseanswernote>prt1-5-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>5</name>
+        <description>Right signs, cos and sin of the reference angle swapped</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta_mistake6</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-6-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your signs are right, but the sizes of the coordinates are the wrong way round. Find the reference angle, then check which of its cosine and sine is the larger.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-6-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the reference angle (the acute angle between the terminal side and the \(x\)-axis) and use its exact cosine and sine. Then use the quadrant of \(\theta\) to decide the sign of each coordinate. Remember that \(x = \cos\theta\) and \(y = \sin\theta\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -316,7 +354,7 @@ Hence the correct answer is
     <deployedseed>293480190</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Correct coordinates</description>
       <testinput>
         <name>ans1</name>
         <value>ta</value>
@@ -325,7 +363,77 @@ Hence the correct answer is
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong sign of x</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_mistake2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Wrong sign of y</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_mistake3</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Both signs wrong</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta_mistake4</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>5</testcase>
+      <description>Other wrong answer (x doubled)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>[2*x0, y0]</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-6-F</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>6</testcase>
+      <description>Invalid: decimals are forbidden</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(ta)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

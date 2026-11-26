@@ -5,50 +5,73 @@
       <text>Determine sine and cosine from the unit circle</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Use the unit circle to determine the exact values of the following trigonometric ratios for the angle \(\theta={@theta@}^\circ\).
-</p>
-<p>1. \(\cos\theta=\) [[input:ans1]]
-   [[validation:ans1]]
-
-2. \(\sin\theta=\) [[input:ans2]]
-   [[validation:ans2]]
-</p>
-<p>
-Give your answers in exact form. Do not use decimal approximations.</p>
-<p>[[feedback:prt1]]</p>]]></text>
+      <text><![CDATA[<p>Use the unit circle to find the exact values of \(\cos\theta\) and \(\sin\theta\) for the angle \(\theta = {@theta@}^\circ\), measured anticlockwise from the positive \(x\)-axis.</p>
+<p>Give your answers in exact form: for example, type <code>sqrt(2)</code> for \(\sqrt{2}\). </p>
+<div>(a) \(\cos {@theta@}^\circ = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>
+<div>(b) \(\sin {@theta@}^\circ = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution </h3>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p>On the unit circle (centre \(O\), radius \(1\)), the terminal side of the angle \(\theta\) meets the circle at a point \(P\). The coordinates of \(P\) are \((\cos\theta,\, \sin\theta)\): the \(x\)-coordinate is \(\cos\theta\) and the \(y\)-coordinate is \(\sin\theta\).</p>
+[[jsxgraph width="340px" height="340px"]]
+(function() {
+  var deg = {#theta#}, th = deg*Math.PI/180;
+  var px = Math.cos(th), py = Math.sin(th);
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-0.35, 1.3, 1.3, -0.35], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-0.3, 0], [1.25, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -0.3], [0, 1.25]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.2, -0.09, 'x'], {fixed:true});
+  b.create('text', [-0.1, 1.2, 'y'], {fixed:true});
+  b.create('text', [1.02, -0.09, '1'], {fixed:true});
+  b.create('text', [-0.09, 1.04, '1'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222', label:{offset:[-14,-12]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A = b.create('point', [1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828', label:{offset:[8,10]}});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  if (deg > 0) {
+    b.create('angle', [A, O, P], {radius:0.18, name:'θ', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+        fillOpacity:0.35, fixed:true});
+  }
+  if (deg > 0 && deg < 90) {
+    var Fp = b.create('point', [px, 0], {name:'F', fixed:true, size:2, color:'#444', label:{offset:[4,-12]}});
+    b.create('segment', [O, Fp], {strokeColor:'#1565c0', strokeWidth:4, fixed:true});
+    b.create('segment', [Fp, P], {strokeColor:'#2e7d32', strokeWidth:4, fixed:true});
+    b.create('angle', [P, Fp, O], {type:'square', radius:0.06, name:'', fillOpacity:0, strokeColor:'#444', fixed:true});
+    b.create('text', [px/2, -0.1, 'cos θ'], {fixed:true, anchorX:'middle', color:'#1565c0'});
+    b.create('text', [px + 0.04, py/2, 'sin θ'], {fixed:true, anchorX:'left', color:'#2e7d32'});
+    b.create('text', [px/2 - 0.06, py/2 + 0.07, '1'], {fixed:true, anchorX:'right'});
+  }
+})();
+[[/jsxgraph]]
 
-<p><strong>Step 1: Understand the unit circle</strong></p>
+<p><strong>Step 1: locate the point \(P\) for \(\theta = {@theta@}^\circ\).</strong>
+[[if test="is(theta=0)"]]An angle of \(0^\circ\) does not turn at all, so the terminal side lies along the positive \(x\)-axis and meets the circle at \(P = (1,\, 0)\).[[/if]]
+[[if test="is(theta=90)"]]An angle of \(90^\circ\) is a quarter turn, so the terminal side lies along the positive \(y\)-axis and meets the circle at \(P = (0,\, 1)\).[[/if]]
+[[if test="is(theta>0 and theta<90)"]]\(\theta = {@theta@}^\circ\) is between \(0^\circ\) and \(90^\circ\), so \(P\) is in Quadrant I, where both coordinates are positive.[[/if]]</p>
 
-<p>The unit circle has radius 1 and is centred at the origin. For an angle \(\theta\) measured from the positive \(x\)-axis, the corresponding point on the unit circle has coordinates</p>
+[[if test="is(theta>0 and theta<90)"]]
+<p><strong>Step 2: draw the right-angled triangle.</strong> Drop a perpendicular from \(P\) to the \(x\)-axis at \(F\). In the right-angled triangle \(OFP\), the hypotenuse is the radius, \(OP = 1\), and the angle at \(O\) is \(\theta\). So</p>
+\[ \cos\theta = \frac{\text{adjacent}}{\text{hypotenuse}} = \frac{OF}{1} = OF, \qquad \sin\theta = \frac{\text{opposite}}{\text{hypotenuse}} = \frac{FP}{1} = FP. \]
+<p>The horizontal side \(OF\) is the \(x\)-coordinate of \(P\), and the vertical side \(FP\) is its \(y\)-coordinate.</p>
 
-<p>\((x,y)=(\cos\theta,\sin\theta)\).</p>
+<p><strong>Step 3: use the special triangle for \({@theta@}^\circ\).</strong>
+[[if test="is(theta=45)"]]A \(45^\circ\) right-angled triangle is isosceles, so \(OF = FP\). With legs of \(1\), the hypotenuse is \(\sqrt{2}\). Dividing every side by \(\sqrt{2}\) makes the hypotenuse \(1\), so each leg is \(\dfrac{1}{\sqrt{2}} = \dfrac{\sqrt{2}}{2}\).[[/if]]
+[[if test="is(theta=30 or theta=60)"]]Half of an equilateral triangle with sides \(2\) has sides \(1\), \(\sqrt{3}\) and \(2\), with angles \(30^\circ\), \(60^\circ\) and \(90^\circ\). Halving every side makes the hypotenuse \(1\), so the sides become \(\dfrac{1}{2}\), \(\dfrac{\sqrt{3}}{2}\) and \(1\). The shorter side \(\dfrac{1}{2}\) is opposite the \(30^\circ\) angle, and the longer side \(\dfrac{\sqrt{3}}{2}\) is opposite the \(60^\circ\) angle.[[/if]]
+[[if test="is(theta=30)"]]Here \(\theta = 30^\circ\), so the side opposite \(\theta\) is \(FP = \dfrac{1}{2}\), and the side next to it is \(OF = \dfrac{\sqrt{3}}{2}\).[[/if]]
+[[if test="is(theta=60)"]]Here \(\theta = 60^\circ\), so the side opposite \(\theta\) is \(FP = \dfrac{\sqrt{3}}{2}\), and the side next to it is \(OF = \dfrac{1}{2}\).[[/if]]</p>
+<p><strong>Step 4: read off the ratios.</strong></p>
+[[else]]
+<p><strong>Step 2: read off the ratios from the coordinates of \(P\).</strong></p>
+[[/if]]
+\[ \cos {@theta@}^\circ = x = {@cos_theta@}, \qquad \sin {@theta@}^\circ = y = {@sin_theta@}. \]
+<p>[[if test="is(theta=90)"]]Since \(\tan\theta = \dfrac{\sin\theta}{\cos\theta}\) and \(\cos 90^\circ = 0\), \(\tan 90^\circ\) is undefined.[[else]]It follows that \(\tan {@theta@}^\circ = \dfrac{\sin\theta}{\cos\theta} = {@tan_theta@}\).[[/if]]</p>
 
-<p><strong>Step 2: Identify the angle</strong></p>
+<div style="text-align:center;" role="img" aria-label="Quarter of the unit circle with the angle theta = {#theta#} degrees and the point P; the horizontal side is cos theta and the vertical side is sin theta.">
 
-<p>The given angle is \(\theta={@theta@}^\circ\).</p>
-
-<p>Use the standard angles on the unit circle to identify the corresponding coordinates.</p>
-
-<p><strong>Step 3: Determine cosine</strong></p>
-
-<p>The cosine of the angle is the \(x\)-coordinate of the corresponding point on the unit circle.</p>
-
-<p>\(\cos\theta={@cos_theta@}\)</p>
-
-<p><strong>Step 4: Determine sine</strong></p>
-
-<p>The sine of the angle is the \(y\)-coordinate of the corresponding point on the unit circle.</p>
-
-<p>\(\sin\theta={@sin_theta@}\)</p>
-
-<p><strong>Final answers</strong></p>
-
-<p>\(\cos({@theta@}^\circ)={@cos_theta@}\)</p>
-
-<p>\(\sin({@theta@}^\circ)={@sin_theta@}\)</p>]]></text>
+</div>
+<p>[[if test="is(theta>0 and theta<90)"]]In the diagram, the blue side \(OF\) is \(\cos\theta\) and the green side \(FP\) is \(\sin\theta\).[[else]]In the diagram, \(P\) lies on an axis, so one of its coordinates is \(0\) and the other is \(1\).[[/if]]</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -58,21 +81,27 @@ Give your answers in exact form. Do not use decimal approximations.</p>
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Select a standard angle */
+      <text>/* Select a standard angle (degrees) */
 angle_index: rand(5);
 angle_list: [0,30,45,60,90];
 theta: angle_list[angle_index+1];
 
 /* Exact trigonometric ratios */
 cos_theta: cos(theta*%pi/180);
-sin_theta: sin(theta*%pi/180);</text>
+sin_theta: sin(theta*%pi/180);
+tan_theta: if theta = 90 then und else sin_theta/cos_theta;
+
+/* Possible student mistakes */
+cos_swap: sin_theta;      /* gave sin instead of cos */
+sin_swap: cos_theta;      /* gave cos instead of sin */
+cos_double: 2*cos_theta;  /* used the 1 : sqrt(3) : 2 or 1 : 1 : sqrt(2) triangle without scaling it so the hypotenuse is 1 */
+sin_double: 2*sin_theta;</text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@cos_theta@}
-{@sin_theta@}</text>
+      <text>\(\theta = {@theta@}^\circ\): \(\cos\theta = {@cos_theta@}\), \(\sin\theta = {@sin_theta@}\)</text>
     </questionnote>
     <questiondescription format="html">
       <text/>
@@ -103,14 +132,14 @@ sin_theta: sin(theta*%pi/180);</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>cos_theta</tans>
-      <boxsize>7</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -121,14 +150,14 @@ sin_theta: sin(theta*%pi/180);</text>
       <name>ans2</name>
       <type>algebraic</type>
       <tans>sin_theta</tans>
-      <boxsize>7</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -145,7 +174,7 @@ sin_theta: sin(theta*%pi/180);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description>Checks for correct cos value</description>
+        <description>Correct value of cos</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>cos_theta</tans>
@@ -154,7 +183,7 @@ sin_theta: sin(theta*%pi/180);</text>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
-        <truenextnode>1</truenextnode>
+        <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-1-T</trueanswernote>
         <truefeedback format="html">
           <text/>
@@ -162,7 +191,7 @@ sin_theta: sin(theta*%pi/180);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
@@ -170,27 +199,136 @@ sin_theta: sin(theta*%pi/180);</text>
       </node>
       <node>
         <name>1</name>
-        <description>Checks for correct sin value</description>
+        <description>Gave sin instead of cos</description>
         <answertest>AlgEquiv</answertest>
-        <sans>ans2</sans>
-        <tans>sin_theta</tans>
+        <sans>ans1</sans>
+        <tans>cos_swap</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>That is the value of \(\sin\theta\), not \(\cos\theta\). On the unit circle, \(\cos\theta\) is the \(x\)-coordinate of \(P\): the horizontal distance from \(O\).</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>2</falsenextnode>
         <falseanswernote>prt1-2-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Special triangle not scaled to hypotenuse 1</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>cos_double</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your value is twice too big. On the unit circle the hypotenuse is the radius, which is \(1\), so scale the special triangle down until its hypotenuse is \(1\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the point \(P\) for \(\theta = {@theta@}^\circ\) on the unit circle. \(\cos\theta\) is its \(x\)-coordinate: use the special triangle with hypotenuse \(1\), or the point where the circle meets an axis.</p>]]></text>
+        </falsefeedback>
+      </node>
+    </prt>
+    <prt>
+      <name>prt2</name>
+      <value>1.0000000</value>
+      <autosimplify>1</autosimplify>
+      <feedbackstyle>1</feedbackstyle>
+      <feedbackvariables>
+        <text/>
+      </feedbackvariables>
+      <node>
+        <name>0</name>
+        <description>Correct value of sin</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>sin_theta</tans>
+        <testoptions/>
+        <quiet>0</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>1</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text/>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>prt2-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Gave cos instead of sin</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>sin_swap</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>That is the value of \(\cos\theta\), not \(\sin\theta\). On the unit circle, \(\sin\theta\) is the \(y\)-coordinate of \(P\): the height of \(P\) above the \(x\)-axis.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Special triangle not scaled to hypotenuse 1</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>sin_double</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Your value is twice too big. On the unit circle the hypotenuse is the radius, which is \(1\), so scale the special triangle down until its hypotenuse is \(1\).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the point \(P\) for \(\theta = {@theta@}^\circ\) on the unit circle. \(\sin\theta\) is its \(y\)-coordinate: use the special triangle with hypotenuse \(1\), or the point where the circle meets an axis.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -201,7 +339,7 @@ sin_theta: sin(theta*%pi/180);</text>
     <deployedseed>576904893</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description>Test case assuming the teacher's input gets full marks.</description>
+      <description>Both values correct</description>
       <testinput>
         <name>ans1</name>
         <value>cos_theta</value>
@@ -214,7 +352,85 @@ sin_theta: sin(theta*%pi/180);</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T | prt1-2-T ]</expectedanswernote>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>cos correct, sin wrong (sin is now marked on its own)</description>
+      <testinput>
+        <name>ans1</name>
+        <value>cos_theta</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>sin_theta+2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>[ prt2-1-F | prt2-2-F | prt2-3-F ]</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>cos wrong, sin correct</description>
+      <testinput>
+        <name>ans1</name>
+        <value>cos_theta+2</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>sin_theta</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-F | prt1-2-F | prt1-3-F ]</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>[ prt2-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: decimals are forbidden</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(cos_theta)</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>float(sin_theta)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

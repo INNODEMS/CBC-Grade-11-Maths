@@ -2,42 +2,32 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Adding and subtracting surds</text>
+      <text>Simplifying and combining like surds through addition and subtraction</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Simplify the following, giving your answer in the form \( a\sqrt{b} \), where \(b\) has no square factors:</p>
-<p>
-\[ {@A@}\sqrt{ {@m1@} } \;{@signchar@}\; {@Bmag@}\sqrt{ {@m2@} } \]
-</p>
-<p>
-\( a = \) [[input:ans1]] ; \( \sqrt{b} \), \( b = \) [[input:ans2]]
-</p>
-<p>[[validation:ans1]] [[validation:ans2]]</p>
-<p></p><p>[[feedback:prt1]][[feedback:prt2]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p>Simplify the following expression, giving your answer in the form \(a\sqrt{b}\), where \(b\) has no perfect-square factors:</p>
+<p style="text-align: center; font-size: 1.2em;">\[ {@A@}\sqrt{{@m1@}} \;{@signchar@}\; {@Bmag@}\sqrt{{@m2@}} \]</p>
+<p>\(a =\) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>
+<p>\(b =\) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
-<p>First simplify each surd separately, by finding the largest perfect-square factor of each number under the root:</p>
-<p>
-\[ \sqrt{ {@m1@} } = \sqrt{ {@(a1^2)@} \times {@p@} } = {@a1@}\sqrt{ {@p@} } \]
-</p>
-<p>
-\[ \sqrt{ {@m2@} } = \sqrt{ {@(a2^2)@} \times {@p@} } = {@a2@}\sqrt{ {@p@} } \]
-</p>
-<p>Substitute these back into the original expression:</p>
-<p>
-\[
-{@A@}\sqrt{ {@m1@} } \;{@signchar@}\; {@Bmag@}\sqrt{ {@m2@} }
-= {@A@}\times {@a1@}\sqrt{ {@p@} } \;{@signchar@}\; {@Bmag@}\times {@a2@}\sqrt{ {@p@} }
-= {@(A*a1)@}\sqrt{ {@p@} } \;{@signchar@}\; {@(Bmag*a2)@}\sqrt{ {@p@} }
-\]
-</p>
-<p>Both terms now have the same surd part, \( \sqrt{ {@p@} } \), so they are &ldquo;like surds&rdquo; and their coefficients can be combined:</p>
-<p>
-\[ = {@coeff@}\sqrt{ {@p@} } \]
-</p>]]></text>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+
+<p><b>Step 1: Simplify each surd separately</b><br>
+Find the largest perfect-square factor of each number inside the square root and apply \(\sqrt{x^2 \times y} = x\sqrt{y}\):</p>
+<p style="margin-left: 20px;">\(\displaystyle \sqrt{{@m1@}} = \sqrt{{@a1_sq@} \times {@p@}} = \sqrt{{@a1_sq@}} \times \sqrt{{@p@}} = {@a1@}\sqrt{{@p@}}\)</p>
+<p style="margin-left: 20px;">\(\displaystyle \sqrt{{@m2@}} = \sqrt{{@a2_sq@} \times {@p@}} = \sqrt{{@a2_sq@}} \times \sqrt{{@p@}} = {@a2@}\sqrt{{@p@}}\)</p>
+
+<p><b>Step 2: Substitute back and multiply the outside numbers</b></p>
+<p style="margin-left: 20px;">\(\displaystyle {@A@}\sqrt{{@m1@}} \;{@signchar@}\; {@Bmag@}\sqrt{{@m2@}} = {@A@}\left({@a1@}\sqrt{{@p@}}\right) \;{@signchar@}\; {@Bmag@}\left({@a2@}\sqrt{{@p@}}\right) = {@term1@}\sqrt{{@p@}} \;{@signchar@}\; {@term2@}\sqrt{{@p@}}\)</p>
+
+<p><b>Step 3: Combine the like surds</b><br>
+Both terms now share the same irrational part \(\sqrt{{@p@}}\), so combine their coefficients:</p>
+<p style="margin-left: 20px;">\(\displaystyle ({@term1@} \;{@signchar@}\; {@term2@})\sqrt{{@p@}} = {@coeff@}\sqrt{{@p@}}\)</p>
+
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ {@A@}\sqrt{{@m1@}} \;{@signchar@}\; {@Bmag@}\sqrt{{@m2@}} = {@coeff@}\sqrt{{@p@}}, \quad \text{so } a = {@coeff@} \text{ and } b = {@p@} }\)</p>]]></text>
     </generalfeedback>
-    <defaultgrade>1</defaultgrade>
+    <defaultgrade>2</defaultgrade>
     <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
@@ -45,32 +35,47 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[plist: [2,3,5,6,7,10,11,13,14,15,17,19,21,22,23];
-p: plist[1+rand(length(plist))];
-a1: 1+rand(4);
-a2: 1+rand(4);
-while a2=a1 do a2: 1+rand(4);
-A: 1+rand(6);
-Bmag: 1+rand(6);
-sgn: if rand(2)=0 then 1 else -1;
-m1: a1^2*p;
-m2: a2^2*p;
-coeff: A*a1 + sgn*Bmag*a2;
-while coeff=0 do (
-  sgn: if rand(2)=0 then 1 else -1,
-  Bmag: 1+rand(6),
-  coeff: A*a1 + sgn*Bmag*a2
-);
-signchar: if sgn=1 then "+" else "-";]]></text>
+      <text><![CDATA[/* 15 x 4 x 3 x 6 x 6 x 2 = 12,960 unique non-colliding variants */
+plist : [2, 3, 5, 6, 7, 10, 11, 13, 14, 15, 17, 19, 21, 22, 23];
+p : rand(plist);
+
+a1 : rand([2, 3, 4, 5]);
+a2 : rand_with_prohib(2, 5, [a1]);
+a1_sq : a1^2;
+a2_sq : a2^2;
+
+A : rand([2, 3, 4, 5, 6, 7]);
+Bmag : rand([2, 3, 4, 5, 6, 7]);
+sgn : rand([-1, 1]);
+
+/* Deterministic guard ensuring coeff != 0 and all distractors stay strictly distinct */
+if (A*a1 + sgn*Bmag*a2 = 0) or (A*(a1 - 1) + sgn*Bmag*(a2 - 1) = 0) or (a1 + sgn*a2 = A*a1 + sgn*Bmag*a2) then A : A + 2;
+
+m1 : a1_sq * p;
+m2 : a2_sq * p;
+term1 : A * a1;
+term2 : Bmag * a2;
+coeff : term1 + sgn * term2;
+signchar : if sgn = 1 then "+" else "-";
+
+/* Distractors for prt1 (coefficient a) */
+ta1_wrong_sign : term1 - sgn * term2;
+ta1_no_simp : A + sgn * Bmag;
+ta1_no_coeff : a1 + sgn * a2;
+
+/* Distractors for prt2 (radicand b) */
+ta2_comb_rad : m1 + sgn * m2;
+ta2_sqrt : sqrt(p);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@coeff@}sqrt({@p@}){@p@}({@a1@}){@a2@}({@A@}){@Bmag@}({@sgn@})</text>
+      <text>{@A@}\sqrt{{@m1@}} {@signchar@} {@Bmag@}\sqrt{{@m2@}} = {@coeff@}\sqrt{{@p@}} (a = {@coeff@}, b = {@p@})</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Adding and Subtracting Surds</p>
+<p id="description">Grade 11 CBE: Simplifying surds to like terms and combining their coefficients in the form a*sqrt(b).</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -109,7 +114,7 @@ signchar: if sgn=1 then "+" else "-";]]></text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <input>
@@ -127,7 +132,7 @@ signchar: if sgn=1 then "+" else "-";]]></text>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
-      <showvalidation>1</showvalidation>
+      <showvalidation>3</showvalidation>
       <options/>
     </input>
     <prt>
@@ -140,7 +145,7 @@ signchar: if sgn=1 then "+" else "-";]]></text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact simplified coefficient a</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>coeff</tans>
@@ -165,27 +170,77 @@ signchar: if sgn=1 then "+" else "-";]]></text>
       </node>
       <node>
         <name>1</name>
-        <description/>
+        <description>Check if student used the opposite sign between the two terms</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
-        <tans>A*a1+Bmag*a2</tans>
+        <tans>ta1_wrong_sign</tans>
         <testoptions/>
-        <quiet>0</quiet>
-        <truescoremode>+</truescoremode>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt1-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Nice try but check the sign between the two terms.</text>
+          <text><![CDATA[<p>You simplified both surds correctly to \({@term1@}\sqrt{{@p@}}\) and \({@term2@}\sqrt{{@p@}}\), but check the operation sign (<b>\({@signchar@}\)</b>) between the two terms: evaluate \({@term1@} \;{@signchar@}\; {@term2@}\).</p>]]></text>
         </truefeedback>
-        <falsescoremode>-</falsescoremode>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student combined A and Bmag without simplifying the square roots first</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_no_simp</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You combined \({@A@} \;{@signchar@}\; {@Bmag@} = {@ta1_no_simp@}\) before simplifying \(\sqrt{{@m1@}}\) and \(\sqrt{{@m2@}}\). Simplify \(\sqrt{{@m1@}} = {@a1@}\sqrt{{@p@}}\) and \(\sqrt{{@m2@}} = {@a2@}\sqrt{{@p@}}\) first, multiply by \({@A@}\) and \({@Bmag@}\), and then combine.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student simplified the roots but forgot to multiply by A and Bmag</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta1_no_coeff</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You simplified \(\sqrt{{@m1@}} = {@a1@}\sqrt{{@p@}}\) and \(\sqrt{{@m2@}} = {@a2@}\sqrt{{@p@}}\), but forgot to multiply by the numbers in front (\({@A@}\) and \({@Bmag@}\)) before combining.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt1-2-F</falseanswernote>
+        <falseanswernote>prt1-4-F</falseanswernote>
         <falsefeedback format="html">
-          <text>Simplify both roots first, then multiply each by the number in front and combine.</text>
+          <text><![CDATA[<p>Incorrect value for \(a\). Simplify both \(\sqrt{{@m1@}}\) and \(\sqrt{{@m2@}}\) first, multiply each by its outside coefficient (\({@A@}\) and \({@Bmag@}\)), and then combine the like terms.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -195,11 +250,11 @@ signchar: if sgn=1 then "+" else "-";]]></text>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text/>
+        <text>unsimp_rad : is(ans2 = m1) or is(ans2 = m2);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact square-free radicand b = p</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans2</sans>
         <tans>p</tans>
@@ -216,10 +271,85 @@ signchar: if sgn=1 then "+" else "-";]]></text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt2-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student added or subtracted the numbers inside the square roots</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_comb_rad</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You combined \({@m1@} \;{@signchar@}\; {@m2@} = {@ta2_comb_rad@}\) inside the square root. Remember that \(\sqrt{x} \;{@signchar@}\; \sqrt{y} \neq \sqrt{x \;{@signchar@}\; y}\): simplify \(\sqrt{{@m1@}}\) and \(\sqrt{{@m2@}}\) first so both have the same number \(b\) under the root.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student entered an unsimplified radicand m1 or m2</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>unsimp_rad</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The number \({@ans2@}\) still has a perfect-square factor. Factor out the largest perfect square from \({@m1@}\) and \({@m2@}\) so \(b\) has no square factors remaining.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt2-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student entered sqrt(p) instead of just the integer b</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta2_sqrt</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You entered \(\sqrt{{@p@}}\), which includes the square root symbol. Because the answer format is \(a\sqrt{b}\), enter only the number \(b = {@p@}\) inside the root.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt2-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Incorrect value for \(b\). Simplify both \(\sqrt{{@m1@}}\) and \(\sqrt{{@m2@}}\) by removing their largest perfect-square factors to find the common square-free number \(b\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -243,33 +373,55 @@ signchar: if sgn=1 then "+" else "-";]]></text>
     <deployedseed>2076187930</deployedseed>
     <deployedseed>915374806</deployedseed>
     <deployedseed>1615159368</deployedseed>
-    <deployedseed>1404984649</deployedseed>
-    <deployedseed>960555764</deployedseed>
-    <deployedseed>1506664115</deployedseed>
-    <deployedseed>1004691306</deployedseed>
-    <deployedseed>1535354891</deployedseed>
-    <deployedseed>270162356</deployedseed>
-    <deployedseed>1949734042</deployedseed>
-    <deployedseed>445037814</deployedseed>
-    <deployedseed>1094785400</deployedseed>
-    <deployedseed>933972142</deployedseed>
-    <deployedseed>1981121482</deployedseed>
-    <deployedseed>401587372</deployedseed>
-    <deployedseed>1203436547</deployedseed>
-    <deployedseed>1052273573</deployedseed>
-    <deployedseed>392957437</deployedseed>
-    <deployedseed>504209140</deployedseed>
-    <deployedseed>188394375</deployedseed>
-    <deployedseed>1234247323</deployedseed>
-    <deployedseed>1682155150</deployedseed>
-    <deployedseed>26304259</deployedseed>
-    <deployedseed>1850440389</deployedseed>
-    <deployedseed>1906898802</deployedseed>
-    <deployedseed>1649422617</deployedseed>
-    <deployedseed>1196957305</deployedseed>
+    <deployedseed>1453467615</deployedseed>
+    <deployedseed>441454762</deployedseed>
+    <deployedseed>1796053108</deployedseed>
+    <deployedseed>8940250</deployedseed>
+    <deployedseed>169538611</deployedseed>
+    <deployedseed>221738324</deployedseed>
+    <deployedseed>1267777647</deployedseed>
+    <deployedseed>776745147</deployedseed>
+    <deployedseed>1269161451</deployedseed>
+    <deployedseed>582995815</deployedseed>
+    <deployedseed>518213970</deployedseed>
+    <deployedseed>2048241266</deployedseed>
+    <deployedseed>20838293</deployedseed>
+    <deployedseed>366905158</deployedseed>
+    <deployedseed>1012009096</deployedseed>
+    <deployedseed>1478782326</deployedseed>
+    <deployedseed>886277629</deployedseed>
+    <deployedseed>601598491</deployedseed>
+    <deployedseed>1679200897</deployedseed>
+    <deployedseed>1955759710</deployedseed>
+    <deployedseed>1345376072</deployedseed>
+    <deployedseed>574097008</deployedseed>
+    <deployedseed>1840329868</deployedseed>
+    <deployedseed>923371873</deployedseed>
+    <deployedseed>1977438715</deployedseed>
+    <deployedseed>1245597570</deployedseed>
+    <deployedseed>1912889123</deployedseed>
+    <deployedseed>409030935</deployedseed>
+    <deployedseed>1962127453</deployedseed>
+    <deployedseed>570722781</deployedseed>
+    <deployedseed>293465300</deployedseed>
+    <deployedseed>876781687</deployedseed>
+    <deployedseed>489763455</deployedseed>
+    <deployedseed>40008889</deployedseed>
+    <deployedseed>615437257</deployedseed>
+    <deployedseed>850774110</deployedseed>
+    <deployedseed>517630492</deployedseed>
+    <deployedseed>712412222</deployedseed>
+    <deployedseed>1167488314</deployedseed>
+    <deployedseed>821485269</deployedseed>
+    <deployedseed>1892856455</deployedseed>
+    <deployedseed>395174995</deployedseed>
+    <deployedseed>931079556</deployedseed>
+    <deployedseed>890155523</deployedseed>
+    <deployedseed>1874785581</deployedseed>
+    <deployedseed>617063204</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>Both a and b correct</description>
       <testinput>
         <name>ans1</name>
         <value>coeff</value>
@@ -282,7 +434,85 @@ signchar: if sgn=1 then "+" else "-";]]></text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>1.0000000</expectedscore>
+        <expectedpenalty>0.0000000</expectedpenalty>
+        <expectedanswernote>prt2-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Wrong operation sign for a; added/subtracted radicands directly for b</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_wrong_sign</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_comb_rad</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Did not simplify roots before combining coefficients; entered unsimplified radicand m1 for b</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_no_simp</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>m1</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Forgot outside coefficients A and Bmag; entered sqrt(p) instead of p for b</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta1_no_coeff</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta2_sqrt</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-4-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

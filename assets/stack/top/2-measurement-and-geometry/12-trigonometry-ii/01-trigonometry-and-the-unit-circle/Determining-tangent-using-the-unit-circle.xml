@@ -5,59 +5,99 @@
       <text>Determining tangent using the unit circle</text>
     </name>
     <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>
-The angle \(\theta={@theta@}^\circ\) is measured in standard position.
-Use the unit circle to determine the exact value of \(\tan\theta\).
-</p>
-<p>
-Recall that \(\tan\theta=\frac{\sin\theta}{\cos\theta}.\)
-</p>
+      <text><![CDATA[<p>The angle \(\theta = {@theta@}^\circ\) is in standard position: it is measured anticlockwise from the positive \(x\)-axis. Its terminal side meets the unit circle (centre \(O\), radius \(1\)) at the point \(P\), as shown in the diagram.</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with centre O, showing the angle theta = {#theta#} degrees measured anticlockwise from the positive x-axis and the point P where its terminal side meets the circle.">
+[[jsxgraph width="320px" height="320px"]]
+(function() {
+  var th = {#float(theta*%pi/180)#};
+  var px = Math.cos(th), py = Math.sin(th);
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.45, 1.45, 1.45, -1.45], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.35, 0], [1.35, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -1.35], [0, 1.35]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.3, -0.13, 'x'], {fixed:true});
+  b.create('text', [-0.15, 1.3, 'y'], {fixed:true});
+  b.create('text', [1.03, -0.12, '1'], {fixed:true});
+  b.create('text', [-1.22, -0.12, '−1'], {fixed:true});
+  b.create('text', [0.05, 1.09, '1'], {fixed:true});
+  b.create('text', [0.05, -1.1, '−1'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222', label:{offset:[-14,-12]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  var A = b.create('point', [1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828',
+      label:{offset:[px > 0 ? 10 : -22, py > 0 ? 14 : -16]}});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  b.create('angle', [A, O, P], {radius:0.25, name:'θ', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.35, fixed:true});
+})();
+[[/jsxgraph]]
+</div>
+<p>Use the unit circle to find the exact value of \(\tan\theta\). Recall that \(\tan\theta = \dfrac{\sin\theta}{\cos\theta}\).</p>
 
-<p>
-Give your answer in exact form. Do not use a decimal approximation.
-</p>
-<p>[[input:ans1]] [[validation:ans1]][[feedback:prt1]]</p>]]></text>
+<div>\(\tan {@theta@}^\circ = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
+      <text><![CDATA[<h3>Worked Solution</h3>
+<p> The point \(P\) on the unit circle has coordinates \((\cos\theta,\, \sin\theta)\), so \(\tan\theta = \dfrac{\sin\theta}{\cos\theta} = \dfrac{y}{x}\). We find \(\sin\theta\) and \(\cos\theta\) from the reference angle and the quadrant, then divide.</p>
 
-<p><strong>Step 1: Identify the angle and reference angle</strong></p>
+<p><strong>Step 1: find the quadrant and the reference angle.</strong> \(\theta = {@theta@}^\circ\) lies in <strong>Quadrant {@quadname@}</strong>.
+[[if test="is(quadrant=1)"]]It is already acute, so the reference angle is \(\alpha = \theta = {@ref_angle@}^\circ\).[[/if]]
+[[if test="is(quadrant=2)"]]The reference angle is \(\alpha = 180^\circ - \theta = 180^\circ - {@theta@}^\circ = {@ref_angle@}^\circ\).[[/if]]
+[[if test="is(quadrant=3)"]]The reference angle is \(\alpha = \theta - 180^\circ = {@theta@}^\circ - 180^\circ = {@ref_angle@}^\circ\).[[/if]]
+[[if test="is(quadrant=4)"]]The reference angle is \(\alpha = 360^\circ - \theta = 360^\circ - {@theta@}^\circ = {@ref_angle@}^\circ\).[[/if]]</p>
 
-<p>The given angle is \(\theta={@theta@}^\circ\), and its reference angle is \({@ref_angle@}^\circ\).</p>
+<p><strong>Step 2: use the exact values for the reference angle.</strong> From the special triangles,</p>
+\[ \sin {@ref_angle@}^\circ = {@sin_ref@}, \qquad \cos {@ref_angle@}^\circ = {@cos_ref@}. \]
 
-<p>The reference angle helps us determine the exact magnitudes of the sine and cosine values.</p>
+<p><strong>Step 3: give each value its sign.</strong> In Quadrant {@quadname@}, \(P\) is
+[[if test="is(quadrant=1 or quadrant=4)"]]to the right of the \(y\)-axis, so \(\cos\theta\) is positive,[[else]]to the left of the \(y\)-axis, so \(\cos\theta\) is negative,[[/if]]
+and
+[[if test="is(quadrant=1 or quadrant=2)"]]above the \(x\)-axis, so \(\sin\theta\) is positive.[[else]]below the \(x\)-axis, so \(\sin\theta\) is negative.[[/if]]
+So</p>
+\[ \sin {@theta@}^\circ = {@sin_theta@}, \qquad \cos {@theta@}^\circ = {@cos_theta@}. \]
 
-<p><strong>Step 2: Recall the tangent formula</strong></p>
+<p><strong>Step 4: divide.</strong></p>
+\[ \tan {@theta@}^\circ = \frac{\sin {@theta@}^\circ}{\cos {@theta@}^\circ} = \dfrac{ {@sin_theta@} }{ {@cos_theta@} }. \]
+<p>[[if test="is(quadrant=1 or quadrant=3)"]]The sine and cosine have the <em>same</em> sign, so \(\tan\theta\) is <em>positive</em>.[[else]]The sine and cosine have <em>opposite</em> signs, so \(\tan\theta\) is <em>negative</em>.[[/if]] For the size, divide the values for the reference angle:
+[[if test="is(ref_angle=30)"]]\(\dfrac{1/2}{\sqrt{3}/2} = \dfrac{1}{2} \times \dfrac{2}{\sqrt{3}} = \dfrac{1}{\sqrt{3}} = \dfrac{\sqrt{3}}{3}\).[[/if]]
+[[if test="is(ref_angle=45)"]]\(\dfrac{\sqrt{2}/2}{\sqrt{2}/2} = 1\).[[/if]]
+[[if test="is(ref_angle=60)"]]\(\dfrac{\sqrt{3}/2}{1/2} = \dfrac{\sqrt{3}}{2} \times \dfrac{2}{1} = \sqrt{3}\).[[/if]]
+Therefore</p>
+\[ \tan {@theta@}^\circ = {@tan_theta@}[[if test="is(ref_angle=30)"]] = [[if test="is(tsign=1)"]]\dfrac{\sqrt{3}}{3}[[else]]-\dfrac{\sqrt{3}}{3}[[/if]][[/if]]. \]
 
-<p>Tangent is the ratio of sine to cosine:</p>
-
-<p>\(\tan\theta=\frac{\sin\theta}{\cos\theta}.\)</p>
-
-<p><strong>Step 3: Determine sine and cosine</strong></p>
-
-<p>Using the coordinates of the corresponding point on the unit circle, we obtain</p>
-
-<p>\[
-\sin\theta={@sin_theta@}
-\]</p>
-
-<p>and</p>
-
-<p>\(\cos\theta={@cos_theta@}.\)</p>
-
-<p><strong>Step 4: Calculate tangent</strong></p>
-
-<p>Substitute these values into the tangent formula:</p>
-
-<p>\(\tan\theta=\frac{{@sin_theta@}}{{@cos_theta@}}.\)</p>
-
-<p>Simplifying gives</p>
-
-<p>\(\tan\theta={@tan_theta@}.\)</p>
-
-<p><strong>Final answer</strong></p>
-
-<p>\(\tan({@theta@}^\circ)={@tan_theta@}.\)</p>]]></text>
+<p><strong>Seeing \(\tan\theta\) on the unit circle.</strong> Since \(\tan\theta = \dfrac{y}{x}\), it is the gradient of the line \(OP\). In the diagram, the line through \(O\) and \(P\) meets the vertical tangent line \(x = 1\) at \(T = (1,\, \tan\theta)\). The green length from the \(x\)-axis up (or down) to \(T\) is \(\tan\theta\).[[if test="is(quadrant=2 or quadrant=3)"]] Here \(P\) is on the left of the \(y\)-axis, so the line has to be extended back through \(O\) to reach \(x = 1\).[[/if]]</p>
+<div style="text-align:center;" role="img" aria-label="Unit circle with P at {#theta#} degrees; the line through O and P meets the line x = 1 at T, whose height is tan theta.">
+[[jsxgraph width="360px" height="360px"]]
+(function() {
+  var th = {#float(theta*%pi/180)#}, q = {#quadrant#};
+  var px = Math.cos(th), py = Math.sin(th), t = py/px;
+  var b = JXG.JSXGraph.initBoard(divid, {boundingbox:[-1.6, 2.1, 2.1, -2.1], axis:false, grid:false,
+      keepaspectratio:true, showNavigation:false, showCopyright:false});
+  b.create('arrow', [[-1.5, 0], [2.0, 0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('arrow', [[0, -2.0], [0, 2.0]], {strokeColor:'#444', fixed:true, highlight:false});
+  b.create('text', [1.95, -0.15, 'x'], {fixed:true});
+  b.create('text', [-0.17, 1.95, 'y'], {fixed:true});
+  var O = b.create('point', [0, 0], {name:'O', fixed:true, size:2, color:'#222', label:{offset:[-14,-12]}});
+  b.create('circle', [O, 1], {strokeColor:'#1565c0', strokeWidth:2, fixed:true, highlight:false});
+  b.create('segment', [[1, -2], [1, 2]], {strokeColor:'#888', dash:2, fixed:true});
+  b.create('text', [0.95, 1.9, 'x = 1'], {fixed:true, color:'#666', anchorX:'right'});
+  var A = b.create('point', [1, 0], {visible:false, fixed:true});
+  var P = b.create('point', [px, py], {name:'P', fixed:true, size:4, color:'#c62828',
+      label:{offset:[-22, py > 0 ? 14 : -16]}});
+  var T = b.create('point', [1, t], {name:'T', fixed:true, size:4, color:'#2e7d32', label:{offset:[10, 0]}});
+  b.create('segment', [O, P], {strokeColor:'#c62828', strokeWidth:2, fixed:true});
+  if (q == 2 || q == 3) {
+    b.create('segment', [O, T], {strokeColor:'#c62828', strokeWidth:1.5, dash:2, fixed:true});
+  } else {
+    b.create('segment', [P, T], {strokeColor:'#c62828', strokeWidth:1.5, dash:2, fixed:true});
+  }
+  b.create('segment', [A, T], {strokeColor:'#2e7d32', strokeWidth:4, fixed:true});
+  b.create('text', [1.08, t/2, 'tan θ'], {fixed:true, color:'#2e7d32', anchorX:'left'});
+  b.create('angle', [A, O, P], {radius:0.25, name:'θ', fillColor:'#ffb74d', strokeColor:'#ef6c00',
+      fillOpacity:0.35, fixed:true});
+})();
+[[/jsxgraph]]
+</div>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -67,29 +107,41 @@ Give your answer in exact form. Do not use a decimal approximation.
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>/* Select a reference angle */
+      <text><![CDATA[/* Select a reference angle */
 ref_index: rand(3);
 ref_list: [30,45,60];
 ref_angle: ref_list[ref_index+1];
 
-/* Select a quadrant: 1, 2 or 3 */
-quadrant: 1 + rand(3);
+/* Select a quadrant: 1, 2, 3 or 4 (Quadrant IV added) */
+quadrant: 1 + rand(4);
+quadnames: ["I", "II", "III", "IV"];
+quadname: quadnames[quadrant];
 
 /* Construct the angle */
 theta: if quadrant=1 then ref_angle
        else if quadrant=2 then 180-ref_angle
-       else 180+ref_angle;
+       else if quadrant=3 then 180+ref_angle
+       else 360-ref_angle;
 
 /* Calculate sine, cosine and tangent */
 sin_theta: sin(theta*%pi/180);
 cos_theta: cos(theta*%pi/180);
-tan_theta: ratsimp(sin_theta/cos_theta);</text>
+tan_theta: ratsimp(sin_theta/cos_theta);
+/* Values for the reference angle (no signs), used in the worked solution */
+sin_ref: sin(ref_angle*%pi/180);
+cos_ref: cos(ref_angle*%pi/180);
+/* Sign of tan: positive in Quadrants I and III */
+tsign: if quadrant=1 or quadrant=3 then 1 else -1;
+
+/* Possible student mistakes */
+tan_neg: -tan_theta;      /* wrong sign */
+tan_recip: 1/tan_theta;   /* cos/sin instead of sin/cos */]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@tan_theta@}</text>
+      <text>\(\theta = {@theta@}^\circ\) (Quadrant {@quadname@}): \(\tan\theta = {@tan_theta@}\)</text>
     </questionnote>
     <questiondescription format="html">
       <text/>
@@ -120,14 +172,14 @@ tan_theta: ratsimp(sin_theta/cos_theta);</text>
       <name>ans1</name>
       <type>algebraic</type>
       <tans>tan_theta</tans>
-      <boxsize>7</boxsize>
+      <boxsize>12</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
-      <forbidwords/>
+      <forbidwords>sin,cos,tan</forbidwords>
       <allowwords/>
-      <forbidfloat>0</forbidfloat>
+      <forbidfloat>1</forbidfloat>
       <requirelowestterms>0</requirelowestterms>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
@@ -144,7 +196,7 @@ tan_theta: ratsimp(sin_theta/cos_theta);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Correct value of tan</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>tan_theta</tans>
@@ -161,10 +213,60 @@ tan_theta: ratsimp(sin_theta/cos_theta);</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Right size, wrong sign</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>tan_neg</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>The size of your answer is right, but the sign is wrong. In which quadrant is \(\theta = {@theta@}^\circ\)? Decide the signs of \(\sin\theta\) and \(\cos\theta\) there: \(\tan\theta\) is positive when they have the same sign and negative when they have opposite signs.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Divided cos by sin</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>tan_recip</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks as if you have divided the wrong way round. \(\tan\theta = \dfrac{\sin\theta}{\cos\theta}\): the \(y\)-coordinate of \(P\) divided by its \(x\)-coordinate.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Find the reference angle and the exact values of its sine and cosine. Use the quadrant of \(\theta\) to give each one its sign, then divide \(\sin\theta\) by \(\cos\theta\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -173,6 +275,11 @@ tan_theta: ratsimp(sin_theta/cos_theta);</text>
     <deployedseed>1553403939</deployedseed>
     <deployedseed>53048151</deployedseed>
     <deployedseed>505977520</deployedseed>
+    <deployedseed>67547706</deployedseed>
+    <deployedseed>1163416351</deployedseed>
+    <deployedseed>1175944616</deployedseed>
+    <deployedseed>2002227589</deployedseed>
+    <deployedseed>78590545</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Test case assuming the teacher's input gets full marks.</description>
@@ -185,6 +292,48 @@ tan_theta: ratsimp(sin_theta/cos_theta);</text>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
         <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Right size, wrong sign</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tan_neg</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-F | prt1-2-T ]</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Other wrong answer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>tan_theta+10</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>[ prt1-1-F | prt1-2-F | prt1-3-F ]</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Invalid: decimals are forbidden</description>
+      <testinput>
+        <name>ans1</name>
+        <value>float(tan_theta)</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore/>
+        <expectedpenalty/>
+        <expectedanswernote>NULL</expectedanswernote>
       </expected>
     </qtest>
   </question>

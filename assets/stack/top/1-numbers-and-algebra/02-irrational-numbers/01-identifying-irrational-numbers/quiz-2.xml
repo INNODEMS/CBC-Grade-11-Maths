@@ -2,23 +2,29 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>quiz 2</text>
+      <text>Classifying rational and irrational numbers from a given set</text>
     </name>
-    <questiontext format="moodle_auto_format">
-      <text><![CDATA[<p>Consider the following numbers and tick the box next to every one that is <strong>irrational</strong>.</p>
-<p>[[input:ans1]][[validation:ans1]] [[feedback:prt1]]</p>]]></text>
+    <questiontext format="html">
+      <text><![CDATA[<p>Consider the following six numbers and tick the box next to every number that is <b>irrational</b>.</p>
+<p>[[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</p>]]></text>
     </questiontext>
-    <generalfeedback format="moodle_auto_format">
-      <text><![CDATA[<h3>Worked solution</h3>
-<p>{@n1@} and {@n2@} are rational: one is a whole number, the other a ratio of two integers.</p>
+    <generalfeedback format="html">
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
 
-<p>\( \sqrt{ {@n3_base@}^2 } = {@n3@} \) <strong>looks</strong> irrational because of the square root symbol, but \( {@n3_base@}^2 \) is a perfect square, so it simplifies to a whole number - it is rational.</p>
+<p>A number is <b>rational</b> if it can be written as a fraction \(\displaystyle \frac{p}{q}\) where \(p\) and \(q\) are integers and \(q \neq 0\) (its decimal expansion either terminates or repeats). A number is <b>irrational</b> if it cannot be written as a ratio of two integers.</p>
 
-<p>\( \sqrt{ {@n4_base@} } \) and \( \sqrt{ {@n5_base@} } \) are irrational, because {@n4_base@} and {@n5_base@} are not perfect squares, so their square roots cannot be simplified to integers or fractions.</p>
+<p>Examine each of the six numbers:</p>
+<ul>
+  <li>\({@n1@}\) is a whole number (integer), which can be written as \(\displaystyle \frac{{@n1@}}{1}\), so it is <b>rational</b>.</li>
+  <li>\({@n2@}\) is already a ratio of two integers, so it is <b>rational</b>.</li>
+  <li>\(\sqrt{{@n3_sq@}}\) looks irrational because of the square root symbol, but \({@n3_sq@} = {@n3_root@}^2\) is a perfect square, so \(\sqrt{{@n3_sq@}} = {@n3_root@} = \displaystyle \frac{{@n3_root@}}{1}\) is <b>rational</b>.</li>
+  <li>\(\sqrt{{@n4_base@}}\) simplifies partially to \({@n4_simp@}\), which still contains an irrational square root because \({@n4_base@}\) is not a perfect square—so \(\sqrt{{@n4_base@}}\) is <b>irrational</b>.</li>
+  <li>\(\sqrt{{@n5_base@}}\) is <b>irrational</b> because \({@n5_base@}\) is not a perfect square, so \(\sqrt{{@n5_base@}}\) cannot be simplified to an integer or a fraction of integers.</li>
+  <li>\(\pi\) is <b>irrational</b> because its decimal expansion (\(3.14159\ldots\)) is non-terminating and non-repeating.</li>
+</ul>
 
-<p>\( \pi \) is irrational - it is a well-known non-repeating, non-terminating decimal.</p>
-
-<p><strong>Always simplify a number fully before deciding whether it is rational or irrational.</strong></p>]]></text>
+<p><b>Key takeaway:</b> Always simplify a number fully before deciding whether it is rational or irrational.</p>
+<p style="margin-left: 20px; font-size: 1.2em;">\(\displaystyle \boxed{ \text{Irrational numbers: } \sqrt{{@n4_base@}}, \; \sqrt{{@n5_base@}}, \; \pi }\)</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.1</penalty>
@@ -28,51 +34,52 @@
       <text>2026063000</text>
     </stackversion>
     <questionvariables>
-      <text>perfect_squares: [1,4,9,16,25,36,49,64,81,100];
+      <text><![CDATA[/* High-variance independent pools (>500,000 parameter sets x 720 orderings) */
+n1 : rand([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 
-n1: rand(10)+1;
-n2: (rand(8)+1)/(rand(6)+10);
+n2_num : rand([1, 2, 4, 5, 7, 8]);
+n2_den : rand([9, 11, 13, 17, 19, 23]);
+n2 : n2_num / n2_den;
 
-n3_base: (rand(5)+2)^2;
-n3: block([simp: false], sqrt(n3_base)^2)
+/* Perfect square: explicit LaTeX label prevents STACK from simplifying to n3_root */
+n3_root : rand_with_prohib(3, 12, [n1]);
+n3_sq : n3_root^2;
 
-n4_base: rand(20)+2;
-while member(n4_base, perfect_squares) do n4_base: rand(20)+2;
-n4: block([simp: false], sqrt(n4_base))
+/* Reducible non-square surd: explicit LaTeX label prevents 2^(3/2) display */
+n4_base : rand([8, 12, 18, 20, 24, 27, 28, 32, 45, 48, 50, 72]);
+n4_val : sqrt(n4_base);
+n4_simp : sqrt(n4_base);
 
-n5_base: rand(20)+2;
-while member(n5_base, perfect_squares) or n5_base = n4_base do n5_base: rand(20)+2;
-n5: block([simp: false], sqrt(n5_base))
+/* Irreducible non-square surd */
+n5_base : rand([7, 11, 13, 14, 15, 17, 19, 21, 22, 23, 26, 29, 30]);
+n5_val : sqrt(n5_base);
 
-n6: %pi;
+n6_val : %pi;
 
-allpairs: [
-  [n1, false], [n2, false], [n3, false],
-  [n4, true],  [n5, true],  [n6, true]
-]
+allpairs : [
+  [n1, false, sconcat("\\(", string(n1), "\\)")],
+  [n2, false, sconcat("\\(\\frac{", string(n2_num), "}{", string(n2_den), "}\\)")],
+  [n3_root, false, sconcat("\\(\\sqrt{", string(n3_sq), "}\\)")],
+  [n4_val, true, sconcat("\\(\\sqrt{", string(n4_base), "}\\)")],
+  [n5_val, true, sconcat("\\(\\sqrt{", string(n5_base), "}\\)")],
+  [n6_val, true, "\\(\\pi\\)"]
+];
 
-shuffle_list(lst) := block(
-  [n: length(lst), l: lst, i, j, tmp],
-  for i: n thru 2 step -1 do (
-    j: rand(i)+1,
-    tmp: l[i], l[i]: l[j], l[j]: tmp
-  ),
-  l
-)
+perm : random_permutation([1, 2, 3, 4, 5, 6]);
+ta1 : makelist(allpairs[perm[i]], i, 1, 6);
 
-ta1: shuffle_list(allpairs)
-
-/* separate variable purely for grading */
-correctvals: map(lambda([p], p[1]), sublist(allpairs, lambda([p], p[2])))</text>
+/* Extract correct values AFTER shuffling so order matches checkbox output */
+correctvals : mcq_correct(ta1);]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
     <questionnote format="html">
-      <text>{@ta1@}</text>
+      <text>Irrational: \sqrt{{@n4_base@}}, \sqrt{{@n5_base@}}, \pi; Rational: {@n1@}, {@n2@}, \sqrt{{@n3_sq@}}</text>
     </questionnote>
     <questiondescription format="html">
-      <text/>
+      <text><![CDATA[<p id="concept">Classifying Rational and Irrational Numbers</p>
+<p id="description">Grade 11 CBE: Identifying all irrational numbers from a mixed set of integers, fractions, radicals, and pi.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -120,16 +127,18 @@ correctvals: map(lambda([p], p[1]), sublist(allpairs, lambda([p], p[2])))</text>
       <autosimplify>1</autosimplify>
       <feedbackstyle>1</feedbackstyle>
       <feedbackvariables>
-        <text/>
+        <text>picked_perfect_sq : is(sublist(ans1, lambda([x], is(x = n3_root))) # []);
+picked_rat : is(sublist(ans1, lambda([x], is(x = n1) or is(x = n2))) # []);
+missed_pi : is(sublist(ans1, lambda([x], is(x = %pi))) = []);</text>
       </feedbackvariables>
       <node>
         <name>0</name>
-        <description/>
+        <description>Check exact set of irrational numbers</description>
         <answertest>AlgEquiv</answertest>
         <sans>ans1</sans>
         <tans>correctvals</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -141,10 +150,85 @@ correctvals: map(lambda([p], p[1]), sublist(allpairs, lambda([p], p[2])))</text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description>Check if student selected sqrt(n3_sq), which simplifies to an integer</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>picked_perfect_sq</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>You selected \(\sqrt{{@n3_sq@}}\), which is actually <b>rational</b> because \({@n3_sq@} = {@n3_root@}^2\) is a perfect square, so \(\sqrt{{@n3_sq@}} = {@n3_root@}\). Not every expression with a square root symbol is irrational.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description>Check if student selected a rational integer or fraction</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>picked_rat</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Whole numbers and fractions of integers (such as \({@n1@}\) and \({@n2@}\)) can be written in the form \(\frac{p}{q}\), so they are <b>rational</b>, not irrational.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>3</falsenextnode>
+        <falseanswernote>prt1-3-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>3</name>
+        <description>Check if student forgot to select pi</description>
+        <answertest>AlgEquiv</answertest>
+        <sans>missed_pi</sans>
+        <tans>true</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-4-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>Remember to include \(\pi\): it is an <b>irrational</b> number because its decimal expansion is non-terminating and non-repeating.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-4-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>You correctly avoided the rational numbers, but your selection is incomplete. Tick all three irrational numbers: \(\sqrt{{@n4_base@}}\), \(\sqrt{{@n5_base@}}\), and \(\pi\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -168,11 +252,76 @@ correctvals: map(lambda([p], p[1]), sublist(allpairs, lambda([p], p[2])))</text>
     <deployedseed>1178662494</deployedseed>
     <deployedseed>1617150957</deployedseed>
     <deployedseed>496433700</deployedseed>
-    <deployedseed>760607956</deployedseed>
-    <deployedseed>1929944137</deployedseed>
+    <deployedseed>1802919630</deployedseed>
+    <deployedseed>127997949</deployedseed>
+    <deployedseed>1529859909</deployedseed>
+    <deployedseed>624172347</deployedseed>
+    <deployedseed>533132225</deployedseed>
+    <deployedseed>1285957666</deployedseed>
+    <deployedseed>986359793</deployedseed>
+    <deployedseed>1372272266</deployedseed>
+    <deployedseed>1770578789</deployedseed>
+    <deployedseed>2024011015</deployedseed>
+    <deployedseed>385907124</deployedseed>
+    <deployedseed>597105466</deployedseed>
+    <deployedseed>1711009182</deployedseed>
+    <deployedseed>1868123853</deployedseed>
+    <deployedseed>310526786</deployedseed>
+    <deployedseed>1923495605</deployedseed>
+    <deployedseed>453145136</deployedseed>
+    <deployedseed>1202636849</deployedseed>
+    <deployedseed>1211778221</deployedseed>
+    <deployedseed>1936316512</deployedseed>
+    <deployedseed>1262036275</deployedseed>
+    <deployedseed>981227363</deployedseed>
+    <deployedseed>448414507</deployedseed>
+    <deployedseed>1040450800</deployedseed>
+    <deployedseed>110400217</deployedseed>
+    <deployedseed>817501493</deployedseed>
+    <deployedseed>2098520764</deployedseed>
+    <deployedseed>1055498108</deployedseed>
+    <deployedseed>1330576355</deployedseed>
+    <deployedseed>1763894311</deployedseed>
+    <deployedseed>1060326166</deployedseed>
+    <deployedseed>477242538</deployedseed>
+    <deployedseed>1349511697</deployedseed>
+    <deployedseed>682869039</deployedseed>
+    <deployedseed>992372509</deployedseed>
+    <deployedseed>809200283</deployedseed>
+    <deployedseed>745745979</deployedseed>
+    <deployedseed>1994041499</deployedseed>
+    <deployedseed>1558631314</deployedseed>
+    <deployedseed>1471107719</deployedseed>
+    <deployedseed>1500652981</deployedseed>
+    <deployedseed>1854252030</deployedseed>
+    <deployedseed>1112125795</deployedseed>
+    <deployedseed>431948879</deployedseed>
+    <deployedseed>1956503900</deployedseed>
+    <deployedseed>1537223501</deployedseed>
+    <deployedseed>854508346</deployedseed>
+    <deployedseed>1454107683</deployedseed>
+    <deployedseed>1257408463</deployedseed>
+    <deployedseed>997165979</deployedseed>
+    <deployedseed>2120140010</deployedseed>
+    <deployedseed>475328951</deployedseed>
+    <deployedseed>1111801273</deployedseed>
+    <deployedseed>1264147179</deployedseed>
+    <deployedseed>1310173958</deployedseed>
+    <deployedseed>601317919</deployedseed>
+    <deployedseed>563437596</deployedseed>
+    <deployedseed>1891666763</deployedseed>
+    <deployedseed>2127781601</deployedseed>
+    <deployedseed>838130748</deployedseed>
+    <deployedseed>2041425007</deployedseed>
+    <deployedseed>87579183</deployedseed>
+    <deployedseed>1273777530</deployedseed>
+    <deployedseed>2092776655</deployedseed>
+    <deployedseed>496125900</deployedseed>
+    <deployedseed>1305011801</deployedseed>
+    <deployedseed>963162267</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>All three irrational numbers selected</description>
       <testinput>
         <name>ans1</name>
         <value>mcq_correct(ta1)</value>
@@ -181,7 +330,49 @@ correctvals: map(lambda([p], p[1]), sublist(allpairs, lambda([p], p[2])))</text>
         <name>prt1</name>
         <expectedscore>1.0000000</expectedscore>
         <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>[ prt1-1-T ]</expectedanswernote>
+        <expectedanswernote>prt1-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>2</testcase>
+      <description>Student includes sqrt(n3_sq) which simplifies to an integer</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sublist(map(first, ta1), lambda([x], is(x = n3_root) or is(x = %pi)))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Student selects rational integer and fraction</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sublist(map(first, ta1), lambda([x], is(x = n1) or is(x = n2)))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-3-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>4</testcase>
+      <description>Student selects only the two square roots and misses pi</description>
+      <testinput>
+        <name>ans1</name>
+        <value>sublist(map(first, ta1), lambda([x], is(x = n4_val) or is(x = n5_val)))</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-4-T</expectedanswernote>
       </expected>
     </qtest>
   </question>

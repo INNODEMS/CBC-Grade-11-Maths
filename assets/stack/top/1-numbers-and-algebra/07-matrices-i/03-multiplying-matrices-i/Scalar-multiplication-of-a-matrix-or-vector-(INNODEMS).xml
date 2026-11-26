@@ -2,7 +2,7 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Scalar multiplication of a matrix or vector (INNODEMS)</text>
+      <text>Scalar multiplication of a matrix or vector</text>
     </name>
     <questiontext format="html">
       <text><![CDATA[[[ if test="is(ncol=1)" ]]
@@ -17,8 +17,9 @@
 <div>\( {@kk@}\,\mathbf{d} = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>To multiply a matrix (or vector) by a scalar, multiply <strong>every entry</strong> by that scalar:</p>
-\[ {@kk@}\,\mathbf{d} = {@kk@}\,{@dd@} = {@ta@}. \]]]></text>
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+<p>To multiply a matrix (or vector) by a scalar, multiply <strong>every entry</strong> by that scalar:</p>
+\[ {@kk@}\,\mathbf{d} = {@kk@}\,{@dd@} = {@mul_tex@} = \boxed{{@ta@}}. \]]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
     <penalty>0.3333333</penalty>
@@ -29,25 +30,33 @@
     </stackversion>
     <questionvariables>
       <text><![CDATA[/* Fixed context, random numbers. ncol = 1 is the vector case. */
-nrow : rand(2)+2;                                 /* wards: 2 or 3 */
-ncol : rand(3)+1;                                 /* days: 1, 2 or 3 (1 => vector) */
-kk   : rand(4)+2;                                 /* scalar (ml per dose): 2..5 */
-dd   : genmatrix(lambda([i,j], rand(12)+1), nrow, ncol);  /* doses, entries 1..12 */
+nrow : rand(2) + 2;                                      /* wards: 2 or 3 */
+ncol : rand(3) + 1;                                      /* days: 1, 2 or 3 (1 => vector) */
+kk   : rand(6) + 2;                                      /* scalar (ml per dose): 2..7 */
+dd   : genmatrix(lambda([i,j], rand(12) + 1), nrow, ncol); /* doses, entries 1..12 */
 
-ta        : kk*dd;        /* model answer: every entry multiplied by kk */
-wrong_none: dd;           /* error: forgot to multiply */
-wrong_add : dd + kk;      /* error: added the scalar to each entry */
-onesM     : genmatrix(lambda([i,j], 1), nrow, ncol);
-wrong_gen : ta + onesM;   /* a generic wrong answer for the catch-all branch */]]></text>
+ta         : kk * dd;      /* model answer: every entry multiplied by kk */
+wrong_none : dd;           /* error: forgot to multiply */
+wrong_add  : dd + kk;      /* error: added the scalar to each entry */
+onesM      : genmatrix(lambda([i,j], 1), nrow, ncol);
+wrong_gen  : ta + onesM;   /* generic wrong answer for the catch-all branch */
+if is(wrong_gen = wrong_none) or is(wrong_gen = wrong_add) then wrong_gen : ta + 2*onesM;
+
+/* Build dynamic LaTeX intermediate matrix showing kk \times dd[i,j] */
+join_amp(L) := apply(sconcat, rest(apply(append, makelist([" & ", x], x, L))));
+join_nl(L)  := apply(sconcat, rest(apply(append, makelist([" \\\\ ", x], x, L))));
+row_mul(i)  := join_amp(makelist(sconcat(kk, " \\times ", dd[i,j]), j, 1, ncol));
+mul_tex     : sconcat("\\begin{bmatrix} ", join_nl(makelist(row_mul(i), i, 1, nrow)), " \\end{bmatrix}");]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
+    <questionnote format="html">
       <text>\( k={@kk@},\ {@nrow@}\times{@ncol@},\ k\mathbf{d}={@ta@} \)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Multiplying Matrices I (Scalar Multiplication in Applied Context)</p>
+<p id="description">Grade 11 CBE: Multiplying a vector or matrix by a positive scalar in a clinic dosage context.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -87,7 +96,7 @@ wrong_gen : ta + onesM;   /* a generic wrong answer for the catch-all branch */]
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
       <showvalidation>1</showvalidation>
-      <options/>
+      <options>hideanswer</options>
     </input>
     <prt>
       <name>prt1</name>
@@ -104,7 +113,7 @@ wrong_gen : ta + onesM;   /* a generic wrong answer for the catch-all branch */]
         <sans>ans1</sans>
         <tans>ta</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -179,6 +188,24 @@ wrong_gen : ta + onesM;   /* a generic wrong answer for the catch-all branch */]
     <deployedseed>4004</deployedseed>
     <deployedseed>5005</deployedseed>
     <deployedseed>6006</deployedseed>
+    <deployedseed>7007</deployedseed>
+    <deployedseed>8008</deployedseed>
+    <deployedseed>9009</deployedseed>
+    <deployedseed>1010</deployedseed>
+    <deployedseed>1111</deployedseed>
+    <deployedseed>1212</deployedseed>
+    <deployedseed>1313</deployedseed>
+    <deployedseed>1414</deployedseed>
+    <deployedseed>1515</deployedseed>
+    <deployedseed>1616</deployedseed>
+    <deployedseed>1717</deployedseed>
+    <deployedseed>1818</deployedseed>
+    <deployedseed>1919</deployedseed>
+    <deployedseed>2020</deployedseed>
+    <deployedseed>2121</deployedseed>
+    <deployedseed>2222</deployedseed>
+    <deployedseed>2323</deployedseed>
+    <deployedseed>2424</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description>Correct answer</description>

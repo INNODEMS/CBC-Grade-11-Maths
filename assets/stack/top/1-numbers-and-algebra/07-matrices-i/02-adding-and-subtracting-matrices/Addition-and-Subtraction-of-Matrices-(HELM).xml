@@ -2,37 +2,35 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Addition and Subtraction of Matrices (HELM)</text>
+      <text>Addition, subtraction, and scalar multiplication of 2x2 matrices</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p class="HELM_exercise">Exercise</p>
-For the following matrices find \(A+B,\ A-B,\ B-A,\ 2A\):&nbsp;<p>\[A = {@mat1@} \text{ and } B = {@mat2@}.\]</p>
-<ol class="HELM_parts">
-<li><div>\(A+B = \) [[input:ans1]] [[validation:ans1]][[feedback:prt1]]</div></li>
-<li><div>\(A-B = \) [[input:ans2]] [[validation:ans2]][[feedback:prt2]]<br></div></li>
-<li><div>\(B-A = \) [[input:ans3]] [[validation:ans3]][[feedback:prt3]]<br></div></li>
-<li><div>\(2A = \)&nbsp; [[input:ans4]] [[validation:ans4]][[feedback:prt4]]</div></li>
+      <text><![CDATA[<p>Given the matrices</p>
+<p>\[A = {@mat1@} \quad \text{and} \quad B = {@mat2@},\]</p>
+<p>find \(A + B\), \(A - B\), \(B - A\), and \(2A\). Enter exact integers in each cell.</p>
+<ol style="list-style-type: lower-alpha;">
+  <li><div>\(A + B = \) [[input:ans1]] [[validation:ans1]] [[feedback:prt1]]</div></li>
+  <li><div>\(A - B = \) [[input:ans2]] [[validation:ans2]] [[feedback:prt2]]</div></li>
+  <li><div>\(B - A = \) [[input:ans3]] [[validation:ans3]] [[feedback:prt3]]</div></li>
+  <li><div>\(2A = \) [[input:ans4]] [[validation:ans4]] [[feedback:prt4]]</div></li>
 </ol>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>We are give the matrices</p>
-\[A = {@mat1@} \quad \text{and} \quad B = {@mat2@},\]
-<p>and are asked to find the following.</p>
-<p>Recall that addition, subtraction and scalar multiplication of matrices is performed element-wise.</p>
-
-<ol class="HELM_parts">
-    <li>
-        \[A + B = {@mat1@} + {@mat2@} = {@sumsteps@} = {@ta1@}\]
-    </li>
-    <li>
-        \[A - B = {@mat1@} - {@mat2@} = {@substeps1@} = {@ta2@}\]
-    </li>
-    <li>
-        \[B - A = {@mat2@} - {@mat1@} = {@substeps2@} = {@ta3@}\]
-    </li>
-    <li>
-        \[2A = 2 {@mat1@} = {@mulsteps@} = {@ta4@}\]
-    </li>
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+<p>Given the \(2 \times 2\) matrices \(A = {@mat1@}\) and \(B = {@mat2@}\), perform matrix addition, subtraction, and scalar multiplication entry by entry:</p>
+<ol style="list-style-type: lower-alpha;">
+  <li>
+    \[A + B = {@mat1@} + {@mat2@} = {@sum_tex@} = \boxed{{@ta1@}}\]
+  </li>
+  <li>
+    \[A - B = {@mat1@} - {@mat2@} = {@sub1_tex@} = \boxed{{@ta2@}}\]
+  </li>
+  <li>
+    \[B - A = {@mat2@} - {@mat1@} = {@sub2_tex@} = \boxed{{@ta3@}}\]
+  </li>
+  <li>
+    \[2A = 2{@mat1@} = {@mul_tex@} = \boxed{{@ta4@}}\]
+  </li>
 </ol>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
@@ -43,38 +41,44 @@ For the following matrices find \(A+B,\ A-B,\ B-A,\ 2A\):&nbsp;<p>\[A = {@mat1@}
       <text>2026010500</text>
     </stackversion>
     <questionvariables>
-      <text><![CDATA[mat1 : rand(9+zeromatrix(2,2))
-mat2 : rand(9+zeromatrix(2,2))
-ta1 : mat1+mat2
-ta2 : mat1-mat2
-ta3 : mat2-mat1
-ta4 : 2*mat1
-mat_plus_2 : mat1 + [[2,2],[2,2]]
+      <text><![CDATA[a11 : rand_with_prohib(-5, 8, [0]);
+a12 : rand_with_prohib(-5, 8, [0]);
+a21 : rand_with_prohib(-5, 8, [0]);
+a22 : rand_with_prohib(-5, 8, [0]);
+if is(matrix([a11, a12], [a21, a22]) = matrix([2, 2], [2, 2])) then a11 : 3;
+mat1 : matrix([a11, a12], [a21, a22]);
 
-/*Needed for solution*/
-simp: false;
-sumsteps: apply(matrix, zip_with(
-  lambda([rA, rB], zip_with("+", rA, rB)), 
-args(mat1), args(mat2)));
-substeps1: apply(matrix, zip_with(
-  lambda([rA, rB], zip_with("-", rA, rB)), 
-args(mat1), args(mat2)));
-substeps2: apply(matrix, zip_with(
-  lambda([rA, rB], zip_with("-", rA, rB)), 
-args(mat2), args(mat1)));
-mulsteps: apply(matrix, maplist(
-  lambda([row], maplist(lambda([a], 2*a), row)),
-args(mat1)));]]></text>
+b11 : rand_with_prohib(-5, 8, [0, a11, -a11, 3*a11]);
+b12 : rand_with_prohib(-5, 8, [0, a12, -a12]);
+b21 : rand_with_prohib(-5, 8, [0, a21, -a21]);
+b22 : rand_with_prohib(-5, 8, [0, a22, -a22]);
+if is(matrix([b11, b12], [b21, b22]) = matrix([2, 2], [2, 2])) then b11 : if is(a11 = 3) then 4 else 3;
+mat2 : matrix([b11, b12], [b21, b22]);
+
+ta1 : mat1 + mat2;
+ta2 : mat1 - mat2;
+ta3 : mat2 - mat1;
+ta4 : 2 * mat1;
+mat_plus_2 : mat1 + matrix([2, 2], [2, 2]);
+
+/* Clean LaTeX strings for intermediate element-wise steps */
+fmt_add(x, y) := if is(y < 0) then sconcat(x, " - ", abs(y)) else sconcat(x, " + ", y);
+fmt_sub(x, y) := if is(y < 0) then sconcat(x, " - (", y, ")") else sconcat(x, " - ", y);
+
+sum_tex : sconcat("\\begin{bmatrix} ", fmt_add(a11, b11), " & ", fmt_add(a12, b12), " \\\\ ", fmt_add(a21, b21), " & ", fmt_add(a22, b22), " \\end{bmatrix}");
+sub1_tex : sconcat("\\begin{bmatrix} ", fmt_sub(a11, b11), " & ", fmt_sub(a12, b12), " \\\\ ", fmt_sub(a21, b21), " & ", fmt_sub(a22, b22), " \\end{bmatrix}");
+sub2_tex : sconcat("\\begin{bmatrix} ", fmt_sub(b11, a11), " & ", fmt_sub(b12, a12), " \\\\ ", fmt_sub(b21, a21), " & ", fmt_sub(b22, a22), " \\end{bmatrix}");
+mul_tex : sconcat("\\begin{bmatrix} 2 \\times ", a11, " & 2 \\times ", a12, " \\\\ 2 \\times ", a21, " & 2 \\times ", a22, " \\end{bmatrix}");]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text/>
     </specificfeedback>
-    <questionnote format="moodle_auto_format">
-      <text>\[ A = {@mat1@} \quad B= {@mat2@} \]
-\[A+B={@ta1@}, \, A-B={@ta2@}, \, B-A={@ta3@}, \, 2A ={@ta4@}\]</text>
+    <questionnote format="html">
+      <text>\(A = {@mat1@}, \; B = {@mat2@}; \; A+B={@ta1@}, \; A-B={@ta2@}, \; B-A={@ta3@}, \; 2A={@ta4@}\)</text>
     </questionnote>
-    <questiondescription format="moodle_auto_format">
-      <text/>
+    <questiondescription format="html">
+      <text><![CDATA[<p id="concept">Adding and Subtracting Matrices (Matrix Addition, Subtraction, and Scalar Multiplication)</p>
+<p id="description">Grade 11 CBE: Computing A + B, A - B, B - A, and 2A for two 2x2 integer matrices.</p>]]></text>
     </questiondescription>
     <questionsimplify>1</questionsimplify>
     <assumepositive>0</assumepositive>
@@ -105,7 +109,7 @@ args(mat1)));]]></text>
       <boxsize>5</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
-      <syntaxhint>[a,b]</syntaxhint>
+      <syntaxhint/>
       <syntaxattribute>0</syntaxattribute>
       <forbidwords/>
       <allowwords/>
@@ -114,7 +118,7 @@ args(mat1)));]]></text>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
       <showvalidation>3</showvalidation>
-      <options/>
+      <options>hideanswer</options>
     </input>
     <input>
       <name>ans2</name>
@@ -132,7 +136,7 @@ args(mat1)));]]></text>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
       <showvalidation>3</showvalidation>
-      <options/>
+      <options>hideanswer</options>
     </input>
     <input>
       <name>ans3</name>
@@ -150,7 +154,7 @@ args(mat1)));]]></text>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
       <showvalidation>3</showvalidation>
-      <options/>
+      <options>hideanswer</options>
     </input>
     <input>
       <name>ans4</name>
@@ -168,7 +172,7 @@ args(mat1)));]]></text>
       <checkanswertype>0</checkanswertype>
       <mustverify>1</mustverify>
       <showvalidation>3</showvalidation>
-      <options/>
+      <options>hideanswer</options>
     </input>
     <prt>
       <name>prt1</name>
@@ -185,7 +189,7 @@ args(mat1)));]]></text>
         <sans>ans1</sans>
         <tans>ta1</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -197,10 +201,35 @@ args(mat1)));]]></text>
         <falsescoremode>=</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
-        <falsenextnode>-1</falsenextnode>
+        <falsenextnode>1</falsenextnode>
         <falseanswernote>prt1-1-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>ta2</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt1-2-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you computed \(A - B\). Part (a) asks for the sum \(A + B\); add the matching entries.</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>prt1-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not quite. Add the entries in matching positions: \((A + B)_{ij} = a_{ij} + b_{ij}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -219,7 +248,7 @@ args(mat1)));]]></text>
         <sans>ans2</sans>
         <tans>ta2</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -244,22 +273,47 @@ args(mat1)));]]></text>
         <sans>ans2</sans>
         <tans>ta3</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>+</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt2-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Check that your subtraction was performed in the correct order: you should take \(A\) and subtract \(B\)</text>
+          <text><![CDATA[<p>Check that your subtraction was performed in the correct order: you should take \(A\) and subtract \(B\) (\(A - B\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt2-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans2</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt2-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you added the matrices (\(A + B\)). Subtract the corresponding entries instead (\(A - B\)).</p>]]></text>
         </truefeedback>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt2-2-F</falseanswernote>
+        <falseanswernote>prt2-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Not quite. Subtract each entry of \(B\) from the corresponding entry of \(A\): \((A - B)_{ij} = a_{ij} - b_{ij}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -278,7 +332,7 @@ args(mat1)));]]></text>
         <sans>ans3</sans>
         <tans>ta3</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -303,22 +357,47 @@ args(mat1)));]]></text>
         <sans>ans3</sans>
         <tans>ta2</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>+</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt3-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>Check that your subtraction was performed in the correct order: you should take \(B\) and subtract \(A\)</text>
+          <text><![CDATA[<p>Check that your subtraction was performed in the correct order: you should take \(B\) and subtract \(A\) (\(B - A\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>-</falsescoremode>
+        <falsescore>0</falsescore>
+        <falsepenalty/>
+        <falsenextnode>2</falsenextnode>
+        <falseanswernote>prt3-2-F</falseanswernote>
+        <falsefeedback format="html">
+          <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>2</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans3</sans>
+        <tans>ta1</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>+</truescoremode>
+        <truescore>0</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>prt3-3-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you added the matrices (\(B + A\)). Subtract each entry of \(A\) from \(B\) instead (\(B - A\)).</p>]]></text>
         </truefeedback>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
         <falsepenalty/>
         <falsenextnode>-1</falsenextnode>
-        <falseanswernote>prt3-2-F</falseanswernote>
+        <falseanswernote>prt3-3-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Not quite. Subtract each entry of \(A\) from the corresponding entry of \(B\): \((B - A)_{ij} = b_{ij} - a_{ij}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -337,7 +416,7 @@ args(mat1)));]]></text>
         <sans>ans4</sans>
         <tans>ta4</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>=</truescoremode>
         <truescore>1</truescore>
         <truepenalty/>
@@ -359,17 +438,17 @@ args(mat1)));]]></text>
         <name>1</name>
         <description/>
         <answertest>AlgEquiv</answertest>
-        <sans>ans2</sans>
+        <sans>ans4</sans>
         <tans>mat_plus_2</tans>
         <testoptions/>
-        <quiet>0</quiet>
+        <quiet>1</quiet>
         <truescoremode>+</truescoremode>
         <truescore>0</truescore>
         <truepenalty/>
         <truenextnode>-1</truenextnode>
         <trueanswernote>prt4-2-T</trueanswernote>
         <truefeedback format="html">
-          <text>You should multiply by 2, not add 2.</text>
+          <text><![CDATA[<p>You added \(2\) to each entry instead of multiplying by \(2\). Multiply every entry of \(A\) by \(2\).</p>]]></text>
         </truefeedback>
         <falsescoremode>-</falsescoremode>
         <falsescore>0</falsescore>
@@ -377,7 +456,7 @@ args(mat1)));]]></text>
         <falsenextnode>-1</falsenextnode>
         <falseanswernote>prt4-2-F</falseanswernote>
         <falsefeedback format="html">
-          <text/>
+          <text><![CDATA[<p>Not quite. Multiply every entry of \(A\) by the scalar \(2\): \((2A)_{ij} = 2a_{ij}\).</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -391,9 +470,69 @@ args(mat1)));]]></text>
     <deployedseed>736515423</deployedseed>
     <deployedseed>1303554530</deployedseed>
     <deployedseed>817376999</deployedseed>
+    <deployedseed>111222333</deployedseed>
+    <deployedseed>222333444</deployedseed>
+    <deployedseed>333444555</deployedseed>
+    <deployedseed>444555666</deployedseed>
+    <deployedseed>555666777</deployedseed>
+    <deployedseed>666777888</deployedseed>
+    <deployedseed>777888999</deployedseed>
+    <deployedseed>888999111</deployedseed>
+    <deployedseed>999111222</deployedseed>
+    <deployedseed>123456789</deployedseed>
+    <deployedseed>234567891</deployedseed>
+    <deployedseed>345678912</deployedseed>
+    <deployedseed>456789123</deployedseed>
+    <deployedseed>567891234</deployedseed>
+    <deployedseed>678912345</deployedseed>
+    <deployedseed>392261381</deployedseed>
+    <deployedseed>235207497</deployedseed>
+    <deployedseed>1457209704</deployedseed>
+    <deployedseed>337032553</deployedseed>
+    <deployedseed>1947026706</deployedseed>
+    <deployedseed>966947093</deployedseed>
+    <deployedseed>596751519</deployedseed>
+    <deployedseed>1037401661</deployedseed>
+    <deployedseed>1716125156</deployedseed>
+    <deployedseed>160391043</deployedseed>
+    <deployedseed>1213457227</deployedseed>
+    <deployedseed>1074620291</deployedseed>
+    <deployedseed>1081642701</deployedseed>
+    <deployedseed>275950817</deployedseed>
+    <deployedseed>111618408</deployedseed>
+    <deployedseed>1192370894</deployedseed>
+    <deployedseed>752457274</deployedseed>
+    <deployedseed>654196797</deployedseed>
+    <deployedseed>453117277</deployedseed>
+    <deployedseed>1409469385</deployedseed>
+    <deployedseed>1222910356</deployedseed>
+    <deployedseed>1243849587</deployedseed>
+    <deployedseed>430033587</deployedseed>
+    <deployedseed>112053179</deployedseed>
+    <deployedseed>2034691713</deployedseed>
+    <deployedseed>381721692</deployedseed>
+    <deployedseed>912933184</deployedseed>
+    <deployedseed>216438875</deployedseed>
+    <deployedseed>758493422</deployedseed>
+    <deployedseed>1653542377</deployedseed>
+    <deployedseed>891650855</deployedseed>
+    <deployedseed>2073238916</deployedseed>
+    <deployedseed>504879052</deployedseed>
+    <deployedseed>1515619080</deployedseed>
+    <deployedseed>1583659009</deployedseed>
+    <deployedseed>1975037094</deployedseed>
+    <deployedseed>147999040</deployedseed>
+    <deployedseed>1585371420</deployedseed>
+    <deployedseed>182714062</deployedseed>
+    <deployedseed>228619607</deployedseed>
+    <deployedseed>1451031380</deployedseed>
+    <deployedseed>634745384</deployedseed>
+    <deployedseed>341083069</deployedseed>
+    <deployedseed>1790534185</deployedseed>
+    <deployedseed>743580061</deployedseed>
     <qtest>
       <testcase>1</testcase>
-      <description/>
+      <description>All four correct</description>
       <testinput>
         <name>ans1</name>
         <value>ta1</value>
@@ -437,7 +576,7 @@ args(mat1)));]]></text>
     </qtest>
     <qtest>
       <testcase>2</testcase>
-      <description/>
+      <description>Targeted misconceptions (subtracted, reversed order, added 2)</description>
       <testinput>
         <name>ans1</name>
         <value>ta2</value>
@@ -445,6 +584,50 @@ args(mat1)));]]></text>
       <testinput>
         <name>ans2</name>
         <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans3</name>
+        <value>ta2</value>
+      </testinput>
+      <testinput>
+        <name>ans4</name>
+        <value>mat_plus_2</value>
+      </testinput>
+      <expected>
+        <name>prt1</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt1-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt2</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt2-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt3</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt3-2-T</expectedanswernote>
+      </expected>
+      <expected>
+        <name>prt4</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>prt4-2-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description>Generic wrong and added instead of subtracted</description>
+      <testinput>
+        <name>ans1</name>
+        <value>ta3</value>
+      </testinput>
+      <testinput>
+        <name>ans2</name>
+        <value>ta1</value>
       </testinput>
       <testinput>
         <name>ans3</name>
@@ -458,19 +641,19 @@ args(mat1)));]]></text>
         <name>prt1</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt1-1-F</expectedanswernote>
+        <expectedanswernote>prt1-2-F</expectedanswernote>
       </expected>
       <expected>
         <name>prt2</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt2-2-T</expectedanswernote>
+        <expectedanswernote>prt2-3-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt3</name>
         <expectedscore>0.0000000</expectedscore>
         <expectedpenalty>0.1000000</expectedpenalty>
-        <expectedanswernote>prt3-2-F</expectedanswernote>
+        <expectedanswernote>prt3-3-T</expectedanswernote>
       </expected>
       <expected>
         <name>prt4</name>

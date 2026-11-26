@@ -2,34 +2,55 @@
 <quiz>
   <question type="stack">
     <name>
-      <text>Matrices_Add_1</text>
+      <text>Addition of two 2x2 matrices</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Let \({\bf A}\) and \({\bf B}\) be the following matrices: \[{\bf A} = {@matrixa@}\] <br />\[{\bf B} = {@matrixb@}\]</p>
-<p>Find the sum \({\bf A + B:}\)</p>
+      <text><![CDATA[<p>Let \({\bf A}\) and \({\bf B}\) be the following matrices:</p>
+<p>\[{\bf A} = {@matrixa@}, \qquad {\bf B} = {@matrixb@}\]</p>
+<p>Find the sum \({\bf A + B}\). Enter exact integers in each cell.</p>
 <p>[[input:ans1]] [[validation:ans1]]</p>]]></text>
     </questiontext>
     <generalfeedback format="html">
-      <text><![CDATA[<p>\[{\bf A} = {@matrixa@}\] <br />and<br />\[{\bf B} = {@matrixb@}\] <br /> Therefore \[\begin{array}{rcc} {\bf A} + {\bf B} &amp; =&amp; \begin{bmatrix} {@matrixa[1,1]@} +{@matrixb[1,1]@} &amp; {@matrixa[1,2]@} +{@matrixb[1,2]@} \\ {@matrixa[2,1]@} +{@matrixb[2,1]@} &amp; {@matrixa[2,2]@} +{@matrixb[2,2]@} \end{bmatrix} \end{array}\] \[={@correctanswer@}\]</p>]]></text>
+      <text><![CDATA[<p><b>Worked Solution:</b></p>
+<p>To add two matrices of the same order, add the entries in corresponding positions:</p>
+<p>\[{\bf A} + {\bf B} = {@matrixa@} + {@matrixb@}\]</p>
+<p>\[= \begin{bmatrix} {#t11#} &amp; {#t12#} \\ {#t21#} &amp; {#t22#} \end{bmatrix} = \boxed{{@correctanswer@}}\]</p>]]></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
-    <penalty>0</penalty>
+    <penalty>0.1</penalty>
     <hidden>0</hidden>
     <idnumber/>
     <stackversion>
       <text>2018080600</text>
     </stackversion>
     <questionvariables>
-      <text>matrixa:matrix([rand_with_step(-5,5,1),rand_with_step(-5,5,1)],[rand_with_step(-5,5,1),rand_with_step(-5,5,1)]);
- matrixb:matrix([rand_with_step(-5,5,1),rand_with_step(-5,5,1)],[rand_with_step(-5,5,1),rand_with_step(-5,5,1)]);
- correctanswer:matrixa + matrixb;
-wronganswer:matrixa-matrixb;</text>
+      <text><![CDATA[a11 : rand_with_prohib(-6, 6, [0]);
+a12 : rand_with_prohib(-6, 6, [0]);
+a21 : rand_with_prohib(-6, 6, [0]);
+a22 : rand_with_prohib(-6, 6, [0]);
+matrixa : matrix([a11, a12], [a21, a22]);
+
+neg_pos : rand(4) + 1;
+b11 : if is(neg_pos = 1) then rand_with_step(-6, -1, 1) else rand_with_prohib(-6, 6, [0]);
+b12 : if is(neg_pos = 2) then rand_with_step(-6, -1, 1) else rand_with_prohib(-6, 6, [0]);
+b21 : if is(neg_pos = 3) then rand_with_step(-6, -1, 1) else rand_with_prohib(-6, 6, [0]);
+b22 : if is(neg_pos = 4) then rand_with_step(-6, -1, 1) else rand_with_prohib(-6, 6, [0]);
+matrixb : matrix([b11, b12], [b21, b22]);
+
+t11 : if is(b11 + abs(b11) = 0) then sconcat(a11, " - ", abs(b11)) else sconcat(a11, " + ", b11);
+t12 : if is(b12 + abs(b12) = 0) then sconcat(a12, " - ", abs(b12)) else sconcat(a12, " + ", b12);
+t21 : if is(b21 + abs(b21) = 0) then sconcat(a21, " - ", abs(b21)) else sconcat(a21, " + ", b21);
+t22 : if is(b22 + abs(b22) = 0) then sconcat(a22, " - ", abs(b22)) else sconcat(a22, " + ", b22);
+
+correctanswer : matrixa + matrixb;
+wronganswer : matrixa - matrixb;
+wrongother : matrixa + 2*matrixb;]]></text>
     </questionvariables>
     <specificfeedback format="html">
       <text><![CDATA[<p>[[feedback:Result]]</p>]]></text>
     </specificfeedback>
     <questionnote format="moodle_auto_format">
-      <text>\({\bf A} = {@matrixa@}, {\bf B} = {@matrixb@}, {\bf A} + {\bf B}  = {@correctanswer@}\)</text>
+      <text>\({\bf A} = {@matrixa@}, {\bf B} = {@matrixb@}, {\bf A} + {\bf B} = {@correctanswer@}\)</text>
     </questionnote>
     <questiondescription format="moodle_auto_format">
       <text/>
@@ -60,7 +81,7 @@ wronganswer:matrixa-matrixb;</text>
       <name>ans1</name>
       <type>matrix</type>
       <tans>correctanswer</tans>
-      <boxsize>20</boxsize>
+      <boxsize>5</boxsize>
       <strictsyntax>1</strictsyntax>
       <insertstars>0</insertstars>
       <syntaxhint/>
@@ -94,17 +115,42 @@ wronganswer:matrixa-matrixb;</text>
         <truescore>1.0000000</truescore>
         <truepenalty>0</truepenalty>
         <truenextnode>-1</truenextnode>
-        <trueanswernote>Result-0-T </trueanswernote>
+        <trueanswernote>Result-0-T</trueanswernote>
         <truefeedback format="html">
           <text/>
         </truefeedback>
         <falsescoremode>=</falsescoremode>
         <falsescore>0.0000000</falsescore>
-        <falsepenalty>0</falsepenalty>
-        <falsenextnode>-1</falsenextnode>
-        <falseanswernote>Result-0-F </falseanswernote>
+        <falsepenalty/>
+        <falsenextnode>1</falsenextnode>
+        <falseanswernote>Result-0-F</falseanswernote>
         <falsefeedback format="html">
           <text/>
+        </falsefeedback>
+      </node>
+      <node>
+        <name>1</name>
+        <description/>
+        <answertest>AlgEquiv</answertest>
+        <sans>ans1</sans>
+        <tans>wronganswer</tans>
+        <testoptions/>
+        <quiet>1</quiet>
+        <truescoremode>=</truescoremode>
+        <truescore>0.0000000</truescore>
+        <truepenalty/>
+        <truenextnode>-1</truenextnode>
+        <trueanswernote>Result-1-T</trueanswernote>
+        <truefeedback format="html">
+          <text><![CDATA[<p>It looks like you subtracted \({\bf B}\) from \({\bf A}\) (\({\bf A} - {\bf B}\)). Check the operation: you need to <strong>add</strong> corresponding entries (\({\bf A} + {\bf B}\)).</p>]]></text>
+        </truefeedback>
+        <falsescoremode>=</falsescoremode>
+        <falsescore>0.0000000</falsescore>
+        <falsepenalty/>
+        <falsenextnode>-1</falsenextnode>
+        <falseanswernote>Result-1-F</falseanswernote>
+        <falsefeedback format="html">
+          <text><![CDATA[<p>Not quite. Add the entries in matching positions: \(({\bf A} + {\bf B})_{ij} = a_{ij} + b_{ij}\). Double-check your arithmetic with negative signs.</p>]]></text>
         </falsefeedback>
       </node>
     </prt>
@@ -133,6 +179,58 @@ wronganswer:matrixa-matrixb;</text>
     <deployedseed>1985211190</deployedseed>
     <deployedseed>37406481</deployedseed>
     <deployedseed>1847899318</deployedseed>
+    <deployedseed>604859348</deployedseed>
+    <deployedseed>13886928</deployedseed>
+    <deployedseed>730452911</deployedseed>
+    <deployedseed>1566307710</deployedseed>
+    <deployedseed>1482049385</deployedseed>
+    <deployedseed>310304570</deployedseed>
+    <deployedseed>1581960515</deployedseed>
+    <deployedseed>288112622</deployedseed>
+    <deployedseed>1447796366</deployedseed>
+    <deployedseed>530591653</deployedseed>
+    <deployedseed>1002320680</deployedseed>
+    <deployedseed>971990864</deployedseed>
+    <deployedseed>112695705</deployedseed>
+    <deployedseed>1744830256</deployedseed>
+    <deployedseed>1787186506</deployedseed>
+    <deployedseed>37134193</deployedseed>
+    <deployedseed>1685937757</deployedseed>
+    <deployedseed>1903982920</deployedseed>
+    <deployedseed>1116798645</deployedseed>
+    <deployedseed>1499902306</deployedseed>
+    <deployedseed>1335560939</deployedseed>
+    <deployedseed>1240292092</deployedseed>
+    <deployedseed>412277345</deployedseed>
+    <deployedseed>726957065</deployedseed>
+    <deployedseed>225041382</deployedseed>
+    <deployedseed>1392458862</deployedseed>
+    <deployedseed>585586087</deployedseed>
+    <deployedseed>2049612110</deployedseed>
+    <deployedseed>1204129469</deployedseed>
+    <deployedseed>1781554673</deployedseed>
+    <deployedseed>1043777188</deployedseed>
+    <deployedseed>242336630</deployedseed>
+    <deployedseed>1917189234</deployedseed>
+    <deployedseed>10200342</deployedseed>
+    <deployedseed>1712332705</deployedseed>
+    <deployedseed>2027826051</deployedseed>
+    <deployedseed>1703835512</deployedseed>
+    <deployedseed>1166860699</deployedseed>
+    <deployedseed>1332245754</deployedseed>
+    <deployedseed>953376674</deployedseed>
+    <deployedseed>665249284</deployedseed>
+    <deployedseed>918223557</deployedseed>
+    <deployedseed>96735617</deployedseed>
+    <deployedseed>141913575</deployedseed>
+    <deployedseed>1479974292</deployedseed>
+    <deployedseed>1096615273</deployedseed>
+    <deployedseed>1378130950</deployedseed>
+    <deployedseed>1557040212</deployedseed>
+    <deployedseed>517864460</deployedseed>
+    <deployedseed>1530391176</deployedseed>
+    <deployedseed>996956097</deployedseed>
+    <deployedseed>867477344</deployedseed>
     <qtest>
       <testcase>1</testcase>
       <description/>
@@ -157,8 +255,22 @@ wronganswer:matrixa-matrixb;</text>
       <expected>
         <name>Result</name>
         <expectedscore>0.0000000</expectedscore>
-        <expectedpenalty>0.0000000</expectedpenalty>
-        <expectedanswernote>Result-0-F</expectedanswernote>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>Result-1-T</expectedanswernote>
+      </expected>
+    </qtest>
+    <qtest>
+      <testcase>3</testcase>
+      <description/>
+      <testinput>
+        <name>ans1</name>
+        <value>wrongother</value>
+      </testinput>
+      <expected>
+        <name>Result</name>
+        <expectedscore>0.0000000</expectedscore>
+        <expectedpenalty>0.1000000</expectedpenalty>
+        <expectedanswernote>Result-1-F</expectedanswernote>
       </expected>
     </qtest>
   </question>
